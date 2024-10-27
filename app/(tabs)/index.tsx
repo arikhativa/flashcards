@@ -5,60 +5,38 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect } from "react";
-import * as SQLite from "expo-sqlite";
+import { CardSchema } from "@/schemas/Card";
+import { source } from "@/hooks/db";
 
 export default function HomeScreen() {
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = await SQLite.openDatabaseAsync("databaseName");
+  // useEffect(() => {
+  //   initDatabase();
+  // }, []);
 
-      //   await db.execAsync(`
-      // PRAGMA journal_mode = WAL;
-      // CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, intValue INTEGER);
-      // INSERT INTO test (value, intValue) VALUES ('test1', 123);
-      // INSERT INTO test (value, intValue) VALUES ('test2', 456);
-      // INSERT INTO test (value, intValue) VALUES ('test3', 789);
-      // `);
+  // const cs = new CardService();
+  // console.log("HomeScreen");
 
-      // `runAsync()` is useful when you want to execute some write operations.
-      const result = await db.runAsync(
-        "INSERT INTO test (value, intValue) VALUES (?, ?)",
-        "aaa",
-        100
-      );
-      console.log(result.lastInsertRowId, result.changes);
-      await db.runAsync(
-        "UPDATE test SET intValue = ? WHERE value = ?",
-        999,
-        "aaa"
-      ); // Binding unnamed parameters from variadic arguments
-      await db.runAsync("UPDATE test SET intValue = ? WHERE value = ?", [
-        999,
-        "aaa",
-      ]); // Binding unnamed parameters from array
-      await db.runAsync("DELETE FROM test WHERE value = $value", {
-        $value: "aaa",
-      }); // Binding named parameters from object
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const db = await source.initialize();
 
-      // `getFirstAsync()` is useful when you want to get a single row from the database.
-      const firstRow: any = await db.getFirstAsync("SELECT * FROM test");
-      console.log(firstRow.id, firstRow.value, firstRow.intValue);
+  //     const post = new CardSchema();
+  //     post.title = "Control flow based type analysis";
 
-      // `getAllAsync()` is useful when you want to get all results as an array of objects.
-      const allRows: any = await db.getAllAsync("SELECT * FROM test");
-      for (const row of allRows) {
-        console.log(row.id, row.value, row.intValue);
-      }
+  //     const postRepository = db.getRepository(CardSchema);
+  //     await postRepository.save(post);
 
-      // `getEachAsync()` is useful when you want to iterate SQLite query cursor.
-      for await (const a of db.getEachAsync("SELECT * FROM test")) {
-        const row = a as any;
-        console.log(row.id, row.value, row.intValue);
-      }
-    };
+  //     const loadedPost = await postRepository.findOne({
+  //       where: { id: post.id },
+  //     });
 
-    fetchData();
-  }, []);
+  //     if (loadedPost) {
+  //       console.log("Post has been loaded: ", loadedPost);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <ParallaxScrollView
@@ -126,3 +104,55 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 });
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     const db = await SQLite.openDatabaseAsync("flashcards.db");
+
+//     //   await db.execAsync(`
+//     // PRAGMA journal_mode = WAL;
+//     // CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, intValue INTEGER);
+//     // INSERT INTO test (value, intValue) VALUES ('test1', 123);
+//     // INSERT INTO test (value, intValue) VALUES ('test2', 456);
+//     // INSERT INTO test (value, intValue) VALUES ('test3', 789);
+//     // `);
+
+//     // `runAsync()` is useful when you want to execute some write operations.
+//     const result = await db.runAsync(
+//       "INSERT INTO test (value, intValue) VALUES (?, ?)",
+//       "aaa",
+//       100
+//     );
+//     console.log(result.lastInsertRowId, result.changes);
+//     await db.runAsync(
+//       "UPDATE test SET intValue = ? WHERE value = ?",
+//       999,
+//       "aaa"
+//     ); // Binding unnamed parameters from variadic arguments
+//     await db.runAsync("UPDATE test SET intValue = ? WHERE value = ?", [
+//       999,
+//       "aaa",
+//     ]); // Binding unnamed parameters from array
+//     await db.runAsync("DELETE FROM test WHERE value = $value", {
+//       $value: "aaa",
+//     }); // Binding named parameters from object
+
+//     // `getFirstAsync()` is useful when you want to get a single row from the database.
+//     const firstRow: any = await db.getFirstAsync("SELECT * FROM test");
+//     console.log(firstRow.id, firstRow.value, firstRow.intValue);
+
+//     // `getAllAsync()` is useful when you want to get all results as an array of objects.
+//     const allRows: any = await db.getAllAsync("SELECT * FROM test");
+//     for (const row of allRows) {
+//       console.log(row.id, row.value, row.intValue);
+//     }
+
+//     // `getEachAsync()` is useful when you want to iterate SQLite query cursor.
+//     for await (const a of db.getEachAsync("SELECT * FROM test")) {
+//       const row = a as any;
+//       console.log(row.id, row.value, row.intValue);
+//     }
+//   };
+
+//   fetchData();
+// }, []);
