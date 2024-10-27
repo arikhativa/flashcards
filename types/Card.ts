@@ -1,4 +1,10 @@
-export interface Card {
-  id: number;
-  title: string;
-}
+import { CardSchema } from "@/schemas/schemas";
+import { KnowledgeLevel } from "./KnowledgeLevel";
+
+export type Card = Omit<CardSchema, "knowledgeLevel"> & {
+  knowledgeLevel: KnowledgeLevel;
+};
+
+export type CardCreate = Pick<CardSchema, "sideA" | "sideB" | "comment"> & {
+  knowledgeLevel: KnowledgeLevel;
+};

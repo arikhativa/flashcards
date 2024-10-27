@@ -1,44 +1,56 @@
 import { source } from "@/hooks/db";
-import { CardSchema } from "@/schemas/Card";
+import { CardSchema } from "@/schemas/schemas";
+import { Card, CardCreate } from "@/types/Card";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import { Repository } from "typeorm";
 
 export class CardService {
-  async getTasks(): Promise<CardSchema[]> {
-    if (!source.isInitialized) await source.initialize();
+  constructor(private repo: Repository<CardSchema>) {}
 
-    const tasks = await CardSchema.find();
+  // TODO add tag in ctor
+  async create(payload: CardCreate): Promise<Card> {
+    const card = this.repo.create();
+    card.sideA = payload.sideA;
+    card.sideB = payload.sideB;
+    card.comment = payload.comment;
+    card.knowledgeLevel = payload.knowledgeLevel || KnowledgeLevel.Learning;
 
-    return tasks;
+    return (await this.repo.save(card)) as Card;
   }
 
-  async getTask(taskId: CardSchema["id"]): Promise<CardSchema> {
-    if (!source.isInitialized) await source.initialize();
-
-    const task = await CardSchema.findOneByOrFail({ id: taskId });
-    return task;
+  async getCardById(id: number): Promise<Card> {
+    return (await this.repo.findOne({ where: { id } })) as Card;
   }
 
-  async createTask(payload: Pick<CardSchema, "title">) {
-    if (!source.isInitialized) await source.initialize();
+  // async getTasks(): Promise<CardSchema[]> {
+  //   if (!source.isInitialized) await source.initialize();
 
-    const task = new CardSchema();
-    task.title = payload.title;
-    await task.save();
-  }
+  //   const tasks = await CardSchema.find();
 
-  async updateTask(
-    taskId: CardSchema["id"],
-    payload: Partial<Pick<CardSchema, "title">>
-  ) {
-    if (!source.isInitialized) await source.initialize();
+  //   return tasks;
+  // }
 
-    const task = await CardSchema.findOneByOrFail({ id: taskId });
-    task.title = payload.title ?? task.title;
-    await task.save();
-  }
+  // async getTask(taskId: CardSchema["id"]): Promise<CardSchema> {
+  //   if (!source.isInitialized) await source.initialize();
 
-  async deleteTask(taskId: CardSchema["id"]) {
-    if (!source.isInitialized) await source.initialize();
+  //   const task = await CardSchema.findOneByOrFail({ id: taskId });
+  //   return task;
+  // }
 
-    await CardSchema.delete(taskId);
-  }
+  // async updateTask(
+  //   taskId: CardSchema["id"],
+  //   payload: Partial<Pick<CardSchema, "title">>
+  // ) {
+  //   if (!source.isInitialized) await source.initialize();
+
+  //   const task = await CardSchema.findOneByOrFail({ id: taskId });
+  //   task.title = payload.title ?? task.title;
+  //   await task.save();
+  // }
+
+  // async deleteTask(taskId: CardSchema["id"]) {
+  //   if (!source.isInitialized) await source.initialize();
+
+  //   await CardSchema.delete(taskId);
+  // }
 }

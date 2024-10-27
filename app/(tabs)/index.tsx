@@ -5,28 +5,29 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect } from "react";
-import { CardSchema } from "@/schemas/Card";
+import { CardSchema } from "@/schemas/schemas";
 import { source } from "@/hooks/db";
+import { CardService } from "@/services/Card";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
 export default function HomeScreen() {
   useEffect(() => {
     const fetchData = async () => {
       const db = await source.initialize();
 
-      const post = new CardSchema();
-      post.title = "Control flow based type analysis";
+      const cr = await db.getRepository(CardSchema);
 
-      const postRepository = db.getRepository(CardSchema);
-      console.log("postRepository", postRepository);
-      await postRepository.save(post);
+      const cs = new CardService(cr);
 
-      const loadedPost = await postRepository.findOne({
-        where: { id: post.id },
+      const newCard = await cs.create({
+        sideA: "aa",
+        sideB: "bb",
+        comment: "wwwwwwww",
+        knowledgeLevel: KnowledgeLevel.GettingThere,
       });
 
-      if (loadedPost) {
-        console.log("Post has been loaded: ", loadedPost);
-      }
+      const card = await cs.getCardById(newCard.id);
+      console.log("card", card);
     };
 
     fetchData();
