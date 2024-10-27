@@ -9,34 +9,28 @@ import { CardSchema } from "@/schemas/Card";
 import { source } from "@/hooks/db";
 
 export default function HomeScreen() {
-  // useEffect(() => {
-  //   initDatabase();
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = await source.initialize();
 
-  // const cs = new CardService();
-  // console.log("HomeScreen");
+      const post = new CardSchema();
+      post.title = "Control flow based type analysis";
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const db = await source.initialize();
+      const postRepository = db.getRepository(CardSchema);
+      console.log("postRepository", postRepository);
+      await postRepository.save(post);
 
-  //     const post = new CardSchema();
-  //     post.title = "Control flow based type analysis";
+      const loadedPost = await postRepository.findOne({
+        where: { id: post.id },
+      });
 
-  //     const postRepository = db.getRepository(CardSchema);
-  //     await postRepository.save(post);
+      if (loadedPost) {
+        console.log("Post has been loaded: ", loadedPost);
+      }
+    };
 
-  //     const loadedPost = await postRepository.findOne({
-  //       where: { id: post.id },
-  //     });
-
-  //     if (loadedPost) {
-  //       console.log("Post has been loaded: ", loadedPost);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   return (
     <ParallaxScrollView
