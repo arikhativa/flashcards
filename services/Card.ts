@@ -22,8 +22,8 @@ export class CardService {
     return (await this.repo.findOne({ where: { id } })) as Card;
   }
 
-  async getAll(): Promise<Card> {
-    return (await this.repo.find({})) as unknown as Card;
+  async getAll(): Promise<Card[]> {
+    return (await this.repo.find({})) as Card[];
   }
 
   async update(id: CardSchema["id"], payload: CardUpdate) {

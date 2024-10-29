@@ -4,14 +4,18 @@ import { CardService } from "./Card";
 import { CardSchema } from "@/schemas/schemas";
 
 class StoreService {
-  db: DataSource;
-  cardService: CardService;
+  private _db: DataSource;
+  private _cardService: CardService;
 
   async init() {
-    this.db = await source.initialize();
-    const cr = await this.db.getRepository(CardSchema);
+    this._db = await source.initialize();
+    const cr = await this._db.getRepository(CardSchema);
 
-    this.cardService = new CardService(cr);
+    this._cardService = new CardService(cr);
+  }
+
+  get cardService() {
+    return this._cardService;
   }
 }
 
