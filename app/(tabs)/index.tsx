@@ -1,27 +1,26 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import { Image, StyleSheet, Platform, Button } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect } from "react";
-import { CardSchema } from "@/schemas/schemas";
-import { source } from "@/hooks/db";
-import { CardService } from "@/services/Card";
-import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import StoreService from "@/services/Store";
+import { Card } from "@/types/Card";
 
 export default function HomeScreen() {
-  useEffect(() => {
-    const fetchData = async () => {
-      const cs = StoreService.cardService;
+  // const cardService = StoreService.cardService;
+  // const allCards: Card[] = [];
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const cs = StoreService.cardService;
 
-      const card = await cs.getAll();
-      console.log("cards", card);
-    };
+  //     const card = await cs.getAll();
+  //     console.log("cards", card);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
     <ParallaxScrollView
@@ -34,20 +33,16 @@ export default function HomeScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcosssme!</ThemedText>
+        <ThemedText type="title">Hey!</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-          to see changes. Press{" "}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-          </ThemedText>{" "}
-          to open developer tools.
-        </ThemedText>
+        {/* <Button title="getAll" onPress={cardService.getAll}></Button> */}
+
+        {/* <ThemedText type="subtitle">Cards</ThemedText> */}
+        {/* {allCards.map((card) => {
+          return <ThemedText>card.sideA</ThemedText>;
+        })} */}
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: Explore</ThemedText>

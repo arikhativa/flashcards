@@ -5,7 +5,7 @@ import * as SQLite from "expo-sqlite/legacy";
 
 import "reflect-metadata";
 
-const DB_NAME = "flashcards3.db";
+const DB_NAME = "flashcards4.db";
 
 export const source = new DataSource({
   database: DB_NAME,
