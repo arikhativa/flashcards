@@ -6,12 +6,11 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-
-// import "reflect-metadata";
+import StoreService from "@/services/Store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -22,13 +21,24 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
+  const [dbInitialized, setDbInitialized] = useState(false);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
 
-  if (!loaded) {
+  useEffect(() => {
+    const initStoreService = async () => {
+      await StoreService.init();
+      setDbInitialized(true);
+    };
+
+    initStoreService();
+  }, []);
+
+  if (!loaded || !dbInitialized) {
     return null;
   }
 

@@ -9,25 +9,15 @@ import { CardSchema } from "@/schemas/schemas";
 import { source } from "@/hooks/db";
 import { CardService } from "@/services/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import StoreService from "@/services/Store";
 
 export default function HomeScreen() {
   useEffect(() => {
     const fetchData = async () => {
-      const db = await source.initialize();
+      const cs = StoreService.cardService;
 
-      const cr = await db.getRepository(CardSchema);
-
-      const cs = new CardService(cr);
-
-      const newCard = await cs.create({
-        sideA: "aa",
-        sideB: "bb",
-        comment: "wwwwwwww",
-        knowledgeLevel: KnowledgeLevel.GettingThere,
-      });
-
-      const card = await cs.getCardById(newCard.id);
-      console.log("card", card);
+      const card = await cs.getAll();
+      console.log("cards", card);
     };
 
     fetchData();

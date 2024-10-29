@@ -18,8 +18,12 @@ export class CardService {
     return (await this.repo.save(card)) as Card;
   }
 
-  async getCardById(id: number): Promise<Card> {
+  async getById(id: number): Promise<Card> {
     return (await this.repo.findOne({ where: { id } })) as Card;
+  }
+
+  async getAll(): Promise<Card> {
+    return (await this.repo.find({})) as unknown as Card;
   }
 
   // async getTasks(): Promise<CardSchema[]> {
