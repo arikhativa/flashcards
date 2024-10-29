@@ -1,6 +1,6 @@
 import { source } from "@/hooks/db";
 import { CardSchema } from "@/schemas/schemas";
-import { Card, CardCreate } from "@/types/Card";
+import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { Repository } from "typeorm";
 
@@ -26,35 +26,19 @@ export class CardService {
     return (await this.repo.find({})) as unknown as Card;
   }
 
-  // async getTasks(): Promise<CardSchema[]> {
-  //   if (!source.isInitialized) await source.initialize();
+  async update(id: CardSchema["id"], payload: CardUpdate) {
+    const card = await this.repo.findOne({ where: { id } });
+    if (!card) {
+      throw new Error(`Card with id ${id} not found`);
+    }
 
-  //   const tasks = await CardSchema.find();
+    // TODO test
+    Object.assign(card, { ...payload });
 
-  //   return tasks;
-  // }
+    return (await this.repo.save(card)) as Card;
+  }
 
-  // async getTask(taskId: CardSchema["id"]): Promise<CardSchema> {
-  //   if (!source.isInitialized) await source.initialize();
-
-  //   const task = await CardSchema.findOneByOrFail({ id: taskId });
-  //   return task;
-  // }
-
-  // async updateTask(
-  //   taskId: CardSchema["id"],
-  //   payload: Partial<Pick<CardSchema, "title">>
-  // ) {
-  //   if (!source.isInitialized) await source.initialize();
-
-  //   const task = await CardSchema.findOneByOrFail({ id: taskId });
-  //   task.title = payload.title ?? task.title;
-  //   await task.save();
-  // }
-
-  // async deleteTask(taskId: CardSchema["id"]) {
-  //   if (!source.isInitialized) await source.initialize();
-
-  //   await CardSchema.delete(taskId);
-  // }
+  async delete(id: CardSchema["id"]) {
+    await this.repo.delete({ id });
+  }
 }
