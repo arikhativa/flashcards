@@ -4,17 +4,15 @@ import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { Repository } from "typeorm";
 import { BaseListenerService } from "./BaseListener";
 
-export class CardService extends BaseListenerService {
+export class CardService extends BaseListenerService<Card[]> {
   readonly RELATIONS = ["tags"];
-
-  _allCards: Card[] = [];
 
   constructor(private repo: Repository<CardSchema>) {
     super();
   }
 
   async init() {
-    this._allCards = await this.getAll();
+    this.obj = await this.getAll();
   }
 
   // TODO add tag in ctor
@@ -26,7 +24,7 @@ export class CardService extends BaseListenerService {
 
     const ret = (await this.repo.save(entity)) as Card;
 
-    this._allCards.push(ret);
+    this.obj.push(ret);
 
     this.notifyChange();
 
@@ -57,9 +55,9 @@ export class CardService extends BaseListenerService {
 
     const ret = (await this.repo.save(entity)) as Card;
 
-    const index = this._allCards.findIndex((card) => card.id === ret.id);
+    const index = this.obj.findIndex((card) => card.id === ret.id);
     if (index !== -1) {
-      this._allCards[index] = ret;
+      this.obj[index] = ret;
     }
 
     this.notifyChange();
@@ -75,9 +73,9 @@ export class CardService extends BaseListenerService {
       return;
     }
 
-    const index = this._allCards.findIndex((card) => card.id === entity.id);
+    const index = this.obj.findIndex((card) => card.id === entity.id);
     if (index !== -1) {
-      this._allCards.splice(index, 1);
+      this.obj.splice(index, 1);
     }
 
     this.notifyChange();
@@ -86,6 +84,6 @@ export class CardService extends BaseListenerService {
   }
 
   get allCards() {
-    return this._allCards;
+    return this.obj;
   }
 }

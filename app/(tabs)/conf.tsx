@@ -10,11 +10,7 @@ export default function ConfScreen() {
 
   const [conf, setConf] = useState<Conf>(confService.conf);
 
-  useEffect(() => {
-    const update = () => setConf(confService.conf);
-    confService.onChange(update);
-    return () => confService.offChange(update);
-  }, [confService]);
+  useEffect(confService.listen(setConf), [confService]);
 
   useEffect(() => {
     const loadConf = async () => {

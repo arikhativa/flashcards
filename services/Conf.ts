@@ -3,15 +3,13 @@ import { Conf, ConfUpdate } from "@/types/Conf";
 import { Repository } from "typeorm";
 import { BaseListenerService } from "./BaseListener";
 
-export class ConfService extends BaseListenerService {
+export class ConfService extends BaseListenerService<Conf> {
   private readonly empty: Conf = {
     sideA: "error",
     sideB: "error",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-
-  _conf: Conf;
 
   constructor(private repo: Repository<ConfSchema>) {
     super();
@@ -22,10 +20,10 @@ export class ConfService extends BaseListenerService {
     const all = await this.repo.find();
 
     if (all.length) {
-      this._conf = all[0];
+      this.obj = all[0];
     }
 
-    this._conf = await this.repo.save(this.repo.create());
+    this.obj = await this.repo.save(this.repo.create());
   }
 
   async get(): Promise<Conf> {
@@ -47,7 +45,7 @@ export class ConfService extends BaseListenerService {
     entity.sideB = payload.sideB || entity.sideB;
 
     const ret = await this.repo.save(entity);
-    this._conf = ret;
+    this.obj = ret;
 
     this.notifyChange();
 
@@ -55,6 +53,6 @@ export class ConfService extends BaseListenerService {
   }
 
   get conf() {
-    return this._conf;
+    return this.obj;
   }
 }

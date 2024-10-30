@@ -24,17 +24,8 @@ export default function CardsScreen() {
   const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
   const [conf, setConf] = useState<Conf>(confService.conf);
 
-  useEffect(() => {
-    const updateCards = () => setAllCards([...cardService.allCards]);
-    cardService.onChange(updateCards);
-    return () => cardService.offChange(updateCards);
-  }, [cardService]);
-
-  useEffect(() => {
-    const updateConf = () => setConf(confService.conf);
-    confService.onChange(updateConf);
-    return () => confService.offChange(updateConf);
-  }, [confService]);
+  useEffect(confService.listen(setConf), [confService]);
+  useEffect(cardService.listen(setAllCards), [cardService]);
 
   const loadCards = async () => {
     const cards = await cardService.getAll();
