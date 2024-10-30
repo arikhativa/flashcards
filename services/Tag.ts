@@ -1,7 +1,7 @@
 import { TagSchema } from "@/schemas/schemas";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
 import { Repository } from "typeorm";
-import { BaseCrudArrayService } from "./BaseCrud";
+import { BaseCrudArrayService } from "./BaseCrudArray";
 
 export class TagService extends BaseCrudArrayService<Tag, TagSchema> {
   readonly RELATIONS = ["cards"];

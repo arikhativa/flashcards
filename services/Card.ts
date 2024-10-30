@@ -2,8 +2,7 @@ import { CardSchema } from "@/schemas/schemas";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { Repository } from "typeorm";
-import { BaseListenerService } from "./BaseListener";
-import { BaseCrudArrayService } from "./BaseCrud";
+import { BaseCrudArrayService } from "./BaseCrudArray";
 
 export class CardService extends BaseCrudArrayService<Card, CardSchema> {
   readonly RELATIONS = ["tags"];
