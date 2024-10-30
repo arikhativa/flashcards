@@ -9,4 +9,4 @@ export type CardCreate = Pick<CardSchema, "sideA" | "sideB" | "comment"> & {
   knowledgeLevel: KnowledgeLevel;
 };
 
-export type CardUpdate = Omit<Card, "id" | "createdAt" | "updatedAt">;
+export type CardUpdate = Partial<Omit<Card, "id" | "createdAt" | "updatedAt">>;

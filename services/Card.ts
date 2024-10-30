@@ -29,10 +29,10 @@ export class CardService {
   async update(id: CardSchema["id"], payload: CardUpdate) {
     const card = await this.repo.findOne({ where: { id } });
     if (!card) {
+      // TODO think of error handling
       throw new Error(`Card with id ${id} not found`);
     }
 
-    // TODO test
     Object.assign(card, { ...payload });
 
     return (await this.repo.save(card)) as Card;

@@ -8,16 +8,11 @@ import {
   Text,
 } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
-import StoreService from "@/services/Store";
-import { Card, CardCreate } from "@/types/Card";
-import { CardService } from "@/services/Card";
+import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import { CardTile } from "@/components/CardTile";
 
 export default function HomeScreen() {
   const store = useStore();
@@ -49,14 +44,28 @@ export default function HomeScreen() {
             cardService.create(card);
           }}
         ></Button>
+        <Button
+          title="update"
+          onPress={() => {
+            const card: CardUpdate = {};
+
+            cardService.update(1, card);
+          }}
+        ></Button>
+        <Button
+          title="delete"
+          onPress={() => {
+            cardService.delete(allCards[0].id);
+          }}
+        ></Button>
       </View>
 
       <View>
         <Button title="Load Cards" onPress={loadCards} />
         <FlatList
           data={allCards}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Text>{item.sideA}</Text>}
+          keyExtractor={(card) => card.id.toString()}
+          renderItem={({ item }) => <CardTile card={item}></CardTile>}
         />
       </View>
     </View>
