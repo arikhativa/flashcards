@@ -13,7 +13,6 @@ class StoreService {
   private _tagService: TagService;
   private _cardTagService: CardTagService;
   private _confService: ConfService;
-  private _conf: Conf;
 
   async init() {
     this._db = await source.initialize();
@@ -25,7 +24,7 @@ class StoreService {
     await this._cardService.init();
     // await this._tagService.init();
     this._confService = new ConfService(this._db.getRepository(ConfSchema));
-    this._conf = await this._confService.createIfNeeded();
+    await this._confService.init();
 
     this._cardTagService = new CardTagService(
       this.cardService,
@@ -47,14 +46,6 @@ class StoreService {
 
   get confService() {
     return this._confService;
-  }
-
-  set conf(obj: Conf) {
-    this._conf = obj;
-  }
-
-  get conf() {
-    return this._conf;
   }
 }
 

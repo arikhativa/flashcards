@@ -13,18 +13,28 @@ import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
+import { Conf } from "@/types/Conf";
 
 export default function CardsScreen() {
   const store = useStore();
   const cardService = store.cardService;
+  const confService = store.confService;
   const cardTagService = store.cardTagService;
+
   const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
+  const [conf, setConf] = useState<Conf>(confService.conf);
 
   useEffect(() => {
     const updateCards = () => setAllCards([...cardService.allCards]);
     cardService.onChange(updateCards);
     return () => cardService.offChange(updateCards);
   }, [cardService]);
+
+  useEffect(() => {
+    const updateConf = () => setConf(confService.conf);
+    confService.onChange(updateConf);
+    return () => confService.offChange(updateConf);
+  }, [confService]);
 
   const loadCards = async () => {
     const cards = await cardService.getAll();
@@ -83,8 +93,8 @@ export default function CardsScreen() {
           renderItem={({ item }) => (
             <CardTile
               card={item}
-              sideA={store.conf.sideA}
-              sideB={store.conf.sideB}
+              sideA={conf.sideA}
+              sideB={conf.sideB}
             ></CardTile>
           )}
         />

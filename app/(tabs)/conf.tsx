@@ -8,7 +8,13 @@ export default function ConfScreen() {
   const store = useStore();
   const confService = store.confService;
 
-  const [conf, setConf] = useState<Conf>(confService.empty);
+  const [conf, setConf] = useState<Conf>(confService.conf);
+
+  useEffect(() => {
+    const update = () => setConf(confService.conf);
+    confService.onChange(update);
+    return () => confService.offChange(update);
+  }, [confService]);
 
   useEffect(() => {
     const loadConf = async () => {
@@ -24,9 +30,6 @@ export default function ConfScreen() {
 
   const handleSubmit = async () => {
     await confService.update(conf);
-    const updatedConf = await confService.get();
-    setConf(updatedConf);
-    store.conf = updatedConf;
   };
 
   const handleInputChange = (field: keyof Conf, value: string) => {

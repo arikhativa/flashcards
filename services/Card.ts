@@ -2,28 +2,15 @@ import { CardSchema } from "@/schemas/schemas";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { Repository } from "typeorm";
+import { BaseListenerService } from "./BaseListener";
 
-export type CardChangeListener = () => void;
-
-export class CardService {
+export class CardService extends BaseListenerService {
   readonly RELATIONS = ["tags"];
-  private listeners: CardChangeListener[] = [];
 
   _allCards: Card[] = [];
 
-  constructor(private repo: Repository<CardSchema>) {}
-
-  onChange(listener: CardChangeListener) {
-    this.listeners.push(listener);
-  }
-
-  offChange(listener: CardChangeListener) {
-    console.log("offChange");
-    this.listeners = this.listeners.filter((l) => l !== listener);
-  }
-
-  private notifyChange() {
-    this.listeners.forEach((listener) => listener());
+  constructor(private repo: Repository<CardSchema>) {
+    super();
   }
 
   async init() {
