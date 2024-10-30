@@ -1,8 +1,6 @@
-import { source } from "@/hooks/db";
 import { CardSchema } from "@/schemas/schemas";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
-import { Tag } from "@/types/Tag";
 import { Repository } from "typeorm";
 
 export class CardService {
@@ -12,13 +10,11 @@ export class CardService {
 
   // TODO add tag in ctor
   async create(payload: CardCreate): Promise<Card> {
-    const card = this.repo.create();
-    card.sideA = payload.sideA;
-    card.sideB = payload.sideB;
-    card.comment = payload.comment;
-    card.knowledgeLevel = payload.knowledgeLevel || KnowledgeLevel.Learning;
+    const entity = this.repo.create();
 
-    return (await this.repo.save(card)) as Card;
+    Object.assign(entity, { ...payload });
+
+    return (await this.repo.save(entity)) as Card;
   }
 
   async getById(id: number): Promise<Card> {
@@ -33,16 +29,16 @@ export class CardService {
   }
 
   async update(id: CardSchema["id"], payload: CardUpdate) {
-    const card = await this.repo.findOne({ where: { id } });
-    if (!card) {
+    const entity = await this.repo.findOne({ where: { id } });
+    if (!entity) {
       // TODO think of error handling
       console.error(`Card with id ${id} not found`);
       return;
     }
 
-    Object.assign(card, { ...payload });
+    Object.assign(entity, { ...payload });
 
-    return (await this.repo.save(card)) as Card;
+    return (await this.repo.save(entity)) as Card;
   }
 
   async delete(id: CardSchema["id"]) {

@@ -2,15 +2,21 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Card } from "@/types/Card";
 
 export type CardTileProps = {
+  sideA: string;
+  sideB: string;
   card: Card;
 };
 
-export function CardTile({ card }: CardTileProps) {
+export function CardTile({ card, sideA, sideB }: CardTileProps) {
   return (
     <View style={styles.container}>
       <Text>{card.id}</Text>
-      <Text>{card.sideA}</Text>
-      <Text>{card.sideB}</Text>
+      <Text>
+        {sideA}: {card.sideA}
+      </Text>
+      <Text>
+        {sideB}: {card.sideB}
+      </Text>
       <Text>{card.comment}</Text>
       <Text>{card.knowledgeLevel}</Text>
       <FlatList

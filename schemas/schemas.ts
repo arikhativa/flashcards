@@ -1,4 +1,3 @@
-import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -62,4 +61,20 @@ export class TagSchema extends BaseEntity {
 
   @ManyToMany(() => CardSchema, (card) => card.tags, { nullable: true })
   cards: CardSchema[];
+}
+
+// NOTE - make sure there is only one entity of Conf
+@Entity()
+export class ConfSchema extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @CreateDateColumn() createdAt: Date;
+  @UpdateDateColumn() updatedAt: Date;
+
+  @Column({ type: "text", default: "A" })
+  sideA: string;
+
+  @Column({ type: "text", default: "B" })
+  sideB: string;
 }

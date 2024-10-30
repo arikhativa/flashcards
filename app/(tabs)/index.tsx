@@ -8,7 +8,7 @@ import {
   Text,
 } from "react-native";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
@@ -18,10 +18,11 @@ export default function HomeScreen() {
   const store = useStore();
   const cardService = store.cardService;
   const cardTagService = store.cardTagService;
+
   const [allCards, setAllCards] = useState<Card[]>([]);
 
   const loadCards = async () => {
-    const cards = await cardService.getAll(); // Assuming getAllCards fetches cards from the DB
+    const cards = await cardService.getAll();
     setAllCards(cards);
   };
 
@@ -74,7 +75,13 @@ export default function HomeScreen() {
         <FlatList
           data={allCards}
           keyExtractor={(card) => card.id.toString()}
-          renderItem={({ item }) => <CardTile card={item}></CardTile>}
+          renderItem={({ item }) => (
+            <CardTile
+              card={item}
+              sideA={store.conf.sideA}
+              sideB={store.conf.sideB}
+            ></CardTile>
+          )}
         />
       </View>
     </View>

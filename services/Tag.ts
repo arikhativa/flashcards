@@ -7,11 +7,13 @@ export class TagService {
 
   constructor(private repo: Repository<TagSchema>) {}
 
+  // TODO make sure to create and link
   async create(payload: TagCreate): Promise<Tag> {
-    const tag = this.repo.create();
-    Object.assign(tag, { ...payload });
+    const entity = this.repo.create();
 
-    return (await this.repo.save(tag)) as Tag;
+    Object.assign(entity, { ...payload });
+
+    return (await this.repo.save(entity)) as Tag;
   }
 
   async getById(id: number): Promise<Tag> {
@@ -26,16 +28,16 @@ export class TagService {
   }
 
   async update(id: TagSchema["id"], payload: TagUpdate) {
-    const tag = await this.repo.findOne({ where: { id } });
-    if (!tag) {
+    const entity = await this.repo.findOne({ where: { id } });
+    if (!entity) {
       // TODO think of error handling
       console.error(`Tag with id ${id} not found`);
       return;
     }
 
-    Object.assign(tag, { ...payload });
+    Object.assign(entity, { ...payload });
 
-    return (await this.repo.save(tag)) as Tag;
+    return (await this.repo.save(entity)) as Tag;
   }
 
   async delete(id: TagSchema["id"]) {

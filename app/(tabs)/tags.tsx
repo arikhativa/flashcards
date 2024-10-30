@@ -6,7 +6,7 @@ import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { TagTile } from "@/components/TagTile";
 
-export default function HomeScreen() {
+export default function TagsScreen() {
   const store = useStore();
   const tagService = store.tagService;
   const [allTags, setAllTags] = useState<Tag[]>([]);
