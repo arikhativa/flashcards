@@ -2,6 +2,7 @@ export type ChangeListener = () => void;
 
 export class BaseListenerService<T> {
   protected obj: T;
+  protected array: T[];
   private listeners: ChangeListener[] = [];
 
   onChange(listener: ChangeListener) {
@@ -13,12 +14,23 @@ export class BaseListenerService<T> {
   }
 
   protected notifyChange() {
-    this.listeners.forEach((listener) => listener());
+    this.listeners.forEach((listener) => {
+      listener();
+    });
   }
 
   listen(set: (value: React.SetStateAction<T>) => void) {
     const ret = () => {
       const update = () => set(this.obj);
+      this.onChange(update);
+      return () => this.offChange(update);
+    };
+    return ret;
+  }
+
+  listenArray(set: (value: React.SetStateAction<T[]>) => void) {
+    const ret = () => {
+      const update = () => set([...this.array]);
       this.onChange(update);
       return () => this.offChange(update);
     };

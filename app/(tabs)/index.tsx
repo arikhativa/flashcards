@@ -24,12 +24,14 @@ export default function CardsScreen() {
   const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
   const [conf, setConf] = useState<Conf>(confService.conf);
 
+  useEffect(cardService.listenArray(setAllCards), [cardService]);
   useEffect(confService.listen(setConf), [confService]);
-  useEffect(cardService.listen(setAllCards), [cardService]);
 
   const loadCards = async () => {
-    const cards = await cardService.getAll();
-    setAllCards(cards);
+    console.log(
+      "allCards",
+      allCards.map((c) => c.id)
+    );
   };
 
   return (

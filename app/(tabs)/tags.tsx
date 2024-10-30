@@ -9,7 +9,9 @@ import { TagTile } from "@/components/TagTile";
 export default function TagsScreen() {
   const store = useStore();
   const tagService = store.tagService;
-  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>(tagService.allTags);
+
+  useEffect(tagService.listenArray(setAllTags), [tagService]);
 
   const loadTags = async () => {
     const tags = await tagService.getAll();

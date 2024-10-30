@@ -22,7 +22,7 @@ class StoreService {
 
     // TODO this can be done with promise all
     await this._cardService.init();
-    // await this._tagService.init();
+    await this._tagService.init();
     this._confService = new ConfService(this._db.getRepository(ConfSchema));
     await this._confService.init();
 

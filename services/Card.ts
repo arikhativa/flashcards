@@ -3,16 +3,14 @@ import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { Repository } from "typeorm";
 import { BaseListenerService } from "./BaseListener";
+import { BaseCrudArrayService } from "./BaseCrud";
 
-export class CardService extends BaseListenerService<Card[]> {
+export class CardService extends BaseCrudArrayService<Card, CardSchema> {
   readonly RELATIONS = ["tags"];
 
-  constructor(private repo: Repository<CardSchema>) {
-    super();
-  }
-
-  async init() {
-    this.obj = await this.getAll();
+  constructor(repo: Repository<CardSchema>) {
+    const relations = ["tags"];
+    super(repo, relations);
   }
 
   // TODO add tag in ctor
@@ -24,7 +22,7 @@ export class CardService extends BaseListenerService<Card[]> {
 
     const ret = (await this.repo.save(entity)) as Card;
 
-    this.obj.push(ret);
+    this.array.push(ret);
 
     this.notifyChange();
 
@@ -38,12 +36,8 @@ export class CardService extends BaseListenerService<Card[]> {
     })) as Card;
   }
 
-  async getAll(): Promise<Card[]> {
-    return (await this.repo.find({ relations: this.RELATIONS })) as Card[];
-  }
-
   async update(id: CardSchema["id"], payload: CardUpdate) {
-    const entity = await this.repo.findOne({ where: { id } });
+    const entity = await this.getById(id);
     if (!entity) {
       // TODO think of error handling
       console.error(`Card with id ${id} not found`);
@@ -53,11 +47,11 @@ export class CardService extends BaseListenerService<Card[]> {
     // TODO validate input is a valid KnowledgeLevel
     Object.assign(entity, { ...payload });
 
-    const ret = (await this.repo.save(entity)) as Card;
+    const ret = await this.repo.save(entity);
 
-    const index = this.obj.findIndex((card) => card.id === ret.id);
+    const index = this.array.findIndex((card) => card.id === ret.id);
     if (index !== -1) {
-      this.obj[index] = ret;
+      this.array[index] = ret;
     }
 
     this.notifyChange();
@@ -66,16 +60,16 @@ export class CardService extends BaseListenerService<Card[]> {
   }
 
   async delete(id: CardSchema["id"]) {
-    const entity = await this.repo.findOne({ where: { id } });
+    const entity = await this.getById(id);
     if (!entity) {
       // TODO think of error handling
       console.error(`Card with id ${id} not found`);
       return;
     }
 
-    const index = this.obj.findIndex((card) => card.id === entity.id);
+    const index = this.array.findIndex((card) => card.id === entity.id);
     if (index !== -1) {
-      this.obj.splice(index, 1);
+      this.array.splice(index, 1);
     }
 
     this.notifyChange();
@@ -84,6 +78,6 @@ export class CardService extends BaseListenerService<Card[]> {
   }
 
   get allCards() {
-    return this.obj;
+    return this.array;
   }
 }
