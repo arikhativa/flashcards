@@ -1,20 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Card } from "@/types/Card";
+import { Tag } from "@/types/Tag";
 
-export type CardTileProps = {
-  card: Card;
+export type TagTileProps = {
+  tag: Tag;
 };
 
-export function CardTile({ card }: CardTileProps) {
+export function TagTile({ tag }: TagTileProps) {
   return (
     <View style={styles.container}>
-      <Text>{card.id}</Text>
-      <Text>{card.sideA}</Text>
-      <Text>{card.sideB}</Text>
-      <Text>{card.comment}</Text>
-      <Text>{card.knowledgeLevel}</Text>
-      <Text>{card.createdAt.toString()}</Text>
-      <Text>{card.updatedAt.toString()}</Text>
+      <Text>{tag.id}</Text>
+      <Text>{tag.name}</Text>
     </View>
   );
 }

@@ -47,9 +47,11 @@ export default function HomeScreen() {
         <Button
           title="update"
           onPress={() => {
-            const card: CardUpdate = {};
+            const card: CardUpdate = {
+              comment: "updated comment",
+            };
 
-            cardService.update(1, card);
+            cardService.update(allCards[0].id, card);
           }}
         ></Button>
         <Button

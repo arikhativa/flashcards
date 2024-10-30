@@ -5,7 +5,7 @@ export type Card = Omit<CardSchema, "knowledgeLevel"> & {
   knowledgeLevel: KnowledgeLevel;
 };
 
-export type CardCreate = Pick<CardSchema, "sideA" | "sideB" | "comment"> & {
+export type CardCreate = Pick<Card, "sideA" | "sideB" | "comment"> & {
   knowledgeLevel: KnowledgeLevel;
 };
 
