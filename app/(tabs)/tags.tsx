@@ -3,7 +3,6 @@ import { Button, View, FlatList } from "react-native";
 import { useEffect, useState } from "react";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
 import { useStore } from "@/context/StoreContext";
-import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { TagTile } from "@/components/TagTile";
 
 export default function TagsScreen() {
@@ -11,6 +10,7 @@ export default function TagsScreen() {
   const tagService = store.tagService;
   const [allTags, setAllTags] = useState<Tag[]>(tagService.allTags);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(tagService.listenArray(setAllTags), [tagService]);
 
   const loadTags = async () => {

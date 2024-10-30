@@ -4,8 +4,6 @@ import { Repository } from "typeorm";
 import { BaseCrudArrayService } from "./BaseCrudArray";
 
 export class TagService extends BaseCrudArrayService<Tag, TagSchema> {
-  readonly RELATIONS = ["cards"];
-
   constructor(repo: Repository<TagSchema>) {
     const relations = ["cards"];
     super(repo, relations);
@@ -24,13 +22,6 @@ export class TagService extends BaseCrudArrayService<Tag, TagSchema> {
     this.notifyChange();
 
     return ret;
-  }
-
-  async getById(id: number): Promise<Tag> {
-    return (await this.repo.findOne({
-      where: { id },
-      relations: this.RELATIONS,
-    })) as Tag;
   }
 
   async update(id: TagSchema["id"], payload: TagUpdate) {
@@ -53,24 +44,6 @@ export class TagService extends BaseCrudArrayService<Tag, TagSchema> {
     this.notifyChange();
 
     return ret;
-  }
-
-  async delete(id: TagSchema["id"]) {
-    const entity = await this.getById(id);
-    if (!entity) {
-      // TODO think of error handling
-      console.error(`Card with id ${id} not found`);
-      return;
-    }
-
-    const index = this.array.findIndex((card) => card.id === entity.id);
-    if (index !== -1) {
-      this.array.splice(index, 1);
-    }
-
-    this.notifyChange();
-
-    await this.repo.delete({ id });
   }
 
   get allTags() {

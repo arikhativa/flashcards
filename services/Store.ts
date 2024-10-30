@@ -5,7 +5,6 @@ import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { TagService } from "./Tag";
 import { CardTagService } from "./CardTag";
 import { ConfService } from "./Conf";
-import { Conf } from "@/types/Conf";
 
 class StoreService {
   private _db: DataSource;

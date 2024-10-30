@@ -1,12 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  Button,
-  View,
-  FlatList,
-  Text,
-} from "react-native";
+import { Button, View, FlatList } from "react-native";
 
 import { useEffect, useState } from "react";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
@@ -24,7 +16,9 @@ export default function CardsScreen() {
   const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
   const [conf, setConf] = useState<Conf>(confService.conf);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(cardService.listenArray(setAllCards), [cardService]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(confService.listen(setConf), [confService]);
 
   const loadCards = async () => {

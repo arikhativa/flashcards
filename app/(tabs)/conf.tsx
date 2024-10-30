@@ -10,19 +10,8 @@ export default function ConfScreen() {
 
   const [conf, setConf] = useState<Conf>(confService.conf);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(confService.listen(setConf), [confService]);
-
-  useEffect(() => {
-    const loadConf = async () => {
-      try {
-        setConf(await confService.get());
-      } catch (error) {
-        console.error("Error fetching configuration:", error);
-      }
-    };
-
-    loadConf();
-  }, []);
 
   const handleSubmit = async () => {
     await confService.update(conf);
