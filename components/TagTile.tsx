@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Tag } from "@/types/Tag";
 
 export type TagTileProps = {
@@ -10,6 +10,13 @@ export function TagTile({ tag }: TagTileProps) {
     <View style={styles.container}>
       <Text>{tag.id}</Text>
       <Text>{tag.name}</Text>
+      <Text>Cards ids:</Text>
+      <FlatList
+        data={tag.cards}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <Text>{item.id}</Text>}
+      />
+      <Text>----</Text>
     </View>
   );
 }

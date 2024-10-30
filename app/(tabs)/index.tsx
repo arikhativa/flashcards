@@ -17,6 +17,7 @@ import { CardTile } from "@/components/CardTile";
 export default function HomeScreen() {
   const store = useStore();
   const cardService = store.cardService;
+  const cardTagService = store.cardTagService;
   const [allCards, setAllCards] = useState<Card[]>([]);
 
   const loadCards = async () => {
@@ -52,6 +53,12 @@ export default function HomeScreen() {
             };
 
             cardService.update(allCards[0].id, card);
+          }}
+        ></Button>
+        <Button
+          title="link"
+          onPress={() => {
+            cardTagService.link(allCards[0].id, 2);
           }}
         ></Button>
         <Button

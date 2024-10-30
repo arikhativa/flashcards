@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Card } from "@/types/Card";
 
 export type CardTileProps = {
@@ -13,6 +13,11 @@ export function CardTile({ card }: CardTileProps) {
       <Text>{card.sideB}</Text>
       <Text>{card.comment}</Text>
       <Text>{card.knowledgeLevel}</Text>
+      <FlatList
+        data={card.tags}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <Text>{item.name}</Text>}
+      />
       <Text>{card.createdAt.toString()}</Text>
       <Text>{card.updatedAt.toString()}</Text>
     </View>
