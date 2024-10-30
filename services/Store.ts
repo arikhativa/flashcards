@@ -20,13 +20,17 @@ class StoreService {
 
     this._cardService = new CardService(this._db.getRepository(CardSchema));
     this._tagService = new TagService(this._db.getRepository(TagSchema));
+
+    // TODO this can be done with promise all
+    await this._cardService.init();
+    // await this._tagService.init();
+    this._confService = new ConfService(this._db.getRepository(ConfSchema));
+    this._conf = await this._confService.createIfNeeded();
+
     this._cardTagService = new CardTagService(
       this.cardService,
       this.tagService
     );
-    this._confService = new ConfService(this._db.getRepository(ConfSchema));
-
-    this._conf = await this._confService.createIfNeeded();
   }
 
   get cardService() {

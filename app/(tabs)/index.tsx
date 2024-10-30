@@ -8,18 +8,23 @@ import {
   Text,
 } from "react-native";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
 
-export default function HomeScreen() {
+export default function CardsScreen() {
   const store = useStore();
   const cardService = store.cardService;
   const cardTagService = store.cardTagService;
+  const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
 
-  const [allCards, setAllCards] = useState<Card[]>([]);
+  useEffect(() => {
+    const updateCards = () => setAllCards([...cardService.allCards]);
+    cardService.onChange(updateCards);
+    return () => cardService.offChange(updateCards);
+  }, [cardService]);
 
   const loadCards = async () => {
     const cards = await cardService.getAll();
