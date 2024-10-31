@@ -1,4 +1,4 @@
-import { Button, View, FlatList } from "react-native";
+import { Button, View, FlatList, StyleSheet } from "react-native";
 
 import { TagCreate, TagUpdate } from "@/types/Tag";
 import { TagTile } from "@/components/TagTile";

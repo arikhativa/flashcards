@@ -9,7 +9,7 @@ export const container = StyleSheet.create({
   },
 });
 
-const baseUnit = 20;
+export const baseUnit = 10;
 
 export const padding = StyleSheet.create({
   base: {

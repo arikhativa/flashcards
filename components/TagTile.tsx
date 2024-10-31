@@ -1,44 +1,37 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Tag } from "@/types/Tag";
+import { Chip } from "react-native-paper";
+import { baseUnit } from "@/constants/styles";
 
 export type TagTileProps = {
   tag: Tag;
 };
 
+// TODO add option to chose an icon for the list?
+
 export function TagTile({ tag }: TagTileProps) {
+  const getSumOfCards = (tag: Tag) => {
+    if (!tag.cards.length) {
+      return;
+    }
+    return (
+      <Chip style={{ marginLeft: baseUnit }} disabled mode="outlined">
+        {tag.cards.length}
+      </Chip>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>{tag.id}</Text>
-      <Text>{tag.name}</Text>
-      <Text>Cards ids:</Text>
-      <FlatList
-        data={tag.cards}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text>{item.id}</Text>}
-      />
-      <Text>----</Text>
+    <View style={{ padding: baseUnit, display: "flex", flexDirection: "row" }}>
+      <Chip
+        style={{
+          alignSelf: "flex-start",
+        }}
+        onPress={() => console.log("Pressed")}
+      >
+        {tag.name}
+      </Chip>
+      {getSumOfCards(tag)}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  text: {
-    fontSize: 28,
-    lineHeight: 32,
-    marginTop: -6,
-  },
-});
