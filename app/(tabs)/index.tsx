@@ -43,6 +43,24 @@ export default function CardsScreen() {
           }}
         ></Button>
         <Button
+          title="create and link"
+          onPress={() => {
+            if (!cardService) {
+              console.log("cardService is null");
+              return;
+            }
+            const card: CardCreate = {
+              sideA: "manger",
+              sideB: "eat",
+              comment: "linked id: " + tags[0].id,
+              knowledgeLevel: KnowledgeLevel.Learning,
+              tags: [tags[0].id],
+            };
+
+            cardService.create(card);
+          }}
+        ></Button>
+        <Button
           title="update"
           onPress={() => {
             const card: CardUpdate = {

@@ -5,7 +5,7 @@ import { TagTile } from "@/components/TagTile";
 import { useStore } from "@/providers/GlobalStore";
 
 export default function TagsScreen() {
-  const { tags, tagService } = useStore();
+  const { cards, tags, tagService } = useStore();
 
   return (
     <View>
@@ -15,6 +15,17 @@ export default function TagsScreen() {
           onPress={() => {
             const tag: TagCreate = {
               name: "Verbs",
+            };
+
+            tagService.create(tag);
+          }}
+        ></Button>
+        <Button
+          title="create and link"
+          onPress={() => {
+            const tag: TagCreate = {
+              name: "linked tag",
+              cards: [cards[0], cards[1]],
             };
 
             tagService.create(tag);

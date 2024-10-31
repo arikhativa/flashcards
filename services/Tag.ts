@@ -1,4 +1,4 @@
-import { TagSchema } from "@/schemas/schemas";
+import { CardSchema, TagSchema } from "@/schemas/schemas";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
 import { Repository } from "typeorm";
 import { BaseCrudService } from "./BaseCrud";
@@ -14,8 +14,28 @@ export class TagService extends BaseCrudService<
     super(repo, onUpdate, relations);
   }
 
-  // TODO make sure to create and link
-  // async create(payload: TagCreate): Promise<Tag> {
-  //   return super.create(payload);
-  // }
+  // TODO test link to tag
+  async create(payload: TagCreate): Promise<Tag> {
+    if (payload.cards) {
+      const cards: CardSchema[] = [];
+
+      for (const card of payload.cards) {
+        if (typeof card === "number") {
+          const entity = await this.repo.manager.findOne(CardSchema, {
+            where: { id: card },
+          });
+
+          if (entity) {
+            cards.push(entity);
+          }
+        } else {
+          cards.push(card);
+        }
+      }
+
+      payload.cards = cards;
+    }
+
+    return super.create(payload);
+  }
 }
