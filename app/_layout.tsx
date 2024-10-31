@@ -1,3 +1,4 @@
+import { PaperProvider } from "react-native-paper";
 import {
   DarkTheme,
   DefaultTheme,
@@ -61,17 +62,21 @@ export default function RootLayout() {
   }
 
   return (
-    <StoreProvider
-      cardRepository={cardRepository}
-      tagRepository={tagRepository}
-      confRepository={confRepository}
-    >
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
-    </StoreProvider>
+    <PaperProvider>
+      <StoreProvider
+        cardRepository={cardRepository}
+        tagRepository={tagRepository}
+        confRepository={confRepository}
+      >
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </StoreProvider>
+    </PaperProvider>
   );
 }

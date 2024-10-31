@@ -1,5 +1,5 @@
-import { Button, View, FlatList } from "react-native";
-
+import { View, FlatList } from "react-native";
+import { Button } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
@@ -26,7 +26,6 @@ export default function CardsScreen() {
     <View>
       <View style={{ margin: 20 }}>
         <Button
-          title="create"
           onPress={() => {
             if (!cardService) {
               console.log("cardService is null");
@@ -41,9 +40,10 @@ export default function CardsScreen() {
 
             cardService.create(card);
           }}
-        ></Button>
+        >
+          create
+        </Button>
         <Button
-          title="create and link"
           onPress={() => {
             if (!cardService) {
               console.log("cardService is null");
@@ -59,9 +59,10 @@ export default function CardsScreen() {
 
             cardService.create(card);
           }}
-        ></Button>
+        >
+          create and link
+        </Button>
         <Button
-          title="update"
           onPress={() => {
             const card: CardUpdate = {
               comment: "updated comment",
@@ -69,25 +70,30 @@ export default function CardsScreen() {
 
             cardService.update(cards[0].id, card);
           }}
-        ></Button>
+        >
+          update
+        </Button>
         <Button
-          title="link last elem"
           onPress={() => {
             cardTagService.link(cards[cards.length - 1].id, tags[0].id);
           }}
-        ></Button>
+        >
+          link last elem
+        </Button>
         <Button
-          title="delete"
           onPress={() => {
             cardService.delete(cards[0].id);
           }}
-        ></Button>
+        >
+          delete
+        </Button>
         <Button
-          title="log"
           onPress={() => {
             logCards();
           }}
-        ></Button>
+        >
+          log
+        </Button>
       </View>
 
       <View>
