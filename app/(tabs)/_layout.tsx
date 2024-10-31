@@ -1,56 +1,45 @@
-import { Tabs } from "expo-router";
 import React from "react";
 
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { BottomNavigation } from "react-native-paper";
+
+import CardsScreen from ".";
+import TagsScreen from "./tags";
+import ConfScreen from "./conf";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {
+      key: "cards",
+      title: "Cards",
+      focusedIcon: "heart",
+      unfocusedIcon: "heart-outline",
+    },
+    {
+      key: "tags",
+      title: "Tags",
+      focusedIcon: "album",
+      unfocusedIcon: "heart-outline",
+    },
+    {
+      key: "conf",
+      title: "Settings",
+      focusedIcon: "bell",
+      unfocusedIcon: "bell-outline",
+    },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    cards: CardsScreen,
+    tags: TagsScreen,
+    conf: ConfScreen,
+  });
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="tags"
-        options={{
-          title: "Tags",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="conf"
-        options={{
-          title: "Conf",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-    </Tabs>
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+    />
   );
 }
