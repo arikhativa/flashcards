@@ -24,7 +24,12 @@ export default function CardsScreen() {
   const loadCards = async () => {
     console.log(
       "allCards",
-      allCards.map((c) => c.id)
+      allCards.map((c) => {
+        return {
+          id: c.id,
+          tags: c.tags.map((t) => t.id),
+        };
+      })
     );
   };
 
@@ -41,8 +46,9 @@ export default function CardsScreen() {
             const card: CardCreate = {
               sideA: "sideA",
               sideB: "sideB",
-              comment: "comment",
-              knowledgeLevel: KnowledgeLevel.Learning,
+              comment: "linked! 2",
+              knowledgeLevel: "asd" as KnowledgeLevel,
+              tags: [2],
             };
 
             cardService.create(card);

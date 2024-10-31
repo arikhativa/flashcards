@@ -1,4 +1,4 @@
-import { CardSchema } from "@/schemas/schemas";
+import { CardSchema, TagSchema } from "@/schemas/schemas";
 import { KnowledgeLevel } from "./KnowledgeLevel";
 
 export type Card = Omit<CardSchema, "knowledgeLevel"> & {
@@ -6,6 +6,7 @@ export type Card = Omit<CardSchema, "knowledgeLevel"> & {
 };
 
 export type CardCreate = Pick<Card, "sideA" | "sideB" | "comment"> & {
+  tags?: number[] | TagSchema[];
   knowledgeLevel: KnowledgeLevel;
 };
 

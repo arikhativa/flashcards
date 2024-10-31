@@ -4,6 +4,7 @@ import { BaseCrud } from "@/types/generic";
 
 export class BaseCrudArrayService<
   T extends BaseCrud,
+  TCreate extends ObjectLiteral,
   TSchema extends ObjectLiteral
 > extends BaseListenerService<T> {
   constructor(
@@ -15,6 +16,20 @@ export class BaseCrudArrayService<
 
   async init() {
     this.array = await this.getAll();
+  }
+
+  async create(payload: TCreate): Promise<T> {
+    const entity = this.repo.create();
+
+    Object.assign(entity, { ...payload });
+
+    const ret = (await this.repo.save(entity)) as unknown as T;
+
+    this.array.push(ret);
+
+    this.notifyChange();
+
+    return ret;
   }
 
   async getAll(): Promise<T[]> {

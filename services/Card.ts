@@ -1,28 +1,47 @@
-import { CardSchema } from "@/schemas/schemas";
+import { CardSchema, TagSchema } from "@/schemas/schemas";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { Repository } from "typeorm";
 import { BaseCrudArrayService } from "./BaseCrudArray";
+import { isKnowledgeLevel } from "@/utils/knowledgeLevel";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
-export class CardService extends BaseCrudArrayService<Card, CardSchema> {
+export class CardService extends BaseCrudArrayService<
+  Card,
+  CardCreate,
+  CardSchema
+> {
   constructor(repo: Repository<CardSchema>) {
     const relations = ["tags"];
     super(repo, relations);
   }
 
-  // TODO add tag in ctor
+  // TODO test link to tag
   async create(payload: CardCreate): Promise<Card> {
-    const entity = this.repo.create();
+    if (!isKnowledgeLevel(payload.knowledgeLevel)) {
+      payload.knowledgeLevel = KnowledgeLevel.Learning;
+    }
 
-    // TODO validate input is a valid KnowledgeLevel
-    Object.assign(entity, { ...payload });
+    if (payload.tags) {
+      const tags: TagSchema[] = [];
 
-    const ret = (await this.repo.save(entity)) as Card;
+      for (const tag of payload.tags) {
+        if (typeof tag === "number") {
+          const tagEntity = await this.repo.manager.findOne(TagSchema, {
+            where: { id: tag },
+          });
 
-    this.array.push(ret);
+          if (tagEntity) {
+            tags.push(tagEntity);
+          }
+        } else {
+          tags.push(tag);
+        }
+      }
 
-    this.notifyChange();
+      payload.tags = tags;
+    }
 
-    return ret;
+    return super.create(payload);
   }
 
   async update(id: CardSchema["id"], payload: CardUpdate) {
