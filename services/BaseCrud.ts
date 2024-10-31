@@ -13,15 +13,16 @@ export class BaseCrudService<
     private relations?: string[]
   ) {}
 
-  async getAll(): Promise<T[]> {
+  async getAll(): Promise<T[] | null> {
     try {
       return (await this.repo.find({
         relations: this.relations || [],
       })) as unknown as T[];
     } catch (e) {
       console.error("getAll error: ", e);
-      return [];
     }
+
+    return null;
   }
 
   async getById(id: TSchema["id"]): Promise<T | null> {

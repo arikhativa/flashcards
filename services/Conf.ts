@@ -16,37 +16,69 @@ export class ConfService {
   ) {}
 
   // NOTE - make sure there is only one entity of Conf
-  async init() {
-    const all = await this.repo.find();
+  async init(): Promise<boolean> {
+    let all: ConfSchema[] = [];
 
-    if (!all.length) {
-      await this.repo.save(this.repo.create());
+    try {
+      all = await this.repo.find();
+    } catch (e) {
+      console.error("init: db find error: ", e);
+      return false;
     }
 
-    this.onUpdate();
+    if (all.length) {
+      this.onUpdate();
+      return true;
+    }
+
+    try {
+      await this.repo.save(this.repo.create());
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("init: db save error: ", e);
+    }
+
+    return false;
   }
 
-  async get(): Promise<Conf> {
-    const all = await this.repo.find();
-    if (all.length === 0) {
-      return ConfService.EMPTY;
+  async get(): Promise<Conf | null> {
+    let all: ConfSchema[] = [];
+
+    try {
+      all = await this.repo.find();
+    } catch (e) {
+      console.error("get error: ", e);
     }
+
+    if (all.length === 0) {
+      return null;
+    }
+
     const ret = all[0];
 
     return ret as Conf;
   }
 
-  async update(payload: ConfUpdate): Promise<Conf> {
+  async update(payload: ConfUpdate): Promise<Conf | null> {
     const entity = await this.get();
 
-    // TODO maybe this is ok
-    // Object.assign(entity, { ...payload });
+    if (!entity) {
+      console.error("update: entity not found");
+      return null;
+    }
+
     entity.sideA = payload.sideA || entity.sideA;
     entity.sideB = payload.sideB || entity.sideB;
 
-    const ret = await this.repo.save(entity);
-    this.onUpdate();
+    try {
+      const ret = await this.repo.save(entity);
+      this.onUpdate();
+      return ret as Conf;
+    } catch (e) {
+      console.error("update error: ", e);
+    }
 
-    return ret as Conf;
+    return null;
   }
 }

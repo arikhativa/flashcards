@@ -50,17 +50,17 @@ export const StoreProvider = ({
 
   const fetchConf = async () => {
     const conf = await confService.get();
-    setConf(conf);
+    if (conf) setConf(conf);
   };
 
   const fetchCards = async () => {
     const cardList = await cardService.getAll();
-    setCards(cardList);
+    if (cardList) setCards(cardList);
   };
 
   const fetchTags = async () => {
     const tagList = await tagService.getAll();
-    setTags(tagList);
+    if (tagList) setTags(tagList);
   };
 
   const cardService = new CardService(cardRepository, fetchAll);
@@ -68,6 +68,7 @@ export const StoreProvider = ({
   const cardTagService = new CardTagService(cardService, tagService);
   const confService = new ConfService(confRepository, fetchAll);
 
+  // TODO add a startup check that make sure all data is loaded
   useEffect(() => {
     fetchCards();
     fetchTags();
