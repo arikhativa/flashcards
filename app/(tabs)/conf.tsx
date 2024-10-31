@@ -1,8 +1,10 @@
-import { Button, View, TextInput, Text, StyleSheet } from "react-native";
-
 import { useEffect, useState } from "react";
 import { Conf } from "@/types/Conf";
 import { useStore } from "@/providers/GlobalStore";
+
+import { Button, Card, Text } from "react-native-paper";
+import { TextInput } from "react-native-paper";
+import { View } from "react-native";
 
 export default function ConfScreen() {
   const { conf, confService } = useStore();
@@ -22,36 +24,33 @@ export default function ConfScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Side A"
-        value={localConf.sideA}
-        onChangeText={(text) => handleInputChange("sideA", text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Side B"
-        value={localConf.sideB}
-        onChangeText={(text) => handleInputChange("sideB", text)}
-      />
-      <Text>{localConf.updatedAt.toString()}</Text>
-      <Button title="Save" onPress={handleSubmit} />
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        padding: 20,
+      }}
+    >
+      <Card>
+        <Card.Title title="Settings" />
+        <Card.Content>
+          <Text variant="titleLarge">Names on Cards</Text>
+          <TextInput
+            label="Side A"
+            value={localConf.sideA}
+            onChangeText={(text) => handleInputChange("sideA", text)}
+          />
+          <TextInput
+            label="Side B"
+            value={localConf.sideB}
+            onChangeText={(text) => handleInputChange("sideB", text)}
+          />
+        </Card.Content>
+        <Card.Actions>
+          <Button onPress={handleSubmit}>Ok</Button>
+        </Card.Actions>
+      </Card>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: "center",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-});
