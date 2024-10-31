@@ -10,8 +10,10 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import StoreService from "@/services/Store";
-import { StoreProvider } from "@/context/StoreContext";
+import { StoreProvider } from "@/providers/GlobalStore";
+import { source } from "@/hooks/db";
+import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
+import { Repository } from "typeorm";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -24,6 +26,18 @@ export default function RootLayout() {
 
   const [dbInitialized, setDbInitialized] = useState(false);
 
+  const [cardRepository, setCardRepository] = useState<Repository<CardSchema>>(
+    {} as Repository<CardSchema>
+  );
+
+  const [tagRepository, setTagRepository] = useState<Repository<TagSchema>>(
+    {} as Repository<TagSchema>
+  );
+
+  const [confRepository, setConfRepository] = useState<Repository<ConfSchema>>(
+    {} as Repository<ConfSchema>
+  );
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -31,12 +45,15 @@ export default function RootLayout() {
   }, [loaded]);
 
   useEffect(() => {
-    const initStoreService = async () => {
-      await StoreService.init();
+    const initDB = async () => {
+      const db = await source.initialize();
+      setCardRepository(db.getRepository(CardSchema));
+      setTagRepository(db.getRepository(TagSchema));
+      setConfRepository(db.getRepository(ConfSchema));
       setDbInitialized(true);
     };
 
-    initStoreService();
+    initDB();
   }, []);
 
   if (!loaded || !dbInitialized) {
@@ -44,7 +61,11 @@ export default function RootLayout() {
   }
 
   return (
-    <StoreProvider>
+    <StoreProvider
+      cardRepository={cardRepository}
+      tagRepository={tagRepository}
+      confRepository={confRepository}
+    >
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

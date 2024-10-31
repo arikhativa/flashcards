@@ -1,24 +1,24 @@
 import { Button, View, TextInput, Text, StyleSheet } from "react-native";
 
 import { useEffect, useState } from "react";
-import { useStore } from "@/context/StoreContext";
 import { Conf } from "@/types/Conf";
+import { useStore } from "@/providers/GlobalStore";
 
 export default function ConfScreen() {
-  const store = useStore();
-  const confService = store.confService;
+  const { conf, confService } = useStore();
 
-  const [conf, setConf] = useState<Conf>(confService.conf);
+  const [localConf, setLocalConf] = useState<Conf>(conf);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(confService.listen(setConf), [confService]);
+  useEffect(() => {
+    setLocalConf(conf);
+  }, [conf]);
 
   const handleSubmit = async () => {
-    await confService.update(conf);
+    await confService.update(localConf);
   };
 
   const handleInputChange = (field: keyof Conf, value: string) => {
-    setConf({ ...conf, [field]: value });
+    setLocalConf({ ...localConf, [field]: value });
   };
 
   return (
@@ -26,16 +26,16 @@ export default function ConfScreen() {
       <TextInput
         style={styles.input}
         placeholder="Side A"
-        value={conf.sideA}
+        value={localConf.sideA}
         onChangeText={(text) => handleInputChange("sideA", text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Side B"
-        value={conf.sideB}
+        value={localConf.sideB}
         onChangeText={(text) => handleInputChange("sideB", text)}
       />
-      <Text>{conf.updatedAt.toString()}</Text>
+      <Text>{localConf.updatedAt.toString()}</Text>
       <Button title="Save" onPress={handleSubmit} />
     </View>
   );

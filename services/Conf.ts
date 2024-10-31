@@ -1,35 +1,35 @@
 import { ConfSchema } from "@/schemas/schemas";
 import { Conf, ConfUpdate } from "@/types/Conf";
 import { Repository } from "typeorm";
-import { BaseListenerService } from "./BaseListener";
 
-export class ConfService extends BaseListenerService<Conf> {
-  private readonly empty: Conf = {
+export class ConfService {
+  static readonly EMPTY: Conf = {
     sideA: "error",
     sideB: "error",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
-  constructor(private repo: Repository<ConfSchema>) {
-    super();
-  }
+  constructor(
+    private repo: Repository<ConfSchema>,
+    private onUpdate: () => void
+  ) {}
 
   // NOTE - make sure there is only one entity of Conf
   async init() {
     const all = await this.repo.find();
 
-    if (all.length) {
-      this.obj = all[0];
+    if (!all.length) {
+      await this.repo.save(this.repo.create());
     }
 
-    this.obj = await this.repo.save(this.repo.create());
+    this.onUpdate();
   }
 
   async get(): Promise<Conf> {
     const all = await this.repo.find();
     if (all.length === 0) {
-      return this.empty;
+      return ConfService.EMPTY;
     }
     const ret = all[0];
 
@@ -45,14 +45,8 @@ export class ConfService extends BaseListenerService<Conf> {
     entity.sideB = payload.sideB || entity.sideB;
 
     const ret = await this.repo.save(entity);
-    this.obj = ret;
-
-    this.notifyChange();
+    this.onUpdate();
 
     return ret as Conf;
-  }
-
-  get conf() {
-    return this.obj;
   }
 }

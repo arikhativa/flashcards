@@ -1,22 +1,11 @@
 import { Button, View, FlatList } from "react-native";
 
-import { useEffect, useState } from "react";
-import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
-import { useStore } from "@/context/StoreContext";
+import { TagCreate, TagUpdate } from "@/types/Tag";
 import { TagTile } from "@/components/TagTile";
+import { useStore } from "@/providers/GlobalStore";
 
 export default function TagsScreen() {
-  const store = useStore();
-  const tagService = store.tagService;
-  const [allTags, setAllTags] = useState<Tag[]>(tagService.allTags);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(tagService.listenArray(setAllTags), [tagService]);
-
-  const loadTags = async () => {
-    const tags = await tagService.getAll();
-    setAllTags(tags);
-  };
+  const { tags, tagService } = useStore();
 
   return (
     <View>
@@ -24,10 +13,6 @@ export default function TagsScreen() {
         <Button
           title="create"
           onPress={() => {
-            if (!tagService) {
-              console.log("tagService is null");
-              return;
-            }
             const tag: TagCreate = {
               name: "Verbs",
             };
@@ -42,21 +27,20 @@ export default function TagsScreen() {
               name: "Animals",
             };
 
-            tagService.update(allTags[0].id, tag);
+            tagService.update(tags[0].id, tag);
           }}
         ></Button>
         <Button
           title="delete"
           onPress={() => {
-            tagService.delete(allTags[0].id);
+            tagService.delete(tags[0].id);
           }}
         ></Button>
       </View>
 
       <View>
-        <Button title="Load Tags" onPress={loadTags} />
         <FlatList
-          data={allTags}
+          data={tags}
           keyExtractor={(tag) => tag.id.toString()}
           renderItem={({ item }) => <TagTile tag={item}></TagTile>}
         />

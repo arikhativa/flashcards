@@ -2,29 +2,18 @@ import { Button, View, FlatList } from "react-native";
 
 import { useEffect, useState } from "react";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
-import { useStore } from "@/context/StoreContext";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
 import { Conf } from "@/types/Conf";
+import { useStore } from "@/providers/GlobalStore";
 
 export default function CardsScreen() {
-  const store = useStore();
-  const cardService = store.cardService;
-  const confService = store.confService;
-  const cardTagService = store.cardTagService;
+  const { conf, tags, cards, cardService, cardTagService } = useStore();
 
-  const [allCards, setAllCards] = useState<Card[]>(cardService.allCards);
-  const [conf, setConf] = useState<Conf>(confService.conf);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(cardService.listenArray(setAllCards), [cardService]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(confService.listen(setConf), [confService]);
-
-  const loadCards = async () => {
+  const logCards = async () => {
     console.log(
       "allCards",
-      allCards.map((c) => {
+      cards.map((c) => {
         return {
           id: c.id,
           tags: c.tags.map((t) => t.id),
@@ -47,8 +36,7 @@ export default function CardsScreen() {
               sideA: "sideA",
               sideB: "sideB",
               comment: "linked! 2",
-              knowledgeLevel: "asd" as KnowledgeLevel,
-              tags: [2],
+              knowledgeLevel: KnowledgeLevel.Learning,
             };
 
             cardService.create(card);
@@ -61,27 +49,32 @@ export default function CardsScreen() {
               comment: "updated comment",
             };
 
-            cardService.update(allCards[0].id, card);
+            cardService.update(cards[0].id, card);
           }}
         ></Button>
         <Button
-          title="link"
+          title="link last elem"
           onPress={() => {
-            cardTagService.link(allCards[0].id, 2);
+            cardTagService.link(cards[cards.length - 1].id, tags[0].id);
           }}
         ></Button>
         <Button
           title="delete"
           onPress={() => {
-            cardService.delete(allCards[0].id);
+            cardService.delete(cards[0].id);
+          }}
+        ></Button>
+        <Button
+          title="log"
+          onPress={() => {
+            logCards();
           }}
         ></Button>
       </View>
 
       <View>
-        <Button title="Load Cards" onPress={loadCards} />
         <FlatList
-          data={allCards}
+          data={cards}
           keyExtractor={(card) => card.id.toString()}
           renderItem={({ item }) => (
             <CardTile

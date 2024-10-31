@@ -1,18 +1,19 @@
 import { CardSchema, TagSchema } from "@/schemas/schemas";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { Repository } from "typeorm";
-import { BaseCrudArrayService } from "./BaseCrudArray";
+import { BaseCrudService } from "./BaseCrud";
 import { isKnowledgeLevel } from "@/utils/knowledgeLevel";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
-export class CardService extends BaseCrudArrayService<
+export class CardService extends BaseCrudService<
   Card,
   CardCreate,
+  CardUpdate,
   CardSchema
 > {
-  constructor(repo: Repository<CardSchema>) {
+  constructor(repo: Repository<CardSchema>, onUpdate: () => void) {
     const relations = ["tags"];
-    super(repo, relations);
+    super(repo, onUpdate, relations);
   }
 
   // TODO test link to tag
@@ -45,29 +46,10 @@ export class CardService extends BaseCrudArrayService<
   }
 
   async update(id: CardSchema["id"], payload: CardUpdate) {
-    const entity = await this.getById(id);
-    if (!entity) {
-      // TODO think of error handling
-      console.error(`Card with id ${id} not found`);
-      return;
+    if (!isKnowledgeLevel(payload.knowledgeLevel as string)) {
+      payload.knowledgeLevel = KnowledgeLevel.Learning;
     }
 
-    // TODO validate input is a valid KnowledgeLevel
-    Object.assign(entity, { ...payload });
-
-    const ret = await this.repo.save(entity);
-
-    const index = this.array.findIndex((card) => card.id === ret.id);
-    if (index !== -1) {
-      this.array[index] = ret;
-    }
-
-    this.notifyChange();
-
-    return ret;
-  }
-
-  get allCards() {
-    return this.array;
+    return super.update(id, payload);
   }
 }
