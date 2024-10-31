@@ -1,10 +1,8 @@
 import { View, FlatList } from "react-native";
 import { Button } from "react-native-paper";
-import { useEffect, useState } from "react";
-import { Card, CardCreate, CardUpdate } from "@/types/Card";
+import { CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
-import { Conf } from "@/types/Conf";
 import { useStore } from "@/providers/GlobalStore";
 
 export default function CardsScreen() {
@@ -100,6 +98,12 @@ export default function CardsScreen() {
         <FlatList
           data={cards}
           keyExtractor={(card) => card.id.toString()}
+          // TODO this 4 needs to be responsive
+          numColumns={4}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           renderItem={({ item }) => (
             <CardTile
               card={item}
