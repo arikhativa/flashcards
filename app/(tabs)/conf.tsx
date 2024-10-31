@@ -5,6 +5,7 @@ import { useStore } from "@/providers/GlobalStore";
 import { Button, Card, Text } from "react-native-paper";
 import { TextInput } from "react-native-paper";
 import { View } from "react-native";
+import { container, padding } from "@/constants/styles";
 
 export default function ConfScreen() {
   const { conf, confService } = useStore();
@@ -24,18 +25,13 @@ export default function ConfScreen() {
   };
 
   return (
-    <View
-      style={{
-        display: "flex",
-        height: "100%",
-        justifyContent: "center",
-        padding: 20,
-      }}
-    >
+    <View style={[container.center, padding.sides]}>
       <Card>
         <Card.Title title="Settings" />
-        <Card.Content>
-          <Text variant="titleLarge">Names on Cards</Text>
+        <Card.Content style={padding.bottom}>
+          <Text variant="titleMedium" style={padding.bottom}>
+            Names on Cards
+          </Text>
           <TextInput
             label="Side A"
             value={localConf.sideA}
@@ -48,7 +44,9 @@ export default function ConfScreen() {
           />
         </Card.Content>
         <Card.Actions>
-          <Button onPress={handleSubmit}>Ok</Button>
+          <Button mode={"contained"} onPress={handleSubmit}>
+            Ok
+          </Button>
         </Card.Actions>
       </Card>
     </View>
