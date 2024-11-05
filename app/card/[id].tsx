@@ -1,12 +1,6 @@
 import { View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { Card } from "@/types/Card";
-import {
-  Button,
-  RadioButton,
-  Searchbar,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Button, RadioButton, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
 import { baseUnit, padding } from "@/constants/styles";
@@ -15,13 +9,14 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColors } from "@/types/KnowledgeLevel";
 import { TagTile } from "@/components/TagTile";
+import TagsSection from "@/components/TagsSection";
 
 type CardDetailParams = {
   id: string;
 };
 
 const CardComponent: React.FC = () => {
-  const { cards, conf, cardService } = useStore();
+  const { cards, tags, conf, cardService } = useStore();
   const { id } = useLocalSearchParams<CardDetailParams>();
   const navigation = useNavigation();
 
@@ -115,18 +110,7 @@ const CardComponent: React.FC = () => {
         </PaperCard.Content>
       </PaperCard>
 
-      <PaperCard style={[styles.cardContainer]}>
-        <PaperCard.Content>
-          <Text variant="titleMedium">Tags</Text>
-          {/* TODO add auto complate */}
-          <FlatList
-            horizontal
-            data={cardLocal.tags}
-            keyExtractor={(tag) => tag.id.toString()}
-            renderItem={({ item }) => <TagTile tag={item}></TagTile>}
-          />
-        </PaperCard.Content>
-      </PaperCard>
+      <TagsSection tags={cardLocal.tags} allTags={tags} />
 
       <PaperCard style={[styles.cardContainer]}>
         <PaperCard.Content style={[styles.KLRadioContainer]}>
