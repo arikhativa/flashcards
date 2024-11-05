@@ -2,7 +2,7 @@ import { Card } from "@/types/Card";
 import { Text } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
-import { baseUnit } from "@/constants/styles";
+import { margin } from "@/constants/styles";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -22,7 +22,7 @@ export function CardTile({ card }: CardTileProps) {
       asChild
     >
       <Pressable>
-        <PaperCard style={{ margin: baseUnit }}>
+        <PaperCard style={margin.base}>
           <PaperCard.Content>
             <Text variant="titleSmall">{card.sideA}</Text>
             <Divider></Divider>

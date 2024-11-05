@@ -1,12 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import { Card } from "@/types/Card";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, RadioButton, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
 import { baseUnit, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
+import { KnowledgeLevel, KnowledgeLevelColors } from "@/types/KnowledgeLevel";
 
 type CardDetailParams = {
   id: string;
@@ -44,15 +45,28 @@ const CardComponent: React.FC = () => {
     navigation.goBack();
   };
 
+  const getKLStyle = () => {
+    switch (cardLocal.knowledgeLevel) {
+      case KnowledgeLevel.Learning:
+        return styles.Learning;
+      case KnowledgeLevel.GettingThere:
+        return styles.GettingThere;
+      case KnowledgeLevel.Confident:
+        return styles.Confident;
+      default:
+        return {};
+    }
+  };
+
   const handleLocalChange = (field: keyof Card, value: string) => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
 
   return (
     <View>
-      <PaperCard style={styles.cardContainer}>
+      <PaperCard style={[styles.cardContainer, getKLStyle()]}>
         <PaperCard.Content>
-          <View style={styles.sideView}>
+          <View style={[styles.sideView, styles.sideViewHeightA]}>
             <Text style={styles.labelText} variant="titleLarge">
               {conf.sideA}
             </Text>
@@ -65,7 +79,7 @@ const CardComponent: React.FC = () => {
             ></TextInput>
           </View>
           <Divider></Divider>
-          <View style={styles.sideView}>
+          <View style={[styles.sideView, styles.sideViewHeightB]}>
             <Text style={[styles.labelText, padding.top]} variant="titleLarge">
               {conf.sideB}
             </Text>
@@ -76,6 +90,52 @@ const CardComponent: React.FC = () => {
               }}
               value={cardLocal.sideB}
             ></TextInput>
+          </View>
+        </PaperCard.Content>
+      </PaperCard>
+      <PaperCard style={[styles.cardContainer]}>
+        <PaperCard.Content style={[styles.KLRadioContainer]}>
+          <Text variant="titleMedium">Knowledge Level</Text>
+          <View style={styles.KLRadio}>
+            <RadioButton
+              value={KnowledgeLevel.Learning}
+              uncheckedColor={KnowledgeLevelColors.Learning}
+              color={KnowledgeLevelColors.Learning}
+              status={
+                cardLocal.knowledgeLevel === KnowledgeLevel.Learning
+                  ? "checked"
+                  : "unchecked"
+              }
+              onPress={() =>
+                handleLocalChange("knowledgeLevel", KnowledgeLevel.Learning)
+              }
+            />
+            <RadioButton
+              value={KnowledgeLevel.GettingThere}
+              uncheckedColor={KnowledgeLevelColors.GettingThere}
+              color={KnowledgeLevelColors.GettingThere}
+              status={
+                cardLocal.knowledgeLevel === KnowledgeLevel.GettingThere
+                  ? "checked"
+                  : "unchecked"
+              }
+              onPress={() =>
+                handleLocalChange("knowledgeLevel", KnowledgeLevel.GettingThere)
+              }
+            />
+            <RadioButton
+              value={KnowledgeLevel.Confident}
+              uncheckedColor={KnowledgeLevelColors.Confident}
+              color={KnowledgeLevelColors.Confident}
+              status={
+                cardLocal.knowledgeLevel === KnowledgeLevel.Confident
+                  ? "checked"
+                  : "unchecked"
+              }
+              onPress={() =>
+                handleLocalChange("knowledgeLevel", KnowledgeLevel.Confident)
+              }
+            />
           </View>
         </PaperCard.Content>
       </PaperCard>
@@ -90,13 +150,45 @@ const CardComponent: React.FC = () => {
   );
 };
 
+const HEIGHT = 200;
+const BORDER_SIZE = 30;
+
 const styles = StyleSheet.create({
-  cardContainer: { margin: baseUnit },
+  KLRadioContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  KLRadio: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  cardContainer: {
+    margin: baseUnit,
+  },
+  Learning: {
+    borderBottomColor: KnowledgeLevelColors.Learning,
+    borderBottomWidth: BORDER_SIZE,
+  },
+  GettingThere: {
+    borderBottomColor: KnowledgeLevelColors.GettingThere,
+    borderBottomWidth: BORDER_SIZE,
+  },
+  Confident: {
+    borderBottomColor: KnowledgeLevelColors.Confident,
+    borderBottomWidth: BORDER_SIZE,
+  },
+  sideViewHeightA: {
+    height: HEIGHT,
+  },
+  sideViewHeightB: {
+    height: HEIGHT - BORDER_SIZE,
+  },
   sideView: {
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    height: 200,
   },
   labelText: {
     position: "absolute",

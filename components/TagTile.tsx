@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Tag } from "@/types/Tag";
 import { Chip } from "react-native-paper";
-import { baseUnit } from "@/constants/styles";
+import { baseUnit, margin } from "@/constants/styles";
 
 export type TagTileProps = {
   tag: Tag;
@@ -15,7 +15,7 @@ export function TagTile({ tag }: TagTileProps) {
       return;
     }
     return (
-      <Chip style={{ marginLeft: baseUnit }} disabled mode="outlined">
+      <Chip style={margin.left} disabled mode="outlined">
         {tag.cards.length}
       </Chip>
     );

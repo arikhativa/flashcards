@@ -5,6 +5,7 @@ import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
 import { useStore } from "@/providers/GlobalStore";
 import { Link } from "expo-router";
+import { margin } from "@/constants/styles";
 
 export default function CardsScreen() {
   const { conf, tags, cards, cardService, cardTagService } = useStore();
@@ -23,7 +24,7 @@ export default function CardsScreen() {
 
   return (
     <View>
-      <View style={{ margin: 20 }}>
+      <View style={margin.base2}>
         <Button
           onPress={() => {
             if (!cardService) {

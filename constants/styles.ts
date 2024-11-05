@@ -11,9 +11,34 @@ export const container = StyleSheet.create({
 
 export const baseUnit = 10;
 
+export const margin = StyleSheet.create({
+  base: {
+    margin: baseUnit,
+  },
+  base2: {
+    margin: baseUnit * 2,
+  },
+  left: {
+    marginLeft: baseUnit,
+  },
+  top: {
+    marginTop: baseUnit,
+  },
+  bottom: {
+    marginBottom: baseUnit,
+  },
+  sides: {
+    marginLeft: baseUnit,
+    marginRight: baseUnit,
+  },
+});
+
 export const padding = StyleSheet.create({
   base: {
     padding: baseUnit,
+  },
+  left: {
+    paddingLeft: baseUnit,
   },
   top: {
     paddingTop: baseUnit,

@@ -3,3 +3,9 @@ export enum KnowledgeLevel {
   GettingThere = "GettingThere",
   Confident = "Confident",
 }
+
+export enum KnowledgeLevelColors {
+  Learning = "yellow",
+  GettingThere = "green",
+  Confident = "purple",
+}

@@ -3,13 +3,14 @@ import { Button, View, FlatList, StyleSheet } from "react-native";
 import { TagCreate, TagUpdate } from "@/types/Tag";
 import { TagTile } from "@/components/TagTile";
 import { useStore } from "@/providers/GlobalStore";
+import { margin } from "@/constants/styles";
 
 export default function TagsScreen() {
   const { cards, tags, tagService } = useStore();
 
   return (
     <View>
-      <View style={{ margin: 20 }}>
+      <View style={margin.base2}>
         <Button
           title="create"
           onPress={() => {
