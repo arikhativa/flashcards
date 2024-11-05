@@ -54,7 +54,7 @@ export default function TagsScreen() {
         <FlatList
           data={tags}
           keyExtractor={(tag) => tag.id.toString()}
-          renderItem={({ item }) => <TagTile tag={item}></TagTile>}
+          renderItem={({ item }) => <TagTile showSize tag={item}></TagTile>}
         />
       </View>
     </View>

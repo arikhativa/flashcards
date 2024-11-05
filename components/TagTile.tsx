@@ -5,13 +5,14 @@ import { baseUnit, margin } from "@/constants/styles";
 
 export type TagTileProps = {
   tag: Tag;
+  showSize?: boolean;
 };
 
 // TODO add option to chose an icon for the list?
 
-export function TagTile({ tag }: TagTileProps) {
+export function TagTile({ tag, showSize }: TagTileProps) {
   const getSumOfCards = (tag: Tag) => {
-    if (!tag.cards.length) {
+    if (!showSize || !tag.cards.length) {
       return;
     }
     return (
