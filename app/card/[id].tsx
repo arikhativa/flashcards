@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Card } from "@/types/Card";
 import { Button, RadioButton, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
@@ -63,7 +63,7 @@ const CardComponent: React.FC = () => {
   };
 
   return (
-    <View>
+    <ScrollView>
       <PaperCard style={[styles.cardContainer, getKLStyle()]}>
         <PaperCard.Content>
           <View style={[styles.sideView, styles.sideViewHeightA]}>
@@ -93,6 +93,21 @@ const CardComponent: React.FC = () => {
           </View>
         </PaperCard.Content>
       </PaperCard>
+
+      <PaperCard style={[styles.cardContainer]}>
+        <PaperCard.Content>
+          <Text variant="titleMedium">Comment</Text>
+          <TextInput
+            multiline
+            numberOfLines={4}
+            onChangeText={(text) => {
+              handleLocalChange("comment", text);
+            }}
+            value={cardLocal.comment}
+          ></TextInput>
+        </PaperCard.Content>
+      </PaperCard>
+
       <PaperCard style={[styles.cardContainer]}>
         <PaperCard.Content style={[styles.KLRadioContainer]}>
           <Text variant="titleMedium">Knowledge Level</Text>
@@ -146,7 +161,7 @@ const CardComponent: React.FC = () => {
           </Button>
         </PaperCard.Actions>
       </PaperCard>
-    </View>
+    </ScrollView>
   );
 };
 
