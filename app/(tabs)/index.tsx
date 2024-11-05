@@ -4,6 +4,7 @@ import { CardCreate, CardUpdate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
 import { useStore } from "@/providers/GlobalStore";
+import { Link } from "expo-router";
 
 export default function CardsScreen() {
   const { conf, tags, cards, cardService, cardTagService } = useStore();
