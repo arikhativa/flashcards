@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { View, FlatList, TouchableOpacity, Text } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import { Searchbar } from "react-native-paper";
 
-interface AutocompleteSearchbarProps<T> {
+interface AutocompleteProps<T> {
   onSearchChange: (query: string) => T[];
   onSelect: (item: T) => void;
   keyExtractor: (item: T) => string;
-  toStringItem: (item: T) => string;
+  itemComponent: React.FC<{ item: T }>;
 }
 
-const AutocompleteSearchbar = <T,>({
+const Autocomplete = <T,>({
   onSelect,
   keyExtractor,
-  toStringItem,
+  itemComponent,
   onSearchChange,
-}: AutocompleteSearchbarProps<T>) => {
+}: AutocompleteProps<T>) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<T[]>([]);
+  const [selectedItems, setSelectedItems] = useState<T[]>([]);
 
   const onChangeSearch = (query: string) => {
     setQuery(query);
@@ -31,8 +32,11 @@ const AutocompleteSearchbar = <T,>({
 
   const onSelectItem = (item: T) => {
     onSelect(item);
-    setQuery("");
-    setFilteredData([]);
+    setSelectedItems([...selectedItems, item]);
+  };
+
+  const getStyle = (item: T) => {
+    return selectedItems.includes(item) ? { opacity: 0.5 } : {};
   };
 
   return (
@@ -50,7 +54,11 @@ const AutocompleteSearchbar = <T,>({
           keyExtractor={keyExtractor}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => onSelectItem(item)}>
-              <Text style={{ padding: 8 }}>{toStringItem(item)}</Text>
+              <View pointerEvents="none" style={getStyle(item)}>
+                {React.createElement(itemComponent, {
+                  item,
+                })}
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -59,4 +67,4 @@ const AutocompleteSearchbar = <T,>({
   );
 };
 
-export default AutocompleteSearchbar;
+export default Autocomplete;

@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColors } from "@/types/KnowledgeLevel";
-import { TagTile } from "@/components/TagTile";
 import TagsSection from "@/components/TagsSection";
+import { Tag } from "@/types/Tag";
 
 type CardDetailParams = {
   id: string;
@@ -64,6 +64,15 @@ const CardComponent: React.FC = () => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
 
+  const addTag = (tag: Tag) => {
+    if (cardLocal.tags.find((t) => t.id === tag.id)) {
+      console.error("tag already exists");
+      return;
+    }
+    const newTags = [...cardLocal.tags, tag];
+    setCardLocal({ ...cardLocal, tags: newTags });
+  };
+
   return (
     <ScrollView>
       <PaperCard style={[styles.cardContainer, getKLStyle()]}>
@@ -110,7 +119,7 @@ const CardComponent: React.FC = () => {
         </PaperCard.Content>
       </PaperCard>
 
-      <TagsSection tags={cardLocal.tags} allTags={tags} />
+      <TagsSection addTag={addTag} tags={cardLocal.tags} allTags={tags} />
 
       <PaperCard style={[styles.cardContainer]}>
         <PaperCard.Content style={[styles.KLRadioContainer]}>
