@@ -3,7 +3,7 @@ import { IconButton } from "react-native-paper";
 import { CardTile } from "@/components/CardTile";
 import { useStore } from "@/providers/GlobalStore";
 import { Link } from "expo-router";
-import { baseUnit } from "@/constants/styles";
+import { baseUnit, margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { NEW_CARD_ID } from "../card/[id]";
 
@@ -11,7 +11,7 @@ export default function CardsScreen() {
   const { cards } = useStore();
 
   return (
-    <View style={container.flex1}>
+    <View style={[container.flex1, margin.top2]}>
       <View>
         <FlatList
           data={cards}

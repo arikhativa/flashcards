@@ -77,6 +77,9 @@ export const margin = StyleSheet.create({
   top: {
     marginTop: baseUnit,
   },
+  top2: {
+    marginTop: baseUnit * 2,
+  },
   bottom: {
     marginBottom: baseUnit,
   },

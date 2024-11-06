@@ -1,7 +1,7 @@
-import { color, margin, text } from "@/constants/styles";
+import { baseUnit, color, margin, text } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
-import { Searchbar, Text, Button } from "react-native-paper";
+import { Searchbar, Text, IconButton } from "react-native-paper";
 import { container } from "../constants/styles";
 
 interface AutocompleteProps<T> {
@@ -53,24 +53,35 @@ const Autocomplete = <T,>({
 
   return (
     <View style={[container.flex1, { maxHeight: 400 }]}>
-      <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={query}
-        style={margin.bottom}
-      />
+      <View
+        style={[
+          margin.bottom,
+          {
+            width: "100%",
+            flexDirection: "row",
+            alignItems: "center",
+          },
+        ]}
+      >
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={query}
+          style={{ flex: 1 }}
+        />
+        {onCreateEmpty && (
+          <IconButton
+            disabled={query.length === 0}
+            icon="plus"
+            size={baseUnit * 2}
+            mode="contained-tonal"
+            onPress={() => onCreateEmpty(query)}
+          ></IconButton>
+        )}
+      </View>
 
       {!filteredData.length && query.length > 0 && (
         <View style={container.center}>
-          {onCreateEmpty && (
-            <Button
-              style={container.buttonTop}
-              mode="outlined"
-              onPress={() => onCreateEmpty(query)}
-            >
-              Create Tag
-            </Button>
-          )}
           <Text style={text.grayMessage}>No results found</Text>
         </View>
       )}

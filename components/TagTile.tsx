@@ -6,11 +6,12 @@ import { baseUnit, margin } from "@/constants/styles";
 export type TagTileProps = {
   tag: Tag;
   showSize?: boolean;
+  onClose?: () => void;
 };
 
 // TODO add option to chose an icon for the list?
 
-export function TagTile({ tag, showSize }: TagTileProps) {
+export function TagTile({ tag, showSize, onClose }: TagTileProps) {
   const getSumOfCards = (tag: Tag) => {
     if (!showSize || !tag.cards.length) {
       return;
@@ -25,6 +26,8 @@ export function TagTile({ tag, showSize }: TagTileProps) {
   return (
     <View style={{ padding: baseUnit, display: "flex", flexDirection: "row" }}>
       <Chip
+        closeIcon={onClose ? "close" : undefined}
+        onClose={onClose}
         style={{
           alignSelf: "flex-start",
         }}

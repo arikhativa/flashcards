@@ -11,9 +11,15 @@ interface TagsSectionProps {
   allTags: Tag[];
   tags?: Tag[];
   addTag: (tag: Tag) => void;
+  removeTag: (tag: Tag) => void;
 }
 
-const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
+const TagsSection = ({
+  tags,
+  allTags,
+  addTag,
+  removeTag,
+}: TagsSectionProps) => {
   const { tagService } = useStore();
   const [visible, setVisible] = React.useState(false);
 
@@ -51,7 +57,9 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
         horizontal={true}
         data={tags}
         keyExtractor={(tag) => tag.id.toString()}
-        renderItem={({ item }) => <TagTile tag={item}></TagTile>}
+        renderItem={({ item }) => (
+          <TagTile onClose={() => removeTag(item)} tag={item}></TagTile>
+        )}
       />
     );
   };

@@ -27,7 +27,6 @@ const CardComponent = ({
   const [cardLocal, setCardLocal] = useState<CardCreate | CardUpdate>(card);
 
   useEffect(() => {
-    console.log("CardComponent card", card);
     setCardLocal(card);
   }, [card]);
 
@@ -59,7 +58,16 @@ const CardComponent = ({
       return;
     }
     const newTags = [...currTags, tag];
-    console.log("newTags", newTags);
+    setCardLocal({ ...cardLocal, tags: newTags });
+  };
+
+  const removeTag = (tag: Tag) => {
+    const currTags = cardLocal.tags || [];
+    if (!currTags.find((t) => t.id === tag.id)) {
+      console.error("tag does not exists: can't remove");
+      return;
+    }
+    const newTags = currTags.filter((t) => t.id !== tag.id);
     setCardLocal({ ...cardLocal, tags: newTags });
   };
 
@@ -116,7 +124,12 @@ const CardComponent = ({
         </PaperCard>
       </View>
 
-      <TagsSection addTag={addTag} tags={cardLocal.tags} allTags={tags} />
+      <TagsSection
+        addTag={addTag}
+        removeTag={removeTag}
+        tags={cardLocal.tags}
+        allTags={tags}
+      />
 
       <View style={[margin.base2]}>
         <Text style={padding.bottom} variant="titleMedium">
