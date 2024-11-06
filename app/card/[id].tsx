@@ -125,7 +125,7 @@ const CardComponent: React.FC = () => {
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               multiline
-              numberOfLines={4}
+              numberOfLines={3}
               onChangeText={(text) => {
                 handleLocalChange("comment", text);
               }}

@@ -9,6 +9,13 @@ export const container = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
   },
+  flexXSpace: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  },
   flexX: {
     display: "flex",
     flexDirection: "row",
@@ -19,6 +26,10 @@ export const container = StyleSheet.create({
   wFull: {
     width: "100%",
   },
+});
+
+export const text = StyleSheet.create({
+  grayMessage: { opacity: 0.3, width: "100%", textAlign: "center" },
 });
 
 export const margin = StyleSheet.create({

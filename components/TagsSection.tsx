@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import {
   Button,
   Dialog,
-  Card as PaperCard,
+  IconButton,
+  Card,
   Portal,
   Text,
 } from "react-native-paper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
 import Autocomplete from "./Autocomplete";
-import { margin, padding } from "@/constants/styles";
+import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 
 interface TagsSectionProps {
   allTags: Tag[];
@@ -41,52 +42,62 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
       .filter((tag) => !tags.find((t) => t.id === tag.id));
   };
 
+  const getList = () => {
+    if (!tags || tags.length === 0) {
+      return <Text style={text.grayMessage}>No tags</Text>;
+    }
+    return (
+      <FlatList
+        horizontal={true}
+        data={tags}
+        keyExtractor={(tag) => tag.id.toString()}
+        renderItem={({ item }) => <TagTile tag={item}></TagTile>}
+      />
+    );
+  };
+
   return (
     <View style={[margin.base2]}>
-      <Text style={padding.bottom} variant="titleMedium">
-        Tags
-      </Text>
-      <PaperCard>
-        <PaperCard.Content>
-          <Portal>
-            {visible && (
-              <View style={styles.viewContainer}>
-                <Dialog
-                  style={[styles.dialogContainer, margin.base]}
-                  visible={visible}
-                  onDismiss={hideDialog}
-                >
-                  <Dialog.Title>Search for Tags</Dialog.Title>
-                  <Dialog.Content>
-                    <Autocomplete
-                      onSelect={onSelect}
-                      keyExtractor={keyExtractor}
-                      onSearchChange={onSearchChange}
-                      itemComponent={({ item }) => (
-                        <TagTile tag={item}></TagTile>
-                      )}
-                    />
-                  </Dialog.Content>
-                  <Dialog.Actions>
-                    <Button onPress={hideDialog}>Done</Button>
-                  </Dialog.Actions>
-                </Dialog>
-              </View>
-            )}
-          </Portal>
+      <View style={[container.flexXSpace, padding.bottom]}>
+        <Text style={padding.bottom} variant="titleMedium">
+          Tags
+        </Text>
+        <IconButton
+          icon="plus"
+          size={baseUnit * 2}
+          mode="contained-tonal"
+          onPress={showDialog}
+        ></IconButton>
+      </View>
 
-          <Dialog.Actions>
-            <Button onPress={showDialog}>Add Tags</Button>
-          </Dialog.Actions>
+      <Card>
+        <Card.Content>{getList()}</Card.Content>
+      </Card>
 
-          <FlatList
-            horizontal={true}
-            data={tags}
-            keyExtractor={(tag) => tag.id.toString()}
-            renderItem={({ item }) => <TagTile tag={item}></TagTile>}
-          />
-        </PaperCard.Content>
-      </PaperCard>
+      <Portal>
+        {visible && (
+          <View style={styles.viewContainer}>
+            <Dialog
+              style={[styles.dialogContainer, margin.base]}
+              visible={visible}
+              onDismiss={hideDialog}
+            >
+              <Dialog.Title>Search for Tags</Dialog.Title>
+              <Dialog.Content>
+                <Autocomplete
+                  onSelect={onSelect}
+                  keyExtractor={keyExtractor}
+                  onSearchChange={onSearchChange}
+                  itemComponent={({ item }) => <TagTile tag={item}></TagTile>}
+                />
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={hideDialog}>Done</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </View>
+        )}
+      </Portal>
     </View>
   );
 };
