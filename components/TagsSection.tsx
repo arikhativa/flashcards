@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
 import Autocomplete from "./Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
+import { useStore } from "@/providers/GlobalStore";
 
 interface TagsSectionProps {
   allTags: Tag[];
@@ -13,6 +14,7 @@ interface TagsSectionProps {
 }
 
 const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
+  const { tagService } = useStore();
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -33,6 +35,11 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
     return allTags
       .filter((tag) => tag.name.toLowerCase().includes(query.toLowerCase()))
       .filter((tag) => !tags?.find((t) => t.id === tag.id));
+  };
+
+  const handleCreateTag = async (name: string): Promise<void> => {
+    const tag = await tagService.create({ name });
+    if (tag) addTag(tag);
   };
 
   const getList = () => {
@@ -88,6 +95,10 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
                   keyExtractor={keyExtractor}
                   onSearchChange={onSearchChange}
                   itemComponent={({ item }) => <TagTile tag={item}></TagTile>}
+                  onCreateEmpty={(text: string) => {
+                    hideDialog();
+                    return handleCreateTag(text);
+                  }}
                 />
               </Dialog.Content>
             </Dialog>

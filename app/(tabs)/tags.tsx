@@ -3,7 +3,7 @@ import { Button, View, FlatList, StyleSheet } from "react-native";
 import { TagCreate, TagUpdate } from "@/types/Tag";
 import { TagTile } from "@/components/TagTile";
 import { useStore } from "@/providers/GlobalStore";
-import { margin } from "@/constants/styles";
+import { container, margin } from "@/constants/styles";
 
 export default function TagsScreen() {
   const { cards, tags, tagService } = useStore();
@@ -50,10 +50,15 @@ export default function TagsScreen() {
         ></Button>
       </View>
 
-      <View>
+      <View style={[{ maxHeight: 400 }]}>
         <FlatList
           data={tags}
           keyExtractor={(tag) => tag.id.toString()}
+          numColumns={3}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           renderItem={({ item }) => <TagTile showSize tag={item}></TagTile>}
         />
       </View>

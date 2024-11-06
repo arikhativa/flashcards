@@ -48,7 +48,7 @@ const CardPage: React.FC = () => {
       }
       setCardUpdate(card);
     }
-  }, [cards, id, navigation]);
+  }, [id]); //TODO can be problematic
 
   const handleSubmitCreate = async (card: CardCreate | CardUpdate) => {
     await cardService.create(card);
@@ -60,21 +60,27 @@ const CardPage: React.FC = () => {
     navigation.goBack();
   };
 
-  const getHandleSubmit = () => {
-    if (id === NEW_CARD_ID) {
-      return handleSubmitCreate;
-    }
-    return handleSubmitUpdate;
+  const handleDelete = async () => {
+    await cardService.delete(idNumber);
+    navigation.goBack();
   };
 
-  const getCard = () => {
+  const getComponent = () => {
     if (id === NEW_CARD_ID) {
-      return cardCreate;
+      return (
+        <CardComponent card={cardCreate} handleSubmit={handleSubmitCreate} />
+      );
     }
-    return cardUpdate;
+    return (
+      <CardComponent
+        card={cardUpdate}
+        handleSubmit={handleSubmitUpdate}
+        handleDelete={handleDelete}
+      />
+    );
   };
 
-  return <CardComponent card={getCard()} handleSubmit={getHandleSubmit()} />;
+  return getComponent();
 };
 
 export default CardPage;

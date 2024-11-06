@@ -1,7 +1,7 @@
-import { color, margin } from "@/constants/styles";
+import { color, margin, text } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
-import { Searchbar } from "react-native-paper";
+import { Searchbar, Text, Button } from "react-native-paper";
 import { container } from "../constants/styles";
 
 interface AutocompleteProps<T> {
@@ -9,6 +9,7 @@ interface AutocompleteProps<T> {
   onSelect: (item: T) => void;
   keyExtractor: (item: T) => string;
   itemComponent: React.FC<{ item: T }>;
+  onCreateEmpty?: (text: string) => Promise<void>;
 }
 
 const Autocomplete = <T,>({
@@ -16,6 +17,7 @@ const Autocomplete = <T,>({
   keyExtractor,
   itemComponent,
   onSearchChange,
+  onCreateEmpty,
 }: AutocompleteProps<T>) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<T[]>([]);
@@ -57,6 +59,21 @@ const Autocomplete = <T,>({
         value={query}
         style={margin.bottom}
       />
+
+      {!filteredData.length && query.length > 0 && (
+        <View style={container.center}>
+          {onCreateEmpty && (
+            <Button
+              style={container.buttonTop}
+              mode="outlined"
+              onPress={() => onCreateEmpty(query)}
+            >
+              Create Tag
+            </Button>
+          )}
+          <Text style={text.grayMessage}>No results found</Text>
+        </View>
+      )}
 
       {filteredData.length > 0 && (
         <FlatList

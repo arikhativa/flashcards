@@ -14,16 +14,20 @@ import { CardRadio } from "@/components/CardRadio";
 type CardComponentProps = {
   card: CardCreate | CardUpdate;
   handleSubmit: (card: CardCreate | CardUpdate) => Promise<void>;
+  handleDelete?: () => Promise<void>;
 };
 
-export const NEW_CARD_ID = "new";
-
-const CardComponent = ({ card, handleSubmit }: CardComponentProps) => {
+const CardComponent = ({
+  card,
+  handleSubmit,
+  handleDelete,
+}: CardComponentProps) => {
   const { tags, conf } = useStore();
 
   const [cardLocal, setCardLocal] = useState<CardCreate | CardUpdate>(card);
 
   useEffect(() => {
+    console.log("CardComponent card", card);
     setCardLocal(card);
   }, [card]);
 
@@ -55,6 +59,7 @@ const CardComponent = ({ card, handleSubmit }: CardComponentProps) => {
       return;
     }
     const newTags = [...currTags, tag];
+    console.log("newTags", newTags);
     setCardLocal({ ...cardLocal, tags: newTags });
   };
 
@@ -68,8 +73,6 @@ const CardComponent = ({ card, handleSubmit }: CardComponentProps) => {
             </Text>
             <TextInput
               style={[styles.comment, styles.textInput]}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
               onChangeText={(text) => {
                 handleLocalChange("sideA", text);
               }}
@@ -83,8 +86,6 @@ const CardComponent = ({ card, handleSubmit }: CardComponentProps) => {
             </Text>
             <TextInput
               style={[styles.comment, styles.textInput]}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
               onChangeText={(text) => {
                 handleLocalChange("sideB", text);
               }}
@@ -146,6 +147,15 @@ const CardComponent = ({ card, handleSubmit }: CardComponentProps) => {
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
+          {handleDelete && (
+            <Button
+              buttonColor="red"
+              mode={"contained"}
+              onPress={() => handleDelete()}
+            >
+              Delete
+            </Button>
+          )}
           <Button mode={"contained"} onPress={() => handleSubmit(cardLocal)}>
             Save
           </Button>
@@ -200,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   textInput: {
-    width: "100%",
+    width: "90%",
     textAlign: "center",
   },
 });

@@ -29,6 +29,11 @@ export const container = StyleSheet.create({
   wFull: {
     width: "100%",
   },
+  buttonTop: {
+    position: "absolute",
+    top: 0,
+    alignSelf: "center",
+  },
   buttonBottomRight: {
     position: "absolute",
     bottom: 0,
