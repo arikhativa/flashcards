@@ -3,7 +3,7 @@ import { Card } from "@/types/Card";
 import { Button, RadioButton, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
-import { baseUnit, padding } from "@/constants/styles";
+import { margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
@@ -75,14 +75,16 @@ const CardComponent: React.FC = () => {
 
   return (
     <ScrollView>
-      <PaperCard style={[styles.cardContainer, getKLStyle()]}>
+      <PaperCard style={[margin.base2, getKLStyle()]}>
         <PaperCard.Content>
           <View style={[styles.sideView, styles.sideViewHeightA]}>
             <Text style={styles.labelText} variant="titleLarge">
               {conf.sideA}
             </Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.comment, styles.textInput]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
               onChangeText={(text) => {
                 handleLocalChange("sideA", text);
               }}
@@ -95,7 +97,9 @@ const CardComponent: React.FC = () => {
               {conf.sideB}
             </Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.comment, styles.textInput]}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
               onChangeText={(text) => {
                 handleLocalChange("sideB", text);
               }}
@@ -105,23 +109,30 @@ const CardComponent: React.FC = () => {
         </PaperCard.Content>
       </PaperCard>
 
-      <PaperCard style={[styles.cardContainer]}>
-        <PaperCard.Content>
-          <Text variant="titleMedium">Comment</Text>
-          <TextInput
-            multiline
-            numberOfLines={4}
-            onChangeText={(text) => {
-              handleLocalChange("comment", text);
-            }}
-            value={cardLocal.comment}
-          ></TextInput>
-        </PaperCard.Content>
-      </PaperCard>
+      <View style={[margin.base2]}>
+        <Text style={padding.bottom} variant="titleMedium">
+          Comment
+        </Text>
+        <PaperCard>
+          <PaperCard.Content>
+            <TextInput
+              style={styles.comment}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
+              multiline
+              numberOfLines={4}
+              onChangeText={(text) => {
+                handleLocalChange("comment", text);
+              }}
+              value={cardLocal.comment}
+            ></TextInput>
+          </PaperCard.Content>
+        </PaperCard>
+      </View>
 
       <TagsSection addTag={addTag} tags={cardLocal.tags} allTags={tags} />
 
-      <PaperCard style={[styles.cardContainer]}>
+      <PaperCard style={[margin.base2]}>
         <PaperCard.Content style={[styles.KLRadioContainer]}>
           <Text variant="titleMedium">Knowledge Level</Text>
           <View style={styles.KLRadio}>
@@ -167,7 +178,7 @@ const CardComponent: React.FC = () => {
           </View>
         </PaperCard.Content>
       </PaperCard>
-      <PaperCard style={styles.cardContainer}>
+      <PaperCard style={margin.base2}>
         <PaperCard.Actions>
           <Button mode={"contained"} onPress={handleSubmit}>
             Save
@@ -191,9 +202,6 @@ const styles = StyleSheet.create({
   KLRadio: {
     display: "flex",
     flexDirection: "row",
-  },
-  cardContainer: {
-    margin: baseUnit,
   },
   Learning: {
     borderBottomColor: KnowledgeLevelColors.Learning,
@@ -223,7 +231,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
   },
-  textInput: { width: "50%" },
+  comment: {
+    backgroundColor: "transparent",
+  },
+  textInput: {
+    width: "100%",
+    textAlign: "center",
+  },
 });
 
 export default CardComponent;
