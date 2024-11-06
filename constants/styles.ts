@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+export const baseUnit = 10;
+
 export const container = StyleSheet.create({
   center: {
     display: "flex",
@@ -7,9 +9,17 @@ export const container = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
   },
+  flexX: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  space: {
+    justifyContent: "space-between",
+  },
+  wFull: {
+    width: "100%",
+  },
 });
-
-export const baseUnit = 10;
 
 export const margin = StyleSheet.create({
   base: {

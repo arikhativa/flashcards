@@ -1,15 +1,16 @@
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Card } from "@/types/Card";
-import { Button, RadioButton, Text, TextInput } from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
 import { margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
-import { KnowledgeLevel, KnowledgeLevelColors } from "@/types/KnowledgeLevel";
+import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
 import TagsSection from "@/components/TagsSection";
 import { Tag } from "@/types/Tag";
+import { CardRadio } from "@/components/CardRadio";
 
 type CardDetailParams = {
   id: string;
@@ -45,6 +46,10 @@ const CardComponent: React.FC = () => {
   const handleSubmit = async () => {
     await cardService.update(cardLocal.id, cardLocal);
     navigation.goBack();
+  };
+
+  const setKL = (kl: KnowledgeLevel) => {
+    handleLocalChange("knowledgeLevel", kl);
   };
 
   const getKLStyle = () => {
@@ -132,52 +137,33 @@ const CardComponent: React.FC = () => {
 
       <TagsSection addTag={addTag} tags={cardLocal.tags} allTags={tags} />
 
-      <PaperCard style={[margin.base2]}>
-        <PaperCard.Content style={[styles.KLRadioContainer]}>
-          <Text variant="titleMedium">Knowledge Level</Text>
-          <View style={styles.KLRadio}>
-            <RadioButton
-              value={KnowledgeLevel.Learning}
-              uncheckedColor={KnowledgeLevelColors.Learning}
-              color={KnowledgeLevelColors.Learning}
-              status={
-                cardLocal.knowledgeLevel === KnowledgeLevel.Learning
-                  ? "checked"
-                  : "unchecked"
-              }
-              onPress={() =>
-                handleLocalChange("knowledgeLevel", KnowledgeLevel.Learning)
-              }
-            />
-            <RadioButton
-              value={KnowledgeLevel.GettingThere}
-              uncheckedColor={KnowledgeLevelColors.GettingThere}
-              color={KnowledgeLevelColors.GettingThere}
-              status={
-                cardLocal.knowledgeLevel === KnowledgeLevel.GettingThere
-                  ? "checked"
-                  : "unchecked"
-              }
-              onPress={() =>
-                handleLocalChange("knowledgeLevel", KnowledgeLevel.GettingThere)
-              }
-            />
-            <RadioButton
-              value={KnowledgeLevel.Confident}
-              uncheckedColor={KnowledgeLevelColors.Confident}
-              color={KnowledgeLevelColors.Confident}
-              status={
-                cardLocal.knowledgeLevel === KnowledgeLevel.Confident
-                  ? "checked"
-                  : "unchecked"
-              }
-              onPress={() =>
-                handleLocalChange("knowledgeLevel", KnowledgeLevel.Confident)
-              }
-            />
-          </View>
-        </PaperCard.Content>
-      </PaperCard>
+      <View style={[margin.base2]}>
+        <Text style={padding.bottom} variant="titleMedium">
+          Knowledge Level
+        </Text>
+        <PaperCard>
+          <PaperCard.Content style={[styles.KLRadioContainer]}>
+            <View style={styles.KLRadio}>
+              <CardRadio
+                level={KnowledgeLevel.Learning}
+                cardKL={cardLocal.knowledgeLevel}
+                onPress={setKL}
+              />
+              <CardRadio
+                level={KnowledgeLevel.GettingThere}
+                cardKL={cardLocal.knowledgeLevel}
+                onPress={setKL}
+              />
+              <CardRadio
+                level={KnowledgeLevel.Confident}
+                cardKL={cardLocal.knowledgeLevel}
+                onPress={setKL}
+              />
+            </View>
+          </PaperCard.Content>
+        </PaperCard>
+      </View>
+
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
           <Button mode={"contained"} onPress={handleSubmit}>
@@ -196,23 +182,22 @@ const styles = StyleSheet.create({
   KLRadioContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
   KLRadio: {
     display: "flex",
-    flexDirection: "row",
   },
   Learning: {
-    borderBottomColor: KnowledgeLevelColors.Learning,
+    borderBottomColor: KnowledgeLevelColor.Learning,
     borderBottomWidth: BORDER_SIZE,
   },
   GettingThere: {
-    borderBottomColor: KnowledgeLevelColors.GettingThere,
+    borderBottomColor: KnowledgeLevelColor.GettingThere,
     borderBottomWidth: BORDER_SIZE,
   },
   Confident: {
-    borderBottomColor: KnowledgeLevelColors.Confident,
+    borderBottomColor: KnowledgeLevelColor.Confident,
     borderBottomWidth: BORDER_SIZE,
   },
   sideViewHeightA: {

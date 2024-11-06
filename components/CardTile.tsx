@@ -7,8 +7,6 @@ import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
 export type CardTileProps = {
-  sideA: string;
-  sideB: string;
   card: Card;
 };
 
