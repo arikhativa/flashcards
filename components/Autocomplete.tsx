@@ -1,4 +1,4 @@
-import { color, margin, padding } from "@/constants/styles";
+import { color, margin } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
 import { Searchbar } from "react-native-paper";

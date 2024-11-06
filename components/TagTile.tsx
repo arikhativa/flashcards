@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { Tag } from "@/types/Tag";
 import { Chip } from "react-native-paper";
 import { baseUnit, margin } from "@/constants/styles";

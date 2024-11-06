@@ -1,14 +1,15 @@
 import { View, FlatList } from "react-native";
-import { Button } from "react-native-paper";
-import { CardCreate, CardUpdate } from "@/types/Card";
+import { Button, IconButton } from "react-native-paper";
+import { CardCreate } from "@/types/Card";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { CardTile } from "@/components/CardTile";
 import { useStore } from "@/providers/GlobalStore";
 import { Link } from "expo-router";
-import { margin } from "@/constants/styles";
+import { baseUnit, margin } from "@/constants/styles";
+import { container } from "../../constants/styles";
 
 export default function CardsScreen() {
-  const { conf, tags, cards, cardService, cardTagService } = useStore();
+  const { tags, cards, cardService, cardTagService } = useStore();
 
   const logCards = async () => {
     console.log(
@@ -23,7 +24,7 @@ export default function CardsScreen() {
   };
 
   return (
-    <View>
+    <View style={container.flex1}>
       <View style={margin.base2}>
         <Button
           onPress={() => {
@@ -54,24 +55,13 @@ export default function CardsScreen() {
               sideB: "eat",
               comment: "linked id: " + tags[0].id,
               knowledgeLevel: KnowledgeLevel.Learning,
-              tags: [tags[0].id],
+              tags: [tags[0]],
             };
 
             cardService.create(card);
           }}
         >
           create and link
-        </Button>
-        <Button
-          onPress={() => {
-            const card: CardUpdate = {
-              comment: "updated comment",
-            };
-
-            cardService.update(cards[0].id, card);
-          }}
-        >
-          update
         </Button>
         <Button
           onPress={() => {
@@ -109,6 +99,20 @@ export default function CardsScreen() {
           renderItem={({ item }) => <CardTile card={item}></CardTile>}
         />
       </View>
+      <Link
+        style={container.buttonBottomRight}
+        href={{
+          pathname: "/card/[id]",
+          params: { id: "new" },
+        }}
+        asChild
+      >
+        <IconButton
+          icon="plus"
+          size={baseUnit * 5}
+          mode="contained"
+        ></IconButton>
+      </Link>
     </View>
   );
 }

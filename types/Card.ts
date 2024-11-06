@@ -6,8 +6,8 @@ export type Card = Omit<CardSchema, "knowledgeLevel"> & {
 };
 
 export type CardCreate = Pick<Card, "sideA" | "sideB" | "comment"> & {
-  tags?: number[] | TagSchema[];
+  tags?: TagSchema[];
   knowledgeLevel: KnowledgeLevel;
 };
 
-export type CardUpdate = Partial<Omit<Card, "id" | "createdAt" | "updatedAt">>;
+export type CardUpdate = Omit<Card, "id" | "createdAt" | "updatedAt">;

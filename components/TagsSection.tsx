@@ -1,13 +1,6 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import {
-  Button,
-  Dialog,
-  IconButton,
-  Card,
-  Portal,
-  Text,
-} from "react-native-paper";
+import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
 import Autocomplete from "./Autocomplete";
@@ -15,7 +8,7 @@ import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 
 interface TagsSectionProps {
   allTags: Tag[];
-  tags: Tag[];
+  tags?: Tag[];
   addTag: (tag: Tag) => void;
 }
 
@@ -39,7 +32,7 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
 
     return allTags
       .filter((tag) => tag.name.toLowerCase().includes(query.toLowerCase()))
-      .filter((tag) => !tags.find((t) => t.id === tag.id));
+      .filter((tag) => !tags?.find((t) => t.id === tag.id));
   };
 
   const getList = () => {

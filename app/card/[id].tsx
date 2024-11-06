@@ -1,27 +1,24 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { Card } from "@/types/Card";
-import { Button, Text, TextInput } from "react-native-paper";
-import { Card as PaperCard } from "react-native-paper";
-import { Divider } from "react-native-paper";
-import { margin, padding } from "@/constants/styles";
+import { CardCreate, CardUpdate } from "@/types/Card";
 import { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useStore } from "@/providers/GlobalStore";
-import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
-import TagsSection from "@/components/TagsSection";
-import { Tag } from "@/types/Tag";
-import { CardRadio } from "@/components/CardRadio";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import CardComponent from "@/components/Card";
 
 type CardDetailParams = {
   id: string;
 };
 
-const CardComponent: React.FC = () => {
-  const { cards, tags, conf, cardService } = useStore();
+export const NEW_CARD_ID = "new";
+
+const CardPage: React.FC = () => {
+  const { cards, cardService } = useStore();
   const { id } = useLocalSearchParams<CardDetailParams>();
   const navigation = useNavigation();
 
-  const [cardLocal, setCardLocal] = useState<Card>({} as Card);
+  const [idNumber, setIdNumber] = useState<number>(-1);
+  const [cardCreate, setCardCreate] = useState<CardCreate>({} as CardCreate);
+  const [cardUpdate, setCardUpdate] = useState<CardUpdate>({} as CardUpdate);
 
   useEffect(() => {
     if (!id) {
@@ -29,200 +26,55 @@ const CardComponent: React.FC = () => {
       return;
     }
 
-    navigation.setOptions({ title: `Card ${id}` });
+    if (id === NEW_CARD_ID) {
+      navigation.setOptions({ title: "New Card" });
+      setCardCreate({
+        sideA: "",
+        sideB: "",
+        comment: "",
+        knowledgeLevel: KnowledgeLevel.Learning,
+      });
+    } else {
+      navigation.setOptions({ title: `Edit Card ${id}` });
 
-    const idNumber = parseInt(id, 10);
+      const localId = parseInt(id, 10);
+      setIdNumber(localId);
 
-    const card = cards.find((card) => card.id === idNumber);
+      const card = cards.find((card) => card.id === localId);
 
-    if (!card) {
-      console.error("Card not found");
-      return;
+      if (!card) {
+        console.error("Card not found");
+        return;
+      }
+      setCardUpdate(card);
     }
+  }, [cards, id, navigation]);
 
-    setCardLocal(card);
-  }, [id, navigation, cards]);
-
-  const handleSubmit = async () => {
-    await cardService.update(cardLocal.id, cardLocal);
+  const handleSubmitCreate = async (card: CardCreate | CardUpdate) => {
+    await cardService.create(card);
     navigation.goBack();
   };
 
-  const setKL = (kl: KnowledgeLevel) => {
-    handleLocalChange("knowledgeLevel", kl);
+  const handleSubmitUpdate = async (card: CardCreate | CardUpdate) => {
+    await cardService.update(idNumber, card as CardUpdate);
+    navigation.goBack();
   };
 
-  const getKLStyle = () => {
-    switch (cardLocal.knowledgeLevel) {
-      case KnowledgeLevel.Learning:
-        return styles.Learning;
-      case KnowledgeLevel.GettingThere:
-        return styles.GettingThere;
-      case KnowledgeLevel.Confident:
-        return styles.Confident;
-      default:
-        return {};
+  const getHandleSubmit = () => {
+    if (id === NEW_CARD_ID) {
+      return handleSubmitCreate;
     }
+    return handleSubmitUpdate;
   };
 
-  const handleLocalChange = (field: keyof Card, value: string) => {
-    setCardLocal({ ...cardLocal, [field]: value });
-  };
-
-  const addTag = (tag: Tag) => {
-    if (cardLocal.tags.find((t) => t.id === tag.id)) {
-      console.error("tag already exists");
-      return;
+  const getCard = () => {
+    if (id === NEW_CARD_ID) {
+      return cardCreate;
     }
-    const newTags = [...cardLocal.tags, tag];
-    setCardLocal({ ...cardLocal, tags: newTags });
+    return cardUpdate;
   };
 
-  return (
-    <ScrollView>
-      <PaperCard style={[margin.base2, getKLStyle()]}>
-        <PaperCard.Content>
-          <View style={[styles.sideView, styles.sideViewHeightA]}>
-            <Text style={styles.labelText} variant="titleLarge">
-              {conf.sideA}
-            </Text>
-            <TextInput
-              style={[styles.comment, styles.textInput]}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-              onChangeText={(text) => {
-                handleLocalChange("sideA", text);
-              }}
-              value={cardLocal.sideA}
-            ></TextInput>
-          </View>
-          <Divider></Divider>
-          <View style={[styles.sideView, styles.sideViewHeightB]}>
-            <Text style={[styles.labelText, padding.top]} variant="titleLarge">
-              {conf.sideB}
-            </Text>
-            <TextInput
-              style={[styles.comment, styles.textInput]}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-              onChangeText={(text) => {
-                handleLocalChange("sideB", text);
-              }}
-              value={cardLocal.sideB}
-            ></TextInput>
-          </View>
-        </PaperCard.Content>
-      </PaperCard>
-
-      <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Comment
-        </Text>
-        <PaperCard>
-          <PaperCard.Content>
-            <TextInput
-              style={styles.comment}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-              multiline
-              numberOfLines={3}
-              onChangeText={(text) => {
-                handleLocalChange("comment", text);
-              }}
-              value={cardLocal.comment}
-            ></TextInput>
-          </PaperCard.Content>
-        </PaperCard>
-      </View>
-
-      <TagsSection addTag={addTag} tags={cardLocal.tags} allTags={tags} />
-
-      <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Knowledge Level
-        </Text>
-        <PaperCard>
-          <PaperCard.Content style={[styles.KLRadioContainer]}>
-            <View style={styles.KLRadio}>
-              <CardRadio
-                level={KnowledgeLevel.Learning}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.GettingThere}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.Confident}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-            </View>
-          </PaperCard.Content>
-        </PaperCard>
-      </View>
-
-      <PaperCard style={margin.base2}>
-        <PaperCard.Actions>
-          <Button mode={"contained"} onPress={handleSubmit}>
-            Save
-          </Button>
-        </PaperCard.Actions>
-      </PaperCard>
-    </ScrollView>
-  );
+  return <CardComponent card={getCard()} handleSubmit={getHandleSubmit()} />;
 };
 
-const HEIGHT = 200;
-const BORDER_SIZE = 30;
-
-const styles = StyleSheet.create({
-  KLRadioContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  KLRadio: {
-    display: "flex",
-  },
-  Learning: {
-    borderBottomColor: KnowledgeLevelColor.Learning,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  GettingThere: {
-    borderBottomColor: KnowledgeLevelColor.GettingThere,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  Confident: {
-    borderBottomColor: KnowledgeLevelColor.Confident,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  sideViewHeightA: {
-    height: HEIGHT,
-  },
-  sideViewHeightB: {
-    height: HEIGHT - BORDER_SIZE,
-  },
-  sideView: {
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  labelText: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-  },
-  comment: {
-    backgroundColor: "transparent",
-  },
-  textInput: {
-    width: "100%",
-    textAlign: "center",
-  },
-});
-
-export default CardComponent;
+export default CardPage;
