@@ -1,8 +1,12 @@
 import { StyleSheet } from "react-native";
+import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 export const baseUnit = 10;
 
 export const container = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
   center: {
     display: "flex",
     height: "100%",
@@ -26,6 +30,18 @@ export const container = StyleSheet.create({
   wFull: {
     width: "100%",
   },
+  buttonTopRight: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    margin: baseUnit * 2,
+  },
+});
+
+export const color = StyleSheet.create({
+  opacity1: { opacity: 0.1 },
+  opacity3: { opacity: 0.3 },
+  opacity5: { opacity: 0.5 },
 });
 
 export const text = StyleSheet.create({

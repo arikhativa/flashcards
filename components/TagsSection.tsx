@@ -78,11 +78,17 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
         {visible && (
           <View style={styles.viewContainer}>
             <Dialog
-              style={[styles.dialogContainer, margin.base]}
+              style={[styles.dialogContainer]}
               visible={visible}
               onDismiss={hideDialog}
             >
               <Dialog.Title>Search for Tags</Dialog.Title>
+              <IconButton
+                style={container.buttonTopRight}
+                icon="close"
+                size={baseUnit * 2}
+                onPress={hideDialog}
+              ></IconButton>
               <Dialog.Content>
                 <Autocomplete
                   onSelect={onSelect}
@@ -91,9 +97,6 @@ const TagsSection = ({ tags, allTags, addTag }: TagsSectionProps) => {
                   itemComponent={({ item }) => <TagTile tag={item}></TagTile>}
                 />
               </Dialog.Content>
-              <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
-              </Dialog.Actions>
             </Dialog>
           </View>
         )}
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
   },
   dialogContainer: {
     position: "absolute",
-    backgroundColor: "white",
+    backgroundColor: "white", // TODO bad color use the one in stye or them
     width: "90%",
     top: 0,
     alignSelf: "center",

@@ -1,6 +1,8 @@
+import { color, margin, padding } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
 import { Searchbar } from "react-native-paper";
+import { container } from "../constants/styles";
 
 interface AutocompleteProps<T> {
   onSearchChange: (query: string) => T[];
@@ -31,30 +33,52 @@ const Autocomplete = <T,>({
   };
 
   const onSelectItem = (item: T) => {
+    if (isSelected(item)) {
+      return;
+    }
+
     onSelect(item);
     setSelectedItems([...selectedItems, item]);
   };
 
   const getStyle = (item: T) => {
-    return selectedItems.includes(item) ? { opacity: 0.5 } : {};
+    return selectedItems.includes(item) ? color.opacity5 : {};
+  };
+
+  const isSelected = (item: T): boolean => {
+    return selectedItems.includes(item);
   };
 
   return (
-    <View style={{ padding: 16 }}>
+    <View style={[container.flex1, { maxHeight: 400 }]}>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={query}
+        style={margin.bottom}
       />
 
       {filteredData.length > 0 && (
         <FlatList
           data={filteredData}
-          scrollEnabled={false}
+          scrollEnabled={true}
           keyExtractor={keyExtractor}
+          numColumns={3}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => onSelectItem(item)}>
-              <View pointerEvents="none" style={getStyle(item)}>
+            // TODO there is no click animation
+            // there is an issue where the click animation change the op to .5 and then to 1
+            // and then the style change via getStyle back to 5
+            <TouchableOpacity
+              disabled={isSelected(item)}
+              activeOpacity={0.5}
+              style={getStyle(item)}
+              onPress={() => onSelectItem(item)}
+            >
+              <View pointerEvents="none">
                 {React.createElement(itemComponent, {
                   item,
                 })}

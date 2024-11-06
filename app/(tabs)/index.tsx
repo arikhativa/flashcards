@@ -106,13 +106,7 @@ export default function CardsScreen() {
             justifyContent: "center",
             alignItems: "center",
           }}
-          renderItem={({ item }) => (
-            <CardTile
-              card={item}
-              sideA={conf.sideA}
-              sideB={conf.sideB}
-            ></CardTile>
-          )}
+          renderItem={({ item }) => <CardTile card={item}></CardTile>}
         />
       </View>
     </View>
