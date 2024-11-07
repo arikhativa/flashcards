@@ -7,6 +7,7 @@ import { Card } from "@/types/Card";
 import Autocomplete from "./Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
+import { CardManyTiles } from "./CardManyTiles";
 
 interface CardsSectionProps {
   allCards: Card[];
@@ -48,30 +49,6 @@ const CardsSection = ({
       .filter((card) => !cards?.find((e) => e.id === card.id));
   };
 
-  const getList = () => {
-    if (!cards || cards.length === 0) {
-      return <Text style={text.grayMessage}>No cards</Text>;
-    }
-    return (
-      <FlatList
-        data={cards}
-        numColumns={4} // TODO there should be a component for flat list card tile
-        contentContainerStyle={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        keyExtractor={(card) => card.id.toString()}
-        renderItem={({ item }) => (
-          <CardTile
-            disabledLink
-            onClose={() => removeCard(item)}
-            card={item}
-          ></CardTile>
-        )}
-      />
-    );
-  };
-
   return (
     <View style={[margin.base2]}>
       <View style={[container.flexXSpace, padding.bottom]}>
@@ -86,7 +63,7 @@ const CardsSection = ({
         ></IconButton>
       </View>
 
-      <View>{getList()}</View>
+      <CardManyTiles disabledLink onClose={removeCard} cards={cards} />
 
       <Portal>
         {visible && (
