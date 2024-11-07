@@ -9,3 +9,8 @@ export enum CRUDMode {
   Create = "create",
   Update = "update",
 }
+
+export enum ObjType {
+  Tag = "tag",
+  Card = "card",
+}

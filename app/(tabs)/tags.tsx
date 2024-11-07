@@ -5,8 +5,8 @@ import { TagTile } from "@/components/TagTile";
 import { useStore } from "@/providers/GlobalStore";
 import { baseUnit, container, margin } from "@/constants/styles";
 import { Link } from "expo-router";
-import { NEW_TAG_ID } from "../tag/[id]";
 import { getTagHref } from "@/utils/links";
+import { NEW_ID } from "../[objType]";
 
 export default function TagsScreen() {
   const { tags } = useStore();
@@ -22,7 +22,7 @@ export default function TagsScreen() {
       </View>
       <Link
         style={container.buttonBottomRight}
-        href={getTagHref(NEW_TAG_ID)}
+        href={getTagHref(NEW_ID)}
         asChild
       >
         <IconButton

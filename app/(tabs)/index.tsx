@@ -5,8 +5,8 @@ import { useStore } from "@/providers/GlobalStore";
 import { Link } from "expo-router";
 import { baseUnit, margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
-import { NEW_CARD_ID } from "../card/[id]";
 import { getCardHref } from "@/utils/links";
+import { NEW_ID } from "../[objType]";
 
 export default function CardsScreen() {
   const { cards } = useStore();
@@ -28,7 +28,7 @@ export default function CardsScreen() {
       </View>
       <Link
         style={container.buttonBottomRight}
-        href={getCardHref(NEW_CARD_ID)}
+        href={getCardHref(NEW_ID)}
         asChild
       >
         <IconButton

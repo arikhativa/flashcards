@@ -1,30 +1,30 @@
-import { CRUDMode } from "@/types/generic";
+import { CRUDMode, ObjType } from "@/types/generic";
 import { Href } from "expo-router";
 
-interface CardLinkProps {
+interface ObjLinkProps {
   params: {
+    objType: ObjType;
     id: string;
     mode: CRUDMode;
   };
 }
 
-export function getCardHref(id: string | number): Href<CardLinkProps> {
+export function getCardHref(
+  id: string | number,
+  mode?: CRUDMode
+): Href<ObjLinkProps> {
   return {
-    pathname: "/card/[id]",
-    params: { id: id },
+    pathname: "/[objType]",
+    params: { objType: ObjType.Card, id: id, mode: mode },
   };
 }
 
-interface TagLinkProps {
-  params: {
-    id: string;
-    mode: CRUDMode;
-  };
-}
-
-export function getTagHref(id: string | number): Href<TagLinkProps> {
+export function getTagHref(
+  id: string | number,
+  mode?: CRUDMode
+): Href<ObjLinkProps> {
   return {
-    pathname: "/tag/[id]",
-    params: { id: id },
+    pathname: "/[objType]",
+    params: { objType: ObjType.Tag, id: id, mode: mode },
   };
 }
