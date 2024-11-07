@@ -10,25 +10,54 @@ import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
 import TagsSection from "@/components/TagsSection";
 import { Tag } from "@/types/Tag";
 import { CardRadio } from "@/components/CardRadio";
+import { CRUDMode } from "@/types/generic";
+import { useNavigation } from "@react-navigation/native";
+import { CardService } from "@/services/Card";
 
 type CardComponentProps = {
-  card: CardCreate | CardUpdate;
-  handleSubmit: (card: CardCreate | CardUpdate) => Promise<void>;
-  handleDelete?: () => Promise<void>;
+  mode: CRUDMode;
+  data?: Card;
+  id?: number;
 };
 
-const CardComponent = ({
-  card,
-  handleSubmit,
-  handleDelete,
-}: CardComponentProps) => {
-  const { tags, conf } = useStore();
+const CardComponent = ({ mode, data, id }: CardComponentProps) => {
+  const { cards, tags, conf, cardService } = useStore();
+  const navigation = useNavigation();
 
-  const [cardLocal, setCardLocal] = useState<CardCreate | CardUpdate>(card);
+  const [cardLocal, setCardLocal] = useState<Card | CardCreate | CardUpdate>(
+    {} as Card | CardCreate | CardUpdate
+  );
 
   useEffect(() => {
-    setCardLocal(card);
-  }, [card]);
+    if (mode === CRUDMode.Create) {
+      navigation.setOptions({ title: "New Card" });
+      const cardCreate: CardCreate = CardService.EMPTY;
+      setCardLocal(cardCreate);
+    } else if (mode === CRUDMode.Update) {
+      navigation.setOptions({ title: `Edit Card` });
+
+      if (!id) {
+        console.error("CardComponent: invalid Card id");
+        return;
+      }
+
+      const cardUpdate = cards.find((card) => card.id === id);
+
+      if (!cardUpdate) {
+        console.error("CardComponent: Card not found");
+        return;
+      }
+
+      setCardLocal(cardUpdate);
+    } else if (mode === CRUDMode.Read) {
+      if (!data) {
+        console.error("CardComponent: invalid Card");
+        return;
+      }
+
+      setCardLocal(data);
+    }
+  }, [id, cards, data, mode, navigation]);
 
   const setKL = (kl: KnowledgeLevel) => {
     handleLocalChange("knowledgeLevel", kl);
@@ -69,6 +98,24 @@ const CardComponent = ({
     }
     const newTags = currTags.filter((t) => t.id !== tag.id);
     setCardLocal({ ...cardLocal, tags: newTags });
+  };
+
+  const handleSubmitCreate = async (card: CardCreate) => {
+    if (mode !== CRUDMode.Create) return;
+    await cardService.create(card);
+    navigation.goBack();
+  };
+
+  const handleSubmitUpdate = async (card: CardUpdate) => {
+    if (!id || mode !== CRUDMode.Update) return;
+    await cardService.update(id, card);
+    navigation.goBack();
+  };
+
+  const handleSubmitDelete = async () => {
+    if (!id || mode !== CRUDMode.Update) return;
+    await cardService.delete(id);
+    navigation.goBack();
   };
 
   return (
@@ -160,18 +207,31 @@ const CardComponent = ({
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
-          {handleDelete && (
+          {mode === CRUDMode.Update && (
             <Button
               buttonColor="red"
               mode={"contained"}
-              onPress={() => handleDelete()}
+              onPress={() => handleSubmitDelete()}
             >
               Delete
             </Button>
           )}
-          <Button mode={"contained"} onPress={() => handleSubmit(cardLocal)}>
-            Save
-          </Button>
+          {mode === CRUDMode.Update && (
+            <Button
+              mode={"contained"}
+              onPress={() => handleSubmitUpdate(cardLocal as CardUpdate)}
+            >
+              Save
+            </Button>
+          )}
+          {mode === CRUDMode.Create && (
+            <Button
+              mode={"contained"}
+              onPress={() => handleSubmitCreate(cardLocal as CardCreate)}
+            >
+              Create
+            </Button>
+          )}
         </PaperCard.Actions>
       </PaperCard>
     </ScrollView>

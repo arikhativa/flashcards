@@ -6,6 +6,7 @@ import { Link } from "expo-router";
 import { baseUnit, margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { NEW_CARD_ID } from "../card/[id]";
+import { getCardHref } from "@/utils/links";
 
 export default function CardsScreen() {
   const { cards } = useStore();
@@ -27,10 +28,7 @@ export default function CardsScreen() {
       </View>
       <Link
         style={container.buttonBottomRight}
-        href={{
-          pathname: "/card/[id]",
-          params: { id: NEW_CARD_ID },
-        }}
+        href={getCardHref(NEW_CARD_ID)}
         asChild
       >
         <IconButton

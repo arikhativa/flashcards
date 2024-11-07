@@ -5,6 +5,7 @@ import { Divider } from "react-native-paper";
 import { margin } from "@/constants/styles";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
+import { getCardHref } from "@/utils/links";
 
 export type CardTileProps = {
   card: Card;
@@ -12,13 +13,7 @@ export type CardTileProps = {
 
 export function CardTile({ card }: CardTileProps) {
   return (
-    <Link
-      href={{
-        pathname: "/card/[id]",
-        params: { id: card.id },
-      }}
-      asChild
-    >
+    <Link href={getCardHref(card.id)} asChild>
       <Pressable>
         <PaperCard style={margin.base}>
           <PaperCard.Content>

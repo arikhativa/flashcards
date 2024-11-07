@@ -11,13 +11,20 @@ export class CardService extends BaseCrudService<
   CardUpdate,
   CardSchema
 > {
+  static readonly EMPTY: CardCreate = {
+    sideA: "",
+    sideB: "",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Learning,
+  };
+
   constructor(repo: Repository<CardSchema>, onUpdate: () => void) {
     const relations = ["tags"];
     super(repo, onUpdate, relations);
   }
 
   // TODO test link to tag
-  async create(payload: CardCreate): Promise<Card> {
+  async create(payload: CardCreate): Promise<Card | null> {
     if (!isKnowledgeLevel(payload.knowledgeLevel)) {
       payload.knowledgeLevel = KnowledgeLevel.Learning;
     }
