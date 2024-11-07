@@ -1,16 +1,10 @@
-import { PaperProvider } from "react-native-paper";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DefaultTheme, PaperProvider } from "react-native-paper";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { StoreProvider } from "@/providers/GlobalStore";
 import { source } from "@/hooks/db";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
@@ -19,8 +13,11 @@ import { Repository } from "typeorm";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+const theme = {
+  ...DefaultTheme,
+};
+
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -62,20 +59,16 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <StoreProvider
         cardRepository={cardRepository}
         tagRepository={tagRepository}
         confRepository={confRepository}
       >
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
       </StoreProvider>
     </PaperProvider>
   );

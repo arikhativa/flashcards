@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
+import { KnowledgeLevelColor } from "../types/KnowledgeLevel";
 
 export const baseUnit = 10;
+export const BORDER_SIZE = 30;
 
 export const container = StyleSheet.create({
   flex1: {
@@ -45,6 +47,21 @@ export const container = StyleSheet.create({
     top: 0,
     right: 0,
     margin: baseUnit * 2,
+  },
+});
+
+export const KLMark = StyleSheet.create({
+  Learning: {
+    borderBottomColor: KnowledgeLevelColor.Learning,
+    borderBottomWidth: BORDER_SIZE,
+  },
+  GettingThere: {
+    borderBottomColor: KnowledgeLevelColor.GettingThere,
+    borderBottomWidth: BORDER_SIZE,
+  },
+  Confident: {
+    borderBottomColor: KnowledgeLevelColor.Confident,
+    borderBottomWidth: BORDER_SIZE,
   },
 });
 

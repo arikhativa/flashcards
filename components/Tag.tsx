@@ -1,7 +1,7 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
 import { Button, Card as PaperCard, Text, TextInput } from "react-native-paper";
-import { color, margin, padding } from "@/constants/styles";
+import { color, KLMark, margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
@@ -119,16 +119,16 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
 
     // cardsLearning
     if (cardsLearning > cardsGettingThere && cardsLearning > cardsConfident) {
-      return styles.Learning;
+      return KLMark.Learning;
     }
     // cardsGettingThere
     if (
       cardsGettingThere > cardsLearning &&
       cardsGettingThere > cardsConfident
     ) {
-      return styles.GettingThere;
+      return KLMark.GettingThere;
     }
-    return styles.Confident;
+    return KLMark.Confident;
   };
 
   return (
@@ -188,28 +188,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   );
 };
 
-const HEIGHT = 200;
-const BORDER_SIZE = 30;
-
 const styles = StyleSheet.create({
-  Learning: {
-    borderBottomColor: KnowledgeLevelColor.Learning,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  GettingThere: {
-    borderBottomColor: KnowledgeLevelColor.GettingThere,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  Confident: {
-    borderBottomColor: KnowledgeLevelColor.Confident,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  sideViewHeightA: {
-    height: HEIGHT,
-  },
-  sideViewHeightB: {
-    height: HEIGHT - BORDER_SIZE,
-  },
   sideView: {
     position: "relative",
     justifyContent: "center",
