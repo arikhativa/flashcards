@@ -1,7 +1,7 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
-import { Button, Card as CardPaper, Text, TextInput } from "react-native-paper";
-import { margin } from "@/constants/styles";
+import { Button, Card as PaperCard, Text, TextInput } from "react-native-paper";
+import { color, margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
@@ -9,6 +9,8 @@ import { CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
+import CardsSection from "./CardsSection";
+import { BAD_ID } from "@/constants/general";
 
 type TagComponentProps = {
   mode: CRUDMode;
@@ -16,10 +18,8 @@ type TagComponentProps = {
   id?: string;
 };
 
-const BAD_ID = -1; // TODO this should be general
-
 const TagComponent = ({ mode, data, id }: TagComponentProps) => {
-  const { tags, tagService } = useStore();
+  const { cards, tags, tagService } = useStore();
   const navigation = useNavigation();
 
   let idLocal: number = parseInt(id || "-1", 10);
@@ -89,13 +89,13 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   };
 
   const handleSubmitUpdate = async (tag: TagUpdate) => {
-    if (!id || mode !== CRUDMode.Update) return;
+    if (idLocal === BAD_ID || mode !== CRUDMode.Update) return;
     await tagService.update(idLocal, tag);
     navigation.goBack();
   };
 
   const handleSubmitDelete = async () => {
-    if (!id || mode !== CRUDMode.Update) return;
+    if (idLocal === BAD_ID || mode !== CRUDMode.Update) return;
     await tagService.delete(idLocal);
     navigation.goBack();
   };
@@ -132,34 +132,31 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   };
 
   return (
-    <ScrollView>
-      <CardPaper style={[margin.base2, getKLStyle()]}>
-        <CardPaper.Content>
-          <View style={[styles.sideView, styles.sideViewHeightA]}>
-            <Text style={styles.labelText} variant="titleLarge">
-              Name
-            </Text>
+    <View>
+      <View style={[margin.base2]}>
+        <PaperCard>
+          <PaperCard.Content>
             <TextInput
-              style={[styles.textInput]}
+              style={[{ height: 20 }, styles.textInput]}
+              underlineColor="transparent"
               onChangeText={(text) => {
                 handleLocalChange("name", text);
               }}
               value={tagLocal.name}
             ></TextInput>
-          </View>
-        </CardPaper.Content>
-      </CardPaper>
+          </PaperCard.Content>
+        </PaperCard>
+      </View>
 
-      {/* 
-      <TagsSection
+      <CardsSection
         addCard={addCard}
-        removeTag={removeTag}
-        tags={tagLocal.cards}
-        allTags={tags}
-      /> */}
+        removeCard={removeCard}
+        cards={tagLocal.cards as Card[]}
+        allCards={cards}
+      />
 
-      <CardPaper style={margin.base2}>
-        <CardPaper.Actions>
+      <PaperCard style={margin.base2}>
+        <PaperCard.Actions>
           {mode === CRUDMode.Update && (
             <Button
               buttonColor="red"
@@ -185,9 +182,9 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
               Create
             </Button>
           )}
-        </CardPaper.Actions>
-      </CardPaper>
-    </ScrollView>
+        </PaperCard.Actions>
+      </PaperCard>
+    </View>
   );
 };
 
@@ -225,7 +222,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: "transparent",
-    width: "90%",
     textAlign: "center",
   },
 });

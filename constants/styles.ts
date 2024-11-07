@@ -49,6 +49,11 @@ export const container = StyleSheet.create({
 });
 
 export const color = StyleSheet.create({
+  bgPurple: { backgroundColor: "purple" },
+  bgGreen: { backgroundColor: "green" },
+  bgPink: { backgroundColor: "pink" },
+  bgBlue: { backgroundColor: "blue" },
+  bgRed: { backgroundColor: "red" },
   opacity1: { opacity: 0.1 },
   opacity3: { opacity: 0.3 },
   opacity5: { opacity: 0.5 },
@@ -59,6 +64,9 @@ export const text = StyleSheet.create({
 });
 
 export const margin = StyleSheet.create({
+  none: {
+    margin: 0,
+  },
   base: {
     margin: baseUnit,
   },
@@ -90,6 +98,9 @@ export const margin = StyleSheet.create({
 });
 
 export const padding = StyleSheet.create({
+  none: {
+    padding: 0,
+  },
   base: {
     padding: baseUnit,
   },

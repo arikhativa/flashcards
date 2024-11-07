@@ -13,14 +13,13 @@ import { CardRadio } from "@/components/CardRadio";
 import { CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
+import { BAD_ID } from "@/constants/general";
 
 type CardComponentProps = {
   mode: CRUDMode;
   data?: Card;
   id?: string;
 };
-
-const BAD_ID = -1;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   const { cards, tags, conf, cardService } = useStore();
