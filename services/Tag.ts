@@ -9,13 +9,17 @@ export class TagService extends BaseCrudService<
   TagUpdate,
   TagSchema
 > {
+  static readonly EMPTY: TagCreate = {
+    name: "",
+  };
+
   constructor(repo: Repository<TagSchema>, onUpdate: () => void) {
     const relations = ["cards"];
     super(repo, onUpdate, relations);
   }
 
   // TODO test link to tag
-  async create(payload: TagCreate): Promise<Tag> {
+  async create(payload: TagCreate): Promise<Tag | null> {
     if (payload.cards) {
       const cards: CardSchema[] = [];
 

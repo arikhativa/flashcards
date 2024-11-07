@@ -17,13 +17,16 @@ import { CardService } from "@/services/Card";
 type CardComponentProps = {
   mode: CRUDMode;
   data?: Card;
-  id?: number;
+  id?: string;
 };
+
+const BAD_ID = -1;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   const { cards, tags, conf, cardService } = useStore();
   const navigation = useNavigation();
 
+  let idLocal: number = parseInt(id || "-1", 10);
   const [cardLocal, setCardLocal] = useState<Card | CardCreate | CardUpdate>(
     {} as Card | CardCreate | CardUpdate
   );
@@ -36,12 +39,12 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     } else if (mode === CRUDMode.Update) {
       navigation.setOptions({ title: `Edit Card` });
 
-      if (!id) {
-        console.error("CardComponent: invalid Card id");
+      if (idLocal === BAD_ID) {
+        console.error("CardComponent: invalid Card id, idLocal", id, idLocal);
         return;
       }
 
-      const cardUpdate = cards.find((card) => card.id === id);
+      const cardUpdate = cards.find((card) => card.id === idLocal);
 
       if (!cardUpdate) {
         console.error("CardComponent: Card not found");
@@ -57,7 +60,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
 
       setCardLocal(data);
     }
-  }, [id, cards, data, mode, navigation]);
+  }, []);
 
   const setKL = (kl: KnowledgeLevel) => {
     handleLocalChange("knowledgeLevel", kl);
@@ -108,13 +111,13 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
 
   const handleSubmitUpdate = async (card: CardUpdate) => {
     if (!id || mode !== CRUDMode.Update) return;
-    await cardService.update(id, card);
+    await cardService.update(idLocal, card);
     navigation.goBack();
   };
 
   const handleSubmitDelete = async () => {
     if (!id || mode !== CRUDMode.Update) return;
-    await cardService.delete(id);
+    await cardService.delete(idLocal);
     navigation.goBack();
   };
 

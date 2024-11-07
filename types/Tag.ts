@@ -3,7 +3,7 @@ import { CardSchema, TagSchema } from "@/schemas/schemas";
 export type Tag = TagSchema;
 
 export type TagCreate = Pick<Tag, "name"> & {
-  cards?: number[] | CardSchema[];
+  cards?: CardSchema[];
 };
 
-export type TagUpdate = Partial<Omit<Tag, "id" | "createdAt" | "updatedAt">>;
+export type TagUpdate = Omit<Tag, "id" | "createdAt" | "updatedAt">;

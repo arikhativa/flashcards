@@ -14,3 +14,17 @@ export function getCardHref(id: string | number): Href<CardLinkProps> {
     params: { id: id },
   };
 }
+
+interface TagLinkProps {
+  params: {
+    id: string;
+    mode: CRUDMode;
+  };
+}
+
+export function getTagHref(id: string | number): Href<TagLinkProps> {
+  return {
+    pathname: "/tag/[id]",
+    params: { id: id },
+  };
+}

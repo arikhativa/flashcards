@@ -58,7 +58,11 @@ const TagsSection = ({
         data={tags}
         keyExtractor={(tag) => tag.id.toString()}
         renderItem={({ item }) => (
-          <TagTile onClose={() => removeTag(item)} tag={item}></TagTile>
+          <TagTile
+            disabledLink
+            onClose={() => removeTag(item)}
+            tag={item}
+          ></TagTile>
         )}
       />
     );
@@ -102,7 +106,9 @@ const TagsSection = ({
                   onSelect={onSelect}
                   keyExtractor={keyExtractor}
                   onSearchChange={onSearchChange}
-                  itemComponent={({ item }) => <TagTile tag={item}></TagTile>}
+                  itemComponent={({ item }) => (
+                    <TagTile disabledLink tag={item}></TagTile>
+                  )}
                   onCreateEmpty={(text: string) => {
                     hideDialog();
                     return handleCreateTag(text);
