@@ -10,16 +10,12 @@ import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
 import TagsSection from "@/components/TagsSection";
 import { Tag } from "@/types/Tag";
 import { CardRadio } from "@/components/CardRadio";
-import { CRUDMode } from "@/types/generic";
+import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
 
-type CardComponentProps = {
-  mode: CRUDMode;
-  data?: Card;
-  id?: string;
-};
+type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   const { cards, tags, conf, cardService } = useStore();

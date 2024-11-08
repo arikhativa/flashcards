@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import TagComponent from "@/components/Tag";
-import { CRUDMode, ObjType } from "@/types/generic";
+import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
 import CardComponent from "@/components/Card";
 import NotFoundScreen from "./+not-found";
 
@@ -22,31 +22,49 @@ const ObjPage: React.FC = () => {
     }
   }, []);
 
-  const getTagComponent = () => {
+  const getGenericComponent = <T,>(component: React.FC<ComponentProps<T>>) => {
     if (id === NEW_ID) {
-      return <TagComponent mode={CRUDMode.Create} />;
+      return React.createElement(component, {
+        mode: CRUDMode.Create,
+      });
     }
     if (mode && mode === CRUDMode.Read) {
-      return <TagComponent mode={CRUDMode.Read} id={id} />;
+      return React.createElement(component, {
+        mode: CRUDMode.Read,
+        id: id,
+      });
     }
-    return <TagComponent mode={CRUDMode.Update} id={id} />;
+    return React.createElement(component, {
+      mode: CRUDMode.Update,
+      id: id,
+    });
   };
 
-  const getCardComponent = () => {
-    if (id === NEW_ID) {
-      return <CardComponent mode={CRUDMode.Create} />;
-    }
-    if (mode && mode === CRUDMode.Read) {
-      return <CardComponent mode={CRUDMode.Read} id={id} />;
-    }
-    return <CardComponent mode={CRUDMode.Update} id={id} />;
-  };
+  // const getTagComponent = <T,>() => {
+  //   if (id === NEW_ID) {
+  //     return <TagComponent mode={CRUDMode.Create} />;
+  //   }
+  //   if (mode && mode === CRUDMode.Read) {
+  //     return <TagComponent mode={CRUDMode.Read} id={id} />;
+  //   }
+  //   return <TagComponent mode={CRUDMode.Update} id={id} />;
+  // };
+
+  // const getCardComponent = () => {
+  //   if (id === NEW_ID) {
+  //     return <CardComponent mode={CRUDMode.Create} />;
+  //   }
+  //   if (mode && mode === CRUDMode.Read) {
+  //     return <CardComponent mode={CRUDMode.Read} id={id} />;
+  //   }
+  //   return <CardComponent mode={CRUDMode.Update} id={id} />;
+  // };
 
   const getComponent = () => {
     if (objType === ObjType.Tag) {
-      return getTagComponent();
+      return getGenericComponent(TagComponent);
     } else if (objType === ObjType.Card) {
-      return getCardComponent();
+      return getGenericComponent(CardComponent);
     }
     return <NotFoundScreen />;
   };

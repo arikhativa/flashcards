@@ -5,18 +5,14 @@ import { color, KLMark, margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
-import { CRUDMode } from "@/types/generic";
+import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 
-type TagComponentProps = {
-  mode: CRUDMode;
-  data?: Tag;
-  id?: string;
-};
+type TagComponentProps = ComponentProps<Tag>;
 
 const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   const { cards, tags, tagService } = useStore();
