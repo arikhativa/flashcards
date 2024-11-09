@@ -9,3 +9,9 @@ export enum KnowledgeLevelColor {
   GettingThere = "green",
   Confident = "purple",
 }
+
+export interface SelectedKL {
+  Learning: boolean;
+  GettingThere: boolean;
+  Confident: boolean;
+}

@@ -28,6 +28,13 @@ export const container = StyleSheet.create({
   space: {
     justifyContent: "space-between",
   },
+  fullScreen: {
+    height: "100%",
+    width: "100%",
+  },
+  hFull: {
+    height: "100%",
+  },
   wFull: {
     width: "100%",
   },
@@ -80,6 +87,12 @@ export const text = StyleSheet.create({
   grayMessage: { opacity: 0.3, width: "100%", textAlign: "center" },
 });
 
+export const gap = StyleSheet.create({
+  base: {
+    gap: baseUnit / 5,
+  },
+});
+
 export const margin = StyleSheet.create({
   none: {
     margin: 0,
@@ -105,12 +118,33 @@ export const margin = StyleSheet.create({
   top2: {
     marginTop: baseUnit * 2,
   },
+  top3: {
+    marginTop: baseUnit * 3,
+  },
+  top4: {
+    marginTop: baseUnit * 4,
+  },
   bottom: {
     marginBottom: baseUnit,
   },
-  sides: {
+  bottom2: {
+    marginBottom: baseUnit * 2,
+  },
+  x: {
     marginLeft: baseUnit,
     marginRight: baseUnit,
+  },
+  x2: {
+    marginLeft: baseUnit * 2,
+    marginRight: baseUnit * 2,
+  },
+  y: {
+    marginTop: baseUnit,
+    marginBottom: baseUnit,
+  },
+  y2: {
+    marginTop: baseUnit * 2,
+    marginBottom: baseUnit * 2,
   },
 });
 
@@ -130,7 +164,7 @@ export const padding = StyleSheet.create({
   bottom: {
     paddingBottom: baseUnit,
   },
-  sides: {
+  x: {
     paddingLeft: baseUnit,
     paddingRight: baseUnit,
   },

@@ -25,7 +25,7 @@ export default function ConfScreen() {
   };
 
   return (
-    <View style={[container.center, padding.sides]}>
+    <View style={[container.center, padding.x]}>
       <Card>
         <Card.Title title="Settings" />
         <Card.Content style={padding.bottom}>

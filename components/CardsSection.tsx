@@ -22,7 +22,6 @@ const CardsSection = ({
   addCard,
   removeCard,
 }: CardsSectionProps) => {
-  const { cardService } = useStore();
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
