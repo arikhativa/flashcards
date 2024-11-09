@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { IconButton } from "react-native-paper";
+import { FAB, IconButton } from "react-native-paper";
 import { useStore } from "@/providers/GlobalStore";
 import { Link } from "expo-router";
 import { baseUnit, margin } from "@/constants/styles";
@@ -19,11 +19,7 @@ export default function CardsScreen() {
         href={getCardHref(NEW_ID)}
         asChild
       >
-        <IconButton
-          icon="plus"
-          size={baseUnit * 5}
-          mode="contained"
-        ></IconButton>
+        <FAB icon="plus" />
       </Link>
     </View>
   );

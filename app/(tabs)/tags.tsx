@@ -1,4 +1,4 @@
-import { IconButton } from "react-native-paper";
+import { FAB, IconButton } from "react-native-paper";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import { TagTile } from "@/components/TagTile";
@@ -25,11 +25,7 @@ export default function TagsScreen() {
         href={getTagHref(NEW_ID)}
         asChild
       >
-        <IconButton
-          icon="plus"
-          size={baseUnit * 5} // TODO move to general style ()also in index.tsx
-          mode="contained"
-        ></IconButton>
+        <FAB icon="plus" />
       </Link>
     </View>
   );

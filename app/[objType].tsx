@@ -40,26 +40,6 @@ const ObjPage: React.FC = () => {
     });
   };
 
-  // const getTagComponent = <T,>() => {
-  //   if (id === NEW_ID) {
-  //     return <TagComponent mode={CRUDMode.Create} />;
-  //   }
-  //   if (mode && mode === CRUDMode.Read) {
-  //     return <TagComponent mode={CRUDMode.Read} id={id} />;
-  //   }
-  //   return <TagComponent mode={CRUDMode.Update} id={id} />;
-  // };
-
-  // const getCardComponent = () => {
-  //   if (id === NEW_ID) {
-  //     return <CardComponent mode={CRUDMode.Create} />;
-  //   }
-  //   if (mode && mode === CRUDMode.Read) {
-  //     return <CardComponent mode={CRUDMode.Read} id={id} />;
-  //   }
-  //   return <CardComponent mode={CRUDMode.Update} id={id} />;
-  // };
-
   const getComponent = () => {
     if (objType === ObjType.Tag) {
       return getGenericComponent(TagComponent);
