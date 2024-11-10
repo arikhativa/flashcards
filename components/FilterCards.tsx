@@ -4,19 +4,25 @@ import { useState, type PropsWithChildren } from "react";
 import { StyleSheet, View } from "react-native";
 import { Menu, PaperProvider, Button, IconButton } from "react-native-paper";
 import MultiSelectKLDialog from "./MultiSelectKLDialog";
+import { DatePickerModal } from "react-native-paper-dates";
+import { TimeRange } from "@/types/generic";
 
 interface FilterCardsProps {
   selectedKL: SelectedKL;
   onKLChange: (selectedKL: SelectedKL) => void;
-  // onTimeChange: (from: Date, to: Date) => void;
+  range: TimeRange;
+  onRangeChange: (range: TimeRange) => void;
   // onArchiveChange: (showArchive: boolean) => void;
 }
 
 export default function FilterCards({
   selectedKL,
   onKLChange,
+  range,
+  onRangeChange,
 }: FilterCardsProps) {
   const [visible, setVisible] = useState(true);
+  const [timeRangeVisible, setTimeRangeVisible] = useState(false);
   const [isKLVisible, setIsKLVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -37,7 +43,13 @@ export default function FilterCards({
           />
         }
       >
-        <Menu.Item onPress={() => {}} title="By Time Intervale" />
+        <Menu.Item
+          onPress={() => {
+            closeMenu();
+            setTimeRangeVisible(true);
+          }}
+          title="By Time Intervale"
+        />
         <Menu.Item
           onPress={() => {
             closeMenu();
@@ -47,6 +59,23 @@ export default function FilterCards({
         />
         <Menu.Item onPress={() => {}} title="Show archive" />
       </Menu>
+
+      <DatePickerModal
+        locale="en"
+        mode="range"
+        visible={timeRangeVisible}
+        onDismiss={() => {
+          onRangeChange({ startDate: undefined, endDate: undefined });
+          setTimeRangeVisible(false);
+        }}
+        startDate={range.startDate}
+        endDate={range.endDate}
+        onConfirm={(newRange: TimeRange) => {
+          onRangeChange(newRange);
+          setTimeRangeVisible(false);
+        }}
+      />
+
       <MultiSelectKLDialog
         visible={isKLVisible}
         onDismiss={() => setIsKLVisible(false)}

@@ -10,6 +10,9 @@ import { source } from "@/hooks/db";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { Repository } from "typeorm";
 
+import { en, registerTranslation } from "react-native-paper-dates";
+registerTranslation("en", en);
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 

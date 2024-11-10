@@ -4,8 +4,11 @@ import { StyleSheet, View } from "react-native";
 import { Searchbar, IconButton } from "react-native-paper";
 import FilterCards from "./FilterCards";
 import { SelectedKL } from "@/types/KnowledgeLevel";
+import { TimeRange } from "@/types/generic";
 
 type CardsActionsProps = PropsWithChildren<{
+  range: TimeRange;
+  onRangeChange: (range: TimeRange) => void;
   query: string;
   onQueryChange: (text: string) => void;
   selectedKL: SelectedKL;
@@ -13,6 +16,8 @@ type CardsActionsProps = PropsWithChildren<{
 }>;
 
 export default function CardsActions({
+  range,
+  onRangeChange,
   query,
   onQueryChange,
   selectedKL,
@@ -40,7 +45,12 @@ export default function CardsActions({
         icon="sort"
         // onPress={}
       />
-      <FilterCards selectedKL={selectedKL} onKLChange={onKLChange} />
+      <FilterCards
+        range={range}
+        onRangeChange={onRangeChange}
+        selectedKL={selectedKL}
+        onKLChange={onKLChange}
+      />
     </View>
   );
 }

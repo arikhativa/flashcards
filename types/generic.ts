@@ -20,3 +20,8 @@ export enum ObjType {
   Tag = "tag",
   Card = "card",
 }
+
+export interface TimeRange {
+  startDate?: Date;
+  endDate?: Date;
+}

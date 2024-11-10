@@ -11,11 +11,13 @@ import CardsActions from "@/components/CardsActions";
 import { useEffect, useState } from "react";
 import { SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
+import { TimeRange } from "@/types/generic";
 
 export default function CardsScreen() {
   const { cards } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
+  const [range, setRange] = useState<TimeRange>({});
 
   const [selectedKL, setSelectedKL] = useState<SelectedKL>({
     Learning: true,
@@ -24,6 +26,14 @@ export default function CardsScreen() {
   });
 
   useEffect(() => {
+    const filterCardsByTimeRanger = (list: Card[]) => {
+      const start = range.startDate || 0;
+      const end = range.endDate || Date.now();
+      return list.filter(
+        (card) => card.createdAt >= start && card.createdAt <= end
+      );
+    };
+
     const filterCardsByKL = (list: Card[]) => {
       return list.filter((card) => selectedKL[card.knowledgeLevel]);
     };
@@ -41,17 +51,20 @@ export default function CardsScreen() {
     };
 
     const setCardsLocalWitFilters = (list: Card[]) => {
+      list = filterCardsByTimeRanger(list);
       list = filterCardsByKL(list);
       list = filterCardsBySearch(list);
       setCardsLocal(list);
     };
 
     setCardsLocalWitFilters(cards);
-  }, [cards, query, selectedKL]);
+  }, [cards, query, selectedKL, range]);
 
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions
+        range={range}
+        onRangeChange={setRange}
         query={query}
         onQueryChange={setQuery}
         selectedKL={selectedKL}
