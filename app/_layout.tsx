@@ -8,7 +8,7 @@ import "react-native-reanimated";
 import { StoreProvider } from "@/providers/GlobalStore";
 import { source } from "@/hooks/db";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 
 import { en, registerTranslation } from "react-native-paper-dates";
 registerTranslation("en", en);
@@ -47,7 +47,17 @@ export default function RootLayout() {
 
   useEffect(() => {
     const initDB = async () => {
-      const db = await source.initialize();
+      let db: DataSource;
+      try {
+        if (!source.isInitialized) {
+          db = await source.initialize();
+        } else {
+          db = source;
+        }
+      } catch (e) {
+        console.error("Error initializing database", e);
+        return;
+      }
       setCardRepository(db.getRepository(CardSchema));
       setTagRepository(db.getRepository(TagSchema));
       setConfRepository(db.getRepository(ConfSchema));

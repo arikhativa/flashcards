@@ -14,6 +14,7 @@ import { ConfService } from "@/services/Conf";
 import { Repository } from "typeorm";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { Conf } from "@/types/Conf";
+import { CARDS, TAGS } from "@/constants/db";
 
 interface StoreContextType {
   cards: Card[];
@@ -38,6 +39,7 @@ export const StoreProvider = ({
   tagRepository: Repository<TagSchema>;
   confRepository: Repository<ConfSchema>;
 }) => {
+  const [dbIsReady, setDbIsReady] = useState(false);
   const [cards, setCards] = useState<Card[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
@@ -68,12 +70,54 @@ export const StoreProvider = ({
   const cardTagService = new CardTagService(cardService, tagService);
   const confService = new ConfService(confRepository, fetchAll);
 
+  useEffect(() => {
+    const init = async () => {
+      const card = await cardService.getById(1);
+      if (__DEV__ && !card) {
+        console.log("This is Dev and the DB is empty, adding items...");
+        for (const card of CARDS) {
+          await cardService.create(card);
+        }
+        for (const tag of TAGS) {
+          await tagService.create(tag);
+        }
+        const cards = (await cardService.getAll()) || [];
+        const tags = (await tagService.getAll()) || [];
+
+        if (cards?.length === 0 || tags?.length === 0) {
+          console.error("Failed to add items to the DB");
+        }
+
+        await cardTagService.link(1, 1); // Manger + verbs
+        await cardTagService.link(2, 3); // Placard + nouns
+        await cardTagService.link(3, 3); // ver + nouns
+        await cardTagService.link(4, 3); // Pomme + nouns
+        await cardTagService.link(4, 4); // Pomme + food
+        await cardTagService.link(5, 3); // Port + nouns
+        await cardTagService.link(6, 2); // jour + nouns
+        await cardTagService.link(7, 2); // il y a + phrases
+        await cardTagService.link(8, 2); // il fait chaud + phrases
+        await cardTagService.link(9, 2); // quelque chose + phrases
+        await cardTagService.link(10, 2); // ou est la rue? + phrases
+      }
+
+      setDbIsReady(true);
+    };
+    init();
+  }, []);
+
   // TODO add a startup check that make sure all data is loaded
   useEffect(() => {
-    fetchCards();
-    fetchTags();
-    confService.init();
-  }, []);
+    if (dbIsReady) {
+      fetchCards();
+      fetchTags();
+      confService.init();
+    }
+  }, [dbIsReady]);
+
+  if (!dbIsReady) {
+    return null;
+  }
 
   return (
     <StoreContext.Provider
