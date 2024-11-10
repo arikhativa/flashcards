@@ -35,3 +35,20 @@ export interface FilterChip {
   name: FilterNames;
   onClose: () => void;
 }
+
+export enum SortNames {
+  SIDE_A_ABC = "Side A",
+  SIDE_B_ABC = "Side B",
+  TIME = "TIME",
+  KL = "KL",
+}
+
+export enum SortDir {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export interface Sort {
+  field: SortNames;
+  direction: SortDir;
+}

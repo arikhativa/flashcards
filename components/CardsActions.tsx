@@ -4,9 +4,12 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Searchbar, IconButton, Chip } from "react-native-paper";
 import FilterCards from "./FilterCards";
 import { SelectedKL } from "@/types/KnowledgeLevel";
-import { FilterChip, TimeRange } from "@/types/generic";
+import { FilterChip, Sort, TimeRange } from "@/types/generic";
+import SortCards from "./SortCards";
 
 type CardsActionsProps = PropsWithChildren<{
+  sort: Sort;
+  onSortChange: (sort: Sort) => void;
   filters: FilterChip[];
   range: TimeRange;
   onRangeChange: (range: TimeRange) => void;
@@ -17,6 +20,8 @@ type CardsActionsProps = PropsWithChildren<{
 }>;
 
 export default function CardsActions({
+  sort,
+  onSortChange,
   filters,
   range,
   onRangeChange,
@@ -34,12 +39,7 @@ export default function CardsActions({
           value={query}
           style={{ flex: 1 }}
         />
-        <IconButton
-          mode="contained"
-          size={baseUnit * 3}
-          icon="sort"
-          // onPress={}
-        />
+        <SortCards sort={sort} onSortChange={onSortChange} />
         <FilterCards
           range={range}
           onRangeChange={onRangeChange}

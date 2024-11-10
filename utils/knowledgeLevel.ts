@@ -24,3 +24,16 @@ export function knowledgeLevelToColor(kl: KnowledgeLevel): KnowledgeLevelColor {
 export function isKnowledgeLevelFullOn(kl: SelectedKL): boolean {
   return Object.values(kl).every((value) => value);
 }
+
+export function KLtoNumber(kl: KnowledgeLevel): number {
+  switch (kl) {
+    case KnowledgeLevel.Learning:
+      return 1;
+    case KnowledgeLevel.GettingThere:
+      return 2;
+    case KnowledgeLevel.Confident:
+      return 3;
+    default:
+      return 0;
+  }
+}
