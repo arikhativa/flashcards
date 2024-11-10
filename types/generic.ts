@@ -27,7 +27,7 @@ export interface TimeRange {
 }
 
 export enum FilterNames {
-  TimeRange = "TimeRange",
+  TimeRange = "Time Range",
   KL = "Knowledge Level",
 }
 

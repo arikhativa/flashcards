@@ -8,10 +8,11 @@ import { getCardHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
 import { CardManyTiles } from "@/components/CardManyTiles";
 import { useEffect, useState } from "react";
-import { SelectedKL } from "@/types/KnowledgeLevel";
+import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
 import { FilterChip, FilterNames, TimeRange } from "@/types/generic";
 import CardsActions from "@/components/CardsActions";
+import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 
 export default function CardsScreen() {
   const { cards } = useStore();
@@ -20,33 +21,59 @@ export default function CardsScreen() {
   const [range, setRange] = useState<TimeRange>({});
   const [filters, setFilters] = useState<FilterChip[]>([]);
 
-  const [selectedKL, setSelectedKL] = useState<SelectedKL>({
-    Learning: true,
-    GettingThere: true,
-    Confident: true,
-  });
+  const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
 
-  const handleUnsetRange = () => {
-    setRange({});
-    if (filters.find((filter) => filter.name === FilterNames.TimeRange)) {
-      setFilters([
-        ...filters.filter((filter) => filter.name !== FilterNames.TimeRange),
-      ]);
+  useEffect(() => {
+    const removeFilterIfNeeded = () => {
+      removeRangeIfNeeded();
+      removeKLIfNeeded();
+    };
+
+    const removeRangeIfNeeded = () => {
+      if (!range.endDate || !range.startDate) {
+        removeFilter(FilterNames.TimeRange);
+      }
+    };
+
+    const removeKLIfNeeded = () => {
+      if (isKnowledgeLevelFullOn(selectedKL)) {
+        removeFilter(FilterNames.KL);
+      }
+    };
+
+    const removeFilter = (name: FilterNames) => {
+      if (filters.find((filter) => filter.name === name)) {
+        setFilters([...filters.filter((filter) => filter.name !== name)]);
+      }
+    };
+
+    removeFilterIfNeeded();
+  }, [filters, range, selectedKL]);
+
+  const handleGenericFilterSet = (name: FilterNames, onClose: () => void) => {
+    if (filters.find((filter) => filter.name === name)) {
+      return;
     }
+
+    const f: FilterChip = {
+      name,
+      onClose: onClose,
+    };
+    setFilters([...filters, f]);
+  };
+
+  const handleKLChange = (kl: SelectedKL) => {
+    setSelectedKL(kl);
+
+    handleGenericFilterSet(FilterNames.KL, () =>
+      setSelectedKL(FULL_SELECTED_KL)
+    );
   };
 
   const handleRangeChange = (range: TimeRange) => {
     setRange(range);
 
-    if (filters.find((filter) => filter.name === FilterNames.TimeRange)) {
-      return;
-    }
-
-    const f: FilterChip = {
-      name: FilterNames.TimeRange,
-      onClose: handleUnsetRange,
-    };
-    setFilters([...filters, f]);
+    handleGenericFilterSet(FilterNames.TimeRange, () => setRange({}));
   };
 
   useEffect(() => {
@@ -93,7 +120,7 @@ export default function CardsScreen() {
         query={query}
         onQueryChange={setQuery}
         selectedKL={selectedKL}
-        onKLChange={setSelectedKL}
+        onKLChange={handleKLChange}
       />
       <CardManyTiles cards={cardsLocal} />
       <Link

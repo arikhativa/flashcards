@@ -1,4 +1,8 @@
-import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
+import {
+  KnowledgeLevel,
+  KnowledgeLevelColor,
+  SelectedKL,
+} from "@/types/KnowledgeLevel";
 
 export function isKnowledgeLevel(kl: string): boolean {
   return Object.values(KnowledgeLevel).includes(kl as KnowledgeLevel);
@@ -15,4 +19,8 @@ export function knowledgeLevelToColor(kl: KnowledgeLevel): KnowledgeLevelColor {
     default:
       return KnowledgeLevelColor.Learning;
   }
+}
+
+export function isKnowledgeLevelFullOn(kl: SelectedKL): boolean {
+  return Object.values(kl).every((value) => value);
 }

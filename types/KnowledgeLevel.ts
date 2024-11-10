@@ -15,3 +15,9 @@ export interface SelectedKL {
   GettingThere: boolean;
   Confident: boolean;
 }
+
+export const FULL_SELECTED_KL = {
+  Learning: true,
+  GettingThere: true,
+  Confident: true,
+};

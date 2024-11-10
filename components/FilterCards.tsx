@@ -65,7 +65,6 @@ export default function FilterCards({
         mode="range"
         visible={timeRangeVisible}
         onDismiss={() => {
-          onRangeChange({ startDate: undefined, endDate: undefined });
           setTimeRangeVisible(false);
         }}
         startDate={range.startDate}

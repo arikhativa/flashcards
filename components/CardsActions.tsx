@@ -26,33 +26,27 @@ export default function CardsActions({
   onKLChange,
 }: CardsActionsProps) {
   return (
-    <View
-      style={[
-        margin.x2,
-        margin.top3,
-        margin.bottom2,
-        gap.base,
-        { flexDirection: "row" },
-      ]}
-    >
-      <Searchbar
-        placeholder="Search"
-        onChangeText={onQueryChange}
-        value={query}
-        style={{ flex: 1 }}
-      />
-      <IconButton
-        mode="contained"
-        size={baseUnit * 3}
-        icon="sort"
-        // onPress={}
-      />
-      <FilterCards
-        range={range}
-        onRangeChange={onRangeChange}
-        selectedKL={selectedKL}
-        onKLChange={onKLChange}
-      />
+    <View style={[margin.x2, margin.top3, margin.bottom2]}>
+      <View style={[margin.bottom2, gap.base, { flexDirection: "row" }]}>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onQueryChange}
+          value={query}
+          style={{ flex: 1 }}
+        />
+        <IconButton
+          mode="contained"
+          size={baseUnit * 3}
+          icon="sort"
+          // onPress={}
+        />
+        <FilterCards
+          range={range}
+          onRangeChange={onRangeChange}
+          selectedKL={selectedKL}
+          onKLChange={onKLChange}
+        />
+      </View>
       <View>
         <FlatList
           data={filters}
@@ -63,6 +57,7 @@ export default function CardsActions({
               closeIcon={"close"}
               onClose={item.onClose}
               style={{
+                marginLeft: baseUnit,
                 alignSelf: "flex-start",
               }}
             >
