@@ -7,23 +7,47 @@ import { container } from "../../constants/styles";
 import { getCardHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
 import { CardManyTiles } from "@/components/CardManyTiles";
-import CardsActions from "@/components/CardsActions";
 import { useEffect, useState } from "react";
 import { SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
-import { TimeRange } from "@/types/generic";
+import { FilterChip, FilterNames, TimeRange } from "@/types/generic";
+import CardsActions from "@/components/CardsActions";
 
 export default function CardsScreen() {
   const { cards } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<TimeRange>({});
+  const [filters, setFilters] = useState<FilterChip[]>([]);
 
   const [selectedKL, setSelectedKL] = useState<SelectedKL>({
     Learning: true,
     GettingThere: true,
     Confident: true,
   });
+
+  const handleUnsetRange = () => {
+    setRange({});
+    if (filters.find((filter) => filter.name === FilterNames.TimeRange)) {
+      setFilters([
+        ...filters.filter((filter) => filter.name !== FilterNames.TimeRange),
+      ]);
+    }
+  };
+
+  const handleRangeChange = (range: TimeRange) => {
+    setRange(range);
+
+    if (filters.find((filter) => filter.name === FilterNames.TimeRange)) {
+      return;
+    }
+
+    const f: FilterChip = {
+      name: FilterNames.TimeRange,
+      onClose: handleUnsetRange,
+    };
+    setFilters([...filters, f]);
+  };
 
   useEffect(() => {
     const filterCardsByTimeRanger = (list: Card[]) => {
@@ -63,8 +87,9 @@ export default function CardsScreen() {
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions
+        filters={filters}
         range={range}
-        onRangeChange={setRange}
+        onRangeChange={handleRangeChange}
         query={query}
         onQueryChange={setQuery}
         selectedKL={selectedKL}

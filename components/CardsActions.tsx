@@ -1,12 +1,13 @@
 import { baseUnit, gap, margin } from "@/constants/styles";
 import { useState, type PropsWithChildren } from "react";
-import { StyleSheet, View } from "react-native";
-import { Searchbar, IconButton } from "react-native-paper";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Searchbar, IconButton, Chip } from "react-native-paper";
 import FilterCards from "./FilterCards";
 import { SelectedKL } from "@/types/KnowledgeLevel";
-import { TimeRange } from "@/types/generic";
+import { FilterChip, TimeRange } from "@/types/generic";
 
 type CardsActionsProps = PropsWithChildren<{
+  filters: FilterChip[];
   range: TimeRange;
   onRangeChange: (range: TimeRange) => void;
   query: string;
@@ -16,6 +17,7 @@ type CardsActionsProps = PropsWithChildren<{
 }>;
 
 export default function CardsActions({
+  filters,
   range,
   onRangeChange,
   query,
@@ -51,6 +53,24 @@ export default function CardsActions({
         selectedKL={selectedKL}
         onKLChange={onKLChange}
       />
+      <View>
+        <FlatList
+          data={filters}
+          horizontal
+          keyExtractor={(_filters, index) => index.toString()}
+          renderItem={({ item }) => (
+            <Chip
+              closeIcon={"close"}
+              onClose={item.onClose}
+              style={{
+                alignSelf: "flex-start",
+              }}
+            >
+              {item.name}
+            </Chip>
+          )}
+        />
+      </View>
     </View>
   );
 }

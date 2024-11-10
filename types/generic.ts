@@ -25,3 +25,13 @@ export interface TimeRange {
   startDate?: Date;
   endDate?: Date;
 }
+
+export enum FilterNames {
+  TimeRange = "TimeRange",
+  KL = "Knowledge Level",
+}
+
+export interface FilterChip {
+  name: FilterNames;
+  onClose: () => void;
+}
