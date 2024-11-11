@@ -6,31 +6,30 @@ import { container, text } from "@/constants/styles";
 import { useState } from "react";
 
 export type CardManyTilesProps = {
+  isMultiSelect: boolean;
+  selectedTiles: number[];
+  setSelectedTiles: (list: number[]) => void;
   cards?: Card[];
   disabledLink?: boolean;
   onClose?: (item: Card) => void;
 };
 
 export function CardManyTiles({
+  isMultiSelect,
+  selectedTiles,
+  setSelectedTiles,
   cards,
   disabledLink,
   onClose,
 }: CardManyTilesProps) {
-  const [isAnySelected, setIsAnySelected] = useState(false);
-  const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
-
   const handleLongPress = (id: number) => {
-    setIsAnySelected(true);
     setSelectedTiles([...selectedTiles, id]);
   };
 
   const handlePress = (id: number) => {
-    if (isAnySelected) {
+    if (isMultiSelect) {
       if (selectedTiles.find((tileId) => tileId === id)) {
         setSelectedTiles([...selectedTiles.filter((tileId) => tileId !== id)]);
-        if (selectedTiles.length === 1) {
-          setIsAnySelected(false);
-        }
       } else {
         setSelectedTiles([...selectedTiles, id]);
       }
@@ -55,7 +54,7 @@ export function CardManyTiles({
           }}
           renderItem={({ item }) => (
             <CardTile
-              disabledLink={isAnySelected ? true : disabledLink}
+              disabledLink={isMultiSelect ? true : disabledLink}
               onClose={onClose ? () => onClose(item) : undefined}
               card={item}
               onLongPress={handleLongPress}

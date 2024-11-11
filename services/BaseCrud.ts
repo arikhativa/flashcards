@@ -13,10 +13,11 @@ export class BaseCrudService<
     private relations?: string[]
   ) {}
 
-  async getAll(): Promise<T[] | null> {
+  async getAll(withArchive?: boolean): Promise<T[] | null> {
     try {
       return (await this.repo.find({
         relations: this.relations || [],
+        withDeleted: withArchive,
       })) as unknown as T[];
     } catch (e) {
       console.error("getAll error: ", e);
@@ -25,11 +26,15 @@ export class BaseCrudService<
     return null;
   }
 
-  async getById(id: TSchema["id"]): Promise<T | null> {
+  async getById(
+    id: TSchema["id"],
+    withArchive: boolean = true
+  ): Promise<T | null> {
     try {
       const ret = await this.repo.findOne({
         where: { id },
         relations: this.relations || [],
+        withDeleted: withArchive,
       });
 
       if (ret) return ret as unknown as T;
@@ -72,6 +77,42 @@ export class BaseCrudService<
     }
 
     return null;
+  }
+
+  async restore(id: TSchema["id"]): Promise<boolean> {
+    const entity = await this.getById(id);
+    if (!entity) {
+      console.error(`delete error: id ${id} not found`);
+      return false;
+    }
+
+    try {
+      await this.repo.restore({ id });
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("delete error: ", e);
+    }
+
+    return false;
+  }
+
+  async archive(id: TSchema["id"]): Promise<boolean> {
+    const entity = await this.getById(id);
+    if (!entity) {
+      console.error(`delete error: id ${id} not found`);
+      return false;
+    }
+
+    try {
+      await this.repo.softDelete({ id });
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("delete error: ", e);
+    }
+
+    return false;
   }
 
   async delete(id: TSchema["id"]): Promise<boolean> {

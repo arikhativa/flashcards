@@ -21,6 +21,7 @@ import CardsActions from "@/components/CardsActions";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import { defaultSort } from "@/utils/generic";
 import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
+import CardsMultiSelectActions from "@/components/CardsMultiSelectActions";
 
 export default function CardsScreen() {
   const { cards } = useStore();
@@ -29,8 +30,13 @@ export default function CardsScreen() {
   const [range, setRange] = useState<TimeRange>({});
   const [filters, setFilters] = useState<FilterChip[]>([]);
   const [sort, setSort] = useState<Sort>(defaultSort);
-
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
+
+  useEffect(() => {
+    setIsMultiSelect(!selectedTiles.length ? false : true);
+  }, [selectedTiles]);
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
@@ -149,14 +155,27 @@ export default function CardsScreen() {
         selectedKL={selectedKL}
         onKLChange={handleKLChange}
       />
-      <CardManyTiles cards={cardsLocal} />
-      <Link
-        style={container.buttonBottomRight}
-        href={getCardHref(NEW_ID)}
-        asChild
-      >
-        <FAB icon="plus" />
-      </Link>
+
+      <CardManyTiles
+        selectedTiles={selectedTiles}
+        setSelectedTiles={setSelectedTiles}
+        isMultiSelect={isMultiSelect}
+        cards={cardsLocal}
+      />
+      {!isMultiSelect ? (
+        <Link
+          style={container.buttonBottomRight}
+          href={getCardHref(NEW_ID)}
+          asChild
+        >
+          <FAB icon="plus" />
+        </Link>
+      ) : (
+        <CardsMultiSelectActions
+          selectedCards={selectedTiles}
+          onDeselectAll={() => setSelectedTiles([])}
+        />
+      )}
     </View>
   );
 }
