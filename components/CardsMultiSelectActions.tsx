@@ -6,11 +6,13 @@ import { useStore } from "@/providers/GlobalStore";
 interface CardsMultiSelectActionsProps {
   selectedCards: number[];
   onDeselectAll: () => void;
+  disableDelete?: boolean;
 }
 
 export default function CardsMultiSelectActions({
   selectedCards,
   onDeselectAll,
+  disableDelete,
 }: CardsMultiSelectActionsProps) {
   const { cardService } = useStore();
 
@@ -22,13 +24,15 @@ export default function CardsMultiSelectActions({
         { flexDirection: "row", gap: 20 },
       ]}
     >
-      <FAB
-        icon="trash-can-outline"
-        onPress={() => {
-          cardService.deleteMany(selectedCards);
-          onDeselectAll();
-        }}
-      />
+      {!disableDelete && (
+        <FAB
+          icon="trash-can-outline"
+          onPress={() => {
+            cardService.deleteMany(selectedCards);
+            onDeselectAll();
+          }}
+        />
+      )}
       <FAB icon="arrow-left" onPress={onDeselectAll} />
       <FAB icon="test-tube" />
     </View>

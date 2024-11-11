@@ -1,27 +1,34 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
-import { Button, Card as PaperCard, Text, TextInput } from "react-native-paper";
-import { color, KLMark, margin, padding } from "@/constants/styles";
+import { Button, Card as PaperCard, TextInput } from "react-native-paper";
+import { container, KLMark, margin } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
-import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
+import CardsMultiSelectActions from "./CardsMultiSelectActions";
 
 type TagComponentProps = ComponentProps<Tag>;
 
 const TagComponent = ({ mode, data, id }: TagComponentProps) => {
-  const { cards, tags, tagService } = useStore();
   const navigation = useNavigation();
+  const { cards, tags, tagService } = useStore();
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
 
   let idLocal: number = parseInt(id || "-1", 10);
   const [tagLocal, setTagLocal] = useState<Tag | TagCreate | TagUpdate>(
     {} as Tag | TagCreate | TagUpdate
   );
+
+  useEffect(() => {
+    setIsMultiSelect(!selectedTiles.length ? false : true);
+  }, [selectedTiles]);
 
   useEffect(() => {
     if (mode === CRUDMode.Create) {
@@ -128,7 +135,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   };
 
   return (
-    <View>
+    <View style={[container.flex1, margin.top2]}>
       <View style={[margin.base2]}>
         <PaperCard>
           <PaperCard.Content>
@@ -145,11 +152,22 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
       </View>
 
       <CardsSection
+        isMultiSelect={isMultiSelect}
+        selectedTiles={selectedTiles}
+        setSelectedTiles={setSelectedTiles}
         addCard={addCard}
         removeCard={removeCard}
         cards={tagLocal.cards as Card[]}
         allCards={cards}
       />
+
+      {isMultiSelect && (
+        <CardsMultiSelectActions
+          selectedCards={selectedTiles}
+          disableDelete
+          onDeselectAll={() => setSelectedTiles([])}
+        />
+      )}
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>

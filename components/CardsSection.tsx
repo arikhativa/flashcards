@@ -14,6 +14,9 @@ interface CardsSectionProps {
   cards?: Card[];
   addCard: (card: Card) => void;
   removeCard: (card: Card) => void;
+  isMultiSelect: boolean;
+  selectedTiles: number[];
+  setSelectedTiles: (list: number[]) => void;
 }
 
 const CardsSection = ({
@@ -21,6 +24,9 @@ const CardsSection = ({
   allCards,
   addCard,
   removeCard,
+  isMultiSelect,
+  selectedTiles,
+  setSelectedTiles,
 }: CardsSectionProps) => {
   const [visible, setVisible] = React.useState(false);
 
@@ -62,7 +68,14 @@ const CardsSection = ({
         ></IconButton>
       </View>
 
-      <CardManyTiles disabledLink onClose={removeCard} cards={cards} />
+      <CardManyTiles
+        isMultiSelect={isMultiSelect}
+        selectedTiles={selectedTiles}
+        setSelectedTiles={setSelectedTiles}
+        disabledLink
+        onClose={isMultiSelect ? undefined : removeCard}
+        cards={cards}
+      />
 
       <Portal>
         {visible && (
