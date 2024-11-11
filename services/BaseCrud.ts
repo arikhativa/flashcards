@@ -109,6 +109,32 @@ export class BaseCrudService<
     return false;
   }
 
+  // TODO currently there is not check for this
+  async archiveMany(list: TSchema["id"][]): Promise<boolean> {
+    try {
+      await this.repo.softDelete(list);
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("delete error: ", e);
+    }
+
+    return false;
+  }
+
+  // TODO currently there is not check for this
+  async deleteMany(list: TSchema["id"][]): Promise<boolean> {
+    try {
+      await this.repo.delete(list);
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("delete error: ", e);
+    }
+
+    return false;
+  }
+
   async archive(id: TSchema["id"]): Promise<boolean> {
     const entity = await this.getById(id);
     if (!entity) {

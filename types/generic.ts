@@ -14,6 +14,7 @@ export enum CRUDMode {
   Read = "read",
   Create = "create",
   Update = "update",
+  Archive = "archive",
 }
 
 export enum ObjType {

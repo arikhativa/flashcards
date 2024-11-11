@@ -1,22 +1,19 @@
-import { baseUnit, container, gap, margin } from "@/constants/styles";
-import { useState, type PropsWithChildren } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Searchbar, IconButton, Chip, Text, FAB } from "react-native-paper";
-import FilterCards from "./FilterCards";
-import { SelectedKL } from "@/types/KnowledgeLevel";
-import { FilterChip, Sort, TimeRange } from "@/types/generic";
-import SortCards from "./SortCards";
-import { Card } from "@/types/Card";
+import { container, margin } from "@/constants/styles";
+import { View } from "react-native";
+import { FAB } from "react-native-paper";
+import { useStore } from "@/providers/GlobalStore";
 
-type CardsMultiSelectActionsProps = PropsWithChildren<{
+interface CardsMultiSelectActionsProps {
   selectedCards: number[];
   onDeselectAll: () => void;
-}>;
+}
 
 export default function CardsMultiSelectActions({
   selectedCards,
   onDeselectAll,
 }: CardsMultiSelectActionsProps) {
+  const { cardService } = useStore();
+
   return (
     <View
       style={[
@@ -25,8 +22,20 @@ export default function CardsMultiSelectActions({
         { flexDirection: "row", gap: 20 },
       ]}
     >
-      <FAB icon="trash-can-outline" />
-      <FAB icon="archive-outline" />
+      <FAB
+        icon="trash-can-outline"
+        onPress={() => {
+          cardService.deleteMany(selectedCards);
+          onDeselectAll();
+        }}
+      />
+      <FAB
+        icon="archive-outline"
+        onPress={() => {
+          cardService.archiveMany(selectedCards);
+          onDeselectAll();
+        }}
+      />
       <FAB icon="arrow-left" onPress={onDeselectAll} />
       <FAB icon="test-tube" />
     </View>
