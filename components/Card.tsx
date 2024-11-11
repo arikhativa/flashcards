@@ -18,24 +18,23 @@ import { BAD_ID } from "@/constants/general";
 type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
-  const { cards, tags, conf, cardService, archiveCards } = useStore();
+  const { cards, tags, conf, cardService } = useStore();
   const navigation = useNavigation();
 
   let idLocal: number = parseInt(id || "-1", 10);
-  const [modeLocal, setModeLocal] = useState(mode);
   const [cardLocal, setCardLocal] = useState<Card | CardCreate | CardUpdate>(
     {} as Card | CardCreate | CardUpdate
   );
 
   useEffect(() => {
-    if (modeLocal === CRUDMode.Create) {
+    if (mode === CRUDMode.Create) {
       navigation.setOptions({ title: "New Card" });
       const cardCreate: CardCreate = CardService.EMPTY;
       setCardLocal(cardCreate);
       return;
     }
 
-    if (modeLocal === CRUDMode.Update) {
+    if (mode === CRUDMode.Update) {
       navigation.setOptions({ title: `Edit Card` });
 
       if (idLocal === BAD_ID) {
@@ -44,23 +43,16 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
       }
 
       const cardUpdate = cards.find((card) => card.id === idLocal);
-      const cardArchived = archiveCards.find((card) => card.id === idLocal);
 
-      if (cardArchived) {
-        setModeLocal(CRUDMode.Archive);
-        setCardLocal(cardArchived);
+      if (!cardUpdate) {
+        console.error("CardComponent: Card not found");
         return;
       }
-
-      if (cardUpdate) {
-        setCardLocal(cardUpdate);
-        return;
-      }
-
-      console.error("CardComponent: Card not found");
+      setCardLocal(cardUpdate);
+      return;
     }
 
-    if (modeLocal === CRUDMode.Read) {
+    if (mode === CRUDMode.Read) {
       if (!data) {
         console.error("CardComponent: invalid Card");
         return;
@@ -112,33 +104,25 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   };
 
   const handleSubmitCreate = async (card: CardCreate) => {
-    if (modeLocal !== CRUDMode.Create) return;
+    if (mode !== CRUDMode.Create) return;
     await cardService.create(card);
     navigation.goBack();
   };
 
   const handleSubmitUpdate = async (card: CardUpdate) => {
-    if (!id || modeLocal !== CRUDMode.Update) return;
+    if (!id || mode !== CRUDMode.Update) return;
     await cardService.update(idLocal, card);
     navigation.goBack();
   };
 
-  const handleSubmitRestore = async () => {
-    if (!id || modeLocal !== CRUDMode.Archive) return;
-    await cardService.restore(idLocal);
-    navigation.goBack();
-  };
-
-  const handleSubmitArchive = async () => {
-    if (!id || modeLocal !== CRUDMode.Update) return;
-    await cardService.archive(idLocal);
-    navigation.goBack();
-  };
-
   const handleSubmitDelete = async () => {
-    if (!id || modeLocal !== CRUDMode.Update) return;
+    if (!id || mode !== CRUDMode.Update) return;
     await cardService.delete(idLocal);
     navigation.goBack();
+  };
+
+  const isDisable = (): boolean => {
+    return mode === CRUDMode.Read;
   };
 
   return (
@@ -150,7 +134,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               {conf.sideA}
             </Text>
             <TextInput
-              disabled={modeLocal === (CRUDMode.Archive || CRUDMode.Read)}
+              disabled={isDisable()}
               style={[styles.comment, styles.textInput]}
               onChangeText={(text) => {
                 handleLocalChange("sideA", text);
@@ -164,7 +148,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               {conf.sideB}
             </Text>
             <TextInput
-              disabled={modeLocal === (CRUDMode.Archive || CRUDMode.Read)}
+              disabled={isDisable()}
               style={[styles.comment, styles.textInput]}
               onChangeText={(text) => {
                 handleLocalChange("sideB", text);
@@ -182,7 +166,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         <PaperCard>
           <PaperCard.Content>
             <TextInput
-              disabled={modeLocal === (CRUDMode.Archive || CRUDMode.Read)}
+              disabled={isDisable()}
               style={styles.comment}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
@@ -198,6 +182,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
       </View>
 
       <TagsSection
+        disabled={isDisable()}
         addTag={addTag}
         removeTag={removeTag}
         tags={cardLocal.tags}
@@ -212,7 +197,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
           <PaperCard.Content style={[styles.KLRadioContainer]}>
             <View
               style={styles.KLRadio}
-              aria-disabled={modeLocal === (CRUDMode.Archive || CRUDMode.Read)}
+              pointerEvents={isDisable() ? "none" : "auto"}
             >
               <CardRadio
                 level={KnowledgeLevel.Learning}
@@ -236,25 +221,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
-          {modeLocal === CRUDMode.Archive && (
-            <Button
-              buttonColor="blue"
-              mode={"contained"}
-              onPress={() => handleSubmitRestore()}
-            >
-              Restore
-            </Button>
-          )}
-          {modeLocal === CRUDMode.Update && (
-            <Button
-              buttonColor="red"
-              mode={"contained"}
-              onPress={() => handleSubmitArchive()}
-            >
-              Archive
-            </Button>
-          )}
-          {modeLocal === CRUDMode.Update && (
+          {mode === CRUDMode.Update && (
             <Button
               buttonColor="red"
               mode={"contained"}
@@ -263,7 +230,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               Delete
             </Button>
           )}
-          {modeLocal === CRUDMode.Update && (
+          {mode === CRUDMode.Update && (
             <Button
               mode={"contained"}
               onPress={() => handleSubmitUpdate(cardLocal as CardUpdate)}
@@ -271,7 +238,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               Save
             </Button>
           )}
-          {modeLocal === CRUDMode.Create && (
+          {mode === CRUDMode.Create && (
             <Button
               mode={"contained"}
               onPress={() => handleSubmitCreate(cardLocal as CardCreate)}

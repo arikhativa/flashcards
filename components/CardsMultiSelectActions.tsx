@@ -29,13 +29,6 @@ export default function CardsMultiSelectActions({
           onDeselectAll();
         }}
       />
-      <FAB
-        icon="archive-outline"
-        onPress={() => {
-          cardService.archiveMany(selectedCards);
-          onDeselectAll();
-        }}
-      />
       <FAB icon="arrow-left" onPress={onDeselectAll} />
       <FAB icon="test-tube" />
     </View>

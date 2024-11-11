@@ -17,7 +17,6 @@ type CardsActionsProps = PropsWithChildren<{
   onQueryChange: (text: string) => void;
   selectedKL: SelectedKL;
   onKLChange: (selectedKL: SelectedKL) => void;
-  onArchiveChange: () => void;
 }>;
 
 export default function CardsActions({
@@ -30,7 +29,6 @@ export default function CardsActions({
   onQueryChange,
   selectedKL,
   onKLChange,
-  onArchiveChange,
 }: CardsActionsProps) {
   return (
     <View style={[margin.x2, margin.top3, margin.bottom2]}>
@@ -43,7 +41,6 @@ export default function CardsActions({
         />
         <SortCards sort={sort} onSortChange={onSortChange} />
         <FilterCards
-          onArchiveChange={onArchiveChange}
           range={range}
           onRangeChange={onRangeChange}
           selectedKL={selectedKL}

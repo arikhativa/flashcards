@@ -8,6 +8,7 @@ import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
 
 interface TagsSectionProps {
+  disabled: boolean;
   allTags: Tag[];
   tags?: Tag[];
   addTag: (tag: Tag) => void;
@@ -15,6 +16,7 @@ interface TagsSectionProps {
 }
 
 const TagsSection = ({
+  disabled,
   tags,
   allTags,
   addTag,
@@ -60,7 +62,7 @@ const TagsSection = ({
         renderItem={({ item }) => (
           <TagTile
             disabledLink
-            onClose={() => removeTag(item)}
+            onClose={disabled ? undefined : () => removeTag(item)}
             tag={item}
           ></TagTile>
         )}
@@ -75,6 +77,7 @@ const TagsSection = ({
           Tags
         </Text>
         <IconButton
+          disabled={disabled}
           icon="plus"
           size={baseUnit * 2}
           mode="contained-tonal"

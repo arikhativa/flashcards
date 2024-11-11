@@ -12,7 +12,6 @@ interface FilterCardsProps {
   onKLChange: (selectedKL: SelectedKL) => void;
   range: TimeRange;
   onRangeChange: (range: TimeRange) => void;
-  onArchiveChange: () => void;
 }
 
 export default function FilterCards({
@@ -20,7 +19,6 @@ export default function FilterCards({
   onKLChange,
   range,
   onRangeChange,
-  onArchiveChange,
 }: FilterCardsProps) {
   const [visible, setVisible] = useState(true);
   const [timeRangeVisible, setTimeRangeVisible] = useState(false);
@@ -57,13 +55,6 @@ export default function FilterCards({
             setIsKLVisible(true);
           }}
           title="By Knowledge Level"
-        />
-        <Menu.Item
-          onPress={() => {
-            closeMenu();
-            onArchiveChange();
-          }}
-          title="Show archive"
         />
       </Menu>
 

@@ -24,7 +24,7 @@ import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
 import CardsMultiSelectActions from "@/components/CardsMultiSelectActions";
 
 export default function CardsScreen() {
-  const { cards, archiveCards } = useStore();
+  const { cards } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<TimeRange>({});
@@ -33,7 +33,6 @@ export default function CardsScreen() {
   const [isMultiSelect, setIsMultiSelect] = useState(false);
   const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
-  const [archive, setArchive] = useState(false);
 
   useEffect(() => {
     setIsMultiSelect(!selectedTiles.length ? false : true);
@@ -41,7 +40,6 @@ export default function CardsScreen() {
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
-      removeArchiveIfNeeded();
       removeRangeIfNeeded();
       removeKLIfNeeded();
     };
@@ -58,12 +56,6 @@ export default function CardsScreen() {
       }
     };
 
-    const removeArchiveIfNeeded = () => {
-      if (!archive) {
-        removeFilter(FilterNames.ARCHIVE);
-      }
-    };
-
     const removeFilter = (name: FilterNames) => {
       if (filters.find((filter) => filter.name === name)) {
         setFilters([...filters.filter((filter) => filter.name !== name)]);
@@ -71,7 +63,7 @@ export default function CardsScreen() {
     };
 
     removeFilterIfNeeded();
-  }, [filters, range, selectedKL, archive]);
+  }, [filters, range, selectedKL]);
 
   const handleGenericFilterSet = (name: FilterNames, onClose: () => void) => {
     if (filters.find((filter) => filter.name === name)) {
@@ -83,12 +75,6 @@ export default function CardsScreen() {
       onClose: onClose,
     };
     setFilters([...filters, f]);
-  };
-
-  const handleArchiveChange = () => {
-    setArchive(true);
-
-    handleGenericFilterSet(FilterNames.ARCHIVE, () => setArchive(false));
   };
 
   const handleKLChange = (kl: SelectedKL) => {
@@ -130,17 +116,7 @@ export default function CardsScreen() {
       );
     };
 
-    const addArchiveIfNeeded = (list: Card[]) => {
-      if (archive) {
-        list = [...list, ...archiveCards];
-      } else {
-        list = list.filter((c) => !c.deletedAt);
-      }
-      return list;
-    };
-
     const setCardsLocalWitFilters = (list: Card[]) => {
-      list = addArchiveIfNeeded(list);
       list = filterCardsByTimeRanger(list);
       list = filterCardsByKL(list);
       list = filterCardsBySearch(list);
@@ -164,12 +140,11 @@ export default function CardsScreen() {
     };
 
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
-  }, [cards, query, selectedKL, range, sort, archive, archiveCards]);
+  }, [cards, query, selectedKL, range, sort]);
 
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions
-        onArchiveChange={handleArchiveChange}
         sort={sort}
         onSortChange={setSort}
         filters={filters}
