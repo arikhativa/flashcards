@@ -18,6 +18,7 @@ import { CARDS, TAGS } from "@/constants/db";
 
 interface StoreContextType {
   cards: Card[];
+  archiveCards: Card[];
   tags: Tag[];
   conf: Conf;
   cardService: CardService;
@@ -41,10 +42,12 @@ export const StoreProvider = ({
 }) => {
   const [dbIsReady, setDbIsReady] = useState(false);
   const [cards, setCards] = useState<Card[]>([]);
+  const [archiveCards, setArchiveCards] = useState<Card[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
 
   const fetchAll = async () => {
+    await fetchArchiveCards();
     await fetchCards();
     await fetchTags();
     await fetchConf();
@@ -53,6 +56,14 @@ export const StoreProvider = ({
   const fetchConf = async () => {
     const conf = await confService.get();
     if (conf) setConf(conf);
+  };
+
+  const fetchArchiveCards = async () => {
+    const list = await cardService.getAllArchive();
+
+    if (list) {
+      setArchiveCards(list.filter((e) => e.deletedAt));
+    }
   };
 
   const fetchCards = async () => {
@@ -123,6 +134,7 @@ export const StoreProvider = ({
     <StoreContext.Provider
       value={{
         cards,
+        archiveCards,
         tags,
         conf,
         cardService,

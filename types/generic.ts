@@ -29,6 +29,7 @@ export interface TimeRange {
 export enum FilterNames {
   TimeRange = "Time Range",
   KL = "Knowledge Level",
+  ARCHIVE = "Showing Archive",
 }
 
 export interface FilterChip {

@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  DeleteDateColumn,
 } from "typeorm";
 
 @Entity()
@@ -16,6 +17,7 @@ export class CardSchema extends BaseEntity {
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;
+  @DeleteDateColumn() deletedAt?: Date;
 
   @Column({ type: "text" })
   sideA: string;
@@ -55,6 +57,7 @@ export class TagSchema extends BaseEntity {
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;
+  @DeleteDateColumn() deletedAt?: Date;
 
   @Column({ type: "text" })
   name: string;

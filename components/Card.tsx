@@ -110,6 +110,12 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     navigation.goBack();
   };
 
+  const handleSubmitArchive = async () => {
+    if (!id || mode !== CRUDMode.Update) return;
+    await cardService.archive(idLocal);
+    navigation.goBack();
+  };
+
   const handleSubmitDelete = async () => {
     if (!id || mode !== CRUDMode.Update) return;
     await cardService.delete(idLocal);
@@ -205,6 +211,15 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
+          {mode === CRUDMode.Update && (
+            <Button
+              buttonColor="red"
+              mode={"contained"}
+              onPress={() => handleSubmitArchive()}
+            >
+              Archive
+            </Button>
+          )}
           {mode === CRUDMode.Update && (
             <Button
               buttonColor="red"

@@ -13,14 +13,26 @@ export class BaseCrudService<
     private relations?: string[]
   ) {}
 
-  async getAll(withArchive?: boolean): Promise<T[] | null> {
+  async getAll(): Promise<T[] | null> {
     try {
       return (await this.repo.find({
         relations: this.relations || [],
-        withDeleted: withArchive,
       })) as unknown as T[];
     } catch (e) {
       console.error("getAll error: ", e);
+    }
+
+    return null;
+  }
+
+  async getAllArchive(): Promise<T[] | null> {
+    try {
+      return (await this.repo.find({
+        relations: this.relations || [],
+        withDeleted: true,
+      })) as unknown as T[];
+    } catch (e) {
+      console.error("getAllArchive error: ", e);
     }
 
     return null;
