@@ -6,7 +6,6 @@ import { CardTile } from "./CardTile";
 import { Card } from "@/types/Card";
 import Autocomplete from "./Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
-import { useStore } from "@/providers/GlobalStore";
 import { CardManyTiles } from "./CardManyTiles";
 
 interface CardsSectionProps {
@@ -15,8 +14,8 @@ interface CardsSectionProps {
   addCard: (card: Card) => void;
   removeCard: (card: Card) => void;
   isMultiSelect: boolean;
-  selectedTiles: number[];
-  setSelectedTiles: (list: number[]) => void;
+  selectedIds: number[];
+  toggleIdSelection: (id: number) => void;
 }
 
 const CardsSection = ({
@@ -25,8 +24,8 @@ const CardsSection = ({
   addCard,
   removeCard,
   isMultiSelect,
-  selectedTiles,
-  setSelectedTiles,
+  selectedIds,
+  toggleIdSelection,
 }: CardsSectionProps) => {
   const [visible, setVisible] = React.useState(false);
 
@@ -70,8 +69,8 @@ const CardsSection = ({
 
       <CardManyTiles
         isMultiSelect={isMultiSelect}
-        selectedTiles={selectedTiles}
-        setSelectedTiles={setSelectedTiles}
+        selectedIds={selectedIds}
+        toggleIdSelection={toggleIdSelection}
         disabledLink
         onClose={isMultiSelect ? undefined : removeCard}
         cards={cards}

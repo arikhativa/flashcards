@@ -12,23 +12,20 @@ import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import CardsMultiSelectActions from "./CardsMultiSelectActions";
+import { useMultiSelect } from "@/hooks/useMultiSelect";
 
 type TagComponentProps = ComponentProps<Tag>;
 
 const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   const navigation = useNavigation();
   const { cards, tags, tagService } = useStore();
-  const [isMultiSelect, setIsMultiSelect] = useState(false);
-  const [selectedTiles, setSelectedTiles] = useState<number[]>([]);
+  const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
+    useMultiSelect();
 
   let idLocal: number = parseInt(id || "-1", 10);
   const [tagLocal, setTagLocal] = useState<Tag | TagCreate | TagUpdate>(
     {} as Tag | TagCreate | TagUpdate
   );
-
-  useEffect(() => {
-    setIsMultiSelect(!selectedTiles.length ? false : true);
-  }, [selectedTiles]);
 
   useEffect(() => {
     if (mode === CRUDMode.Create) {
@@ -39,7 +36,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
       navigation.setOptions({ title: `Edit Tag` });
 
       if (idLocal === BAD_ID) {
-        console.error("TagComponent: invalid Tagid, idLocal", id, idLocal);
+        console.error("TagComponent: invalid Tag id, idLocal", id, idLocal);
         return;
       }
 
@@ -153,8 +150,8 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
 
       <CardsSection
         isMultiSelect={isMultiSelect}
-        selectedTiles={selectedTiles}
-        setSelectedTiles={setSelectedTiles}
+        selectedIds={selectedIds}
+        toggleIdSelection={toggleIdSelection}
         addCard={addCard}
         removeCard={removeCard}
         cards={tagLocal.cards as Card[]}
@@ -163,9 +160,9 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
 
       {isMultiSelect && (
         <CardsMultiSelectActions
-          selectedCards={selectedTiles}
+          selectedIds={selectedIds}
           disableDelete
-          onDeselectAll={() => setSelectedTiles([])}
+          onDeselectAll={clearSelectedIds}
         />
       )}
 

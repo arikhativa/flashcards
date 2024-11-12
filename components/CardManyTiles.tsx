@@ -3,12 +3,11 @@ import { View, FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import { CardTile } from "./CardTile";
 import { container, text } from "@/constants/styles";
-import { useState } from "react";
 
 export type CardManyTilesProps = {
   isMultiSelect: boolean;
-  selectedTiles: number[];
-  setSelectedTiles: (list: number[]) => void;
+  selectedIds: number[];
+  toggleIdSelection: (id: number) => void;
   cards?: Card[];
   disabledLink?: boolean;
   onClose?: (item: Card) => void;
@@ -16,23 +15,19 @@ export type CardManyTilesProps = {
 
 export function CardManyTiles({
   isMultiSelect,
-  selectedTiles,
-  setSelectedTiles,
+  selectedIds,
+  toggleIdSelection,
   cards,
   disabledLink,
   onClose,
 }: CardManyTilesProps) {
   const handleLongPress = (id: number) => {
-    setSelectedTiles([...selectedTiles, id]);
+    toggleIdSelection(id);
   };
 
   const handlePress = (id: number) => {
     if (isMultiSelect) {
-      if (selectedTiles.find((tileId) => tileId === id)) {
-        setSelectedTiles([...selectedTiles.filter((tileId) => tileId !== id)]);
-      } else {
-        setSelectedTiles([...selectedTiles, id]);
-      }
+      toggleIdSelection(id);
     }
   };
 
@@ -59,7 +54,7 @@ export function CardManyTiles({
               card={item}
               onLongPress={handleLongPress}
               onPress={handlePress}
-              isSelected={selectedTiles.includes(item.id)}
+              isSelected={selectedIds.includes(item.id)}
             ></CardTile>
           )}
         />

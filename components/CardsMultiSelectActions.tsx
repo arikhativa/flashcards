@@ -4,13 +4,13 @@ import { FAB } from "react-native-paper";
 import { useStore } from "@/providers/GlobalStore";
 
 interface CardsMultiSelectActionsProps {
-  selectedCards: number[];
+  selectedIds: number[];
   onDeselectAll: () => void;
   disableDelete?: boolean;
 }
 
 export default function CardsMultiSelectActions({
-  selectedCards,
+  selectedIds,
   onDeselectAll,
   disableDelete,
 }: CardsMultiSelectActionsProps) {
@@ -28,7 +28,7 @@ export default function CardsMultiSelectActions({
         <FAB
           icon="trash-can-outline"
           onPress={() => {
-            cardService.deleteMany(selectedCards);
+            cardService.deleteMany(selectedIds);
             onDeselectAll();
           }}
         />
