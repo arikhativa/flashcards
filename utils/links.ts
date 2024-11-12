@@ -1,7 +1,7 @@
 import { CRUDMode, ObjType } from "@/types/generic";
 import { Href } from "expo-router";
 
-interface ObjLinkProps {
+export interface ObjLinkProps {
   params: {
     objType: ObjType;
     id: string;

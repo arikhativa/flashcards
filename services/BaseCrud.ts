@@ -94,7 +94,7 @@ export class BaseCrudService<
   async restore(id: TSchema["id"]): Promise<boolean> {
     const entity = await this.getById(id);
     if (!entity) {
-      console.error(`delete error: id ${id} not found`);
+      console.error(`restore error: id ${id} not found`);
       return false;
     }
 
@@ -103,7 +103,7 @@ export class BaseCrudService<
       this.onUpdate();
       return true;
     } catch (e) {
-      console.error("delete error: ", e);
+      console.error("restore error: ", e);
     }
 
     return false;
@@ -116,7 +116,7 @@ export class BaseCrudService<
       this.onUpdate();
       return true;
     } catch (e) {
-      console.error("delete error: ", e);
+      console.error("archiveMany error: ", e);
     }
 
     return false;
@@ -129,7 +129,7 @@ export class BaseCrudService<
       this.onUpdate();
       return true;
     } catch (e) {
-      console.error("delete error: ", e);
+      console.error("deleteMany error: ", e);
     }
 
     return false;
@@ -138,7 +138,7 @@ export class BaseCrudService<
   async archive(id: TSchema["id"]): Promise<boolean> {
     const entity = await this.getById(id);
     if (!entity) {
-      console.error(`delete error: id ${id} not found`);
+      console.error(`archive error: id ${id} not found`);
       return false;
     }
 
@@ -147,7 +147,7 @@ export class BaseCrudService<
       this.onUpdate();
       return true;
     } catch (e) {
-      console.error("delete error: ", e);
+      console.error("archive error: ", e);
     }
 
     return false;

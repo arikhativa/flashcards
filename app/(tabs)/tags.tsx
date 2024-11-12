@@ -1,18 +1,18 @@
-import { FAB, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { View, FlatList } from "react-native";
 
 import { TagTile } from "@/components/TagTile";
 import { useStore } from "@/providers/GlobalStore";
 import { container, margin, text } from "@/constants/styles";
-import { Link } from "expo-router";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
 import TagsActions from "@/components/TagsActions";
 import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
+import ActionsBar from "@/components/ActionsBar";
 
 export default function TagsScreen() {
-  const { tags } = useStore();
+  const { tags, tagService } = useStore();
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState("");
   const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
@@ -61,13 +61,16 @@ export default function TagsScreen() {
           />
         </View>
       )}
-      <Link
-        style={container.buttonBottomRight}
+      <ActionsBar
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        onDeselectAll={clearSelectedIds}
+        deleteMany={(list: number[]) => {
+          tagService.deleteMany(list);
+          clearSelectedIds();
+        }}
         href={getTagHref(NEW_ID)}
-        asChild
-      >
-        <FAB icon="plus" />
-      </Link>
+      />
     </View>
   );
 }

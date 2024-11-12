@@ -5,7 +5,6 @@ import { Link } from "expo-router";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { getCardHref } from "@/utils/links";
-import { NEW_ID } from "../[objType]";
 import { CardManyTiles } from "@/components/CardManyTiles";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
@@ -21,11 +20,12 @@ import CardsActions from "@/components/CardsActions";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import { defaultSort } from "@/utils/generic";
 import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
-import CardsMultiSelectActions from "@/components/CardsMultiSelectActions";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
+import ActionsBar from "@/components/ActionsBar";
+import { NEW_ID } from "../[objType]";
 
 export default function CardsScreen() {
-  const { cards } = useStore();
+  const { cards, cardService } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<TimeRange>({});
@@ -34,6 +34,10 @@ export default function CardsScreen() {
   const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
+
+  useEffect(() => {
+    console.log("CardsScreen selectedIds", selectedIds);
+  }, [selectedIds]);
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
@@ -159,20 +163,16 @@ export default function CardsScreen() {
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
       />
-      {!isMultiSelect ? (
-        <Link
-          style={container.buttonBottomRight}
-          href={getCardHref(NEW_ID)}
-          asChild
-        >
-          <FAB icon="plus" />
-        </Link>
-      ) : (
-        <CardsMultiSelectActions
-          selectedIds={selectedIds}
-          onDeselectAll={clearSelectedIds}
-        />
-      )}
+      <ActionsBar
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        onDeselectAll={clearSelectedIds}
+        deleteMany={(list: number[]) => {
+          cardService.deleteMany(list);
+          clearSelectedIds();
+        }}
+        href={getCardHref(NEW_ID)}
+      />
     </View>
   );
 }

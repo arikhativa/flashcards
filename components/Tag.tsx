@@ -11,8 +11,8 @@ import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
-import CardsMultiSelectActions from "./CardsMultiSelectActions";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
+import ActionsBar from "./ActionsBar";
 
 type TagComponentProps = ComponentProps<Tag>;
 
@@ -158,13 +158,11 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         allCards={cards}
       />
 
-      {isMultiSelect && (
-        <CardsMultiSelectActions
-          selectedIds={selectedIds}
-          disableDelete
-          onDeselectAll={clearSelectedIds}
-        />
-      )}
+      <ActionsBar
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        onDeselectAll={clearSelectedIds}
+      />
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
