@@ -23,6 +23,7 @@ import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import ActionsBar from "@/components/ActionsBar";
 import { NEW_ID } from "../[objType]";
+import TestForm from "@/components/TestForm";
 
 export default function CardsScreen() {
   const { cards, cardService } = useStore();
@@ -34,10 +35,6 @@ export default function CardsScreen() {
   const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
-
-  useEffect(() => {
-    console.log("CardsScreen selectedIds", selectedIds);
-  }, [selectedIds]);
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
@@ -142,6 +139,8 @@ export default function CardsScreen() {
 
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
+
+  return <TestForm />; // TODO change thisss
 
   return (
     <View style={[container.flex1, margin.top2]}>
