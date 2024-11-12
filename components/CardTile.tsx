@@ -12,16 +12,8 @@ import {
   ViewStyle,
 } from "react-native";
 import { getCardHref } from "@/utils/links";
-import {
-  GestureHandlerRootView,
-  HandlerStateChangeEvent,
-  LongPressGestureHandler,
-  State,
-  TapGestureHandler,
-  TapGestureHandlerEventPayload,
-} from "react-native-gesture-handler";
-import { useState } from "react";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
+import { GestureWrapper } from "./GestureWrapper";
 
 export type CardTileProps = {
   card: Card;
@@ -41,22 +33,6 @@ export function CardTile({
   isSelected,
 }: CardTileProps) {
   const { colors } = useTheme();
-
-  const handleLongPress = (
-    event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>
-  ) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      onLongPress && onLongPress(card.id);
-    }
-  };
-
-  const handlePress = (
-    event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>
-  ) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      onPress && onPress(card.id);
-    }
-  };
 
   const getSelectedStyle = (): StyleProp<ViewStyle> => {
     return isSelected
@@ -87,54 +63,48 @@ export function CardTile({
   };
 
   return (
-    <GestureHandlerRootView style={{ backgroundColor: "transparent" }}>
-      <TapGestureHandler onHandlerStateChange={handlePress}>
-        <LongPressGestureHandler
-          onHandlerStateChange={handleLongPress}
-          minDurationMs={800}
-        >
-          <Link disabled={isLinkDisabled()} href={getCardHref(card.id)} asChild>
-            <Pressable>
-              <View>
-                {onClose && (
-                  <IconButton
-                    style={{
-                      padding: 0,
-                      position: "absolute",
-                      top: -5,
-                      right: -10,
-                      zIndex: 5,
-                    }}
-                    icon="close"
-                    size={15}
-                    mode="contained"
-                    onPress={onClose}
-                  ></IconButton>
-                )}
+    <GestureWrapper
+      onTap={onPress && (() => onPress(card.id))}
+      onLongPress={onLongPress && (() => onLongPress(card.id))}
+    >
+      <Link disabled={isLinkDisabled()} href={getCardHref(card.id)} asChild>
+        <Pressable>
+          <View>
+            {onClose && (
+              <IconButton
+                style={{
+                  padding: 0,
+                  position: "absolute",
+                  top: -5,
+                  right: -10,
+                  zIndex: 5,
+                }}
+                icon="close"
+                size={15}
+                mode="contained"
+                onPress={onClose}
+              ></IconButton>
+            )}
 
-                <PaperCard
-                  style={[margin.base, getSelectedStyle(), getKLStyle()]}
-                >
-                  <PaperCard.Content>
-                    <View style={[styles.sideViewHeightA]}>
-                      <Text style={styles.text} variant="titleSmall">
-                        {card.sideA}
-                      </Text>
-                    </View>
-                    <Divider></Divider>
-                    <View style={[styles.sideViewHeightB]}>
-                      <Text style={styles.text} variant="titleSmall">
-                        {card.sideB}
-                      </Text>
-                    </View>
-                  </PaperCard.Content>
-                </PaperCard>
-              </View>
-            </Pressable>
-          </Link>
-        </LongPressGestureHandler>
-      </TapGestureHandler>
-    </GestureHandlerRootView>
+            <PaperCard style={[margin.base, getSelectedStyle(), getKLStyle()]}>
+              <PaperCard.Content>
+                <View style={[styles.sideViewHeightA]}>
+                  <Text style={styles.text} variant="titleSmall">
+                    {card.sideA}
+                  </Text>
+                </View>
+                <Divider></Divider>
+                <View style={[styles.sideViewHeightB]}>
+                  <Text style={styles.text} variant="titleSmall">
+                    {card.sideB}
+                  </Text>
+                </View>
+              </PaperCard.Content>
+            </PaperCard>
+          </View>
+        </Pressable>
+      </Link>
+    </GestureWrapper>
   );
 }
 

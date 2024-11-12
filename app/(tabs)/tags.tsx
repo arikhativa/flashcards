@@ -9,11 +9,14 @@ import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
 import TagsActions from "@/components/TagsActions";
 import { useEffect, useState } from "react";
+import { useMultiSelect } from "@/hooks/useMultiSelect";
 
 export default function TagsScreen() {
   const { tags } = useStore();
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState("");
+  const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
+    useMultiSelect();
 
   useEffect(() => {
     setTagsLocal(
@@ -22,6 +25,16 @@ export default function TagsScreen() {
       )
     );
   }, [tags, query]);
+
+  const handleLongPress = (id: number) => {
+    toggleIdSelection(id);
+  };
+
+  const handlePress = (id: number) => {
+    if (isMultiSelect) {
+      toggleIdSelection(id);
+    }
+  };
 
   return (
     <View style={[container.flex1, margin.top2]}>
@@ -35,7 +48,16 @@ export default function TagsScreen() {
           <FlatList
             data={tagsLocal}
             keyExtractor={(tag) => tag.id.toString()}
-            renderItem={({ item }) => <TagTile showSize tag={item}></TagTile>}
+            renderItem={({ item }) => (
+              <TagTile
+                disabledLink={isMultiSelect}
+                isSelected={selectedIds.includes(item.id)}
+                onLongPress={handleLongPress}
+                onPress={handlePress}
+                showSize
+                tag={item}
+              ></TagTile>
+            )}
           />
         </View>
       )}

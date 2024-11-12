@@ -78,6 +78,7 @@ export const KLMark = StyleSheet.create({
 });
 
 export const color = StyleSheet.create({
+  bgTransparent: { backgroundColor: "transparent" },
   bgPurple: { backgroundColor: "purple" },
   bgGreen: { backgroundColor: "green" },
   bgPink: { backgroundColor: "pink" },
