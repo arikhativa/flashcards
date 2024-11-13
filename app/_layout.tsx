@@ -11,6 +11,7 @@ import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { DataSource, Repository } from "typeorm";
 
 import { en, registerTranslation } from "react-native-paper-dates";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 registerTranslation("en", en);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -72,17 +73,19 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={theme}>
-      <StoreProvider
-        cardRepository={cardRepository}
-        tagRepository={tagRepository}
-        confRepository={confRepository}
-      >
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </StoreProvider>
-    </PaperProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider theme={theme}>
+        <StoreProvider
+          cardRepository={cardRepository}
+          tagRepository={tagRepository}
+          confRepository={confRepository}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </StoreProvider>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }

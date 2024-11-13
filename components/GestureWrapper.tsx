@@ -1,7 +1,5 @@
-import { color } from "@/constants/styles";
 import React, { ReactNode } from "react";
 import {
-  GestureHandlerRootView,
   TapGestureHandler,
   LongPressGestureHandler,
   HandlerStateChangeEvent,
@@ -35,19 +33,17 @@ export const GestureWrapper: React.FC<GestureWrapperProps> = ({
     }
   };
   return (
-    <GestureHandlerRootView style={color.bgTransparent}>
-      <LongPressGestureHandler
-        enabled={enabled && !!handleLongPress}
-        onHandlerStateChange={handleLongPress}
-        minDurationMs={longPressMinDuration}
+    <LongPressGestureHandler
+      enabled={enabled && !!handleLongPress}
+      onHandlerStateChange={handleLongPress}
+      minDurationMs={longPressMinDuration}
+    >
+      <TapGestureHandler
+        enabled={enabled && !!handleTap}
+        onHandlerStateChange={handleTap}
       >
-        <TapGestureHandler
-          enabled={enabled && !!handleTap}
-          onHandlerStateChange={handleTap}
-        >
-          {children}
-        </TapGestureHandler>
-      </LongPressGestureHandler>
-    </GestureHandlerRootView>
+        {children}
+      </TapGestureHandler>
+    </LongPressGestureHandler>
   );
 };
