@@ -7,7 +7,11 @@ import { container } from "../../constants/styles";
 import { getCardHref } from "@/utils/links";
 import { CardManyTiles } from "@/components/CardManyTiles";
 import { useEffect, useState } from "react";
-import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
+import {
+  FULL_SELECTED_KL,
+  FULL_UNSELECTED_KL,
+  SelectedKL,
+} from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
 import {
   FilterChip,
@@ -140,7 +144,17 @@ export default function CardsScreen() {
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
 
-  return <TestManager />; // TODO
+  // return (
+  //   <TestManager
+  //     testSettings={{
+  //       numberOfCards: 0,
+  //       timeRange: {},
+  //       knowledgeLevels: FULL_UNSELECTED_KL,
+  //       testSide: "A",
+  //       selectedTags: [],
+  //     }}
+  //   />
+  // ); // TODO
 
   return (
     <View style={[container.flex1, margin.top2]}>

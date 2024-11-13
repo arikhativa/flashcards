@@ -14,6 +14,7 @@ import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
+import CardSides from "./CardSides";
 
 type CardComponentProps = ComponentProps<Card>;
 
@@ -66,19 +67,6 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     handleLocalChange("knowledgeLevel", kl);
   };
 
-  const getKLStyle = () => {
-    switch (cardLocal.knowledgeLevel) {
-      case KnowledgeLevel.Learning:
-        return styles.Learning;
-      case KnowledgeLevel.GettingThere:
-        return styles.GettingThere;
-      case KnowledgeLevel.Confident:
-        return styles.Confident;
-      default:
-        return {};
-    }
-  };
-
   const handleLocalChange = (field: keyof Card, value: string) => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
@@ -127,37 +115,15 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
 
   return (
     <ScrollView>
-      <PaperCard style={[margin.base2, getKLStyle()]}>
-        <PaperCard.Content>
-          <View style={[styles.sideView, styles.sideViewHeightA]}>
-            <Text style={styles.labelText} variant="titleLarge">
-              {conf.sideA}
-            </Text>
-            <TextInput
-              disabled={isDisable()}
-              style={[styles.comment, styles.textInput]}
-              onChangeText={(text) => {
-                handleLocalChange("sideA", text);
-              }}
-              value={cardLocal.sideA}
-            ></TextInput>
-          </View>
-          <Divider></Divider>
-          <View style={[styles.sideView, styles.sideViewHeightB]}>
-            <Text style={[styles.labelText, padding.top]} variant="titleLarge">
-              {conf.sideB}
-            </Text>
-            <TextInput
-              disabled={isDisable()}
-              style={[styles.comment, styles.textInput]}
-              onChangeText={(text) => {
-                handleLocalChange("sideB", text);
-              }}
-              value={cardLocal.sideB}
-            ></TextInput>
-          </View>
-        </PaperCard.Content>
-      </PaperCard>
+      <CardSides
+        style={margin.base2}
+        disabled={isDisable()}
+        knowledgeLevel={cardLocal.knowledgeLevel}
+        sideA={cardLocal.sideA}
+        sideB={cardLocal.sideB}
+        onChangeTextA={(text) => handleLocalChange("sideA", text)}
+        onChangeTextB={(text) => handleLocalChange("sideB", text)}
+      />
 
       <View style={[margin.base2]}>
         <Text style={padding.bottom} variant="titleMedium">
@@ -265,34 +231,6 @@ const styles = StyleSheet.create({
   },
   KLRadio: {
     display: "flex",
-  },
-  Learning: {
-    borderBottomColor: KnowledgeLevelColor.Learning,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  GettingThere: {
-    borderBottomColor: KnowledgeLevelColor.GettingThere,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  Confident: {
-    borderBottomColor: KnowledgeLevelColor.Confident,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  sideViewHeightA: {
-    height: HEIGHT,
-  },
-  sideViewHeightB: {
-    height: HEIGHT - BORDER_SIZE,
-  },
-  sideView: {
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  labelText: {
-    position: "absolute",
-    top: 0,
-    left: 0,
   },
   comment: {
     backgroundColor: "transparent",

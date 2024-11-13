@@ -176,6 +176,15 @@ export const padding = StyleSheet.create({
   top: {
     paddingTop: baseUnit,
   },
+  top2: {
+    paddingTop: baseUnit * 2,
+  },
+  top3: {
+    paddingTop: baseUnit * 3,
+  },
+  top4: {
+    paddingTop: baseUnit * 4,
+  },
   bottom: {
     paddingBottom: baseUnit,
   },

@@ -13,7 +13,11 @@ import {
   Divider,
 } from "react-native-paper";
 import NumberInput from "./NumberInput";
-import { EMPTY_TEST_SETTING, TestSetting, TestSide } from "@/types/TestSetting";
+import {
+  EMPTY_TEST_SETTING,
+  TestSettings,
+  TestSide,
+} from "@/types/TestSettings";
 import { useEffect, useState } from "react";
 import {
   Dropdown,
@@ -59,7 +63,7 @@ interface CardsSideOptions {
 export default function TestForm({}: TestFormProps) {
   const { conf, tags } = useStore();
   const [testSettings, setTestSettings] =
-    useState<TestSetting>(EMPTY_TEST_SETTING);
+    useState<TestSettings>(EMPTY_TEST_SETTING);
   const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES>(
     OPTIONS_VALUES.Anytime
   );

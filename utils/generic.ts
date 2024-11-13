@@ -1,5 +1,5 @@
 import { Sort, SortDir, SortNames } from "@/types/generic";
-import { TEST_SIDES, TestSide } from "@/types/TestSetting";
+import { TEST_SIDES, TestSide } from "@/types/TestSettings";
 
 export const defaultSort: Sort = {
   field: SortNames.TIME,
