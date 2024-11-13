@@ -4,6 +4,12 @@ export enum KnowledgeLevel {
   Confident = "Confident",
 }
 
+export enum KnowledgeLevelName {
+  Learning = "Learning",
+  GettingThere = "Getting There",
+  Confident = "Confident",
+}
+
 export enum KnowledgeLevelColor {
   Learning = "yellow",
   GettingThere = "green",
@@ -20,4 +26,10 @@ export const FULL_SELECTED_KL = {
   Learning: true,
   GettingThere: true,
   Confident: true,
+};
+
+export const FULL_UNSELECTED_KL = {
+  Learning: false,
+  GettingThere: false,
+  Confident: false,
 };

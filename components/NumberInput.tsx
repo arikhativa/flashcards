@@ -1,6 +1,5 @@
-import { View } from "react-native";
-import InputHelper from "./InputHelper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import TextInput from "./TextInput";
 
 interface NumberInputProps {
   onValueChange: (value: number) => void;
@@ -43,11 +42,12 @@ export default function NumberInput({
   };
 
   return (
-    <InputHelper
+    <TextInput
+      keyboardType="numeric"
       value={valueLocal}
       onValueChange={handleValueChange}
       label={label}
       error={error}
-    ></InputHelper>
+    ></TextInput>
   );
 }
