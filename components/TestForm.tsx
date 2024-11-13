@@ -23,6 +23,8 @@ import {
 import { useStore } from "@/providers/GlobalStore";
 import { isTestSide } from "@/utils/generic";
 import InputHelper from "./InputHelper";
+import TagsSection from "./TagsSection";
+import { Tag } from "@/types/Tag";
 
 interface TestFormProps {}
 
@@ -30,6 +32,7 @@ enum OPTIONS_VALUES {
   Day = "Day",
   Week = "Week",
   Month = "Month",
+  Anytime = "Anytime",
 }
 
 const KNOWLEDGE_LEVEL = [
@@ -41,10 +44,11 @@ const KNOWLEDGE_LEVEL = [
   { label: KnowledgeLevelName.Confident, value: KnowledgeLevel.Confident },
 ];
 
-const OPTIONS = [
+const TimeOptions = [
   { label: "Last Day", value: OPTIONS_VALUES.Day },
   { label: "Last Week", value: OPTIONS_VALUES.Week },
   { label: "Last Month", value: OPTIONS_VALUES.Month },
+  { label: "Anytime", value: OPTIONS_VALUES.Anytime },
 ];
 
 interface CardsSideOptions {
@@ -53,12 +57,12 @@ interface CardsSideOptions {
 }
 
 export default function TestForm({}: TestFormProps) {
-  const { conf } = useStore();
+  const { conf, tags } = useStore();
   const [testSettings, setTestSettings] =
     useState<TestSetting>(EMPTY_TEST_SETTING);
-  const [timeSelected, setTimeSelected] = useState<
-    OPTIONS_VALUES | undefined
-  >();
+  const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES>(
+    OPTIONS_VALUES.Anytime
+  );
   const [kl, setKl] = useState<string[]>([]);
   const [cardsSideOptions, setCardsSideOptions] = useState<CardsSideOptions[]>(
     []
@@ -77,10 +81,6 @@ export default function TestForm({}: TestFormProps) {
     ];
     setCardsSideOptions(cardsSideOptions);
   }, [conf]);
-
-  useEffect(() => {
-    console.log("testSettings", testSettings);
-  }, [testSettings]);
 
   useEffect(() => {
     if (testSide) {
@@ -132,6 +132,28 @@ export default function TestForm({}: TestFormProps) {
     });
   }, [kl]);
 
+  const addTag = (tag: Tag) => {
+    const list = testSettings.selectedTags;
+    if (list.find((t) => t.id === tag.id)) {
+      console.error("tag already exists");
+      return;
+    }
+    list.push(tag);
+    setTestSettings({ ...testSettings, selectedTags: list });
+  };
+
+  const removeTag = (tag: Tag) => {
+    const list = testSettings.selectedTags;
+    if (!list.find((t) => t.id === tag.id)) {
+      console.error("tag does not exists: can't remove");
+      return;
+    }
+    setTestSettings({
+      ...testSettings,
+      selectedTags: list.filter((t) => t.id !== tag.id),
+    });
+  };
+
   return (
     <View style={[container.flex1, margin.base2, margin.top4]}>
       <PaperCard>
@@ -150,7 +172,8 @@ export default function TestForm({}: TestFormProps) {
           <InputHelper>
             <Dropdown
               label="Cards from"
-              options={OPTIONS}
+              placeholder="Anytime"
+              options={TimeOptions}
               value={timeSelected}
               onSelect={setTimeSelected as (value?: string) => void}
             />
@@ -183,10 +206,16 @@ export default function TestForm({}: TestFormProps) {
               }}
             />
           </InputHelper>
-          <Text variant="titleMedium">Chose cards from specific lists?</Text>
-          <TextInput></TextInput>
         </PaperCard.Content>
       </PaperCard>
+      <TagsSection
+        style={margin.top2}
+        title="Chose cards from specific lists"
+        addTag={addTag}
+        removeTag={removeTag}
+        tags={testSettings.selectedTags}
+        allTags={tags}
+      />
     </View>
   );
 }

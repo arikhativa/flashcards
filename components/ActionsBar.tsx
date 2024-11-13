@@ -2,13 +2,13 @@ import { container, margin } from "@/constants/styles";
 import { View } from "react-native";
 import { FAB } from "react-native-paper";
 import { Href, Link } from "expo-router";
-import { ObjLinkProps } from "@/utils/links";
+import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { useEffect, useState } from "react";
 
 interface FABProps {
   icon: string;
   onPress?: () => void;
-  href?: Href<ObjLinkProps>;
+  href?: Href<ObjLinkProps | TestLinkProps>;
 }
 
 interface ActionsBarProps {
@@ -16,7 +16,7 @@ interface ActionsBarProps {
   selectedIds: number[];
   onDeselectAll: () => void;
   deleteMany?: (list: number[]) => void;
-  href?: Href<ObjLinkProps>;
+  href?: Href<ObjLinkProps | TestLinkProps>;
   testMany?: () => void;
 }
 
@@ -64,6 +64,10 @@ export default function ActionsBar({
           icon: "plus",
           href: href,
         },
+        {
+          icon: "test-tube",
+          href: getTestHref(),
+        },
       ]);
     }
   }, [isMultiSelect, selectedIds]);
@@ -80,7 +84,7 @@ export default function ActionsBar({
         if (e.href) {
           return (
             <Link key={index} href={e.href} asChild>
-              <FAB icon="plus" />
+              <FAB icon={e.icon} />
             </Link>
           );
         }

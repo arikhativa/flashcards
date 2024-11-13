@@ -140,8 +140,6 @@ export default function CardsScreen() {
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
 
-  return <TestForm />; // TODO change thisss
-
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions

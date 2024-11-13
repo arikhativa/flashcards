@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React from "react";
+import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
@@ -8,14 +8,18 @@ import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
 
 interface TagsSectionProps {
-  disabled: boolean;
+  title?: string;
+  disabled?: boolean;
   allTags: Tag[];
   tags?: Tag[];
   addTag: (tag: Tag) => void;
   removeTag: (tag: Tag) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 const TagsSection = ({
+  style,
+  title,
   disabled,
   tags,
   allTags,
@@ -71,11 +75,9 @@ const TagsSection = ({
   };
 
   return (
-    <View style={[margin.base2]}>
-      <View style={[container.flexXSpace, padding.bottom]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Tags
-        </Text>
+    <View style={style}>
+      <View style={[padding.base, container.flexXSpace]}>
+        <Text variant="titleMedium">{title ? title : "Tags"}</Text>
         <IconButton
           disabled={disabled}
           icon="plus"

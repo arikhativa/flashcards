@@ -8,7 +8,7 @@ export const TEST_SIDES: readonly TestSide[] = ["A", "B", "Both"];
 export interface TestSetting {
   numberOfCards: number;
   timeRange: TimeRange;
-  selectedLists?: Tag[];
+  selectedTags: Tag[];
   knowledgeLevels: SelectedKL;
   testSide: TestSide;
 }
@@ -18,4 +18,5 @@ export const EMPTY_TEST_SETTING: TestSetting = {
   timeRange: {},
   knowledgeLevels: FULL_UNSELECTED_KL,
   testSide: "A",
+  selectedTags: [],
 };

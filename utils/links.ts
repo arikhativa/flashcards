@@ -9,6 +9,10 @@ export interface ObjLinkProps {
   };
 }
 
+export interface TestLinkProps {
+  params: {};
+}
+
 export function getCardHref(
   id: string | number,
   mode?: CRUDMode
@@ -26,5 +30,12 @@ export function getTagHref(
   return {
     pathname: "/[objType]",
     params: { objType: ObjType.Tag, id: id, mode: mode },
+  };
+}
+
+export function getTestHref(): Href<TestLinkProps> {
+  return {
+    pathname: "/TestPage",
+    // params: { objType: ObjType.Tag, id: id, mode: mode },
   };
 }

@@ -182,6 +182,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
       </View>
 
       <TagsSection
+        style={[margin.base2]}
         disabled={isDisable()}
         addTag={addTag}
         removeTag={removeTag}
