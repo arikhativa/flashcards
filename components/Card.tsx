@@ -19,7 +19,7 @@ import CardSides from "./CardSides";
 type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
-  const { cards, tags, conf, cardService } = useStore();
+  const { cards, tags, cardService } = useStore();
   const navigation = useNavigation();
 
   let idLocal: number = parseInt(id || "-1", 10);

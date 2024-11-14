@@ -19,7 +19,12 @@ interface CardSidesProps {
   hideSideB?: boolean;
   onChangeTextA?: (text: string) => void;
   onChangeTextB?: (text: string) => void;
+  borderSize?: number;
+  cardHeight?: number;
 }
+
+const HEIGHT = 200;
+const BORDER_SIZE = 30;
 
 export default function CardSides({
   knowledgeLevel,
@@ -31,42 +36,56 @@ export default function CardSides({
   hideSideB,
   onChangeTextA,
   onChangeTextB,
+  borderSize,
+  cardHeight,
 }: CardSidesProps) {
   const { conf } = useStore();
+  const border = borderSize || BORDER_SIZE;
+  const height = cardHeight || HEIGHT;
 
   const getKLStyle = () => {
     switch (knowledgeLevel) {
       case KnowledgeLevel.Learning:
-        return styles.Learning;
+        return {
+          borderBottomColor: KnowledgeLevelColor.Learning,
+          borderBottomWidth: border,
+        };
       case KnowledgeLevel.GettingThere:
-        return styles.GettingThere;
+        return {
+          borderBottomColor: KnowledgeLevelColor.GettingThere,
+          borderBottomWidth: border,
+        };
       case KnowledgeLevel.Confident:
-        return styles.Confident;
+        return {
+          borderBottomColor: KnowledgeLevelColor.Confident,
+          borderBottomWidth: border,
+        };
       default:
         return {};
     }
   };
+
   return (
     <PaperCard style={[style, getKLStyle()]}>
       <PaperCard.Content>
-        <View style={[styles.sideView, styles.sideViewHeightA]}>
+        <View style={[styles.sideView, { height: height }]}>
           <Text style={styles.labelText} variant="titleLarge">
             {conf.sideA}
           </Text>
           <TextInput
-            disabled={disabled}
+            editable={!disabled}
             style={[styles.comment, styles.textInput]}
             onChangeText={!disabled ? onChangeTextA : undefined}
             value={hideSideA ? "?" : sideA}
           ></TextInput>
         </View>
         <Divider />
-        <View style={[styles.sideView, styles.sideViewHeightB]}>
+        <View style={[styles.sideView, { height: height - border }]}>
           <Text style={[styles.labelText, padding.top]} variant="titleLarge">
             {conf.sideB}
           </Text>
           <TextInput
-            disabled={disabled}
+            editable={!disabled}
             style={[styles.comment, styles.textInput]}
             onChangeText={!disabled ? onChangeTextB : undefined}
             value={hideSideB ? "?" : sideB}
@@ -76,9 +95,6 @@ export default function CardSides({
     </PaperCard>
   );
 }
-
-const HEIGHT = 200;
-const BORDER_SIZE = 30;
 
 const styles = StyleSheet.create({
   KLRadioContainer: {
@@ -90,24 +106,7 @@ const styles = StyleSheet.create({
   KLRadio: {
     display: "flex",
   },
-  Learning: {
-    borderBottomColor: KnowledgeLevelColor.Learning,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  GettingThere: {
-    borderBottomColor: KnowledgeLevelColor.GettingThere,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  Confident: {
-    borderBottomColor: KnowledgeLevelColor.Confident,
-    borderBottomWidth: BORDER_SIZE,
-  },
-  sideViewHeightA: {
-    height: HEIGHT,
-  },
-  sideViewHeightB: {
-    height: HEIGHT - BORDER_SIZE,
-  },
+
   sideView: {
     position: "relative",
     justifyContent: "center",

@@ -1,4 +1,4 @@
-import { DefaultTheme, PaperProvider } from "react-native-paper";
+import { DefaultTheme, PaperProvider, MD3Theme } from "react-native-paper";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -12,13 +12,27 @@ import { DataSource, Repository } from "typeorm";
 
 import { en, registerTranslation } from "react-native-paper-dates";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MD3Colors } from "react-native-paper/lib/typescript/types";
 registerTranslation("en", en);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const theme = {
+export type CustomColors = MD3Colors & {
+  successContainer: string;
+  success: string;
+};
+export type CustomTheme = MD3Theme & {
+  colors: CustomColors;
+};
+
+const theme: CustomTheme = {
   ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    successContainer: "#b5fc97", // TODO these are bad
+    success: "#81c784",
+  },
 };
 
 export default function RootLayout() {

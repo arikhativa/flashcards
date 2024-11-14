@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, Platform, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -42,16 +42,34 @@ export default function TestManager({ testSettings }: TestManagerProps) {
       return {
         hideSideA: randomValue === 0,
         hideSideB: randomValue === 1,
+        answer: "",
       };
     }
     if (ts.testSide === "A") {
       return {
+        answer: "",
         hideSideA: true,
       };
     }
     return {
+      answer: "",
       hideSideB: true,
     };
+  };
+
+  const updateAnswer = (index: number, newAnswer: string) => {
+    setCardsMeta((prevCardsMeta) =>
+      prevCardsMeta.map((card, i) =>
+        i === index ? { ...card, answer: newAnswer } : card
+      )
+    );
+  };
+  const updateSuccess = (index: number, newSuccess: boolean) => {
+    setCardsMeta((prevCardsMeta) =>
+      prevCardsMeta.map((card, i) =>
+        i === index ? { ...card, success: newSuccess } : card
+      )
+    );
   };
 
   return (
@@ -72,16 +90,17 @@ export default function TestManager({ testSettings }: TestManagerProps) {
               {
                 flex: 1,
                 justifyContent: "flex-start",
-                backgroundColor: "red",
               },
             ]}
           >
-            <Text variant="titleLarge" style={{ alignSelf: "center" }}>
-              {index + 1}/{randomCards.length}
-            </Text>
             {randomCards.length && cardsMeta.length && (
               <CardTest
+                index={index}
+                length={randomCards.length}
                 card={randomCards[index]}
+                cardMeta={cardsMeta[index]}
+                onChangeAnswer={updateAnswer}
+                onChangeSuccess={updateSuccess}
                 hideSideA={
                   cardsMeta.length ? cardsMeta[index].hideSideA : undefined
                 }

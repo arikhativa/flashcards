@@ -115,9 +115,6 @@ export const margin = StyleSheet.create({
   base4: {
     margin: baseUnit * 4,
   },
-  left: {
-    marginLeft: baseUnit,
-  },
   top: {
     marginTop: baseUnit,
   },
@@ -129,6 +126,30 @@ export const margin = StyleSheet.create({
   },
   top4: {
     marginTop: baseUnit * 4,
+  },
+  left: {
+    marginLeft: baseUnit,
+  },
+  left2: {
+    marginLeft: baseUnit * 2,
+  },
+  left3: {
+    marginLeft: baseUnit * 3,
+  },
+  left4: {
+    marginLeft: baseUnit * 4,
+  },
+  right: {
+    marginRight: baseUnit,
+  },
+  right2: {
+    marginRight: baseUnit * 2,
+  },
+  right3: {
+    marginRight: baseUnit * 3,
+  },
+  right4: {
+    marginRight: baseUnit * 4,
   },
   bottom: {
     marginBottom: baseUnit,

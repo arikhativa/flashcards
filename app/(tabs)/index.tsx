@@ -144,18 +144,6 @@ export default function CardsScreen() {
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
 
-  // return (
-  //   <TestManager
-  //     testSettings={{
-  //       numberOfCards: 0,
-  //       timeRange: {},
-  //       knowledgeLevels: FULL_UNSELECTED_KL,
-  //       testSide: "A",
-  //       selectedTags: [],
-  //     }}
-  //   />
-  // ); // TODO
-
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions

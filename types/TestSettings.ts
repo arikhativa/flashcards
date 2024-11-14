@@ -25,4 +25,5 @@ export interface CardMeta {
   hideSideA?: boolean;
   hideSideB?: boolean;
   success?: boolean;
+  answer: string;
 }

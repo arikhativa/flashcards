@@ -1,5 +1,5 @@
 import { container, margin } from "@/constants/styles";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import {
   FULL_UNSELECTED_KL,
   KnowledgeLevel,
@@ -11,6 +11,7 @@ import {
   TextInput,
   Button,
   Divider,
+  FAB,
 } from "react-native-paper";
 import NumberInput from "./NumberInput";
 import {
@@ -29,8 +30,6 @@ import { isTestSide } from "@/utils/generic";
 import InputHelper from "./InputHelper";
 import TagsSection from "./TagsSection";
 import { Tag } from "@/types/Tag";
-
-interface TestFormProps {}
 
 enum OPTIONS_VALUES {
   Day = "Day",
@@ -60,10 +59,18 @@ interface CardsSideOptions {
   value: TestSide;
 }
 
-export default function TestForm({}: TestFormProps) {
+interface TestFormProps {
+  testSettings: TestSettings;
+  setTestSettings: (testSettings: TestSettings) => void;
+  onSubmit?: () => void;
+}
+
+export default function TestForm({
+  testSettings,
+  setTestSettings,
+  onSubmit,
+}: TestFormProps) {
   const { conf, tags } = useStore();
-  const [testSettings, setTestSettings] =
-    useState<TestSettings>(EMPTY_TEST_SETTING);
   const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES>(
     OPTIONS_VALUES.Anytime
   );
@@ -73,6 +80,7 @@ export default function TestForm({}: TestFormProps) {
   );
   const [testSide, setTestSide] = useState<TestSide | undefined>();
   const [testSideError, setTestSideError] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   useEffect(() => {
     if (!conf) {
@@ -85,6 +93,18 @@ export default function TestForm({}: TestFormProps) {
     ];
     setCardsSideOptions(cardsSideOptions);
   }, [conf]);
+
+  useEffect(() => {
+    if (testSettings.numberOfCards < 1) {
+      setIsFormValid(false);
+      return;
+    }
+    if (testSide === undefined) {
+      setIsFormValid(false);
+      return;
+    }
+    setIsFormValid(true);
+  }, [testSettings, testSide]);
 
   useEffect(() => {
     if (testSide) {
@@ -124,14 +144,12 @@ export default function TestForm({}: TestFormProps) {
       return;
     }
     kl.forEach((kl) => {
-      setTestSettings((prev) => {
-        return {
-          ...prev,
-          knowledgeLevels: {
-            ...prev.knowledgeLevels,
-            [kl]: true,
-          },
-        };
+      setTestSettings({
+        ...testSettings,
+        knowledgeLevels: {
+          ...testSettings.knowledgeLevels,
+          [kl]: true,
+        },
       });
     });
   }, [kl]);
@@ -171,28 +189,11 @@ export default function TestForm({}: TestFormProps) {
             onValueChange={(value) =>
               setTestSettings({ ...testSettings, numberOfCards: value })
             }
-            label="How many cards to test?"
+            label="*How many cards to test?"
           ></NumberInput>
-          <InputHelper>
-            <Dropdown
-              label="Cards from"
-              placeholder="Anytime"
-              options={TimeOptions}
-              value={timeSelected}
-              onSelect={setTimeSelected as (value?: string) => void}
-            />
-          </InputHelper>
-          <InputHelper>
-            <MultiSelectDropdown
-              label="Knowledge Level"
-              options={KNOWLEDGE_LEVEL}
-              value={kl}
-              onSelect={setKl}
-            />
-          </InputHelper>
           <InputHelper error={testSideError ? "Please select a side" : ""}>
             <Dropdown
-              label="Test by side"
+              label="*Test by side"
               options={cardsSideOptions}
               value={testSide}
               error={testSideError}
@@ -210,6 +211,23 @@ export default function TestForm({}: TestFormProps) {
               }}
             />
           </InputHelper>
+          <InputHelper>
+            <Dropdown
+              label="Cards from"
+              placeholder="Anytime"
+              options={TimeOptions}
+              value={timeSelected}
+              onSelect={setTimeSelected as (value?: string) => void}
+            />
+          </InputHelper>
+          <InputHelper>
+            <MultiSelectDropdown
+              label="Knowledge Level"
+              options={KNOWLEDGE_LEVEL}
+              value={kl}
+              onSelect={setKl}
+            />
+          </InputHelper>
         </PaperCard.Content>
       </PaperCard>
       <TagsSection
@@ -219,6 +237,12 @@ export default function TestForm({}: TestFormProps) {
         removeTag={removeTag}
         tags={testSettings.selectedTags}
         allTags={tags}
+      />
+      <FAB
+        style={container.buttonBottomRight}
+        disabled={!isFormValid}
+        icon="check"
+        onPress={onSubmit}
       />
     </View>
   );
