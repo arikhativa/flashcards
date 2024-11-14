@@ -51,3 +51,11 @@ export function NumberToKL(n: number): KnowledgeLevel {
       return KnowledgeLevel.Confident;
   }
 }
+
+export function ListKLToSelectedKL(list: string[]): SelectedKL {
+  return {
+    [KnowledgeLevel.Learning]: list.includes(KnowledgeLevel.Learning),
+    [KnowledgeLevel.GettingThere]: list.includes(KnowledgeLevel.GettingThere),
+    [KnowledgeLevel.Confident]: list.includes(KnowledgeLevel.Confident),
+  };
+}

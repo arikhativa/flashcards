@@ -30,6 +30,7 @@ import { isTestSide } from "@/utils/generic";
 import InputHelper from "./InputHelper";
 import TagsSection from "./TagsSection";
 import { Tag } from "@/types/Tag";
+import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
 
 enum OPTIONS_VALUES {
   Day = "Day",
@@ -74,11 +75,15 @@ export default function TestForm({
   const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES>(
     OPTIONS_VALUES.Anytime
   );
-  const [kl, setKl] = useState<string[]>([]);
+  const [kl, setKl] = useState<string[]>([
+    KnowledgeLevel.Learning,
+    KnowledgeLevel.GettingThere,
+    KnowledgeLevel.Confident,
+  ]);
   const [cardsSideOptions, setCardsSideOptions] = useState<CardsSideOptions[]>(
     []
   );
-  const [testSide, setTestSide] = useState<TestSide | undefined>();
+  const [testSide, setTestSide] = useState<TestSide | undefined>("A");
   const [testSideError, setTestSideError] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
@@ -143,15 +148,8 @@ export default function TestForm({
       setTestSettings({ ...testSettings, knowledgeLevels: FULL_UNSELECTED_KL });
       return;
     }
-    kl.forEach((kl) => {
-      setTestSettings({
-        ...testSettings,
-        knowledgeLevels: {
-          ...testSettings.knowledgeLevels,
-          [kl]: true,
-        },
-      });
-    });
+    const klSelected = ListKLToSelectedKL(kl);
+    setTestSettings({ ...testSettings, knowledgeLevels: klSelected });
   }, [kl]);
 
   const addTag = (tag: Tag) => {

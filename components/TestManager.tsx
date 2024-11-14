@@ -11,6 +11,7 @@ import { useStore } from "@/providers/GlobalStore";
 import { baseUnit, padding } from "@/constants/styles";
 import TestFinish from "./TestFinish";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import { generateCardsForTest } from "@/utils/cardPicker";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -31,10 +32,7 @@ export default function TestManager({ testSettings }: TestManagerProps) {
   const [data, setData] = React.useState<number[]>([]);
 
   useEffect(() => {
-    let list: Card[] = [];
-    for (let i = 0; i < testSettings.numberOfCards; i++) {
-      list.push(cards[i]);
-    }
+    const list = generateCardsForTest(cards, testSettings);
     setRandomCards(list);
   }, []);
 

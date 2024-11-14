@@ -1,5 +1,5 @@
 import { TimeRange } from "./generic";
-import { FULL_UNSELECTED_KL, SelectedKL } from "./KnowledgeLevel";
+import { FULL_SELECTED_KL, SelectedKL } from "./KnowledgeLevel";
 import { Tag } from "./Tag";
 
 export type TestSide = "A" | "B" | "Both";
@@ -16,7 +16,7 @@ export interface TestSettings {
 export const EMPTY_TEST_SETTING: TestSettings = {
   numberOfCards: 0,
   timeRange: {},
-  knowledgeLevels: FULL_UNSELECTED_KL,
+  knowledgeLevels: FULL_SELECTED_KL,
   testSide: "A",
   selectedTags: [],
 };

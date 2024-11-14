@@ -19,6 +19,10 @@ const TestPage: React.FC = () => {
 
   useEffect(() => {
     navigation.setOptions({ title: "", headerShown: false });
+    setTestSettings({
+      ...testSettings,
+      selectedTags: [],
+    });
   }, []);
 
   return (
