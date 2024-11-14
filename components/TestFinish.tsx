@@ -1,0 +1,59 @@
+import { Card } from "@/types/Card";
+import { CardMeta } from "@/types/TestSettings";
+import { useEffect, useState } from "react";
+import { FlatList,  View } from "react-native";
+import { Text } from "react-native-paper";
+import { KnowledgeLevel } from "../types/KnowledgeLevel";
+import TestFinishRow from "./TestFinishRow";
+
+interface TestFinishProps {
+  cards: Card[];
+  cardsMeta: CardMeta[];
+  onChangeKnowledgeLevel: (index: number, newKL: KnowledgeLevel) => void;
+}
+
+export default function TestFinish({
+  cards,
+  cardsMeta,
+  onChangeKnowledgeLevel,
+}: TestFinishProps) {
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
+
+  useEffect(() => {
+    let correct = 0;
+    cardsMeta.forEach((cardMeta) => {
+      if (cardMeta.success) {
+        correct++;
+      }
+    });
+    setCorrectAnswers(correct);
+  }, [cardsMeta]);
+
+  return (
+    <View>
+      <Text style={{ alignSelf: "center" }} variant="headlineLarge">
+        Test Is Done!
+      </Text>
+      <Text style={{ alignSelf: "center" }} variant="headlineMedium">
+        You got {correctAnswers}/{cards.length}!
+      </Text>
+      <Text style={{ alignSelf: "center" }} variant="headlineSmall">
+        Adjust Knowledge Level
+      </Text>
+      <View>
+        <FlatList
+          data={cards}
+          keyExtractor={(card) => card.id.toString()}
+          renderItem={({ item, index }) => (
+            <TestFinishRow
+              index={index}
+              card={item}
+              cardMeta={cardsMeta[index]}
+              onChangeKnowledgeLevel={onChangeKnowledgeLevel}
+            />
+          )}
+        />
+      </View>
+    </View>
+  );
+}

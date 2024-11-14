@@ -1,6 +1,6 @@
 import { SortDir } from "@/types/generic";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
-import { KLtoNumber } from "./knowledgeLevel";
+import { KLToNumber } from "./knowledgeLevel";
 
 export function sorByAlpha<T>(list: T[], field: keyof T, dir: SortDir) {
   return list.sort((a, b) => {
@@ -40,8 +40,8 @@ export function sortByKL<T extends BaseKL>(list: T[], dir: SortDir) {
     const bVal = b.knowledgeLevel;
 
     if (dir === SortDir.DESC) {
-      return KLtoNumber(aVal) - KLtoNumber(bVal);
+      return KLToNumber(aVal) - KLToNumber(bVal);
     }
-    return KLtoNumber(bVal) - KLtoNumber(aVal);
+    return KLToNumber(bVal) - KLToNumber(aVal);
   });
 }

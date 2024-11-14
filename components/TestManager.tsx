@@ -9,6 +9,8 @@ import { CardMeta, TestSettings } from "@/types/TestSettings";
 import { Card } from "@/types/Card";
 import { useStore } from "@/providers/GlobalStore";
 import { baseUnit, padding } from "@/constants/styles";
+import TestFinish from "./TestFinish";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -17,24 +19,35 @@ interface TestManagerProps {
   testSettings: TestSettings;
 }
 
+const AUTO_SCROLL_DELAY = 1000;
+
 export default function TestManager({ testSettings }: TestManagerProps) {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
   const { cards } = useStore();
-  const [randomCards, setRandomCards] = React.useState<Card[]>(cards);
+  const [randomCards, setRandomCards] = React.useState<Card[]>([]);
   const [cardsMeta, setCardsMeta] = React.useState<CardMeta[]>([]);
   const [data, setData] = React.useState<number[]>([]);
 
   useEffect(() => {
-    setData([...new Array(randomCards.length).keys()]);
-
-    const tmp: CardMeta[] = [];
-    randomCards.forEach((card) => {
-      tmp.push(getCardMeta(testSettings));
-    });
-    setCardsMeta(tmp);
+    let list: Card[] = [];
+    for (let i = 0; i < testSettings.numberOfCards; i++) {
+      list.push(cards[i]);
+    }
+    setRandomCards(list);
   }, []);
+
+  useEffect(() => {
+    if (cardsMeta.length === 0) {
+      setData([...new Array(randomCards.length + 1).keys()]);
+      const list: CardMeta[] = [];
+      randomCards.forEach((_card) => {
+        list.push(getCardMeta(testSettings));
+      });
+      setCardsMeta(list);
+    }
+  }, [randomCards]);
 
   const getCardMeta = (ts: TestSettings): CardMeta => {
     if (ts.testSide === "Both") {
@@ -58,18 +71,65 @@ export default function TestManager({ testSettings }: TestManagerProps) {
   };
 
   const updateAnswer = (index: number, newAnswer: string) => {
-    setCardsMeta((prevCardsMeta) =>
-      prevCardsMeta.map((card, i) =>
+    setCardsMeta((prev) =>
+      prev.map((card, i) =>
         i === index ? { ...card, answer: newAnswer } : card
       )
     );
   };
+
   const updateSuccess = (index: number, newSuccess: boolean) => {
-    setCardsMeta((prevCardsMeta) =>
-      prevCardsMeta.map((card, i) =>
+    if (cardsMeta[index].success === undefined) {
+      setTimeout(() => scrollToNextPage(), AUTO_SCROLL_DELAY);
+    }
+    setCardsMeta((prev) =>
+      prev.map((card, i) =>
         i === index ? { ...card, success: newSuccess } : card
       )
     );
+  };
+
+  const updateKL = (index: number, newKL: KnowledgeLevel) => {
+    setRandomCards((prev) =>
+      prev.map((card, i) =>
+        i === index ? { ...card, knowledgeLevel: newKL } : card
+      )
+    );
+  };
+
+  const scrollToNextPage = () => {
+    if (ref.current) {
+      ref.current.next();
+    }
+  };
+
+  const getChilde = (index: number) => {
+    if (!randomCards.length || !cardsMeta.length) {
+      return <>loading</>;
+    }
+    if (index < randomCards.length) {
+      return (
+        <CardTest
+          index={index}
+          length={randomCards.length}
+          card={randomCards[index]}
+          cardMeta={cardsMeta[index]}
+          onChangeAnswer={updateAnswer}
+          onChangeSuccess={updateSuccess}
+          hideSideA={cardsMeta.length ? cardsMeta[index].hideSideA : undefined}
+          hideSideB={cardsMeta.length ? cardsMeta[index].hideSideB : undefined}
+        />
+      );
+    }
+    if (index === randomCards.length) {
+      return (
+        <TestFinish
+          cards={randomCards}
+          cardsMeta={cardsMeta}
+          onChangeKnowledgeLevel={updateKL}
+        />
+      );
+    }
   };
 
   return (
@@ -93,22 +153,7 @@ export default function TestManager({ testSettings }: TestManagerProps) {
               },
             ]}
           >
-            {randomCards.length && cardsMeta.length && (
-              <CardTest
-                index={index}
-                length={randomCards.length}
-                card={randomCards[index]}
-                cardMeta={cardsMeta[index]}
-                onChangeAnswer={updateAnswer}
-                onChangeSuccess={updateSuccess}
-                hideSideA={
-                  cardsMeta.length ? cardsMeta[index].hideSideA : undefined
-                }
-                hideSideB={
-                  cardsMeta.length ? cardsMeta[index].hideSideB : undefined
-                }
-              />
-            )}
+            {getChilde(index)}
           </View>
         )}
       />
