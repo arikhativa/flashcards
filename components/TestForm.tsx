@@ -14,11 +14,7 @@ import {
   FAB,
 } from "react-native-paper";
 import NumberInput from "./NumberInput";
-import {
-  EMPTY_TEST_SETTING,
-  TestSettings,
-  TestSide,
-} from "@/types/TestSettings";
+import { TestSettings, TestSide } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
 import {
   Dropdown,
@@ -72,9 +68,10 @@ export default function TestForm({
   onSubmit,
 }: TestFormProps) {
   const { conf, tags } = useStore();
-  const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES>(
-    OPTIONS_VALUES.Anytime
-  );
+  const [timeSelected, setTimeSelected] = useState<
+    OPTIONS_VALUES | undefined
+  >();
+
   const [kl, setKl] = useState<string[]>([
     KnowledgeLevel.Learning,
     KnowledgeLevel.GettingThere,
@@ -86,6 +83,12 @@ export default function TestForm({
   const [testSide, setTestSide] = useState<TestSide | undefined>("A");
   const [testSideError, setTestSideError] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [KLError, setKLError] = useState<boolean>(false);
+  const [timeSelectedError, setTimeSelectedError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeSelected(OPTIONS_VALUES.Anytime);
+  }, []);
 
   useEffect(() => {
     if (!conf) {
@@ -121,6 +124,7 @@ export default function TestForm({
   useEffect(() => {
     if (!timeSelected) {
       setTestSettings({ ...testSettings, timeRange: {} });
+      setTimeSelectedError(true);
       return;
     }
 
@@ -141,15 +145,18 @@ export default function TestForm({
         endDate: new Date(),
       },
     });
+    setTimeSelectedError(false);
   }, [timeSelected]);
 
   useEffect(() => {
     if (kl.length === 0) {
       setTestSettings({ ...testSettings, knowledgeLevels: FULL_UNSELECTED_KL });
+      setKLError(true);
       return;
     }
     const klSelected = ListKLToSelectedKL(kl);
     setTestSettings({ ...testSettings, knowledgeLevels: klSelected });
+    setKLError(false);
   }, [kl]);
 
   const addTag = (tag: Tag) => {
@@ -175,23 +182,23 @@ export default function TestForm({
   };
 
   return (
-    <View style={[container.flex1, margin.base2, margin.top4]}>
+    <View style={[container.flex1, margin.base2]}>
+      <Text style={margin.y2} variant="titleLarge">
+        Test Setup
+      </Text>
       <PaperCard>
         <PaperCard.Content>
-          <Text style={margin.top2} variant="titleLarge">
-            Test Setup
-          </Text>
           <NumberInput
             min={1}
             max={100}
             onValueChange={(value) =>
               setTestSettings({ ...testSettings, numberOfCards: value })
             }
-            label="*How many cards to test?"
+            label="How many cards to test?"
           ></NumberInput>
           <InputHelper error={testSideError ? "Please select a side" : ""}>
             <Dropdown
-              label="*Test by side"
+              label="Test by side"
               options={cardsSideOptions}
               value={testSide}
               error={testSideError}
@@ -209,16 +216,19 @@ export default function TestForm({
               }}
             />
           </InputHelper>
-          <InputHelper>
+          <InputHelper
+            error={timeSelectedError ? "Please select a Knowledge Level" : ""}
+          >
             <Dropdown
               label="Cards from"
-              placeholder="Anytime"
               options={TimeOptions}
               value={timeSelected}
-              onSelect={setTimeSelected as (value?: string) => void}
+              onSelect={(value?: string) => {
+                setTimeSelected(value as OPTIONS_VALUES);
+              }}
             />
           </InputHelper>
-          <InputHelper>
+          <InputHelper error={KLError ? "Please select a Knowledge Level" : ""}>
             <MultiSelectDropdown
               label="Knowledge Level"
               options={KNOWLEDGE_LEVEL}
