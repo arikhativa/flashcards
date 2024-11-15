@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { CardTile } from "./CardTile";
-import { IconButton, Icon } from "react-native-paper";
+import { IconButton, Icon, useTheme } from "react-native-paper";
 import { Card } from "@/types/Card";
 import { CardMeta } from "@/types/TestSettings";
 import { baseUnit } from "@/constants/styles";
@@ -20,24 +20,43 @@ export default function TestFinishRow({
   cardMeta,
   onChangeKnowledgeLevel,
 }: TestFinishRowProps) {
+  const { colors } = useTheme();
+
+  const getContainerColor = (success?: boolean) => {
+    if (!success) {
+      return colors.errorContainer;
+    }
+    return undefined;
+  };
+
   return (
-    <View style={{ flexDirection: "row" }}>
-      <Icon size={baseUnit * 2} source={cardMeta.success ? "check" : "close"} />
-      <CardTile disabledLink card={card} />
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
       <IconButton
-        icon="plus"
-        onPress={() => {
-          const n = KLToNumber(card.knowledgeLevel) + 1;
-          onChangeKnowledgeLevel(index, NumberToKL(n));
-        }}
-      />
-      <IconButton
-        icon="minus"
-        onPress={() => {
-          const n = KLToNumber(card.knowledgeLevel) - 1;
-          onChangeKnowledgeLevel(index, NumberToKL(n));
-        }}
-      />
+        mode="contained-tonal"
+        containerColor={getContainerColor(cardMeta.success)}
+        icon={cardMeta.success ? "check" : "close"}
+      ></IconButton>
+      <View style={{ flex: 1 }}>
+        <CardTile disabledLink card={card} />
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <IconButton
+          mode="contained"
+          icon="minus"
+          onPress={() => {
+            const n = KLToNumber(card.knowledgeLevel) - 1;
+            onChangeKnowledgeLevel(index, NumberToKL(n));
+          }}
+        />
+        <IconButton
+          mode="contained"
+          icon="plus"
+          onPress={() => {
+            const n = KLToNumber(card.knowledgeLevel) + 1;
+            onChangeKnowledgeLevel(index, NumberToKL(n));
+          }}
+        />
+      </View>
     </View>
   );
 }

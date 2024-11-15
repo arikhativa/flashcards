@@ -1,10 +1,11 @@
 import { Card } from "@/types/Card";
 import { CardMeta } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
-import { FlatList,  View } from "react-native";
+import { FlatList, View } from "react-native";
 import { Text } from "react-native-paper";
 import { KnowledgeLevel } from "../types/KnowledgeLevel";
 import TestFinishRow from "./TestFinishRow";
+import { margin, padding } from "@/constants/styles";
 
 interface TestFinishProps {
   cards: Card[];
@@ -30,14 +31,20 @@ export default function TestFinish({
   }, [cardsMeta]);
 
   return (
-    <View>
-      <Text style={{ alignSelf: "center" }} variant="headlineLarge">
+    <View style={margin.base2}>
+      <Text
+        style={[padding.bottom, { alignSelf: "center" }]}
+        variant="headlineLarge"
+      >
         Test Is Done!
       </Text>
-      <Text style={{ alignSelf: "center" }} variant="headlineMedium">
+      <Text
+        style={[padding.bottom3, { alignSelf: "center" }]}
+        variant="headlineMedium"
+      >
         You got {correctAnswers}/{cards.length}!
       </Text>
-      <Text style={{ alignSelf: "center" }} variant="headlineSmall">
+      <Text style={margin.bottom2} variant="titleMedium">
         Adjust Knowledge Level
       </Text>
       <View>
