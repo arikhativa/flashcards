@@ -11,30 +11,33 @@ import { useStore } from "@/providers/GlobalStore";
 import { baseUnit, padding } from "@/constants/styles";
 import TestFinish from "./TestFinish";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
-import { generateCardsForTest } from "@/utils/cardPicker";
+import { generateSmallList } from "@/utils/cardPicker";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 interface TestManagerProps {
+  matchingCards: Card[];
   testSettings: TestSettings;
 }
 
 const AUTO_SCROLL_DELAY = 1000;
 
-export default function TestManager({ testSettings }: TestManagerProps) {
+export default function TestManager({
+  matchingCards,
+  testSettings,
+}: TestManagerProps) {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  const { cards } = useStore();
   const [randomCards, setRandomCards] = React.useState<Card[]>([]);
   const [cardsMeta, setCardsMeta] = React.useState<CardMeta[]>([]);
   const [data, setData] = React.useState<number[]>([]);
 
   useEffect(() => {
-    const list = generateCardsForTest(cards, testSettings);
+    const list = generateSmallList(matchingCards, testSettings);
     setRandomCards(list);
-  }, []);
+  }, [testSettings, matchingCards]);
 
   useEffect(() => {
     if (cardsMeta.length === 0) {
@@ -103,7 +106,7 @@ export default function TestManager({ testSettings }: TestManagerProps) {
 
   const getChilde = (index: number) => {
     if (!randomCards.length || !cardsMeta.length) {
-      return <>loading</>;
+      return <Text>No Cards</Text>; // TODO make this better
     }
     if (index < randomCards.length) {
       return (

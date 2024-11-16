@@ -12,6 +12,7 @@ import {
   Button,
   Divider,
   FAB,
+  Chip,
 } from "react-native-paper";
 import NumberInput from "./NumberInput";
 import { TestSettings, TestSide } from "@/types/TestSettings";
@@ -27,15 +28,23 @@ import InputHelper from "./InputHelper";
 import TagsSection from "./TagsSection";
 import { Tag } from "@/types/Tag";
 import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
+import { Card } from "@/types/Card";
 
 enum OPTIONS_VALUES {
-  Day = "Day",
-  Week = "Week",
-  Month = "Month",
+  Day = "Last Day",
+  Week = "Last Week",
+  Month = "Last Month",
   Anytime = "Anytime",
 }
 
-const KNOWLEDGE_LEVEL = [
+const TIME_OPTIONS = [
+  { label: OPTIONS_VALUES.Day, value: OPTIONS_VALUES.Day },
+  { label: OPTIONS_VALUES.Week, value: OPTIONS_VALUES.Week },
+  { label: OPTIONS_VALUES.Month, value: OPTIONS_VALUES.Month },
+  { label: OPTIONS_VALUES.Anytime, value: OPTIONS_VALUES.Anytime },
+];
+
+const KL_OPTIONS = [
   { label: KnowledgeLevelName.Learning, value: KnowledgeLevel.Learning },
   {
     label: KnowledgeLevelName.GettingThere,
@@ -44,51 +53,46 @@ const KNOWLEDGE_LEVEL = [
   { label: KnowledgeLevelName.Confident, value: KnowledgeLevel.Confident },
 ];
 
-const TimeOptions = [
-  { label: "Last Day", value: OPTIONS_VALUES.Day },
-  { label: "Last Week", value: OPTIONS_VALUES.Week },
-  { label: "Last Month", value: OPTIONS_VALUES.Month },
-  { label: "Anytime", value: OPTIONS_VALUES.Anytime },
-];
-
 interface CardsSideOptions {
   label: string;
   value: TestSide;
 }
 
 interface TestFormProps {
+  matchingCards: Card[];
   testSettings: TestSettings;
   setTestSettings: (testSettings: TestSettings) => void;
-  onSubmit?: () => void;
+  onSubmit: () => void;
 }
 
 export default function TestForm({
+  matchingCards,
   testSettings,
   setTestSettings,
   onSubmit,
 }: TestFormProps) {
   const { conf, tags } = useStore();
-  const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES | undefined>(
-    OPTIONS_VALUES.Anytime // TODO this is a bug that shows "Anytime" after a deselect all
-  );
+
+  const [testSide, setTestSide] = useState<TestSide | undefined>();
+  const [timeSelected, setTimeSelected] = useState<
+    OPTIONS_VALUES | undefined
+  >();
 
   const [kl, setKl] = useState<string[]>([
     KnowledgeLevel.Learning,
     KnowledgeLevel.GettingThere,
     KnowledgeLevel.Confident,
   ]);
+
   const [cardsSideOptions, setCardsSideOptions] = useState<CardsSideOptions[]>(
     []
   );
-  const [testSide, setTestSide] = useState<TestSide | undefined>("A");
-  const [testSideError, setTestSideError] = useState<boolean>(false);
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [KLError, setKLError] = useState<boolean>(false);
-  const [timeSelectedError, setTimeSelectedError] = useState<boolean>(false);
 
-  // TODO this is part of the bug above
   useEffect(() => {
     setTimeSelected(OPTIONS_VALUES.Anytime);
+    setTestSide("A");
+    testSettings.numberOfCards = 10;
+    setTestSettings(testSettings);
   }, []);
 
   useEffect(() => {
@@ -104,18 +108,6 @@ export default function TestForm({
   }, [conf]);
 
   useEffect(() => {
-    if (testSettings.numberOfCards < 1) {
-      setIsFormValid(false);
-      return;
-    }
-    if (testSide === undefined) {
-      setIsFormValid(false);
-      return;
-    }
-    setIsFormValid(true);
-  }, [testSettings, testSide]);
-
-  useEffect(() => {
     if (testSide) {
       setTestSettings({ ...testSettings, testSide: testSide });
       return;
@@ -123,9 +115,8 @@ export default function TestForm({
   }, [testSide]);
 
   useEffect(() => {
-    if (!timeSelected) {
+    if (!timeSelected || timeSelected === OPTIONS_VALUES.Anytime) {
       setTestSettings({ ...testSettings, timeRange: {} });
-      setTimeSelectedError(true);
       return;
     }
 
@@ -146,18 +137,15 @@ export default function TestForm({
         endDate: new Date(),
       },
     });
-    setTimeSelectedError(false);
   }, [timeSelected]);
 
   useEffect(() => {
     if (kl.length === 0) {
       setTestSettings({ ...testSettings, knowledgeLevels: FULL_UNSELECTED_KL });
-      setKLError(true);
       return;
     }
     const klSelected = ListKLToSelectedKL(kl);
     setTestSettings({ ...testSettings, knowledgeLevels: klSelected });
-    setKLError(false);
   }, [kl]);
 
   const addTag = (tag: Tag) => {
@@ -182,61 +170,103 @@ export default function TestForm({
     });
   };
 
+  const isMatchingCardsValid = (): boolean => {
+    return matchingCards.length > 1;
+  };
+
+  const isNumberOfCardsValid = (): boolean => {
+    return testSettings.numberOfCards > 1;
+  };
+
+  const isKnowledgeLevelsValid = (): boolean => {
+    return kl.length > 0;
+  };
+
+  const isTestSideValid = (): boolean => {
+    return testSide !== undefined;
+  };
+
+  const isTimeSelectedValid = (): boolean => {
+    return timeSelected !== undefined;
+  };
+
+  const isFormValid = (): boolean => {
+    return (
+      isNumberOfCardsValid() &&
+      isMatchingCardsValid() &&
+      isKnowledgeLevelsValid() &&
+      isTimeSelectedValid() &&
+      isTestSideValid()
+    );
+  };
+
   return (
     <View style={[container.flex1, margin.base2]}>
-      <Text style={margin.y2} variant="titleLarge">
-        Test Setup
-      </Text>
+      <View
+        style={[
+          margin.y2,
+          {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+        ]}
+      >
+        <Text variant="titleLarge">Test Setup</Text>
+        <Chip style={{}} disabled mode="outlined">
+          {matchingCards.length}
+        </Chip>
+      </View>
       <PaperCard>
         <PaperCard.Content>
           <NumberInput
             min={1}
+            value={testSettings.numberOfCards}
             max={100}
             onValueChange={(value) =>
               setTestSettings({ ...testSettings, numberOfCards: value })
             }
             label="How many cards to test?"
           ></NumberInput>
-          <InputHelper error={testSideError ? "Please select a side" : ""}>
+          <InputHelper error={!isTestSideValid() ? "Please select a side" : ""}>
             <Dropdown
               label="Test by side"
               options={cardsSideOptions}
               value={testSide}
-              error={testSideError}
+              error={!isTestSideValid()}
               onSelect={(value) => {
-                if (!value) {
-                  // TODO this on submit
+                if (!value || !isTestSide(value)) {
                   setTestSide(undefined);
-                  setTestSideError(true);
                   return;
                 }
-                if (isTestSide(value)) {
-                  setTestSide(value as TestSide);
-                  setTestSideError(false);
-                }
+                setTestSide(value as TestSide);
               }}
             />
           </InputHelper>
           <InputHelper
-            error={timeSelectedError ? "Please select a Knowledge Level" : ""}
+            error={
+              !isTimeSelectedValid() ? "Please select a Knowledge Level" : ""
+            }
           >
             <Dropdown
+              error={!isTimeSelectedValid()}
               label="Cards from"
-              options={TimeOptions}
+              options={TIME_OPTIONS}
               value={timeSelected}
               onSelect={(value?: string) => {
-                if (!value) {
-                  setTimeSelected(undefined);
-                  return;
-                }
                 setTimeSelected(value as OPTIONS_VALUES);
               }}
             />
           </InputHelper>
-          <InputHelper error={KLError ? "Please select a Knowledge Level" : ""}>
+          <InputHelper
+            error={
+              !isKnowledgeLevelsValid() ? "Please select a Knowledge Level" : ""
+            }
+          >
             <MultiSelectDropdown
+              error={!isKnowledgeLevelsValid()}
               label="Knowledge Level"
-              options={KNOWLEDGE_LEVEL}
+              options={KL_OPTIONS}
               value={kl}
               onSelect={setKl}
             />
@@ -253,7 +283,7 @@ export default function TestForm({
       />
       <FAB
         style={container.buttonBottomRight}
-        disabled={!isFormValid}
+        disabled={!isFormValid()}
         icon="check"
         onPress={onSubmit}
       />

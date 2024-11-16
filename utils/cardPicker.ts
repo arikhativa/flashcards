@@ -1,28 +1,57 @@
 import { Card } from "@/types/Card";
 import { TestSettings } from "@/types/TestSettings";
 
-export function generateCardsForTest(
+export function getMatchingCardsForTest(
   allCards: Card[],
   testSettings: TestSettings
 ): Card[] {
-  let smallList = createCardList(allCards, testSettings);
+  let list: Card[] = allCards;
+
+  list = filterViaTime(list, testSettings);
+  list = filterViaKL(list, testSettings);
+  list = filterViaTags(list, testSettings);
+
+  return list;
+}
+
+export function generateSmallList(
+  matchingCards: Card[],
+  testSettings: TestSettings
+) {
   let list: Card[] = [];
 
-  const len = Math.min(smallList.length, testSettings.numberOfCards);
+  const len = Math.min(matchingCards.length, testSettings.numberOfCards);
 
   for (let i = 0; i < len; i++) {
-    const c = getRandomCard(smallList);
-    smallList = smallList.filter((card) => card.id !== c.id);
+    const index = getRandomIndex(matchingCards);
+    const [c] = matchingCards.splice(index, 1);
     list.push(c);
   }
   return list;
 }
 
-export function createCardList(
-  cards: Card[],
-  testSettings: TestSettings
-): Card[] {
-  let list: Card[] = cards;
+function filterViaTags(list: Card[], testSettings: TestSettings): Card[] {
+  if (testSettings.selectedTags.length > 0) {
+    list = list.filter((card) => {
+      return testSettings.selectedTags.some((tag) => {
+        return card.tags.map((e) => e.id).includes(tag.id);
+      });
+    });
+  }
+  return list;
+}
+
+function filterViaKL(list: Card[], testSettings: TestSettings): Card[] {
+  if (testSettings.knowledgeLevels) {
+    list = list.filter((card) => {
+      return testSettings.knowledgeLevels[card.knowledgeLevel];
+    });
+  }
+
+  return list;
+}
+
+function filterViaTime(list: Card[], testSettings: TestSettings): Card[] {
   const start = testSettings.timeRange.startDate;
   const end = testSettings.timeRange.endDate;
 
@@ -31,24 +60,9 @@ export function createCardList(
       (card) => card.createdAt >= start && card.createdAt <= end
     );
   }
-
-  if (testSettings.knowledgeLevels) {
-    list = list.filter((card) => {
-      return testSettings.knowledgeLevels[card.knowledgeLevel];
-    });
-  }
-
-  if (testSettings.selectedTags.length > 0) {
-    list = list.filter((card) => {
-      return testSettings.selectedTags.some((tag) => {
-        return card.tags.map((e) => e.id).includes(tag.id);
-      });
-    });
-  }
-
   return list;
 }
 
-export function getRandomCard(cards: Card[]): Card {
-  return cards[Math.floor(Math.random() * cards.length)];
+function getRandomIndex(cards: Card[]): number {
+  return Math.floor(Math.random() * cards.length);
 }
