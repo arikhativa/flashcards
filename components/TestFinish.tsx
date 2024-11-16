@@ -2,10 +2,12 @@ import { Card } from "@/types/Card";
 import { CardMeta } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import { Text } from "react-native-paper";
+import { FAB, Text } from "react-native-paper";
 import { KnowledgeLevel } from "../types/KnowledgeLevel";
 import TestFinishRow from "./TestFinishRow";
-import { margin, padding } from "@/constants/styles";
+import { container, margin, padding } from "@/constants/styles";
+import ActionsBar, { FABProps } from "./ActionsBar";
+import { getHomeHref } from "@/utils/links";
 
 interface TestFinishProps {
   cards: Card[];
@@ -20,6 +22,17 @@ export default function TestFinish({
 }: TestFinishProps) {
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
+  const actionButtons: FABProps[] = [
+    {
+      icon: "check",
+      href: getHomeHref(),
+    },
+    // TODO reset test
+    // {
+    //   icon: "arrow-u-right-bottom",
+    // },
+  ];
+
   useEffect(() => {
     let correct = 0;
     cardsMeta.forEach((cardMeta) => {
@@ -31,7 +44,7 @@ export default function TestFinish({
   }, [cardsMeta]);
 
   return (
-    <View style={margin.base2}>
+    <View style={[margin.base2]}>
       <Text
         style={[padding.bottom, { alignSelf: "center" }]}
         variant="headlineLarge"
@@ -61,6 +74,8 @@ export default function TestFinish({
           )}
         />
       </View>
+      <ActionsBar buttons={actionButtons} />
+      {/* maybe this should not be action bar */}
     </View>
   );
 }

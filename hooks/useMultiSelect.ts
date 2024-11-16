@@ -20,5 +20,10 @@ export function useMultiSelect() {
     setSelectedIds([]);
   };
 
-  return { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds };
+  return {
+    isMultiSelect,
+    selectedIds,
+    toggleIdSelection,
+    clearSelectedIds,
+  };
 }

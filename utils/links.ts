@@ -39,3 +39,9 @@ export function getTestHref(): Href<TestLinkProps> {
     // params: { objType: ObjType.Tag, id: id, mode: mode },
   };
 }
+
+export function getHomeHref(): Href {
+  return {
+    pathname: "/",
+  };
+}

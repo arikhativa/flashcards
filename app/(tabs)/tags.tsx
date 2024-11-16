@@ -9,7 +9,7 @@ import { NEW_ID } from "../[objType]";
 import TagsActions from "@/components/TagsActions";
 import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import ActionsBar from "@/components/ActionsBar";
+import MultiSelectActionBar from "@/components/MultiSelectActionBar";
 
 export default function TagsScreen() {
   const { tags, tagService } = useStore();
@@ -34,6 +34,11 @@ export default function TagsScreen() {
     if (isMultiSelect) {
       toggleIdSelection(id);
     }
+  };
+
+  const handelDeleteMany = () => {
+    tagService.deleteMany(selectedIds);
+    clearSelectedIds();
   };
 
   return (
@@ -61,14 +66,11 @@ export default function TagsScreen() {
           />
         </View>
       )}
-      <ActionsBar
+      <MultiSelectActionBar
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
-        deleteMany={(list: number[]) => {
-          tagService.deleteMany(list);
-          clearSelectedIds();
-        }}
+        deleteMany={handelDeleteMany}
         href={getTagHref(NEW_ID)}
       />
     </View>

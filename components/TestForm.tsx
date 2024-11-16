@@ -29,6 +29,7 @@ import TagsSection from "./TagsSection";
 import { Tag } from "@/types/Tag";
 import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
 import { Card } from "@/types/Card";
+import ActionsBar, { FABProps } from "@/components/ActionsBar";
 
 enum OPTIONS_VALUES {
   Day = "Last Day",
@@ -87,6 +88,13 @@ export default function TestForm({
   const [cardsSideOptions, setCardsSideOptions] = useState<CardsSideOptions[]>(
     []
   );
+
+  const actionButtons: FABProps[] = [
+    {
+      icon: "check",
+      onPress: onSubmit,
+    },
+  ];
 
   useEffect(() => {
     setTimeSelected(OPTIONS_VALUES.Anytime);
@@ -281,12 +289,7 @@ export default function TestForm({
         tags={testSettings.selectedTags}
         allTags={tags}
       />
-      <FAB
-        style={container.buttonBottomRight}
-        disabled={!isFormValid()}
-        icon="check"
-        onPress={onSubmit}
-      />
+      <ActionsBar buttons={actionButtons} isDisabled={() => !isFormValid()} />
     </View>
   );
 }

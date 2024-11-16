@@ -25,9 +25,8 @@ import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import { defaultSort } from "@/utils/generic";
 import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import ActionsBar from "@/components/ActionsBar";
 import { NEW_ID } from "../[objType]";
-import TestManager from "@/components/TestManager";
+import MultiSelectActionBar from "@/components/MultiSelectActionBar";
 
 export default function CardsScreen() {
   const { cards, cardService } = useStore();
@@ -144,6 +143,11 @@ export default function CardsScreen() {
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
 
+  const handelDeleteMany = () => {
+    cardService.deleteMany(selectedIds);
+    clearSelectedIds();
+  };
+
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions
@@ -164,14 +168,11 @@ export default function CardsScreen() {
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
       />
-      <ActionsBar
+      <MultiSelectActionBar
         isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
-        deleteMany={(list: number[]) => {
-          cardService.deleteMany(list);
-          clearSelectedIds();
-        }}
+        selectedIds={selectedIds}
+        deleteMany={handelDeleteMany}
         href={getCardHref(NEW_ID)}
       />
     </View>

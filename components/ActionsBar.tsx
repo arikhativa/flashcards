@@ -1,94 +1,70 @@
 import { container, margin } from "@/constants/styles";
-import { View } from "react-native";
+import { StyleProp, TextStyle, View } from "react-native";
 import { FAB } from "react-native-paper";
 import { Href, Link } from "expo-router";
 import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { useEffect, useState } from "react";
 
-interface FABProps {
+export interface FABProps {
   icon: string;
   onPress?: () => void;
-  href?: Href<ObjLinkProps | TestLinkProps>;
+  href?: Href<ObjLinkProps | TestLinkProps> | Href;
 }
 
 interface ActionsBarProps {
-  isMultiSelect: boolean;
-  selectedIds: number[];
-  onDeselectAll: () => void;
-  deleteMany?: (list: number[]) => void;
-  href?: Href<ObjLinkProps | TestLinkProps>;
-  testMany?: () => void;
+  style?: StyleProp<TextStyle>;
+  buttons: FABProps[];
+  toggle?: boolean;
+  toggledButtons?: FABProps[];
+  isDisabled?: (index: number) => boolean;
 }
 
 export default function ActionsBar({
-  isMultiSelect,
-  selectedIds,
-  onDeselectAll,
-  deleteMany,
-  href,
-  testMany,
+  style,
+  buttons,
+  toggle,
+  toggledButtons,
+  isDisabled,
 }: ActionsBarProps) {
-  const [buttons, setButtons] = useState<FABProps[]>([]);
+  const [buttonsLocal, setButtonsLocal] = useState<FABProps[]>(buttons);
 
   useEffect(() => {
-    const setMultiSelectButtons = () => {
-      const buttons: FABProps[] = [];
-
-      if (testMany) {
-        buttons.push({
-          icon: "test-tube",
-          onPress: testMany,
-        });
-      }
-
-      buttons.push({
-        icon: "arrow-left",
-        onPress: onDeselectAll,
-      });
-
-      if (deleteMany) {
-        buttons.push({
-          icon: "trash-can-outline",
-          onPress: () => deleteMany(selectedIds),
-        });
-      }
-
-      setButtons(buttons);
-    };
-
-    if (isMultiSelect) {
-      setMultiSelectButtons();
-    } else if (href) {
-      setButtons([
-        {
-          icon: "plus",
-          href: href,
-        },
-        {
-          icon: "test-tube",
-          href: getTestHref(),
-        },
-      ]);
+    if (toggle === undefined || toggledButtons === undefined) return;
+    if (toggle) {
+      setButtonsLocal(toggledButtons);
+    } else {
+      setButtonsLocal(buttons);
     }
-  }, [isMultiSelect, selectedIds]);
+  }, [buttons, toggle, toggledButtons]);
 
   return (
     <View
       style={[
+        style,
         margin.base4,
         container.bottom,
         { width: "80%", flexDirection: "row-reverse", gap: 20 },
       ]}
     >
-      {buttons.map((e, index) => {
+      {buttonsLocal.map((e, index) => {
         if (e.href) {
           return (
             <Link key={index} href={e.href} asChild>
-              <FAB icon={e.icon} />
+              <FAB
+                disabled={isDisabled ? isDisabled(index) : false}
+                icon={e.icon}
+              />
             </Link>
           );
         }
-        return <FAB key={index} icon={e.icon} onPress={e.onPress} />;
+        return (
+          <FAB
+            disabled={isDisabled ? isDisabled(index) : false}
+            key={index}
+            icon={e.icon}
+            onPress={e.onPress}
+          />
+        );
       })}
     </View>
   );

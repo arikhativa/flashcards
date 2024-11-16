@@ -12,7 +12,7 @@ import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import ActionsBar from "./ActionsBar";
+import MultiSelectActionBar from "./MultiSelectActionBar";
 
 type TagComponentProps = ComponentProps<Tag>;
 
@@ -158,7 +158,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         allCards={cards}
       />
 
-      <ActionsBar
+      <MultiSelectActionBar
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
