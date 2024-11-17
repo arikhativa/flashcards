@@ -1,11 +1,10 @@
 import { Card } from "@/types/Card";
 import { CardMeta } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
-import { FAB, Text, Button } from "react-native-paper";
+import { View } from "react-native";
+import { Text, Button } from "react-native-paper";
 import { KnowledgeLevel } from "../types/KnowledgeLevel";
-import TestFinishRow from "./TestFinishRow";
-import { container, margin, padding } from "@/constants/styles";
+import { margin, padding } from "@/constants/styles";
 import { getHomeHref } from "@/utils/links";
 import { Card as PaperCard } from "react-native-paper";
 import { useVisible } from "@/hooks/useVisibale";
@@ -16,7 +15,7 @@ interface TestFinishProps {
   cards: Card[];
   cardsMeta: CardMeta[];
   onChangeKnowledgeLevel: (index: number, newKL: KnowledgeLevel) => void;
-  onRetakeTest: () => void;
+  onRetakeTest: (list: Card[]) => void;
 }
 
 export default function TestFinish({
@@ -59,7 +58,7 @@ export default function TestFinish({
           <Link href={getHomeHref()}>
             <Button>Done</Button>
           </Link>
-          <Button onPress={onRetakeTest}>Retake Test</Button>
+          <Button onPress={() => onRetakeTest(cards)}>Retake Test</Button>
           <Button onPress={toggleVisible}>Adjust Knowledge Level</Button>
         </PaperCard.Actions>
       </PaperCard>

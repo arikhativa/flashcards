@@ -12,6 +12,8 @@ import { baseUnit, padding } from "@/constants/styles";
 import TestFinish from "./TestFinish";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { generateSmallList } from "@/utils/cardPicker";
+import { useRouter } from "expo-router";
+import { getTestHref } from "@/utils/links";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -27,6 +29,7 @@ export default function TestManager({
   matchingCards,
   testSettings,
 }: TestManagerProps) {
+  const router = useRouter();
   const { cardService } = useStore();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -135,18 +138,8 @@ export default function TestManager({
     }
   };
 
-  const scrollToFirstPage = () => {
-    if (ref.current) {
-      ref.current.scrollTo({
-        index: 0,
-        animated: true,
-      });
-    }
-  };
-
-  const handleRetakeTest = () => {
-    scrollToFirstPage();
-    updateDB();
+  const handleRetakeTest = (list: Card[]) => {
+    router.replace(getTestHref(list.map((card) => card.id)));
   };
 
   const getChild = (index: number) => {
