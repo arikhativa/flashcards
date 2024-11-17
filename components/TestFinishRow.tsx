@@ -26,7 +26,7 @@ export default function TestFinishRow({
     if (!success) {
       return colors.errorContainer;
     }
-    return undefined;
+    return colors.primaryContainer;
   };
 
   return (

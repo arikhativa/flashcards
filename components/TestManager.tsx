@@ -27,12 +27,37 @@ export default function TestManager({
   matchingCards,
   testSettings,
 }: TestManagerProps) {
+  const { cardService } = useStore();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  const [randomCards, setRandomCards] = React.useState<Card[]>([]);
-  const [cardsMeta, setCardsMeta] = React.useState<CardMeta[]>([]);
   const [data, setData] = React.useState<number[]>([]);
+
+  const [randomCards, setRandomCards] = React.useState<Card[]>([]);
+  const randomCardsRef = React.useRef(randomCards);
+
+  useEffect(() => {
+    randomCardsRef.current = randomCards;
+  }, [randomCards]);
+
+  const [cardsMeta, setCardsMeta] = React.useState<CardMeta[]>([]);
+  const cardsMetaRef = React.useRef(cardsMeta);
+
+  useEffect(() => {
+    cardsMetaRef.current = cardsMeta;
+  }, [cardsMeta]);
+
+  useEffect(() => {
+    const updateDBOnUnmount = () => {
+      const list = updateCardList(randomCardsRef.current, cardsMetaRef.current);
+      if (!list || list.length === 0) {
+        console.error("TestManager, updateDBOnUnmount no cards to update");
+        return;
+      }
+      cardService.updateMany(list);
+    };
+    return updateDBOnUnmount;
+  }, []);
 
   useEffect(() => {
     const list = generateSmallList(matchingCards, testSettings);
@@ -104,7 +129,7 @@ export default function TestManager({
     }
   };
 
-  const getChilde = (index: number) => {
+  const getChild = (index: number) => {
     if (!randomCards.length || !cardsMeta.length) {
       return <Text>No Cards</Text>; // TODO make this better
     }
@@ -154,10 +179,28 @@ export default function TestManager({
               },
             ]}
           >
-            {getChilde(index)}
+            {getChild(index)}
           </View>
         )}
       />
     </View>
   );
+}
+
+function updateCardList(cards: Card[], cardsMeta: CardMeta[]): Card[] {
+  return cards.map((card, index) => {
+    const meta = cardsMeta[index];
+    if (!meta) {
+      console.error("updateCardList invalid meta", meta);
+      return card;
+    }
+    if (cardsMeta[index].success === undefined) {
+      return card;
+    }
+    return {
+      ...card,
+      succuss: cardsMeta[index].success ? card.succuss + 1 : card.succuss,
+      failure: cardsMeta[index].success ? card.failure : card.failure + 1,
+    };
+  });
 }

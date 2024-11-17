@@ -113,6 +113,16 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     return mode === CRUDMode.Read;
   };
 
+  const getSuccess = (): number => {
+    const card = cardLocal as Card;
+    return card.succuss || 0;
+  };
+
+  const getFailure = (): number => {
+    const card = cardLocal as Card;
+    return card.failure || 0;
+  };
+
   return (
     <ScrollView>
       <CardSides
@@ -129,6 +139,14 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         <Text style={padding.bottom} variant="titleMedium">
           Comment
         </Text>
+        {/* TODO */}
+        <Text style={padding.bottom} variant="titleMedium">
+          Success {getSuccess()}
+        </Text>
+        <Text style={padding.bottom} variant="titleMedium">
+          Failure {getFailure()}
+        </Text>
+        {/* TODO */}
         <PaperCard>
           <PaperCard.Content>
             <TextInput

@@ -135,6 +135,18 @@ export class BaseCrudService<
     return false;
   }
 
+  async updateMany(list: TSchema[]): Promise<boolean> {
+    try {
+      await this.repo.save(list);
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("updateMany error: ", e);
+    }
+
+    return false;
+  }
+
   async archive(id: TSchema["id"]): Promise<boolean> {
     const entity = await this.getById(id);
     if (!entity) {
