@@ -1,9 +1,8 @@
-import { container, margin } from "@/constants/styles";
+import { baseUnit, container, margin } from "@/constants/styles";
 import { StyleProp, TextStyle, View } from "react-native";
 import { FAB } from "react-native-paper";
-import { Href, Link } from "expo-router";
-import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
-import { useEffect, useState } from "react";
+import { Href } from "expo-router";
+import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 
 export interface FABProps {
   icon: string;
@@ -26,16 +25,53 @@ export default function ActionsBar({
   toggledButtons,
   isDisabled,
 }: ActionsBarProps) {
-  const [buttonsLocal, setButtonsLocal] = useState<FABProps[]>(buttons);
-
-  useEffect(() => {
-    if (toggle === undefined || toggledButtons === undefined) return;
-    if (toggle) {
-      setButtonsLocal(toggledButtons);
-    } else {
-      setButtonsLocal(buttons);
+  const getIcon = (index: number) => {
+    if (toggledButtons && toggle) {
+      if (index >= toggledButtons.length) return "";
+      return toggledButtons[index].icon;
     }
-  }, [buttons, toggle, toggledButtons]);
+    if (index >= buttons.length) return "";
+    return buttons[index].icon;
+  };
+
+  const handleOnPress = (index: number) => {
+    if (toggledButtons && toggle) {
+      if (toggledButtons[index] && toggledButtons[index].onPress) {
+        return toggledButtons[index].onPress;
+      }
+    }
+    if (buttons[index] && buttons[index].onPress) {
+      return buttons[index].onPress;
+    }
+  };
+
+  const getVisibility = (index: number): boolean => {
+    if (toggledButtons && toggle) {
+      if (toggledButtons[index]) {
+        return true;
+      }
+    }
+    if (buttons[index] && buttons[index].onPress) {
+      return true;
+    }
+    return false;
+  };
+
+  const getButtons = () => {
+    const list: React.JSX.Element[] = [];
+    for (let i = 0; i < 4; i++) {
+      list.push(
+        <FAB
+          visible={getVisibility(i)}
+          key={i}
+          disabled={isDisabled ? isDisabled(i) : false}
+          icon={getIcon(i)}
+          onPress={handleOnPress(i)}
+        />
+      );
+    }
+    return list;
+  };
 
   return (
     <View
@@ -43,29 +79,10 @@ export default function ActionsBar({
         style,
         margin.base4,
         container.bottom,
-        { width: "80%", flexDirection: "row-reverse", gap: 20 },
+        { width: "80%", flexDirection: "row-reverse", gap: baseUnit * 2 },
       ]}
     >
-      {buttonsLocal.map((e, index) => {
-        if (e.href) {
-          return (
-            <Link key={index} href={e.href} asChild>
-              <FAB
-                disabled={isDisabled ? isDisabled(index) : false}
-                icon={e.icon}
-              />
-            </Link>
-          );
-        }
-        return (
-          <FAB
-            disabled={isDisabled ? isDisabled(index) : false}
-            key={index}
-            icon={e.icon}
-            onPress={e.onPress}
-          />
-        );
-      })}
+      {getButtons()}
     </View>
   );
 }

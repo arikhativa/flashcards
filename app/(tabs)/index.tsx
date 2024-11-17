@@ -1,21 +1,16 @@
 import { View } from "react-native";
-import { FAB } from "react-native-paper";
 import { useStore } from "@/providers/GlobalStore";
-import { Link, useRouter } from "expo-router";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
-import { getCardHref, getTestHref } from "@/utils/links";
+import { getCardHref } from "@/utils/links";
 import { CardManyTiles } from "@/components/CardManyTiles";
 import { useEffect, useState } from "react";
-import {
-  FULL_SELECTED_KL,
-  FULL_UNSELECTED_KL,
-  SelectedKL,
-} from "@/types/KnowledgeLevel";
+import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
 import {
   FilterChip,
   FilterNames,
+  ObjType,
   Sort,
   SortNames,
   TimeRange,
@@ -38,6 +33,7 @@ export default function CardsScreen() {
   const {
     isMultiSelect,
     selectedIds,
+    selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,
@@ -148,8 +144,8 @@ export default function CardsScreen() {
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
   }, [cards, query, selectedKL, range, sort]);
 
-  const handelDeleteMany = () => {
-    cardService.deleteMany(selectedIds);
+  const handelDeleteMany = async () => {
+    const ret = await cardService.deleteMany(selectedIdsRef.current);
     clearSelectedIds();
   };
 
@@ -174,12 +170,13 @@ export default function CardsScreen() {
         cards={cardsLocal}
       />
       <MultiSelectActionBar
+        type={ObjType.Card}
         isMultiSelect={isMultiSelect}
         onDeselectAll={clearSelectedIds}
         selectedIds={selectedIds}
-        deleteMany={handelDeleteMany}
+        onDeleteMany={handelDeleteMany}
         href={getCardHref(NEW_ID)}
-        testMany={handelTestMany}
+        onTestMany={handelTestMany}
       />
     </View>
   );

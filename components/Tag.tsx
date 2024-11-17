@@ -5,7 +5,7 @@ import { container, KLMark, margin } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
-import { ComponentProps, CRUDMode } from "@/types/generic";
+import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
@@ -164,10 +164,11 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
       />
 
       <MultiSelectActionBar
+        type={ObjType.Card}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
-        testMany={handelTestMany}
+        onTestMany={handelTestMany}
       />
 
       <PaperCard style={margin.base2}>

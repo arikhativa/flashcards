@@ -1,4 +1,4 @@
-import { Href, RouteParamInput } from "expo-router";
+import { Href, RouteParamInput, useRouter } from "expo-router";
 import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { useEffect, useState } from "react";
 import ActionsBar from "./ActionsBar";
@@ -11,82 +11,100 @@ interface FABProps {
 }
 
 interface MultiSelectActionBarProps {
-  type?: ObjType;
+  type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
   onDeselectAll: () => void;
-  deleteMany?: (list: number[]) => void;
+  onDeleteMany?: () => void;
+  onTestMany?: (type?: ObjType) => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
-  testMany?: (list: number[], type?: ObjType) => void;
 }
 
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
   onDeselectAll,
-  deleteMany,
+  onDeleteMany,
   type,
   href,
-  testMany,
+  onTestMany,
 }: MultiSelectActionBarProps) {
+  const router = useRouter();
   const [buttons, setButtons] = useState<FABProps[]>([]);
   const [toggledButtons, setToggledButtons] = useState<FABProps[]>([]);
 
-  // TODO fix this showTestManyButton it is not claern when we have a test tube
-  const showTestManyButton = (): boolean => {
-    if (type === ObjType.Card) {
-      return !!testMany && selectedIds.length > 1;
-    }
-    return !!testMany && selectedIds.length > 0;
-  };
+  useEffect(() => {
+    setGeneralButtons();
+  }, []);
 
   useEffect(() => {
-    const setMultiSelectButtons = () => {
-      const list: FABProps[] = [];
-
-      if (showTestManyButton()) {
-        list.push({
-          icon: "test-tube",
-          onPress: testMany ? () => testMany(selectedIds, type) : undefined,
-        });
-      }
-
-      list.push({
-        icon: "arrow-left",
-        onPress: onDeselectAll,
-      });
-
-      if (deleteMany) {
-        list.push({
-          icon: "trash-can-outline",
-          onPress: () => deleteMany(selectedIds),
-        });
-      }
-
-      setToggledButtons(list);
-    };
-
     setMultiSelectButtons();
-
-    if (href) {
-      setButtons([
-        {
-          icon: "plus",
-          href: href,
-        },
-        {
-          icon: "test-tube",
-          href: getTestHref(),
-        },
-      ]);
-    }
   }, [selectedIds]);
+
+  const setGeneralButtons = () => {
+    const list: FABProps[] = [];
+    if (href) {
+      list.push({
+        icon: "plus",
+        onPress: () => {
+          router.push(href);
+        },
+      });
+      list.push({
+        icon: "test-tube",
+        onPress: () => {
+          router.push(getTestHref());
+        },
+      });
+    }
+    setButtons(list);
+  };
+
+  const setMultiSelectButtons = () => {
+    const list: FABProps[] = [];
+
+    list.push({
+      icon: "arrow-left",
+      onPress: onDeselectAll,
+    });
+
+    if (onTestMany) {
+      list.push({
+        icon: "test-tube",
+        onPress: () => onTestMany(type),
+      });
+    }
+
+    if (onDeleteMany) {
+      list.push({
+        icon: "trash-can-outline",
+        onPress: onDeleteMany,
+      });
+    }
+
+    setToggledButtons(list);
+  };
+
+  const handleIsDisabled = (index: number) => {
+    if (
+      isMultiSelect &&
+      toggledButtons[index] &&
+      toggledButtons[index].icon === "test-tube"
+    ) {
+      if (type === ObjType.Card) {
+        return selectedIds.length <= 1;
+      }
+      return selectedIds.length <= 0;
+    }
+    return false;
+  };
 
   return (
     <ActionsBar
       buttons={buttons}
       toggle={isMultiSelect}
       toggledButtons={toggledButtons}
+      isDisabled={handleIsDisabled}
     />
   );
 }

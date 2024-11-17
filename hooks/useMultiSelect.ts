@@ -1,12 +1,18 @@
 import { ObjType } from "@/types/generic";
 import { getTestHref } from "@/utils/links";
 import { useRouter } from "expo-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function useMultiSelect() {
   const [isMultiSelect, setIsMultiSelect] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const router = useRouter();
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const selectedIdsRef = useRef<number[]>(selectedIds);
+
+  useEffect(() => {
+    selectedIdsRef.current = selectedIds;
+  }, [selectedIds]);
 
   useEffect(() => {
     setIsMultiSelect(selectedIds.length > 0);
@@ -24,14 +30,15 @@ export function useMultiSelect() {
     setSelectedIds([]);
   };
 
-  const handelTestMany = (list: number[], type: ObjType = ObjType.Card) => {
-    router.push(getTestHref(list, type));
+  const handelTestMany = (type: ObjType = ObjType.Card) => {
+    router.push(getTestHref(selectedIdsRef.current, type));
     clearSelectedIds();
   };
 
   return {
     isMultiSelect,
     selectedIds,
+    selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,

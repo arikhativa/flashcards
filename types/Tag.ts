@@ -6,4 +6,4 @@ export type TagCreate = Pick<Tag, "name"> & {
   cards?: CardSchema[];
 };
 
-export type TagUpdate = Omit<Tag, "id" | "createdAt" | "updatedAt">;
+export type TagUpdate = Partial<Omit<Tag, "id" | "createdAt" | "updatedAt">>;

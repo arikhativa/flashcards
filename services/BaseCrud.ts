@@ -91,75 +91,13 @@ export class BaseCrudService<
     return null;
   }
 
-  async restore(id: TSchema["id"]): Promise<boolean> {
-    const entity = await this.getById(id);
-    if (!entity) {
-      console.error(`restore error: id ${id} not found`);
-      return false;
-    }
-
+  async updateMany(list: TUpdate[]): Promise<boolean> {
     try {
-      await this.repo.restore({ id });
-      this.onUpdate();
-      return true;
-    } catch (e) {
-      console.error("restore error: ", e);
-    }
-
-    return false;
-  }
-
-  // TODO currently there is not check for this
-  async archiveMany(list: TSchema["id"][]): Promise<boolean> {
-    try {
-      await this.repo.softDelete(list);
-      this.onUpdate();
-      return true;
-    } catch (e) {
-      console.error("archiveMany error: ", e);
-    }
-
-    return false;
-  }
-
-  // TODO currently there is not check for this
-  async deleteMany(list: TSchema["id"][]): Promise<boolean> {
-    try {
-      await this.repo.delete(list);
-      this.onUpdate();
-      return true;
-    } catch (e) {
-      console.error("deleteMany error: ", e);
-    }
-
-    return false;
-  }
-
-  async updateMany(list: TSchema[]): Promise<boolean> {
-    try {
-      await this.repo.save(list);
+      await this.repo.save(list as unknown as TSchema[]);
       this.onUpdate();
       return true;
     } catch (e) {
       console.error("updateMany error: ", e);
-    }
-
-    return false;
-  }
-
-  async archive(id: TSchema["id"]): Promise<boolean> {
-    const entity = await this.getById(id);
-    if (!entity) {
-      console.error(`archive error: id ${id} not found`);
-      return false;
-    }
-
-    try {
-      await this.repo.softDelete({ id });
-      this.onUpdate();
-      return true;
-    } catch (e) {
-      console.error("archive error: ", e);
     }
 
     return false;
@@ -182,4 +120,66 @@ export class BaseCrudService<
 
     return false;
   }
+
+  // TODO currently there is not check for this
+  async deleteMany(list: TSchema["id"][]): Promise<boolean> {
+    try {
+      await this.repo.delete(list);
+      this.onUpdate();
+      return true;
+    } catch (e) {
+      console.error("deleteMany error: ", e);
+    }
+
+    return false;
+  }
+
+  // async archive(id: TSchema["id"]): Promise<boolean> {
+  //   const entity = await this.getById(id);
+  //   if (!entity) {
+  //     console.error(`archive error: id ${id} not found`);
+  //     return false;
+  //   }
+
+  //   try {
+  //     await this.repo.softDelete({ id });
+  //     this.onUpdate();
+  //     return true;
+  //   } catch (e) {
+  //     console.error("archive error: ", e);
+  //   }
+
+  //   return false;
+  // }
+
+  // async restore(id: TSchema["id"]): Promise<boolean> {
+  //   const entity = await this.getById(id);
+  //   if (!entity) {
+  //     console.error(`restore error: id ${id} not found`);
+  //     return false;
+  //   }
+
+  //   try {
+  //     await this.repo.restore({ id });
+  //     this.onUpdate();
+  //     return true;
+  //   } catch (e) {
+  //     console.error("restore error: ", e);
+  //   }
+
+  //   return false;
+  // }
+
+  // TODO currently there is not check for this
+  // async archiveMany(list: TSchema["id"][]): Promise<boolean> {
+  //   try {
+  //     await this.repo.softDelete(list);
+  //     this.onUpdate();
+  //     return true;
+  //   } catch (e) {
+  //     console.error("archiveMany error: ", e);
+  //   }
+
+  //   return false;
+  // }
 }

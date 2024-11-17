@@ -42,4 +42,26 @@ export class TagService extends BaseCrudService<
 
     return super.create(payload);
   }
+
+  async delete(id: Tag["id"]): Promise<boolean> {
+    try {
+      await super.update(id, { cards: [] });
+    } catch (e) {
+      console.error("delete error: ", e);
+      return false;
+    }
+
+    return super.delete(id);
+  }
+
+  async deleteMany(list: Tag["id"][]): Promise<boolean> {
+    try {
+      await super.updateMany(list.map((id) => ({ id, cards: [] })));
+    } catch (e) {
+      console.error("deleteMany error: ", e);
+      return false;
+    }
+
+    return super.deleteMany(list);
+  }
 }

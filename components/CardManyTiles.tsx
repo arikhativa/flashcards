@@ -34,7 +34,8 @@ export function CardManyTiles({
   return (
     <View>
       {!cards || cards.length === 0 ? (
-        <View style={container.center}>
+        // TODO this needs to be responsive
+        <View style={[]}>
           <Text style={text.grayMessage}>No cards</Text>
         </View>
       ) : (

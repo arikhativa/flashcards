@@ -18,6 +18,7 @@ export default function TagsScreen() {
   const [query, setQuery] = useState("");
   const {
     isMultiSelect,
+    selectedIdsRef,
     selectedIds,
     toggleIdSelection,
     clearSelectedIds,
@@ -42,8 +43,8 @@ export default function TagsScreen() {
     }
   };
 
-  const handelDeleteMany = () => {
-    tagService.deleteMany(selectedIds);
+  const handelDeleteMany = async () => {
+    const ret = await tagService.deleteMany(selectedIdsRef.current);
     clearSelectedIds();
   };
 
@@ -76,9 +77,9 @@ export default function TagsScreen() {
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
-        deleteMany={handelDeleteMany}
+        onDeleteMany={handelDeleteMany}
         type={ObjType.Tag}
-        testMany={handelTestMany}
+        onTestMany={handelTestMany}
         href={getTagHref(NEW_ID)}
       />
     </View>
