@@ -16,12 +16,14 @@ interface TestFinishProps {
   cards: Card[];
   cardsMeta: CardMeta[];
   onChangeKnowledgeLevel: (index: number, newKL: KnowledgeLevel) => void;
+  onRetakeTest: () => void;
 }
 
 export default function TestFinish({
   cards,
   cardsMeta,
   onChangeKnowledgeLevel,
+  onRetakeTest,
 }: TestFinishProps) {
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const { visible, toggleVisible } = useVisible();
@@ -57,7 +59,7 @@ export default function TestFinish({
           <Link href={getHomeHref()}>
             <Button>Done</Button>
           </Link>
-          <Button>Retake Test</Button>
+          <Button onPress={onRetakeTest}>Retake Test</Button>
           <Button onPress={toggleVisible}>Adjust Knowledge Level</Button>
         </PaperCard.Actions>
       </PaperCard>

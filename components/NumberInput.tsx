@@ -7,6 +7,7 @@ interface NumberInputProps {
   label?: string;
   min?: number;
   max?: number;
+  disabled?: boolean;
 }
 
 export default function NumberInput({
@@ -15,6 +16,7 @@ export default function NumberInput({
   label,
   min,
   max,
+  disabled,
 }: NumberInputProps) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [valueLocal, setValueLocal] = useState<string>(
@@ -55,6 +57,7 @@ export default function NumberInput({
 
   return (
     <TextInput
+      disabled={disabled}
       keyboardType="numeric"
       value={valueLocal}
       onValueChange={handleValueChange}

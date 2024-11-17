@@ -1,10 +1,10 @@
 import { View } from "react-native";
 import { FAB } from "react-native-paper";
 import { useStore } from "@/providers/GlobalStore";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
-import { getCardHref } from "@/utils/links";
+import { getCardHref, getTestHref } from "@/utils/links";
 import { CardManyTiles } from "@/components/CardManyTiles";
 import { useEffect, useState } from "react";
 import {
@@ -29,6 +29,8 @@ import { NEW_ID } from "../[objType]";
 import MultiSelectActionBar from "@/components/MultiSelectActionBar";
 
 export default function CardsScreen() {
+  const router = useRouter(); // TODO use router for all buttons and not Link
+
   const { cards, cardService } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
@@ -148,6 +150,10 @@ export default function CardsScreen() {
     clearSelectedIds();
   };
 
+  const handelTestMany = (list: number[]) => {
+    router.push(getTestHref(list));
+  };
+
   return (
     <View style={[container.flex1, margin.top2]}>
       <CardsActions
@@ -174,6 +180,7 @@ export default function CardsScreen() {
         selectedIds={selectedIds}
         deleteMany={handelDeleteMany}
         href={getCardHref(NEW_ID)}
+        testMany={handelTestMany}
       />
     </View>
   );

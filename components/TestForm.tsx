@@ -1,27 +1,11 @@
 import { container, margin } from "@/constants/styles";
-import { View, StyleSheet, Platform } from "react-native";
-import {
-  FULL_UNSELECTED_KL,
-  KnowledgeLevel,
-  KnowledgeLevelName,
-} from "../types/KnowledgeLevel";
-import {
-  Card as PaperCard,
-  Text,
-  TextInput,
-  Button,
-  Divider,
-  FAB,
-  Chip,
-} from "react-native-paper";
+import { View } from "react-native";
+import { FULL_UNSELECTED_KL, KnowledgeLevel } from "../types/KnowledgeLevel";
+import { Card as PaperCard, Text, Chip } from "react-native-paper";
 import NumberInput from "./NumberInput";
 import { TestSettings, TestSide } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
-import {
-  Dropdown,
-  MultiSelectDropdown,
-  Option,
-} from "react-native-paper-dropdown";
+import { Dropdown, MultiSelectDropdown } from "react-native-paper-dropdown";
 import { useStore } from "@/providers/GlobalStore";
 import { isTestSide } from "@/utils/generic";
 import InputHelper from "./InputHelper";
@@ -30,36 +14,15 @@ import { Tag } from "@/types/Tag";
 import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
 import { Card } from "@/types/Card";
 import ActionsBar, { FABProps } from "@/components/ActionsBar";
-
-enum OPTIONS_VALUES {
-  Day = "Last Day",
-  Week = "Last Week",
-  Month = "Last Month",
-  Anytime = "Anytime",
-}
-
-const TIME_OPTIONS = [
-  { label: OPTIONS_VALUES.Day, value: OPTIONS_VALUES.Day },
-  { label: OPTIONS_VALUES.Week, value: OPTIONS_VALUES.Week },
-  { label: OPTIONS_VALUES.Month, value: OPTIONS_VALUES.Month },
-  { label: OPTIONS_VALUES.Anytime, value: OPTIONS_VALUES.Anytime },
-];
-
-const KL_OPTIONS = [
-  { label: KnowledgeLevelName.Learning, value: KnowledgeLevel.Learning },
-  {
-    label: KnowledgeLevelName.GettingThere,
-    value: KnowledgeLevel.GettingThere,
-  },
-  { label: KnowledgeLevelName.Confident, value: KnowledgeLevel.Confident },
-];
-
-interface CardsSideOptions {
-  label: string;
-  value: TestSide;
-}
+import {
+  CardsSideOptions,
+  KL_OPTIONS,
+  OPTIONS_VALUES,
+  TIME_OPTIONS,
+} from "@/utils/testForm";
 
 interface TestFormProps {
+  preSelectedCards: number[];
   matchingCards: Card[];
   testSettings: TestSettings;
   setTestSettings: (testSettings: TestSettings) => void;
@@ -67,12 +30,20 @@ interface TestFormProps {
 }
 
 export default function TestForm({
+  preSelectedCards,
   matchingCards,
   testSettings,
   setTestSettings,
   onSubmit,
 }: TestFormProps) {
   const { conf, tags } = useStore();
+
+  const actionButtons: FABProps[] = [
+    {
+      icon: "check",
+      onPress: onSubmit,
+    },
+  ];
 
   const [testSide, setTestSide] = useState<TestSide | undefined>();
   const [timeSelected, setTimeSelected] = useState<
@@ -89,17 +60,15 @@ export default function TestForm({
     []
   );
 
-  const actionButtons: FABProps[] = [
-    {
-      icon: "check",
-      onPress: onSubmit,
-    },
-  ];
-
   useEffect(() => {
-    setTimeSelected(OPTIONS_VALUES.Anytime);
+    if (preSelectedCards.length) {
+      setTimeSelected(undefined);
+      testSettings.numberOfCards = preSelectedCards.length;
+    } else {
+      setTimeSelected(OPTIONS_VALUES.Anytime);
+      testSettings.numberOfCards = 10;
+    }
     setTestSide("A");
-    testSettings.numberOfCards = 10;
     setTestSettings(testSettings);
   }, []);
 
@@ -227,15 +196,6 @@ export default function TestForm({
       </View>
       <PaperCard>
         <PaperCard.Content>
-          <NumberInput
-            min={1}
-            value={testSettings.numberOfCards}
-            max={100}
-            onValueChange={(value) =>
-              setTestSettings({ ...testSettings, numberOfCards: value })
-            }
-            label="How many cards to test?"
-          ></NumberInput>
           <InputHelper error={!isTestSideValid() ? "Please select a side" : ""}>
             <Dropdown
               label="Test by side"
@@ -251,12 +211,23 @@ export default function TestForm({
               }}
             />
           </InputHelper>
+          <NumberInput
+            disabled={!!preSelectedCards.length}
+            min={1}
+            value={testSettings.numberOfCards}
+            max={100}
+            onValueChange={(value) =>
+              setTestSettings({ ...testSettings, numberOfCards: value })
+            }
+            label="How many cards to test?"
+          ></NumberInput>
           <InputHelper
             error={
               !isTimeSelectedValid() ? "Please select a Knowledge Level" : ""
             }
           >
             <Dropdown
+              disabled={!!preSelectedCards.length}
               error={!isTimeSelectedValid()}
               label="Cards from"
               options={TIME_OPTIONS}
@@ -272,6 +243,7 @@ export default function TestForm({
             }
           >
             <MultiSelectDropdown
+              disabled={!!preSelectedCards.length}
               error={!isKnowledgeLevelsValid()}
               label="Knowledge Level"
               options={KL_OPTIONS}
@@ -282,6 +254,7 @@ export default function TestForm({
         </PaperCard.Content>
       </PaperCard>
       <TagsSection
+        disabled={!!preSelectedCards.length}
         style={margin.top2}
         title="Chose cards from specific lists"
         addTag={addTag}

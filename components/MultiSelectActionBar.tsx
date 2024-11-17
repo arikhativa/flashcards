@@ -1,7 +1,4 @@
-import { container, margin } from "@/constants/styles";
-import { View } from "react-native";
-import { FAB } from "react-native-paper";
-import { Href, Link } from "expo-router";
+import { Href } from "expo-router";
 import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { useEffect, useState } from "react";
 import ActionsBar from "./ActionsBar";
@@ -18,7 +15,7 @@ interface MultiSelectActionBarProps {
   onDeselectAll: () => void;
   deleteMany?: (list: number[]) => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
-  testMany?: () => void;
+  testMany?: (list: number[]) => void;
 }
 
 export default function MultiSelectActionBar({
@@ -36,10 +33,10 @@ export default function MultiSelectActionBar({
     const setMultiSelectButtons = () => {
       const list: FABProps[] = [];
 
-      if (testMany) {
+      if (testMany && selectedIds.length > 1) {
         list.push({
           icon: "test-tube",
-          onPress: testMany,
+          onPress: () => testMany(selectedIds),
         });
       }
 

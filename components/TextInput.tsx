@@ -7,6 +7,7 @@ type InputHelperProps = {
   onValueChange: (value: string) => void;
   label?: string;
   error?: string;
+  disabled?: boolean;
   keyboardType?: KeyboardTypeOptions;
 };
 
@@ -14,12 +15,14 @@ export default function TextInput({
   value,
   onValueChange,
   label,
+  disabled,
   error,
   keyboardType,
 }: InputHelperProps) {
   return (
     <InputHelper error={error}>
       <TextInputPaper
+        disabled={disabled}
         keyboardType={keyboardType}
         value={value}
         onChangeText={onValueChange}

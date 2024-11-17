@@ -48,15 +48,7 @@ export default function TestManager({
   }, [cardsMeta]);
 
   useEffect(() => {
-    const updateDBOnUnmount = () => {
-      const list = updateCardList(randomCardsRef.current, cardsMetaRef.current);
-      if (!list || list.length === 0) {
-        console.error("TestManager, updateDBOnUnmount no cards to update");
-        return;
-      }
-      cardService.updateMany(list);
-    };
-    return updateDBOnUnmount;
+    return updateDB;
   }, []);
 
   useEffect(() => {
@@ -74,6 +66,18 @@ export default function TestManager({
       setCardsMeta(list);
     }
   }, [randomCards]);
+
+  const updateDB = () => {
+    const list = getUpdateCardList(
+      randomCardsRef.current,
+      cardsMetaRef.current
+    );
+    if (!list || list.length === 0) {
+      console.error("TestManager, updateDB no cards to update");
+      return;
+    }
+    cardService.updateMany(list);
+  };
 
   const getCardMeta = (ts: TestSettings): CardMeta => {
     if (ts.testSide === "Both") {
@@ -106,6 +110,8 @@ export default function TestManager({
 
   const updateSuccess = (index: number, newSuccess: boolean) => {
     if (cardsMeta[index].success === undefined) {
+      // TODO make sure this will not run if the user already changed pages
+
       setTimeout(() => scrollToNextPage(), AUTO_SCROLL_DELAY);
     }
     setCardsMeta((prev) =>
@@ -127,6 +133,20 @@ export default function TestManager({
     if (ref.current) {
       ref.current.next();
     }
+  };
+
+  const scrollToFirstPage = () => {
+    if (ref.current) {
+      ref.current.scrollTo({
+        index: 0,
+        animated: true,
+      });
+    }
+  };
+
+  const handleRetakeTest = () => {
+    scrollToFirstPage();
+    updateDB();
   };
 
   const getChild = (index: number) => {
@@ -153,6 +173,7 @@ export default function TestManager({
           cards={randomCards}
           cardsMeta={cardsMeta}
           onChangeKnowledgeLevel={updateKL}
+          onRetakeTest={handleRetakeTest}
         />
       );
     }
@@ -187,11 +208,11 @@ export default function TestManager({
   );
 }
 
-function updateCardList(cards: Card[], cardsMeta: CardMeta[]): Card[] {
+function getUpdateCardList(cards: Card[], cardsMeta: CardMeta[]): Card[] {
   return cards.map((card, index) => {
     const meta = cardsMeta[index];
     if (!meta) {
-      console.error("updateCardList invalid meta", meta);
+      console.error("getUpdateCardList invalid meta", meta);
       return card;
     }
     if (cardsMeta[index].success === undefined) {
