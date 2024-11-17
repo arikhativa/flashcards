@@ -7,15 +7,14 @@ import { Card } from "@/types/Card";
 import { getMatchingCardsForTest } from "@/utils/cardPicker";
 import { useStore } from "@/providers/GlobalStore";
 import { rawStringArrayToIntArray } from "@/utils/generic";
-
-type localSearchParams = {
-  rawIds: string;
-};
+import { TestLinkProps } from "@/utils/links";
+import { ObjType } from "@/types/generic";
+import { Tag } from "@/types/Tag";
 
 const TestPage: React.FC = () => {
-  const { cards } = useStore();
+  const { cards, tags } = useStore();
   const navigation = useNavigation();
-  const { rawIds } = useLocalSearchParams<localSearchParams>();
+  const { rawIds, type } = useLocalSearchParams<TestLinkProps>();
 
   const [ids, setIds] = useState<number[]>([]);
   const [isTestSetupDone, setIsTestSetupDone] = useState(false);
@@ -25,14 +24,27 @@ const TestPage: React.FC = () => {
   const [matchingCards, setMatchingCards] = useState<Card[]>([]);
 
   useEffect(() => {
+    let tagList: Tag[] = [];
+    let numberOfCards = 10;
+
     if (rawIds) {
-      setIds(rawStringArrayToIntArray(rawIds));
+      const idsList = rawStringArrayToIntArray(rawIds);
+
+      if (idsList.length) {
+        setIds(idsList);
+        if (type === ObjType.Tag) {
+          tagList = idsList.map((id) => tags.find((tag) => tag.id === id)!);
+        } else {
+          numberOfCards = idsList.length;
+        }
+      }
     }
 
     navigation.setOptions({ title: "", headerShown: false });
     setTestSettings({
       ...testSettings,
-      selectedTags: [],
+      numberOfCards: numberOfCards,
+      selectedTags: tagList,
     });
   }, []);
 
@@ -41,7 +53,7 @@ const TestPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (ids.length) {
+    if (ids.length && type === ObjType.Card) {
       const list = getCardsById(ids);
       setMatchingCards(list);
     } else {
@@ -49,6 +61,13 @@ const TestPage: React.FC = () => {
       setMatchingCards(list);
     }
   }, [cards, testSettings]);
+
+  const getPreSelectedCards = (): number[] => {
+    if (type === ObjType.Card && ids.length) {
+      return ids;
+    }
+    return [];
+  };
 
   return (
     <>
@@ -59,7 +78,7 @@ const TestPage: React.FC = () => {
         ></TestManager>
       ) : (
         <TestForm
-          preSelectedCards={ids}
+          preSelectedCards={getPreSelectedCards()}
           matchingCards={matchingCards}
           testSettings={testSettings}
           setTestSettings={setTestSettings}

@@ -45,10 +45,10 @@ export default function TestForm({
     },
   ];
 
-  const [testSide, setTestSide] = useState<TestSide | undefined>();
-  const [timeSelected, setTimeSelected] = useState<
-    OPTIONS_VALUES | undefined
-  >();
+  const [testSide, setTestSide] = useState<TestSide | undefined>("A");
+  const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES | undefined>(
+    preSelectedCards.length ? OPTIONS_VALUES.Anytime : undefined
+  );
 
   const [kl, setKl] = useState<string[]>([
     KnowledgeLevel.Learning,
@@ -63,13 +63,10 @@ export default function TestForm({
   useEffect(() => {
     if (preSelectedCards.length) {
       setTimeSelected(undefined);
-      testSettings.numberOfCards = preSelectedCards.length;
     } else {
       setTimeSelected(OPTIONS_VALUES.Anytime);
-      testSettings.numberOfCards = 10;
     }
-    setTestSide("A");
-    setTestSettings(testSettings);
+    // setTestSide("A"); TODO remove
   }, []);
 
   useEffect(() => {

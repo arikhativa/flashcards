@@ -29,16 +29,19 @@ import { NEW_ID } from "../[objType]";
 import MultiSelectActionBar from "@/components/MultiSelectActionBar";
 
 export default function CardsScreen() {
-  const router = useRouter(); // TODO use router for all buttons and not Link
-
   const { cards, cardService } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<TimeRange>({});
   const [filters, setFilters] = useState<FilterChip[]>([]);
   const [sort, setSort] = useState<Sort>(defaultSort);
-  const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
-    useMultiSelect();
+  const {
+    isMultiSelect,
+    selectedIds,
+    toggleIdSelection,
+    clearSelectedIds,
+    handelTestMany,
+  } = useMultiSelect();
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
 
   useEffect(() => {
@@ -148,10 +151,6 @@ export default function CardsScreen() {
   const handelDeleteMany = () => {
     cardService.deleteMany(selectedIds);
     clearSelectedIds();
-  };
-
-  const handelTestMany = (list: number[]) => {
-    router.push(getTestHref(list));
   };
 
   return (

@@ -19,8 +19,13 @@ type TagComponentProps = ComponentProps<Tag>;
 const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   const navigation = useNavigation();
   const { cards, tags, tagService } = useStore();
-  const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
-    useMultiSelect();
+  const {
+    isMultiSelect,
+    selectedIds,
+    toggleIdSelection,
+    clearSelectedIds,
+    handelTestMany,
+  } = useMultiSelect();
 
   let idLocal: number = parseInt(id || "-1", 10);
   const [tagLocal, setTagLocal] = useState<Tag | TagCreate | TagUpdate>(
@@ -162,6 +167,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
+        testMany={handelTestMany}
       />
 
       <PaperCard style={margin.base2}>

@@ -1,20 +1,19 @@
 import { CRUDMode, ObjType } from "@/types/generic";
-import { Href } from "expo-router";
+import { Href, RouteParamInput } from "expo-router";
 import { toStringIds } from "./generic";
 
-export interface ObjLinkProps {
+export type ObjLinkProps = {
   params: {
     objType: ObjType;
     id: string;
     mode: CRUDMode;
   };
-}
+};
 
-export interface TestLinkProps {
-  params: {
-    rawIds: string | string[];
-  };
-}
+export type TestLinkProps = {
+  rawIds: string;
+  type: ObjType;
+};
 
 export function getCardHref(
   id: string | number,
@@ -36,16 +35,18 @@ export function getTagHref(
   };
 }
 
-export function getTestHref(selectedIds?: number[]): Href<TestLinkProps> {
-  const prop: TestLinkProps = {
-    params: {
-      rawIds: selectedIds ? toStringIds(selectedIds) : [],
-    },
+export function getTestHref(
+  selectedIds?: number[],
+  type: ObjType = ObjType.Card
+): Href<RouteParamInput<TestLinkProps>> {
+  const prop: RouteParamInput<TestLinkProps> = {
+    rawIds: (selectedIds ? toStringIds(selectedIds) : []) as unknown as string,
+    type,
   };
 
   return {
     pathname: "/TestPage",
-    params: prop.params,
+    params: prop,
   };
 }
 

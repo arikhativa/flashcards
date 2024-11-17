@@ -10,13 +10,19 @@ import TagsActions from "@/components/TagsActions";
 import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import MultiSelectActionBar from "@/components/MultiSelectActionBar";
+import { ObjType } from "@/types/generic";
 
 export default function TagsScreen() {
   const { tags, tagService } = useStore();
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState("");
-  const { isMultiSelect, selectedIds, toggleIdSelection, clearSelectedIds } =
-    useMultiSelect();
+  const {
+    isMultiSelect,
+    selectedIds,
+    toggleIdSelection,
+    clearSelectedIds,
+    handelTestMany,
+  } = useMultiSelect();
 
   useEffect(() => {
     setTagsLocal(
@@ -71,6 +77,8 @@ export default function TagsScreen() {
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
         deleteMany={handelDeleteMany}
+        type={ObjType.Tag}
+        testMany={handelTestMany}
         href={getTagHref(NEW_ID)}
       />
     </View>
