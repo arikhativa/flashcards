@@ -12,20 +12,20 @@ export default function TabLayout() {
     {
       key: "cards",
       title: "Cards",
-      focusedIcon: "heart",
-      unfocusedIcon: "heart-outline",
+      focusedIcon: "cards",
+      unfocusedIcon: "cards-outline",
     },
     {
       key: "tags",
       title: "Tags",
-      focusedIcon: "album",
-      unfocusedIcon: "heart-outline",
+      focusedIcon: "tag-multiple",
+      unfocusedIcon: "tag-multiple-outline",
     },
     {
       key: "conf",
       title: "Settings",
-      focusedIcon: "bell",
-      unfocusedIcon: "bell-outline",
+      focusedIcon: "cog",
+      unfocusedIcon: "cog-outline",
     },
   ]);
 
