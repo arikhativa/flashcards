@@ -5,6 +5,7 @@ import { BottomNavigation } from "react-native-paper";
 import CardsScreen from ".";
 import TagsScreen from "./tags";
 import ConfScreen from "./conf";
+import { NAV_BAR_HEIGHT } from "@/constants/general";
 
 export default function TabLayout() {
   const [index, setIndex] = React.useState(0);
@@ -37,6 +38,7 @@ export default function TabLayout() {
 
   return (
     <BottomNavigation
+      barStyle={{ height: NAV_BAR_HEIGHT }}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}

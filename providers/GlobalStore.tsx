@@ -84,7 +84,8 @@ export const StoreProvider = ({
   useEffect(() => {
     const init = async () => {
       const cards = await cardService.getAll();
-      if (__DEV__ && (!cards || cards.length === 0)) {
+      const conf = await confService.get();
+      if (__DEV__ && (!cards || cards.length === 0) && !conf) {
         console.log("This is Dev and the DB is empty, adding items...");
         for (const card of CARDS) {
           await cardService.create(card);
