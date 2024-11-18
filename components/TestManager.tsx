@@ -113,9 +113,12 @@ export default function TestManager({
 
   const updateSuccess = (index: number, newSuccess: boolean) => {
     if (cardsMeta[index].success === undefined) {
-      // TODO make sure this will not run if the user already changed pages
-
-      setTimeout(() => scrollToNextPage(), AUTO_SCROLL_DELAY);
+      setTimeout(() => {
+        const cur = ref.current?.getCurrentIndex();
+        if (cur === index) {
+          scrollToNextPage();
+        }
+      }, AUTO_SCROLL_DELAY);
     }
     setCardsMeta((prev) =>
       prev.map((card, i) =>

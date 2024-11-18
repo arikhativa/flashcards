@@ -49,9 +49,9 @@ export default function TestForm({
   const [testSide, setTestSide] = useState<TestSide | undefined>(
     testSettings.testSide
   );
-  const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES | undefined>(
-    preSelectedCards.length ? OPTIONS_VALUES.Anytime : undefined
-  );
+  const [timeSelected, setTimeSelected] = useState<
+    OPTIONS_VALUES | undefined
+  >();
 
   const [kl, setKl] = useState<string[]>([
     KnowledgeLevel.Learning,
@@ -64,11 +64,7 @@ export default function TestForm({
   );
 
   useEffect(() => {
-    if (preSelectedCards.length) {
-      setTimeSelected(undefined);
-    } else {
-      setTimeSelected(OPTIONS_VALUES.Anytime);
-    }
+    setTimeSelected(OPTIONS_VALUES.Anytime);
   }, []);
 
   useEffect(() => {
@@ -90,20 +86,21 @@ export default function TestForm({
     }
   }, [testSide]);
 
-  useEffect(() => {
-    if (!timeSelected || timeSelected === OPTIONS_VALUES.Anytime) {
+  const handleChangeTimeSelected = (value?: string) => {
+    setTimeSelected(value as OPTIONS_VALUES);
+    if (!value || value === OPTIONS_VALUES.Anytime) {
       setTestSettings({ ...testSettings, timeRange: {} });
       return;
     }
 
     let past = new Date();
-    if (timeSelected === OPTIONS_VALUES.Day) {
+    if (value === OPTIONS_VALUES.Day) {
       past.setHours(past.getHours() - 24);
     }
-    if (timeSelected === OPTIONS_VALUES.Week) {
+    if (value === OPTIONS_VALUES.Week) {
       past.setHours(past.getHours() - 24 * 7);
     }
-    if (timeSelected === OPTIONS_VALUES.Month) {
+    if (value === OPTIONS_VALUES.Month) {
       past.setHours(past.getHours() - 24 * 30);
     }
     setTestSettings({
@@ -113,7 +110,7 @@ export default function TestForm({
         endDate: new Date(),
       },
     });
-  }, [timeSelected]);
+  };
 
   useEffect(() => {
     if (kl.length === 0) {
@@ -231,9 +228,7 @@ export default function TestForm({
               label="Cards from"
               options={TIME_OPTIONS}
               value={timeSelected}
-              onSelect={(value?: string) => {
-                setTimeSelected(value as OPTIONS_VALUES);
-              }}
+              onSelect={handleChangeTimeSelected}
             />
           </InputHelper>
           <InputHelper
