@@ -20,6 +20,7 @@ import {
   OPTIONS_VALUES,
   TIME_OPTIONS,
 } from "@/utils/testForm";
+import { MAX_NUMBER_OF_CARDS, MIN_NUMBER_OF_CARDS } from "@/constants/general";
 
 interface TestFormProps {
   preSelectedCards: number[];
@@ -45,7 +46,9 @@ export default function TestForm({
     },
   ];
 
-  const [testSide, setTestSide] = useState<TestSide | undefined>("A");
+  const [testSide, setTestSide] = useState<TestSide | undefined>(
+    testSettings.testSide
+  );
   const [timeSelected, setTimeSelected] = useState<OPTIONS_VALUES | undefined>(
     preSelectedCards.length ? OPTIONS_VALUES.Anytime : undefined
   );
@@ -66,7 +69,6 @@ export default function TestForm({
     } else {
       setTimeSelected(OPTIONS_VALUES.Anytime);
     }
-    // setTestSide("A"); TODO remove
   }, []);
 
   useEffect(() => {
@@ -210,9 +212,9 @@ export default function TestForm({
           </InputHelper>
           <NumberInput
             disabled={!!preSelectedCards.length}
-            min={1}
+            min={MIN_NUMBER_OF_CARDS}
+            max={MAX_NUMBER_OF_CARDS}
             value={testSettings.numberOfCards}
-            max={100}
             onValueChange={(value) =>
               setTestSettings({ ...testSettings, numberOfCards: value })
             }

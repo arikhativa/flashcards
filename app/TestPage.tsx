@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import TestForm from "@/components/TestForm";
 import { EMPTY_TEST_SETTING, TestSettings } from "@/types/TestSettings";
@@ -12,7 +12,7 @@ import { ObjType } from "@/types/generic";
 import { Tag } from "@/types/Tag";
 
 const TestPage: React.FC = () => {
-  const { cards, tags } = useStore();
+  const { cards, tags, conf } = useStore();
   const navigation = useNavigation();
   const { rawIds, type } = useLocalSearchParams<TestLinkProps>();
 
@@ -22,11 +22,14 @@ const TestPage: React.FC = () => {
     useState<TestSettings>(EMPTY_TEST_SETTING);
 
   const [matchingCards, setMatchingCards] = useState<Card[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    navigation.setOptions({ title: "", headerShown: false });
+
     let tagList: Tag[] = [];
-    let numberOfCards = 10;
-
+    let numberOfCards = conf.numberOfCards;
+    let testSide = conf.testSide;
     if (rawIds) {
       const idsList = rawStringArrayToIntArray(rawIds);
 
@@ -40,17 +43,15 @@ const TestPage: React.FC = () => {
       }
     }
 
-    navigation.setOptions({ title: "", headerShown: false });
     setTestSettings({
       ...testSettings,
       numberOfCards: numberOfCards,
+      testSide: testSide,
       selectedTags: tagList,
     });
-  }, []);
 
-  const getCardsById = (ids: number[]): Card[] => {
-    return ids.map((id) => cards.find((card) => card.id === id)!);
-  };
+    setIsInitialized(true);
+  }, []);
 
   useEffect(() => {
     if (ids.length && type === ObjType.Card) {
@@ -62,12 +63,20 @@ const TestPage: React.FC = () => {
     }
   }, [cards, testSettings]);
 
+  const getCardsById = (ids: number[]): Card[] => {
+    return ids.map((id) => cards.find((card) => card.id === id)!);
+  };
+
   const getPreSelectedCards = (): number[] => {
     if (type === ObjType.Card && ids.length) {
       return ids;
     }
     return [];
   };
+
+  if (!isInitialized) {
+    return null;
+  }
 
   return (
     <>

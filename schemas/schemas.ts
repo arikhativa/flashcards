@@ -80,4 +80,10 @@ export class ConfSchema extends BaseEntity {
 
   @Column({ type: "text", default: "B" })
   sideB: string;
+
+  @Column({ type: "text", default: "A" })
+  testSide: string;
+
+  @Column({ type: "integer", default: 10 })
+  numberOfCards: number;
 }

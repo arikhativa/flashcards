@@ -45,3 +45,7 @@ export function rawStringArrayToIntArray(raw: string): number[] {
 export function toIntIds(ids: string[]): number[] {
   return ids.map((id) => parseInt(id));
 }
+
+export function isInRange(value: number, min: number, max: number): boolean {
+  return value >= min && value <= max;
+}
