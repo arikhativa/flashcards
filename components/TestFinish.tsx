@@ -1,7 +1,7 @@
 import { Card } from "@/types/Card";
 import { CardMeta } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { KnowledgeLevel } from "../types/KnowledgeLevel";
 import { margin, padding } from "@/constants/styles";
@@ -59,7 +59,14 @@ export default function TestFinish({
             <Button>Done</Button>
           </Link>
           <Button onPress={() => onRetakeTest(cards)}>Retake Test</Button>
-          <Button onPress={toggleVisible}>Adjust Knowledge Level</Button>
+          <Button
+            onPress={() => {
+              Keyboard.dismiss();
+              toggleVisible();
+            }}
+          >
+            Adjust Knowledge Level
+          </Button>
         </PaperCard.Actions>
       </PaperCard>
       <TestFinishDialog

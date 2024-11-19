@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
 import CardSides from "./CardSides";
+import KnowledgeLevelSection from "./card/KnowledgeLevelSection";
 
 type CardComponentProps = ComponentProps<Card>;
 
@@ -136,9 +137,6 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
       />
 
       <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Comment
-        </Text>
         {/* TODO */}
         <Text style={padding.bottom} variant="titleMedium">
           Success {getSuccess()}
@@ -147,6 +145,9 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
           Failure {getFailure()}
         </Text>
         {/* TODO */}
+        <Text style={padding.bottom} variant="titleMedium">
+          Comment
+        </Text>
         <PaperCard>
           <PaperCard.Content>
             <TextInput
@@ -174,35 +175,12 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         allTags={tags}
       />
 
-      <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Knowledge Level
-        </Text>
-        <PaperCard>
-          <PaperCard.Content style={[styles.KLRadioContainer]}>
-            <View
-              style={styles.KLRadio}
-              pointerEvents={isDisable() ? "none" : "auto"}
-            >
-              <CardRadio
-                level={KnowledgeLevel.Learning}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.GettingThere}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.Confident}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-            </View>
-          </PaperCard.Content>
-        </PaperCard>
-      </View>
+      <KnowledgeLevelSection
+        knowledgeLevel={cardLocal.knowledgeLevel}
+        setKnowledgeLevel={setKL}
+        disabled={isDisable()}
+        style={margin.base2}
+      />
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
@@ -241,15 +219,6 @@ const HEIGHT = 200;
 const BORDER_SIZE = 30;
 
 const styles = StyleSheet.create({
-  KLRadioContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  KLRadio: {
-    display: "flex",
-  },
   comment: {
     backgroundColor: "transparent",
   },

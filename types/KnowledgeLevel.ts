@@ -11,7 +11,7 @@ export enum KnowledgeLevelName {
 }
 
 export enum KnowledgeLevelColor {
-  Learning = "yellow",
+  Learning = "#eae11d",
   GettingThere = "green",
   Confident = "purple",
 }
