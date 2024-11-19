@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { getCardHref } from "@/utils/links";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
-import { GestureWrapper } from "./GestureWrapper";
+import { GestureWrapper } from "../shared/GestureWrapper";
 
 export type CardTileProps = {
   card: Card;

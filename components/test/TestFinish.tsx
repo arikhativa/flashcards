@@ -3,7 +3,7 @@ import { CardMeta } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
 import { Keyboard, View } from "react-native";
 import { Text, Button } from "react-native-paper";
-import { KnowledgeLevel } from "../types/KnowledgeLevel";
+import { KnowledgeLevel } from "../../types/KnowledgeLevel";
 import { margin, padding } from "@/constants/styles";
 import { getHomeHref } from "@/utils/links";
 import { Card as PaperCard } from "react-native-paper";

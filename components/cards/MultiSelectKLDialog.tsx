@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Dialog, Portal } from "react-native-paper";
-import { KnowledgeLevel, SelectedKL } from "../types/KnowledgeLevel";
-import CheckboxText from "./CheckboxText";
+import { KnowledgeLevel, SelectedKL } from "../../types/KnowledgeLevel";
+import CheckboxText from "../shared/CheckboxText";
 import { container } from "@/constants/styles";
 
 type MultiSelectKLDialogProps = {

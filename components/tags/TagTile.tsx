@@ -4,7 +4,7 @@ import { Chip } from "react-native-paper";
 import { baseUnit, margin } from "@/constants/styles";
 import { getTagHref } from "@/utils/links";
 import { Link } from "expo-router";
-import { GestureWrapper } from "./GestureWrapper";
+import { GestureWrapper } from "../shared/GestureWrapper";
 
 export type TagTileProps = {
   tag: Tag;

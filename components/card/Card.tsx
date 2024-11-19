@@ -2,20 +2,18 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { Button, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
-import { Divider } from "react-native-paper";
 import { margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
-import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
-import TagsSection from "@/components/TagsSection";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import TagsSection from "@/components/shared/TagsSection";
 import { Tag } from "@/types/Tag";
-import { CardRadio } from "@/components/CardRadio";
 import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
-import CardSides from "./CardSides";
-import KnowledgeLevelSection from "./card/KnowledgeLevelSection";
+import CardSides from "../shared/CardSides";
+import KnowledgeLevelSection from "./KnowledgeLevelSection";
 
 type CardComponentProps = ComponentProps<Card>;
 

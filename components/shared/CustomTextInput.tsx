@@ -2,7 +2,7 @@ import { KeyboardTypeOptions } from "react-native";
 import { TextInput as TextInputPaper } from "react-native-paper";
 import InputHelper from "./InputHelper";
 
-type InputHelperProps = {
+type CustomTextInputProps = {
   value: string;
   onValueChange: (value: string) => void;
   label?: string;
@@ -11,14 +11,14 @@ type InputHelperProps = {
   keyboardType?: KeyboardTypeOptions;
 };
 
-export default function TextInput({
+export default function CustomTextInput({
   value,
   onValueChange,
   label,
   disabled,
   error,
   keyboardType,
-}: InputHelperProps) {
+}: CustomTextInputProps) {
   return (
     <InputHelper error={error}>
       <TextInputPaper

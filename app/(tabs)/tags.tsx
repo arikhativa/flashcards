@@ -1,15 +1,15 @@
 import { Text } from "react-native-paper";
 import { View, FlatList } from "react-native";
 
-import { TagTile } from "@/components/TagTile";
+import { TagTile } from "@/components/tags/TagTile";
 import { useStore } from "@/providers/GlobalStore";
 import { container, margin, text } from "@/constants/styles";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
-import TagsActions from "@/components/TagsActions";
+import TagsActions from "@/components/tags/TagsActions";
 import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import MultiSelectActionBar from "@/components/MultiSelectActionBar";
+import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import { ObjType } from "@/types/generic";
 
 export default function TagsScreen() {

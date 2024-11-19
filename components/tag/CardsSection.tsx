@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Dialog, IconButton, Portal, Text } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
-import { CardTile } from "./CardTile";
+import { CardTile } from "../cards/CardTile";
 import { Card } from "@/types/Card";
-import Autocomplete from "./Autocomplete";
+import Autocomplete from "../shared/Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
-import { CardManyTiles } from "./CardManyTiles";
+import { CardsManyTiles } from "../cards/CardsManyTiles";
 
 interface CardsSectionProps {
   allCards: Card[];
@@ -67,7 +67,7 @@ const CardsSection = ({
         ></IconButton>
       </View>
 
-      <CardManyTiles
+      <CardsManyTiles
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}

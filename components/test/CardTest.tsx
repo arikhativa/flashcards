@@ -5,7 +5,7 @@ import {
   IconButton,
   TextInput,
 } from "react-native-paper";
-import CardSides from "./CardSides";
+import CardSides from "../shared/CardSides";
 import { Card } from "@/types/Card";
 import { margin } from "@/constants/styles";
 import { CardMeta } from "@/types/TestSettings";

@@ -12,7 +12,7 @@ import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import MultiSelectActionBar from "./MultiSelectActionBar";
+import MultiSelectActionBar from "../shared/MultiSelectActionBar";
 
 type TagComponentProps = ComponentProps<Tag>;
 

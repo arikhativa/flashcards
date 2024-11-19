@@ -3,7 +3,7 @@ import { useStore } from "@/providers/GlobalStore";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { getCardHref } from "@/utils/links";
-import { CardManyTiles } from "@/components/CardManyTiles";
+import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
@@ -15,13 +15,13 @@ import {
   SortNames,
   TimeRange,
 } from "@/types/generic";
-import CardsActions from "@/components/CardsActions";
+import CardsActions from "@/components/cards/CardsActions";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import { defaultSort } from "@/utils/generic";
 import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import { NEW_ID } from "../[objType]";
-import MultiSelectActionBar from "@/components/MultiSelectActionBar";
+import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 
 export default function CardsScreen() {
   const { cards, cardService } = useStore();
@@ -163,7 +163,7 @@ export default function CardsScreen() {
         onKLChange={handleKLChange}
       />
 
-      <CardManyTiles
+      <CardsManyTiles
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
