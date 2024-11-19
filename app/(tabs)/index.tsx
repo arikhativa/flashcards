@@ -3,7 +3,6 @@ import { useStore } from "@/providers/GlobalStore";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { getCardHref } from "@/utils/links";
-import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
@@ -15,13 +14,14 @@ import {
   SortNames,
   TimeRange,
 } from "@/types/generic";
-import CardsActions from "@/components/cards/CardsActions";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import { defaultSort } from "@/utils/generic";
 import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import { NEW_ID } from "../[objType]";
 import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
+import ListActions from "@/components/shared/ListActions";
+import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 
 export default function CardsScreen() {
   const { cards, cardService } = useStore();
@@ -151,7 +151,7 @@ export default function CardsScreen() {
 
   return (
     <View style={[container.flex1, margin.top2]}>
-      <CardsActions
+      <ListActions
         sort={sort}
         onSortChange={setSort}
         filters={filters}
