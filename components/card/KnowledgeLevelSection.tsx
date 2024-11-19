@@ -1,6 +1,6 @@
 import { baseUnit, padding } from "@/constants/styles";
 import { StyleProp, View, ViewStyle } from "react-native";
-import { Card as PaperCard, Text, Button } from "react-native-paper";
+import { Card as PaperCard, Text, Button, useTheme } from "react-native-paper";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import {
   knowledgeLevelToColor,
@@ -20,21 +20,19 @@ export default function KnowledgeLevelSection({
   disabled,
   setKnowledgeLevel,
 }: KnowledgeLevelSectionProps) {
+  const { colors } = useTheme();
+
   const getButton = (kl: KnowledgeLevel) => {
     return (
       <Button
-        textColor={
-          knowledgeLevel === kl ? undefined : knowledgeLevelToColor(kl)
-        }
-        buttonColor={
-          knowledgeLevel === kl ? knowledgeLevelToColor(kl) : undefined
-        }
+        textColor={colors.inverseSurface}
         style={{
           borderRadius: 0,
           width: "100%",
+          borderStyle: knowledgeLevel === kl ? "solid" : "dashed",
           borderColor: knowledgeLevelToColor(kl),
         }}
-        mode={knowledgeLevel === kl ? "contained" : "outlined"}
+        mode="outlined"
         onPress={() => setKnowledgeLevel(kl)}
       >
         {knowledgeLevelToName(kl)}
