@@ -12,8 +12,9 @@ NOTE - if you add an Entity then you must include it in both FakeDB.ts and AppDa
 
 now we can generate new migrations with:
 ```
-npm run generateMigrations
+npm run generateMigrations <MIGRATION_NAME>
 ```
+NOTE - MIGRATION_NAME must be lowercase!!! 
 
 then we want to update the migrations list with:
 ```
