@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { StoreProvider } from "@/providers/GlobalStore";
-import { source } from "@/hooks/db";
+import { AppDataSource } from "@/hooks/db";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, EntityManager, Repository } from "typeorm";
 
 import { en, registerTranslation } from "react-native-paper-dates";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -17,6 +17,20 @@ registerTranslation("en", en);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+async function getAllTables(db: DataSource) {
+  const manager: EntityManager = db.manager;
+  const result = await manager.query(
+    'SELECT name FROM sqlite_master WHERE type="table";'
+  );
+  return result;
+}
+
+async function getMigrations(db: DataSource) {
+  const manager: EntityManager = db.manager;
+  const result = await manager.query("SELECT * FROM migrations;");
+  return result;
+}
 
 export type CustomColors = MD3Colors & {
   successContainer: string;
@@ -64,11 +78,25 @@ export default function RootLayout() {
     const initDB = async () => {
       let db: DataSource;
       try {
-        if (!source.isInitialized) {
-          db = await source.initialize();
+        if (!AppDataSource.isInitialized) {
+          console.log("pre init");
+          db = await AppDataSource.initialize();
+          console.log("post init");
         } else {
-          db = source;
+          console.log("no need for init");
+          db = AppDataSource;
         }
+        const pendingMigrations = await AppDataSource.showMigrations();
+        console.log("Pending Migrations:", pendingMigrations);
+
+        console.log("pre runMigrations");
+        await AppDataSource.runMigrations();
+        console.log("post runMigrations");
+
+        let tt = await getAllTables(db);
+        console.log("getAllTables", tt);
+        tt = await getMigrations(db);
+        console.log("getMigrations", tt);
       } catch (e) {
         console.error("Error initializing database", e);
         return;
