@@ -1,17 +1,14 @@
 import { CardSchema, ConfSchema, TagSchema } from "../schemas/schemas";
 import { DataSource } from "typeorm";
-
-import "reflect-metadata";
 import { migrations } from "./migrations";
 
-const DB_NAME = "flashcards.db";
+import "reflect-metadata";
 
-export const source = new DataSource({
-  database: DB_NAME,
-  type: "react-native",
-  location: "default",
+export const FakeDB = new DataSource({
+  type: "sqlite",
+  database: "dev.sqlite",
   entities: [CardSchema, TagSchema, ConfSchema],
   synchronize: false,
-  logging: false,
+  logging: true,
   migrations: [...migrations],
 });

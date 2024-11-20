@@ -9,4 +9,4 @@ MIG_NAME=$1
 
 cd db/migrations
 
-npx typeorm-ts-node-commonjs migration:generate $MIG_NAME -d ../typeorm.config.ts 
+npx typeorm-ts-node-commonjs migration:generate $MIG_NAME -d ../FakeDB.ts 
