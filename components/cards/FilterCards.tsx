@@ -50,7 +50,7 @@ export default function FilterCards({
               closeMenu();
               setTimeRangeVisible(true);
             }}
-            title="By Time Intervale"
+            title="By Time Interval"
           />
         )}
         {selectedKL && onKLChange && (

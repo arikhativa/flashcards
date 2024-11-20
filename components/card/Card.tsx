@@ -125,6 +125,8 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   return (
     <ScrollView>
       <CardSides
+        borderSize={20}
+        cardHeight={120}
         style={margin.base2}
         disabled={isDisable()}
         knowledgeLevel={cardLocal.knowledgeLevel}
@@ -188,7 +190,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               mode={"contained"}
               onPress={() => handleSubmitDelete()}
             >
-              Delete
+              Delete Card
             </Button>
           )}
           {mode === CRUDMode.Update && (

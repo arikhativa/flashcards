@@ -11,9 +11,15 @@ export enum KnowledgeLevelName {
 }
 
 export enum KnowledgeLevelColor {
-  Learning = "#ce951b",
-  GettingThere = "green",
-  Confident = "purple",
+  Learning = "rgba(130, 94, 92, 1)",
+  GettingThere = "rgba(63, 195, 128, 1)",
+  Confident = "rgba(102, 51, 153, 1)",
+}
+
+export enum KnowledgeLevelLightColor {
+  Learning = "rgba(130, 94, 92, .1)",
+  GettingThere = "rgba(63, 195, 128, .1)",
+  Confident = "rgba(102, 51, 153, .1)",
 }
 
 export interface SelectedKL {

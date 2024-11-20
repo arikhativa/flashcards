@@ -250,7 +250,7 @@ export default function TestForm({
       <TagsSection
         disabled={!!preSelectedCards.length}
         style={margin.top2}
-        title="Chose cards from specific lists"
+        title="Choose cards from specific lists"
         addTag={addTag}
         removeTag={removeTag}
         tags={testSettings.selectedTags}

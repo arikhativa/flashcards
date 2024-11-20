@@ -4,6 +4,7 @@ import { Card as PaperCard, Text, Button, useTheme } from "react-native-paper";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import {
   knowledgeLevelToColor,
+  knowledgeLevelToLightColor,
   knowledgeLevelToName,
 } from "@/utils/knowledgeLevel";
 
@@ -26,6 +27,7 @@ export default function KnowledgeLevelSection({
     return (
       <Button
         textColor={colors.inverseSurface}
+        rippleColor={knowledgeLevelToLightColor(kl)}
         style={{
           borderRadius: 0,
           width: "100%",

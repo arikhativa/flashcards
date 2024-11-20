@@ -99,7 +99,7 @@ const TagsSection = ({
               visible={visible}
               onDismiss={hideDialog}
             >
-              <Dialog.Title>Search for Tags</Dialog.Title>
+              <Dialog.Title>Add Tags</Dialog.Title>
               <IconButton
                 style={container.buttonTopRight}
                 icon="close"

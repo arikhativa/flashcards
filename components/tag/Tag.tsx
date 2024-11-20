@@ -179,7 +179,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
               mode={"contained"}
               onPress={() => handleSubmitDelete()}
             >
-              Delete
+              Delete Tag
             </Button>
           )}
           {mode === CRUDMode.Update && (
