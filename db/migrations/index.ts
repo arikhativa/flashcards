@@ -1,3 +1,4 @@
-import { Init1732104549092 } from "./1732104549092-init";
+import { Init1732115131798 } from "./1732115131798-init";
+import { Metadata1732115264397 } from "./1732115264397-Metadata";
 
-export const migrations = [Init1732104549092];
+export const migrations = [Init1732115131798, Metadata1732115264397];

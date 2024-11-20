@@ -87,3 +87,16 @@ export class ConfSchema extends BaseEntity {
   @Column({ type: "integer", default: 10 })
   numberOfCards: number;
 }
+
+// NOTE - make sure there is only one entity
+@Entity()
+export class MetaData extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @CreateDateColumn() createdAt: Date;
+  @UpdateDateColumn() updatedAt: Date;
+
+  @Column({ type: "integer", default: 0 })
+  cardsCreated: number;
+}

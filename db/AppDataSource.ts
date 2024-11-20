@@ -1,4 +1,9 @@
-import { CardSchema, ConfSchema, TagSchema } from "../schemas/schemas";
+import {
+  CardSchema,
+  ConfSchema,
+  MetaData,
+  TagSchema,
+} from "../schemas/schemas";
 import { DataSource } from "typeorm";
 
 import "reflect-metadata";
@@ -10,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: DB_NAME,
   type: "react-native",
   location: "default",
-  entities: [CardSchema, TagSchema, ConfSchema],
+  entities: [CardSchema, TagSchema, ConfSchema, MetaData],
   synchronize: false,
   logging: false,
   migrations: [...migrations],

@@ -13,8 +13,9 @@
     "buildDev": "./scripts/buildDev.sh",
     "expo-stage": "eas build --profile development --platform android",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migGenerate": "./scripts/generate-migrations.sh",
-    "migRun": "./scripts/run-migrations.sh",
+    "runMigrations": "./scripts/run-migrations.sh",
+    "generateMigrations": "./scripts/generate-migrations.sh",
+    "updateMigrations": "python3 ./scripts/update-migrations.py",
     "dryCompile": "tsc --noEmit --skipLibCheck"
   },
   "jest": {

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1732104549092 implements MigrationInterface {
-    name = 'Init1732104549092'
+export class Init1732115131798 implements MigrationInterface {
+    name = 'Init1732115131798'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "card_schema" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "createdAt" datetime NOT NULL DEFAULT (datetime('now')), "updatedAt" datetime NOT NULL DEFAULT (datetime('now')), "deletedAt" datetime, "sideA" text NOT NULL, "sideB" text NOT NULL, "comment" text NOT NULL DEFAULT (''), "lastTimeTested" datetime, "knowledgeLevel" text(16) NOT NULL DEFAULT (0), "succuss" integer NOT NULL DEFAULT (0), "failure" integer NOT NULL DEFAULT (0))`);
