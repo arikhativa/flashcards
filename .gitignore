@@ -22,3 +22,5 @@ expo-env.d.ts
 # TODO maybe remove this if you change somtinh in android
 ios/
 android/
+
+db/migrations/dev.sqlite

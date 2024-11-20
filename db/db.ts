@@ -1,19 +1,17 @@
 import { CardSchema, ConfSchema, TagSchema } from "../schemas/schemas";
 import { DataSource } from "typeorm";
 
-import * as SQLite from "expo-sqlite/legacy";
-
 import "reflect-metadata";
+import { migrations } from "./migrations";
 
-const DB_NAME = "flashcards2.db";
+const DB_NAME = "flashcards.db";
 
 export const source = new DataSource({
   database: DB_NAME,
-  type: "expo",
-  driver: SQLite,
+  type: "react-native",
+  location: "default",
   entities: [CardSchema, TagSchema, ConfSchema],
-  synchronize: true,
+  synchronize: false,
   logging: false,
-  migrations: [],
-  subscribers: [],
+  migrations: [...migrations],
 });

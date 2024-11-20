@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { StoreProvider } from "@/providers/GlobalStore";
-import { source } from "@/hooks/db";
+import { source } from "@/db/db";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { DataSource, Repository } from "typeorm";
 
@@ -65,10 +65,14 @@ export default function RootLayout() {
       let db: DataSource;
       try {
         if (!source.isInitialized) {
+          console.log("init DB");
           db = await source.initialize();
         } else {
+          console.log("DB already initialized");
           db = source;
         }
+        console.log("run migrations");
+        await source.runMigrations();
       } catch (e) {
         console.error("Error initializing database", e);
         return;
