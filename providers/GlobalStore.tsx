@@ -7,20 +7,29 @@ import {
 } from "react";
 import { Card } from "@/types/Card";
 import { Tag } from "@/types/Tag";
+import { MetadataService } from "@/services/Metadata";
 import { CardService } from "@/services/Card";
 import { TagService } from "@/services/Tag";
 import { CardTagService } from "@/services/CardTag";
 import { ConfService } from "@/services/Conf";
 import { Repository } from "typeorm";
-import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
+import {
+  CardSchema,
+  ConfSchema,
+  MetadataSchema,
+  TagSchema,
+} from "@/schemas/schemas";
 import { Conf } from "@/types/Conf";
 import { CARDS, TAGS } from "@/constants/db";
+import { Metadata } from "@/types/Metadata";
 
 interface StoreContextType {
   cards: Card[];
   archiveCards: Card[];
   tags: Tag[];
   conf: Conf;
+  metadata: Metadata;
+  metadataService: MetadataService;
   cardService: CardService;
   tagService: TagService;
   cardTagService: CardTagService;
@@ -31,11 +40,13 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider = ({
   children,
+  metadataRepository,
   cardRepository,
   tagRepository,
   confRepository,
 }: {
   children: ReactNode;
+  metadataRepository: Repository<MetadataSchema>;
   cardRepository: Repository<CardSchema>;
   tagRepository: Repository<TagSchema>;
   confRepository: Repository<ConfSchema>;
@@ -45,12 +56,19 @@ export const StoreProvider = ({
   const [archiveCards, setArchiveCards] = useState<Card[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
+  const [metadata, setMetadata] = useState<Metadata>({} as Metadata);
 
   const fetchAll = async () => {
     await fetchArchiveCards();
     await fetchCards();
     await fetchTags();
     await fetchConf();
+    await fetchMetadata();
+  };
+
+  const fetchMetadata = async () => {
+    const md = await metadataService.get();
+    if (md) setMetadata(md);
   };
 
   const fetchConf = async () => {
@@ -76,6 +94,7 @@ export const StoreProvider = ({
     if (tagList) setTags(tagList);
   };
 
+  const metadataService = new MetadataService(metadataRepository, fetchAll);
   const cardService = new CardService(cardRepository, fetchAll);
   const tagService = new TagService(tagRepository, fetchAll);
   const cardTagService = new CardTagService(cardService, tagService);
@@ -124,6 +143,7 @@ export const StoreProvider = ({
       fetchCards();
       fetchTags();
       confService.init();
+      metadataService.init();
     }
   }, [dbIsReady]);
 
@@ -138,6 +158,8 @@ export const StoreProvider = ({
         archiveCards,
         tags,
         conf,
+        metadata,
+        metadataService,
         cardService,
         tagService,
         cardTagService,

@@ -20,5 +20,6 @@ then we want to update the migrations list with:
 ```
 npm run updateMigrations
 ```
+NOTE - make sure the order of migrations stays the same
 
 now when running the app the new migrations will be added :)

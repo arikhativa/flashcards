@@ -90,7 +90,7 @@ export class ConfSchema extends BaseEntity {
 
 // NOTE - make sure there is only one entity
 @Entity()
-export class MetaData extends BaseEntity {
+export class MetadataSchema extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

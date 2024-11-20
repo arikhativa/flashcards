@@ -7,8 +7,13 @@ import "react-native-reanimated";
 
 import { StoreProvider } from "@/providers/GlobalStore";
 import { AppDataSource } from "@/db/AppDataSource";
-import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
-import { DataSource, Repository } from "typeorm";
+import {
+  CardSchema,
+  ConfSchema,
+  MetadataSchema,
+  TagSchema,
+} from "@/schemas/schemas";
+import { Repository } from "typeorm";
 
 import { en, registerTranslation } from "react-native-paper-dates";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -54,6 +59,10 @@ export default function RootLayout() {
     {} as Repository<ConfSchema>
   );
 
+  const [metadataRepository, setMetadataRepository] = useState<
+    Repository<MetadataSchema>
+  >({} as Repository<MetadataSchema>);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -78,6 +87,7 @@ export default function RootLayout() {
       setCardRepository(AppDataSource.getRepository(CardSchema));
       setTagRepository(AppDataSource.getRepository(TagSchema));
       setConfRepository(AppDataSource.getRepository(ConfSchema));
+      setMetadataRepository(AppDataSource.getRepository(MetadataSchema));
       setDbInitialized(true);
     };
 
@@ -92,6 +102,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PaperProvider theme={theme}>
         <StoreProvider
+          metadataRepository={metadataRepository}
           cardRepository={cardRepository}
           tagRepository={tagRepository}
           confRepository={confRepository}
