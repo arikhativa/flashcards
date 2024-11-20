@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { StoreProvider } from "@/providers/GlobalStore";
-import { source } from "@/hooks/db";
+import { AppDataSource } from "@/db/AppDataSource";
 import { CardSchema, ConfSchema, TagSchema } from "@/schemas/schemas";
 import { DataSource, Repository } from "typeorm";
 
@@ -62,20 +62,22 @@ export default function RootLayout() {
 
   useEffect(() => {
     const initDB = async () => {
-      let db: DataSource;
       try {
-        if (!source.isInitialized) {
-          db = await source.initialize();
+        if (!AppDataSource.isInitialized) {
+          console.log("init DB");
+          await AppDataSource.initialize();
         } else {
-          db = source;
+          console.log("DB already initialized");
         }
+        console.log("run migrations");
+        await AppDataSource.runMigrations();
       } catch (e) {
         console.error("Error initializing database", e);
         return;
       }
-      setCardRepository(db.getRepository(CardSchema));
-      setTagRepository(db.getRepository(TagSchema));
-      setConfRepository(db.getRepository(ConfSchema));
+      setCardRepository(AppDataSource.getRepository(CardSchema));
+      setTagRepository(AppDataSource.getRepository(TagSchema));
+      setConfRepository(AppDataSource.getRepository(ConfSchema));
       setDbInitialized(true);
     };
 
