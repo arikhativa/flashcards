@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
-import { TagTile } from "./TagTile";
+import { TagTile } from "../tags/TagTile";
 import { Tag } from "@/types/Tag";
 import Autocomplete from "./Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
@@ -99,7 +99,7 @@ const TagsSection = ({
               visible={visible}
               onDismiss={hideDialog}
             >
-              <Dialog.Title>Search for Tags</Dialog.Title>
+              <Dialog.Title>Add Tags</Dialog.Title>
               <IconButton
                 style={container.buttonTopRight}
                 icon="close"

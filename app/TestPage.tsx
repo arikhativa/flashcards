@@ -1,8 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import TestForm from "@/components/TestForm";
 import { EMPTY_TEST_SETTING, TestSettings } from "@/types/TestSettings";
-import TestManager from "@/components/TestManager";
+import TestManager from "@/components/test/TestManager";
 import { Card } from "@/types/Card";
 import { getMatchingCardsForTest } from "@/utils/cardPicker";
 import { useStore } from "@/providers/GlobalStore";
@@ -10,6 +9,7 @@ import { rawStringArrayToIntArray } from "@/utils/generic";
 import { TestLinkProps } from "@/utils/links";
 import { ObjType } from "@/types/generic";
 import { Tag } from "@/types/Tag";
+import TestForm from "@/components/test/TestForm";
 
 const TestPage: React.FC = () => {
   const { cards, tags, conf } = useStore();

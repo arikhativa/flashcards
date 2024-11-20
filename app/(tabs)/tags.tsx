@@ -1,16 +1,16 @@
 import { Text } from "react-native-paper";
 import { View, FlatList } from "react-native";
 
-import { TagTile } from "@/components/TagTile";
+import { TagTile } from "@/components/tags/TagTile";
 import { useStore } from "@/providers/GlobalStore";
 import { container, margin, text } from "@/constants/styles";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
-import TagsActions from "@/components/TagsActions";
 import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import MultiSelectActionBar from "@/components/MultiSelectActionBar";
+import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import { ObjType } from "@/types/generic";
+import ListActions from "@/components/shared/ListActions";
 
 export default function TagsScreen() {
   const { tags, tagService } = useStore();
@@ -50,7 +50,7 @@ export default function TagsScreen() {
 
   return (
     <View style={[container.flex1, margin.top2]}>
-      <TagsActions query={query} onQueryChange={setQuery} />
+      <ListActions query={query} onQueryChange={setQuery} />
       {!tagsLocal || tagsLocal.length === 0 ? (
         <View style={container.center}>
           <Text style={text.grayMessage}>No tags</Text>

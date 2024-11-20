@@ -1,19 +1,15 @@
 import { container, margin } from "@/constants/styles";
 import { View } from "react-native";
-import { FULL_UNSELECTED_KL, KnowledgeLevel } from "../types/KnowledgeLevel";
 import { Card as PaperCard, Text, Chip } from "react-native-paper";
-import NumberInput from "./NumberInput";
 import { TestSettings, TestSide } from "@/types/TestSettings";
 import { useEffect, useState } from "react";
 import { Dropdown, MultiSelectDropdown } from "react-native-paper-dropdown";
 import { useStore } from "@/providers/GlobalStore";
 import { isTestSide } from "@/utils/generic";
-import InputHelper from "./InputHelper";
-import TagsSection from "./TagsSection";
 import { Tag } from "@/types/Tag";
 import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
 import { Card } from "@/types/Card";
-import ActionsBar, { FABProps } from "@/components/ActionsBar";
+import ActionsBar, { FABProps } from "@/components/shared/ActionsBar";
 import {
   CardsSideOptions,
   KL_OPTIONS,
@@ -21,6 +17,10 @@ import {
   TIME_OPTIONS,
 } from "@/utils/testForm";
 import { MAX_NUMBER_OF_CARDS, MIN_NUMBER_OF_CARDS } from "@/constants/general";
+import InputHelper from "../shared/InputHelper";
+import { FULL_UNSELECTED_KL, KnowledgeLevel } from "@/types/KnowledgeLevel";
+import NumberInput from "../shared/NumberInput";
+import TagsSection from "../shared/TagsSection";
 
 interface TestFormProps {
   preSelectedCards: number[];
@@ -250,7 +250,7 @@ export default function TestForm({
       <TagsSection
         disabled={!!preSelectedCards.length}
         style={margin.top2}
-        title="Chose cards from specific lists"
+        title="Choose cards from specific lists"
         addTag={addTag}
         removeTag={removeTag}
         tags={testSettings.selectedTags}

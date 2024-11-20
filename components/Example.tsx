@@ -1,11 +1,7 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 interface ExampleProps {}
 
 export default function Example({}: ExampleProps) {
-  return <View style={styles.container}></View>;
+  return <View></View>;
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});

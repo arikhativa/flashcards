@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import TextInput from "./TextInput";
+import TextInput from "./CustomTextInput";
 
 interface NumberInputProps {
   onError?: (isError: boolean) => void;

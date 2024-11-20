@@ -1,6 +1,8 @@
 import {
   KnowledgeLevel,
   KnowledgeLevelColor,
+  KnowledgeLevelLightColor,
+  KnowledgeLevelName,
   SelectedKL,
 } from "@/types/KnowledgeLevel";
 import { clamp } from "react-native-reanimated";
@@ -19,6 +21,34 @@ export function knowledgeLevelToColor(kl: KnowledgeLevel): KnowledgeLevelColor {
       return KnowledgeLevelColor.Confident;
     default:
       return KnowledgeLevelColor.Learning;
+  }
+}
+
+export function knowledgeLevelToLightColor(
+  kl: KnowledgeLevel
+): KnowledgeLevelLightColor {
+  switch (kl) {
+    case KnowledgeLevel.Learning:
+      return KnowledgeLevelLightColor.Learning;
+    case KnowledgeLevel.GettingThere:
+      return KnowledgeLevelLightColor.GettingThere;
+    case KnowledgeLevel.Confident:
+      return KnowledgeLevelLightColor.Confident;
+    default:
+      return KnowledgeLevelLightColor.Learning;
+  }
+}
+
+export function knowledgeLevelToName(kl: KnowledgeLevel): KnowledgeLevelName {
+  switch (kl) {
+    case KnowledgeLevel.Learning:
+      return KnowledgeLevelName.Learning;
+    case KnowledgeLevel.GettingThere:
+      return KnowledgeLevelName.GettingThere;
+    case KnowledgeLevel.Confident:
+      return KnowledgeLevelName.Confident;
+    default:
+      return KnowledgeLevelName.Learning;
   }
 }
 

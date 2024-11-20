@@ -5,8 +5,8 @@ import { Keyboard } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { View } from "react-native";
 import { container, margin, padding } from "@/constants/styles";
-import NumberInput from "@/components/NumberInput";
-import TextInput from "@/components/TextInput";
+import NumberInput from "@/components/shared/NumberInput";
+import TextInput from "@/components/shared/CustomTextInput";
 import { isInRange, isTestSide } from "@/utils/generic";
 import {
   MAX_NUMBER_OF_CARDS,
@@ -16,7 +16,7 @@ import {
 } from "@/constants/general";
 import { Dropdown } from "react-native-paper-dropdown";
 import { TestSide } from "@/types/TestSettings";
-import InputHelper from "@/components/InputHelper";
+import InputHelper from "@/components/shared/InputHelper";
 import { CardsSideOptions } from "@/utils/testForm";
 
 export default function ConfScreen() {

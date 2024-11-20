@@ -2,19 +2,18 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { Button, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
-import { Divider } from "react-native-paper";
 import { margin, padding } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
-import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
-import TagsSection from "@/components/TagsSection";
+import { KnowledgeLevel } from "@/types/KnowledgeLevel";
+import TagsSection from "@/components/shared/TagsSection";
 import { Tag } from "@/types/Tag";
-import { CardRadio } from "@/components/CardRadio";
 import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
-import CardSides from "./CardSides";
+import CardSides from "../shared/CardSides";
+import KnowledgeLevelSection from "./KnowledgeLevelSection";
 
 type CardComponentProps = ComponentProps<Card>;
 
@@ -126,6 +125,8 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   return (
     <ScrollView>
       <CardSides
+        borderSize={20}
+        cardHeight={120}
         style={margin.base2}
         disabled={isDisable()}
         knowledgeLevel={cardLocal.knowledgeLevel}
@@ -136,9 +137,6 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
       />
 
       <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Comment
-        </Text>
         {/* TODO */}
         <Text style={padding.bottom} variant="titleMedium">
           Success {getSuccess()}
@@ -147,6 +145,9 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
           Failure {getFailure()}
         </Text>
         {/* TODO */}
+        <Text style={padding.bottom} variant="titleMedium">
+          Comment
+        </Text>
         <PaperCard>
           <PaperCard.Content>
             <TextInput
@@ -174,35 +175,12 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         allTags={tags}
       />
 
-      <View style={[margin.base2]}>
-        <Text style={padding.bottom} variant="titleMedium">
-          Knowledge Level
-        </Text>
-        <PaperCard>
-          <PaperCard.Content style={[styles.KLRadioContainer]}>
-            <View
-              style={styles.KLRadio}
-              pointerEvents={isDisable() ? "none" : "auto"}
-            >
-              <CardRadio
-                level={KnowledgeLevel.Learning}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.GettingThere}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-              <CardRadio
-                level={KnowledgeLevel.Confident}
-                cardKL={cardLocal.knowledgeLevel}
-                onPress={setKL}
-              />
-            </View>
-          </PaperCard.Content>
-        </PaperCard>
-      </View>
+      <KnowledgeLevelSection
+        knowledgeLevel={cardLocal.knowledgeLevel}
+        setKnowledgeLevel={setKL}
+        disabled={isDisable()}
+        style={margin.base2}
+      />
 
       <PaperCard style={margin.base2}>
         <PaperCard.Actions>
@@ -212,7 +190,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
               mode={"contained"}
               onPress={() => handleSubmitDelete()}
             >
-              Delete
+              Delete Card
             </Button>
           )}
           {mode === CRUDMode.Update && (
@@ -241,15 +219,6 @@ const HEIGHT = 200;
 const BORDER_SIZE = 30;
 
 const styles = StyleSheet.create({
-  KLRadioContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  KLRadio: {
-    display: "flex",
-  },
   comment: {
     backgroundColor: "transparent",
   },

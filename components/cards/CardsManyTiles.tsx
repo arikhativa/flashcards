@@ -18,7 +18,7 @@ export type CardManyTilesProps = {
   onClose?: (item: Card) => void;
 };
 
-export function CardManyTiles({
+export function CardsManyTiles({
   isMultiSelect,
   selectedIds,
   toggleIdSelection,

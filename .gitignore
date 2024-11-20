@@ -18,3 +18,7 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+# TODO maybe remove this if you change somtinh in android
+ios/
+android/

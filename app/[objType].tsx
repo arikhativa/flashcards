@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
-import TagComponent from "@/components/Tag";
+import TagComponent from "@/components/tag/Tag";
 import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
-import CardComponent from "@/components/Card";
+import CardComponent from "@/components/card/Card";
 import NotFoundScreen from "./+not-found";
 
 type localSearchParams = {

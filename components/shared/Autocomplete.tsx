@@ -2,7 +2,7 @@ import { baseUnit, color, margin, text } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
 import { Searchbar, Text, IconButton } from "react-native-paper";
-import { container } from "../constants/styles";
+import { container } from "../../constants/styles";
 
 interface AutocompleteProps<T> {
   onSearchChange: (query: string) => T[];
