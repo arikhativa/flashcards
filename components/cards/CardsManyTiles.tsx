@@ -15,7 +15,6 @@ export type CardManyTilesProps = {
   toggleIdSelection: (id: number) => void;
   cards?: Card[];
   disabledLink?: boolean;
-  onClose?: (item: Card) => void;
 };
 
 export function CardsManyTiles({
@@ -24,7 +23,6 @@ export function CardsManyTiles({
   toggleIdSelection,
   cards,
   disabledLink,
-  onClose,
 }: CardManyTilesProps) {
   const [rows, setRows] = useState<Card[][]>([]);
 
@@ -68,7 +66,6 @@ export function CardsManyTiles({
         <CardTile
           key={card.id}
           disabledLink={isMultiSelect ? true : disabledLink}
-          onClose={onClose ? () => onClose(card) : undefined}
           card={card}
           onLongPress={handleLongPress}
           onPress={handlePress}

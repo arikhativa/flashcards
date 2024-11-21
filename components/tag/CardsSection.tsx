@@ -72,7 +72,6 @@ const CardsSection = ({
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         disabledLink
-        onClose={isMultiSelect ? undefined : removeCard}
         cards={cards}
       />
 

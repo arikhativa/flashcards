@@ -12,7 +12,7 @@ import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import MultiSelectActionBar from "../shared/MultiSelectActionBar";
+import TagActionBar from "./TagActionBar";
 
 type TagComponentProps = ComponentProps<Tag>;
 
@@ -22,6 +22,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   const {
     isMultiSelect,
     selectedIds,
+    selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,
@@ -105,6 +106,20 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
     navigation.goBack();
   };
 
+  const handleRemoveCards = () => {
+    if (!selectedIdsRef.current || selectedIdsRef.current.length === 0) {
+      console.error("no cards selected");
+      return;
+    }
+
+    const newCards = tagLocal.cards?.filter(
+      (card) => !selectedIdsRef.current.includes(card.id)
+    );
+
+    setTagLocal({ ...tagLocal, cards: newCards });
+    clearSelectedIds();
+  };
+
   const getKLStyle = () => {
     if (!tagLocal.cards) {
       return;
@@ -163,12 +178,12 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         allCards={cards}
       />
 
-      <MultiSelectActionBar
-        type={ObjType.Card}
+      <TagActionBar
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeselectAll={clearSelectedIds}
         onTestMany={handelTestMany}
+        onRemoveCardsFromTag={handleRemoveCards}
       />
 
       <PaperCard style={margin.base2}>

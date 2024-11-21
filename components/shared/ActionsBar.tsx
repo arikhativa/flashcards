@@ -1,13 +1,10 @@
 import { baseUnit, container, margin } from "@/constants/styles";
 import { StyleProp, TextStyle, View } from "react-native";
 import { FAB } from "react-native-paper";
-import { Href } from "expo-router";
-import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 
 export interface FABProps {
   icon: string;
   onPress?: () => void;
-  href?: Href<ObjLinkProps | TestLinkProps> | Href;
 }
 
 interface ActionsBarProps {
@@ -47,14 +44,18 @@ export default function ActionsBar({
 
   const getVisibility = (index: number): boolean => {
     if (toggledButtons && toggle) {
-      if (toggledButtons[index]) {
+      if (isVisible(toggledButtons[index])) {
         return true;
       }
     }
-    if (buttons[index] && buttons[index].onPress) {
+    if (isVisible(buttons[index])) {
       return true;
     }
     return false;
+  };
+
+  const isVisible = (p: FABProps) => {
+    return p && p.onPress !== undefined && p.icon !== undefined;
   };
 
   const getButtons = () => {

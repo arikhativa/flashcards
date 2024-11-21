@@ -18,7 +18,6 @@ import { GestureWrapper } from "../shared/GestureWrapper";
 export type CardTileProps = {
   card: Card;
   disabledLink?: boolean;
-  onClose?: () => void;
   onPress?: (id: number) => void;
   onLongPress?: (id: number) => void;
   isSelected?: boolean;
@@ -27,7 +26,6 @@ export type CardTileProps = {
 export function CardTile({
   card,
   disabledLink,
-  onClose,
   onPress,
   onLongPress,
   isSelected,
@@ -70,22 +68,6 @@ export function CardTile({
       <Link disabled={isLinkDisabled()} href={getCardHref(card.id)} asChild>
         <Pressable>
           <View>
-            {onClose && (
-              <IconButton
-                style={{
-                  padding: 0,
-                  position: "absolute",
-                  top: -5,
-                  right: -10,
-                  zIndex: 5,
-                }}
-                icon="close"
-                size={15}
-                mode="contained"
-                onPress={onClose}
-              ></IconButton>
-            )}
-
             <PaperCard style={[margin.base, getSelectedStyle(), getKLStyle()]}>
               <PaperCard.Content>
                 <View style={[styles.sideViewHeightA]}>
