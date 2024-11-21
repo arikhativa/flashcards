@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useLayoutEffect } from "react";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import TagComponent from "@/components/tag/Tag";
 import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
 import CardComponent from "@/components/card/Card";
@@ -15,6 +15,14 @@ export const NEW_ID = "new";
 
 const ObjPage: React.FC = () => {
   const { id, mode, objType } = useLocalSearchParams<localSearchParams>();
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
+
   useEffect(() => {
     if (!id) {
       console.error("Bad Card ID");

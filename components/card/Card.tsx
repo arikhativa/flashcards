@@ -1,9 +1,9 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Appbar, Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { margin, padding } from "@/constants/styles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import TagsSection from "@/components/shared/TagsSection";
@@ -14,28 +14,38 @@ import { CardService } from "@/services/Card";
 import { BAD_ID } from "@/constants/general";
 import CardSides from "../shared/CardSides";
 import KnowledgeLevelSection from "./KnowledgeLevelSection";
+import ObjectHeader from "../shared/ObjectHeader";
+import { useStateDirty } from "@/hooks/useStateDirty";
 
 type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
-  const { cards, tags, cardService } = useStore();
   const navigation = useNavigation();
+  const { cards, tags, cardService } = useStore();
+  const [title, setTitle] = useState("");
 
-  let idLocal: number = parseInt(id || "-1", 10);
-  const [cardLocal, setCardLocal] = useState<Card | CardCreate | CardUpdate>(
-    {} as Card | CardCreate | CardUpdate
-  );
+  let idLocal: number = id ? parseInt(id, 10) : BAD_ID;
+
+  const [cardLocal, setCardLocal, isDirty, cleanDirt] = useStateDirty<
+    Card | CardCreate | CardUpdate
+  >({} as Card | CardCreate | CardUpdate);
+  const cardLocalRef = useRef(cardLocal);
+
+  useEffect(() => {
+    cardLocalRef.current = cardLocal;
+  }, [cardLocal]);
 
   useEffect(() => {
     if (mode === CRUDMode.Create) {
-      navigation.setOptions({ title: "New Card" });
+      setTitle("New Card");
       const cardCreate: CardCreate = CardService.EMPTY;
       setCardLocal(cardCreate);
-      return;
+      cleanDirt();
+      return onUnmount;
     }
 
     if (mode === CRUDMode.Update) {
-      navigation.setOptions({ title: `Edit Card` });
+      setTitle("Edit Card");
 
       if (idLocal === BAD_ID) {
         console.error("CardComponent: invalid Card id, idLocal", id, idLocal);
@@ -49,7 +59,8 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         return;
       }
       setCardLocal(cardUpdate);
-      return;
+      cleanDirt();
+      return onUnmount;
     }
 
     if (mode === CRUDMode.Read) {
@@ -58,9 +69,14 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         return;
       }
       setCardLocal(data);
+      cleanDirt();
       return;
     }
   }, []);
+
+  const onUnmount = () => {
+    if (isDirty.current) handleSubmit(cardLocalRef.current);
+  };
 
   const setKL = (kl: KnowledgeLevel) => {
     handleLocalChange("knowledgeLevel", kl);
@@ -93,18 +109,39 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   const handleSubmitCreate = async (card: CardCreate) => {
     if (mode !== CRUDMode.Create) return;
     await cardService.create(card);
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const handleSubmitUpdate = async (card: CardUpdate) => {
     if (!id || mode !== CRUDMode.Update) return;
     await cardService.update(idLocal, card);
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
+
+  const handleSubmit = async (card: Card | CardCreate | CardUpdate) => {
+    if (mode === CRUDMode.Read) {
+      return;
+    }
+
+    if (mode === CRUDMode.Create) {
+      await handleSubmitCreate(card as CardCreate);
+      return;
+    }
+
+    if (mode === CRUDMode.Update) {
+      await handleSubmitUpdate(card as CardUpdate);
+      return;
+    }
   };
 
   const handleSubmitDelete = async () => {
     if (!id || mode !== CRUDMode.Update) return;
     await cardService.delete(idLocal);
+    cleanDirt();
     navigation.goBack();
   };
 
@@ -123,7 +160,11 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
   };
 
   return (
-    <ScrollView>
+    <ObjectHeader
+      title={title}
+      onDelete={handleSubmitDelete}
+      deleteMessage="Delete Card"
+    >
       <CardSides
         borderSize={20}
         cardHeight={120}
@@ -152,7 +193,9 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
           <PaperCard.Content>
             <TextInput
               disabled={isDisable()}
-              style={styles.comment}
+              style={{
+                backgroundColor: "transparent",
+              }}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               multiline
@@ -181,51 +224,8 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         disabled={isDisable()}
         style={margin.base2}
       />
-
-      <PaperCard style={margin.base2}>
-        <PaperCard.Actions>
-          {mode === CRUDMode.Update && (
-            <Button
-              buttonColor="red"
-              mode={"contained"}
-              onPress={() => handleSubmitDelete()}
-            >
-              Delete Card
-            </Button>
-          )}
-          {mode === CRUDMode.Update && (
-            <Button
-              mode={"contained"}
-              onPress={() => handleSubmitUpdate(cardLocal as CardUpdate)}
-            >
-              Save
-            </Button>
-          )}
-          {mode === CRUDMode.Create && (
-            <Button
-              mode={"contained"}
-              onPress={() => handleSubmitCreate(cardLocal as CardCreate)}
-            >
-              Create
-            </Button>
-          )}
-        </PaperCard.Actions>
-      </PaperCard>
-    </ScrollView>
+    </ObjectHeader>
   );
 };
-
-const HEIGHT = 200;
-const BORDER_SIZE = 30;
-
-const styles = StyleSheet.create({
-  comment: {
-    backgroundColor: "transparent",
-  },
-  textInput: {
-    width: "90%",
-    textAlign: "center",
-  },
-});
 
 export default CardComponent;
