@@ -78,9 +78,12 @@ export default function ActionsBar({
     <View
       style={[
         style,
-        margin.base4,
+        margin.y4,
         container.bottom,
-        { width: "80%", flexDirection: "row-reverse", gap: baseUnit * 2 },
+        {
+          flexDirection: "row-reverse",
+          gap: baseUnit * 3,
+        },
       ]}
     >
       {getButtons()}

@@ -173,6 +173,14 @@ export const margin = StyleSheet.create({
     marginTop: baseUnit * 2,
     marginBottom: baseUnit * 2,
   },
+  y3: {
+    marginTop: baseUnit * 3,
+    marginBottom: baseUnit * 3,
+  },
+  y4: {
+    marginTop: baseUnit * 4,
+    marginBottom: baseUnit * 4,
+  },
 });
 
 export const padding = StyleSheet.create({

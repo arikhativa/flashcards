@@ -61,6 +61,10 @@ export default function MultiSelectActionBar({
   const setMultiSelectButtons = () => {
     const list: FABProps[] = [];
 
+    list.push({
+      icon: "test-tube",
+    });
+
     if (onTestMany) {
       if (isTestVisible()) {
         list.push({
@@ -73,6 +77,9 @@ export default function MultiSelectActionBar({
         });
       }
     }
+    list.push({
+      icon: "test-tube",
+    });
 
     if (onDeleteMany) {
       list.push({

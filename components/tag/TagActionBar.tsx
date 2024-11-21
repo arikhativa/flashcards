@@ -36,6 +36,14 @@ export default function TagActionBar({
     }
 
     list.push({
+      icon: "",
+    });
+
+    list.push({
+      icon: "",
+    });
+
+    list.push({
       icon: "tag-off-outline",
       onPress: onRemoveCardsFromTag,
     });
