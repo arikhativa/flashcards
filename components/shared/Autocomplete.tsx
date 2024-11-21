@@ -1,8 +1,9 @@
-import { baseUnit, color, margin, text } from "@/constants/styles";
+import { color, margin, text } from "@/constants/styles";
 import React, { useState } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
-import { Searchbar, Text, IconButton } from "react-native-paper";
+import { Searchbar, Text, Button, Divider } from "react-native-paper";
 import { container } from "../../constants/styles";
+import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
 
 interface AutocompleteProps<T> {
   onSearchChange: (query: string) => T[];
@@ -11,17 +12,19 @@ interface AutocompleteProps<T> {
   itemComponent: React.FC<{ item: T }>;
   onCreateEmpty?: (text: string) => Promise<void>;
   placeholder?: string;
-  showIcon?: boolean;
+  buttonText?: string;
+  icon: IconSource;
 }
 
 const Autocomplete = <T,>({
-  showIcon,
+  icon,
   placeholder,
   onSelect,
   keyExtractor,
   itemComponent,
   onSearchChange,
   onCreateEmpty,
+  buttonText,
 }: AutocompleteProps<T>) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<T[]>([]);
@@ -54,9 +57,9 @@ const Autocomplete = <T,>({
   const isSelected = (item: T): boolean => {
     return selectedItems.includes(item);
   };
-
+  // TODO maxHeight should be half screen
   return (
-    <View style={[container.flex1, { maxHeight: 400 }]}>
+    <View style={[{ maxHeight: 400 }]}>
       <View
         style={[
           margin.bottom,
@@ -69,21 +72,24 @@ const Autocomplete = <T,>({
       >
         <Searchbar
           placeholder={placeholder}
+          icon={icon}
           onChangeText={onChangeSearch}
           value={query}
           style={{ flex: 1 }}
-          iconColor={showIcon ? undefined : "transparent"}
         />
-        {onCreateEmpty && (
-          <IconButton
-            disabled={query.length === 0}
-            icon="plus"
-            size={baseUnit * 2}
-            mode="contained-tonal"
-            onPress={() => onCreateEmpty(query)}
-          ></IconButton>
-        )}
       </View>
+      {onCreateEmpty && buttonText && (
+        <Button
+          style={[margin.top, { alignSelf: "center" }]}
+          disabled={query.length === 0}
+          icon="plus"
+          mode="contained-tonal"
+          onPress={() => onCreateEmpty(query)}
+        >
+          {buttonText}
+        </Button>
+      )}
+      <Divider style={margin.base2} />
 
       {!filteredData.length && query.length > 0 && (
         <View style={container.center}>

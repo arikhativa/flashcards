@@ -108,6 +108,8 @@ const TagsSection = ({
               ></IconButton>
               <Dialog.Content>
                 <Autocomplete
+                  icon={"tag-outline"}
+                  buttonText="Create Tag"
                   onSelect={onSelect}
                   keyExtractor={keyExtractor}
                   onSearchChange={onSearchChange}

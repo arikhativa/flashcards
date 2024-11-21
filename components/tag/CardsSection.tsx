@@ -102,8 +102,8 @@ const CardsSection = ({
               ></IconButton>
               <Dialog.Content>
                 <Autocomplete
+                  icon={"cards-outline"}
                   placeholder="Search"
-                  showIcon
                   onSelect={onSelect}
                   keyExtractor={keyExtractor}
                   onSearchChange={onSearchChange}
