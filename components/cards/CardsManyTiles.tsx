@@ -2,9 +2,9 @@ import { Card } from "@/types/Card";
 import { View, FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import { CardTile } from "./CardTile";
-import { baseUnit, text } from "@/constants/styles";
+import { text } from "@/constants/styles";
 import { useEffect, useState } from "react";
-import { NAV_BAR_HEIGHT } from "@/constants/general";
+import { GestureWrapper } from "../shared/GestureWrapper";
 
 const GAP = 3;
 const MAX_ROW_SIZE = 50;
@@ -13,6 +13,7 @@ export type CardManyTilesProps = {
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
+  clearSelectedIds: () => void;
   cards?: Card[];
   disabledLink?: boolean;
 };
@@ -21,6 +22,7 @@ export function CardsManyTiles({
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
+  clearSelectedIds,
   cards,
   disabledLink,
 }: CardManyTilesProps) {
@@ -86,25 +88,26 @@ export function CardsManyTiles({
   };
 
   return (
-    <View>
-      {!rows || rows.length === 0 ? (
-        // TODO this needs to be responsive
-        <View style={[]}>
-          <Text style={text.grayMessage}>No cards</Text>
-        </View>
-      ) : (
-        <FlatList
-          style={{ marginBottom: NAV_BAR_HEIGHT * 2 + baseUnit }}
-          data={rows}
-          keyExtractor={(_, index) => index.toString()}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          renderItem={renderRow}
-        />
-      )}
-    </View>
+    <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
+      <View style={{ flex: 1 }}>
+        {!rows || rows.length === 0 ? (
+          // TODO this needs to be responsive
+          <View style={[]}>
+            <Text style={text.grayMessage}>No cards</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={rows}
+            keyExtractor={(_, index) => index.toString()}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            renderItem={renderRow}
+          />
+        )}
+      </View>
+    </GestureWrapper>
   );
 }
 

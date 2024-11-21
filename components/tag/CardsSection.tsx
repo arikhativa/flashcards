@@ -14,6 +14,7 @@ interface CardsSectionProps {
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
+  clearSelectedIds: () => void;
 }
 
 const CardsSection = ({
@@ -22,6 +23,7 @@ const CardsSection = ({
   addCard,
   isMultiSelect,
   selectedIds,
+  clearSelectedIds,
   toggleIdSelection,
 }: CardsSectionProps) => {
   const [visible, setVisible] = React.useState(false);
@@ -51,8 +53,18 @@ const CardsSection = ({
   };
 
   return (
-    <View style={[margin.base2]}>
-      <View style={[container.flexXSpace, padding.bottom]}>
+    <View style={[{ flex: 1 }]}>
+      <View
+        style={[
+          margin.base2,
+          {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+          padding.bottom,
+        ]}
+      >
         <Text style={padding.bottom} variant="titleMedium">
           Cards
         </Text>
@@ -65,6 +77,7 @@ const CardsSection = ({
       </View>
 
       <CardsManyTiles
+        clearSelectedIds={clearSelectedIds}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}

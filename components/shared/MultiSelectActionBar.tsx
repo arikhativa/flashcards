@@ -14,7 +14,6 @@ interface MultiSelectActionBarProps {
   type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
-  onDeselectAll: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
@@ -23,7 +22,6 @@ interface MultiSelectActionBarProps {
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
-  onDeselectAll,
   onDeleteMany,
   type,
   href,
@@ -62,11 +60,6 @@ export default function MultiSelectActionBar({
 
   const setMultiSelectButtons = () => {
     const list: FABProps[] = [];
-
-    list.push({
-      icon: "arrow-left",
-      onPress: onDeselectAll,
-    });
 
     if (onTestMany) {
       if (isTestVisible()) {

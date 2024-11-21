@@ -165,6 +165,7 @@ export default function CardsScreen() {
 
       <CardsManyTiles
         selectedIds={selectedIds}
+        clearSelectedIds={clearSelectedIds}
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
@@ -172,7 +173,6 @@ export default function CardsScreen() {
       <MultiSelectActionBar
         type={ObjType.Card}
         isMultiSelect={isMultiSelect}
-        onDeselectAll={clearSelectedIds}
         selectedIds={selectedIds}
         onDeleteMany={handelDeleteMany}
         href={getCardHref(NEW_ID)}

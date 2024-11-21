@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import {
   TapGestureHandler,
   LongPressGestureHandler,
@@ -6,13 +6,12 @@ import {
   State,
 } from "react-native-gesture-handler";
 
-interface GestureWrapperProps {
-  children: ReactNode;
+type GestureWrapperProps = PropsWithChildren<{
   onTap?: () => void;
   onLongPress?: () => void;
   longPressMinDuration?: number;
   enabled?: boolean;
-}
+}>;
 
 export const GestureWrapper: React.FC<GestureWrapperProps> = ({
   children,

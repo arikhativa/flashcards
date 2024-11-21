@@ -48,7 +48,7 @@ export default function ActionsBar({
         return true;
       }
     }
-    if (!toggledButtons && isVisible(buttons[index])) {
+    if (!toggle && isVisible(buttons[index])) {
       return true;
     }
     return false;

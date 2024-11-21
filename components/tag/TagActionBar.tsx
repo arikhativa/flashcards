@@ -5,7 +5,6 @@ import { useActionBar } from "@/hooks/useActionBar";
 interface TagActionBarProps {
   isMultiSelect: boolean;
   selectedIds: number[];
-  onDeselectAll: () => void;
   onTestMany: () => void;
   onRemoveCardsFromTag: () => void;
 }
@@ -13,7 +12,6 @@ interface TagActionBarProps {
 export default function TagActionBar({
   isMultiSelect,
   selectedIds,
-  onDeselectAll,
   onTestMany,
   onRemoveCardsFromTag,
 }: TagActionBarProps) {
@@ -25,11 +23,6 @@ export default function TagActionBar({
 
   const setMultiSelectButtons = () => {
     const list: FABProps[] = [];
-
-    list.push({
-      icon: "arrow-left",
-      onPress: onDeselectAll,
-    });
 
     if (selectedIds.length > 1) {
       list.push({
