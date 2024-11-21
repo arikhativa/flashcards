@@ -10,9 +10,13 @@ interface AutocompleteProps<T> {
   keyExtractor: (item: T) => string;
   itemComponent: React.FC<{ item: T }>;
   onCreateEmpty?: (text: string) => Promise<void>;
+  placeholder?: string;
+  showIcon?: boolean;
 }
 
 const Autocomplete = <T,>({
+  showIcon,
+  placeholder,
   onSelect,
   keyExtractor,
   itemComponent,
@@ -64,10 +68,11 @@ const Autocomplete = <T,>({
         ]}
       >
         <Searchbar
-          placeholder="Search"
+          placeholder={placeholder}
           onChangeText={onChangeSearch}
           value={query}
           style={{ flex: 1 }}
+          iconColor={showIcon ? undefined : "transparent"}
         />
         {onCreateEmpty && (
           <IconButton

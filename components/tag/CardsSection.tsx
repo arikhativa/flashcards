@@ -1,18 +1,16 @@
-import React, { useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { Dialog, IconButton, Portal, Text } from "react-native-paper";
-import { Card as PaperCard } from "react-native-paper";
 import { CardTile } from "../cards/CardTile";
 import { Card } from "@/types/Card";
 import Autocomplete from "../shared/Autocomplete";
-import { baseUnit, container, margin, padding, text } from "@/constants/styles";
+import { baseUnit, container, margin, padding } from "@/constants/styles";
 import { CardsManyTiles } from "../cards/CardsManyTiles";
 
 interface CardsSectionProps {
   allCards: Card[];
   cards?: Card[];
   addCard: (card: Card) => void;
-  removeCard: (card: Card) => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
@@ -22,7 +20,6 @@ const CardsSection = ({
   cards,
   allCards,
   addCard,
-  removeCard,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
@@ -92,6 +89,8 @@ const CardsSection = ({
               ></IconButton>
               <Dialog.Content>
                 <Autocomplete
+                  placeholder="Search"
+                  showIcon
                   onSelect={onSelect}
                   keyExtractor={keyExtractor}
                   onSearchChange={onSearchChange}

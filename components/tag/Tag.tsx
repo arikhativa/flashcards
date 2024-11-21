@@ -78,16 +78,6 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
     setTagLocal({ ...tagLocal, cards: newCards });
   };
 
-  const removeCard = (card: Card) => {
-    const currCards = tagLocal.cards || [];
-    if (!currCards.find((e) => e.id === card.id)) {
-      console.error("tag does not exists: can't remove");
-      return;
-    }
-    const newCards = currCards.filter((e) => e.id !== card.id);
-    setTagLocal({ ...tagLocal, cards: newCards });
-  };
-
   const handleSubmitCreate = async (tag: TagCreate) => {
     if (mode !== CRUDMode.Create) return;
     await tagService.create(tag);
@@ -173,7 +163,6 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         addCard={addCard}
-        removeCard={removeCard}
         cards={tagLocal.cards as Card[]}
         allCards={cards}
       />
