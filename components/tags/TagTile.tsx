@@ -48,7 +48,6 @@ export function TagTile({
           <View
             style={{
               padding: baseUnit,
-              display: "flex",
               flexDirection: "row",
             }}
           >

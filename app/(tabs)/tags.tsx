@@ -1,9 +1,7 @@
-import { Text } from "react-native-paper";
-import { View, FlatList } from "react-native";
+import { View } from "react-native";
 
-import { TagTile } from "@/components/tags/TagTile";
 import { useStore } from "@/providers/GlobalStore";
-import { container, margin, text } from "@/constants/styles";
+import { container, margin } from "@/constants/styles";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
 import { useEffect, useState } from "react";
@@ -11,6 +9,7 @@ import { useMultiSelect } from "@/hooks/useMultiSelect";
 import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import { ObjType } from "@/types/generic";
 import ListActions from "@/components/shared/ListActions";
+import { TagsManyTiles } from "@/components/tags/TagsManyTiles";
 
 export default function TagsScreen() {
   const { tags, tagService } = useStore();
@@ -51,32 +50,18 @@ export default function TagsScreen() {
   return (
     <View style={[container.flex1, margin.top2]}>
       <ListActions query={query} onQueryChange={setQuery} />
-      {!tagsLocal || tagsLocal.length === 0 ? (
-        <View style={container.center}>
-          <Text style={text.grayMessage}>No tags</Text>
-        </View>
-      ) : (
-        <View style={[{ maxHeight: 400 }]}>
-          <FlatList
-            data={tagsLocal}
-            keyExtractor={(tag) => tag.id.toString()}
-            renderItem={({ item }) => (
-              <TagTile
-                disabledLink={isMultiSelect}
-                isSelected={selectedIds.includes(item.id)}
-                onLongPress={handleLongPress}
-                onPress={handlePress}
-                showSize
-                tag={item}
-              ></TagTile>
-            )}
-          />
-        </View>
-      )}
+
+      <TagsManyTiles
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        toggleIdSelection={toggleIdSelection}
+        clearSelectedIds={clearSelectedIds}
+        tags={tagsLocal}
+        disabledLink={isMultiSelect}
+      />
       <MultiSelectActionBar
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
-        onDeselectAll={clearSelectedIds}
         onDeleteMany={handelDeleteMany}
         type={ObjType.Tag}
         onTestMany={handelTestMany}
