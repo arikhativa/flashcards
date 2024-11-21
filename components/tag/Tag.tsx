@@ -1,8 +1,8 @@
 import { View, StyleSheet } from "react-native";
 import { Tag, TagCreate, TagUpdate } from "@/types/Tag";
-import { Button, Card as PaperCard, TextInput } from "react-native-paper";
+import { Card as PaperCard, TextInput } from "react-native-paper";
 import { container, KLMark, margin } from "@/constants/styles";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
@@ -13,6 +13,8 @@ import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import TagActionBar from "./TagActionBar";
+import CRUDWrapper from "../shared/CRUDWrapper";
+import { useStateDirty } from "@/hooks/useStateDirty";
 
 type TagComponentProps = ComponentProps<Tag>;
 
@@ -29,9 +31,11 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   } = useMultiSelect();
 
   let idLocal: number = parseInt(id || "-1", 10);
-  const [tagLocal, setTagLocal] = useState<Tag | TagCreate | TagUpdate>(
+
+  const array = useStateDirty<Tag | TagCreate | TagUpdate>(
     {} as Tag | TagCreate | TagUpdate
   );
+  const [tagLocal, setTagLocal] = array;
 
   useEffect(() => {
     if (mode === CRUDMode.Create) {
@@ -76,24 +80,6 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
     }
     const newCards = [...currCards, card];
     setTagLocal({ ...tagLocal, cards: newCards });
-  };
-
-  const handleSubmitCreate = async (tag: TagCreate) => {
-    if (mode !== CRUDMode.Create) return;
-    await tagService.create(tag);
-    navigation.goBack();
-  };
-
-  const handleSubmitUpdate = async (tag: TagUpdate) => {
-    if (idLocal === BAD_ID || mode !== CRUDMode.Update) return;
-    await tagService.update(idLocal, tag);
-    navigation.goBack();
-  };
-
-  const handleSubmitDelete = async () => {
-    if (idLocal === BAD_ID || mode !== CRUDMode.Update) return;
-    await tagService.delete(idLocal);
-    navigation.goBack();
   };
 
   const handleRemoveCards = () => {
@@ -142,69 +128,51 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
   };
 
   return (
-    <View style={[container.flex1, margin.top2]}>
-      <View style={[margin.base2]}>
-        <PaperCard>
-          <PaperCard.Content>
-            <TextInput
-              style={[{ height: 20 }, styles.textInput]}
-              underlineColor="transparent"
-              onChangeText={(text) => {
-                handleLocalChange("name", text);
-              }}
-              value={tagLocal.name}
-            ></TextInput>
-          </PaperCard.Content>
-        </PaperCard>
+    <CRUDWrapper
+      array={array}
+      mode={mode}
+      id={idLocal}
+      crudService={tagService}
+      newTitle="New Tag"
+      updateTitle="Edit Tag"
+      deleteMessage="Delete Tag"
+      empty={TagService.EMPTY}
+      all={tags}
+    >
+      <View style={[container.flex1, margin.top2]}>
+        <View style={[margin.base2]}>
+          <PaperCard>
+            <PaperCard.Content>
+              <TextInput
+                style={[{ height: 20 }, styles.textInput]}
+                underlineColor="transparent"
+                onChangeText={(text) => {
+                  handleLocalChange("name", text);
+                }}
+                value={tagLocal.name}
+              ></TextInput>
+            </PaperCard.Content>
+          </PaperCard>
+        </View>
+
+        <CardsSection
+          isMultiSelect={isMultiSelect}
+          selectedIds={selectedIds}
+          toggleIdSelection={toggleIdSelection}
+          addCard={addCard}
+          cards={tagLocal.cards as Card[]}
+          allCards={cards}
+        />
+
+        <TagActionBar
+          isMultiSelect={isMultiSelect}
+          selectedIds={selectedIds}
+          onDeselectAll={clearSelectedIds}
+          onTestMany={handelTestMany}
+          onRemoveCardsFromTag={handleRemoveCards}
+        />
       </View>
-
-      <CardsSection
-        isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
-        toggleIdSelection={toggleIdSelection}
-        addCard={addCard}
-        cards={tagLocal.cards as Card[]}
-        allCards={cards}
-      />
-
-      <TagActionBar
-        isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
-        onDeselectAll={clearSelectedIds}
-        onTestMany={handelTestMany}
-        onRemoveCardsFromTag={handleRemoveCards}
-      />
-
-      <PaperCard style={margin.base2}>
-        <PaperCard.Actions>
-          {mode === CRUDMode.Update && (
-            <Button
-              buttonColor="red"
-              mode={"contained"}
-              onPress={() => handleSubmitDelete()}
-            >
-              Delete Tag
-            </Button>
-          )}
-          {mode === CRUDMode.Update && (
-            <Button
-              mode={"contained"}
-              onPress={() => handleSubmitUpdate(tagLocal as TagUpdate)}
-            >
-              Save
-            </Button>
-          )}
-          {mode === CRUDMode.Create && (
-            <Button
-              mode={"contained"}
-              onPress={() => handleSubmitCreate(tagLocal as TagCreate)}
-            >
-              Create
-            </Button>
-          )}
-        </PaperCard.Actions>
-      </PaperCard>
-    </View>
+    </CRUDWrapper>
   );
 };
 

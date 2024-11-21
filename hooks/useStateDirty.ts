@@ -7,9 +7,14 @@ import {
   useEffect,
 } from "react";
 
-export function useStateDirty<T>(
-  init: T | (() => T)
-): [T, Dispatch<SetStateAction<T>>, MutableRefObject<boolean>, () => void] {
+export type UseStateDirtyArray<T> = [
+  T,
+  Dispatch<SetStateAction<T>>,
+  MutableRefObject<boolean>,
+  () => void
+];
+
+export function useStateDirty<T>(init: T | (() => T)): UseStateDirtyArray<T> {
   const [state, setState] = useState(init);
   const [isDirty, setIsDirty] = useState(false);
   const isDirtyRef = useRef(isDirty);

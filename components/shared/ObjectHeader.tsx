@@ -1,9 +1,9 @@
 import { useNavigation } from "expo-router";
-import { ScrollView, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import ObjectMenu from "./ObjectMenu";
 import { useMenu } from "@/hooks/useMenu";
 import { PropsWithChildren } from "react";
+import React from "react";
 
 type ObjectHeaderProps = PropsWithChildren<{
   title: string;
@@ -21,7 +21,7 @@ export default function ObjectHeader({
   const { visible, openMenu, closeMenu } = useMenu();
 
   return (
-    <ScrollView>
+    <>
       <Appbar.Header>
         <Appbar.BackAction
           onPress={() => {
@@ -40,6 +40,6 @@ export default function ObjectHeader({
         />
       </Appbar.Header>
       {children}
-    </ScrollView>
+    </>
   );
 }
