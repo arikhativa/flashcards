@@ -69,10 +69,16 @@ export default function MultiSelectActionBar({
     });
 
     if (onTestMany) {
-      list.push({
-        icon: "test-tube",
-        onPress: () => onTestMany(type),
-      });
+      if (isTestVisible()) {
+        list.push({
+          icon: "test-tube",
+          onPress: () => onTestMany(type),
+        });
+      } else {
+        list.push({
+          icon: "test-tube",
+        });
+      }
     }
 
     if (onDeleteMany) {
@@ -85,18 +91,11 @@ export default function MultiSelectActionBar({
     setToggledButtons(list);
   };
 
-  const handleIsDisabled = (index: number) => {
-    if (
-      isMultiSelect &&
-      toggledButtons[index] &&
-      toggledButtons[index].icon === "test-tube"
-    ) {
-      if (type === ObjType.Card) {
-        return selectedIds.length <= 1;
-      }
-      return selectedIds.length <= 0;
+  const isTestVisible = () => {
+    if (type === ObjType.Card) {
+      return selectedIds.length > 1;
     }
-    return false;
+    return selectedIds.length > 0;
   };
 
   return (
@@ -104,7 +103,6 @@ export default function MultiSelectActionBar({
       buttons={buttons}
       toggle={isMultiSelect}
       toggledButtons={toggledButtons}
-      isDisabled={handleIsDisabled}
     />
   );
 }
