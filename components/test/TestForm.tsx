@@ -194,7 +194,7 @@ export default function TestForm({
         <PaperCard.Content>
           <InputHelper error={!isTestSideValid() ? "Please select a side" : ""}>
             <Dropdown
-              label="Test by side"
+              label="Choose side to hide"
               options={cardsSideOptions}
               value={testSide}
               error={!isTestSideValid()}
