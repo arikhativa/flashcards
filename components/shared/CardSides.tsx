@@ -1,6 +1,7 @@
 import { padding } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
+import React from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import {
   Card as PaperCard,
@@ -8,6 +9,7 @@ import {
   TextInput,
   Divider,
 } from "react-native-paper";
+import Plasters from "./Plasters";
 
 interface CardSidesProps {
   knowledgeLevel: KnowledgeLevel;
@@ -72,24 +74,32 @@ export default function CardSides({
           <Text style={styles.labelText} variant="titleLarge">
             {conf.sideA}
           </Text>
-          <TextInput
-            editable={!disabled}
-            style={[styles.comment, styles.textInput]}
-            onChangeText={!disabled ? onChangeTextA : undefined}
-            value={hideSideA ? "?" : sideA}
-          ></TextInput>
+          {!hideSideA ? (
+            <TextInput
+              editable={!disabled}
+              style={[styles.comment, styles.textInput]}
+              onChangeText={!disabled ? onChangeTextA : undefined}
+              value={sideA}
+            ></TextInput>
+          ) : (
+            <Plasters />
+          )}
         </View>
         <Divider />
         <View style={[styles.sideView, { height: height - border }]}>
           <Text style={[styles.labelText, padding.top]} variant="titleLarge">
             {conf.sideB}
           </Text>
-          <TextInput
-            editable={!disabled}
-            style={[styles.comment, styles.textInput]}
-            onChangeText={!disabled ? onChangeTextB : undefined}
-            value={hideSideB ? "?" : sideB}
-          ></TextInput>
+          {!hideSideB ? (
+            <TextInput
+              editable={!disabled}
+              style={[styles.comment, styles.textInput]}
+              onChangeText={!disabled ? onChangeTextB : undefined}
+              value={sideB}
+            ></TextInput>
+          ) : (
+            <Plasters />
+          )}
         </View>
       </PaperCard.Content>
     </PaperCard>

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
   Text,
   Card as PaperCard,
@@ -10,6 +10,7 @@ import { Card } from "@/types/Card";
 import { margin } from "@/constants/styles";
 import { CardMeta } from "@/types/TestSettings";
 import { useState } from "react";
+import { useStore } from "@/providers/GlobalStore";
 
 interface CardTestProps {
   hideSideA?: boolean;
@@ -37,16 +38,24 @@ export default function CardTest({
     undefined
   );
 
+  const { keyboardHeight } = useStore();
+  const containerHeight = Dimensions.get("window").height - keyboardHeight;
+  const cardHeight = containerHeight / 5;
+  const paddingHeight = containerHeight / 60;
+
   return (
-    <View>
-      <Text variant="titleLarge" style={{ alignSelf: "center" }}>
+    <View style={{ height: containerHeight }}>
+      <Text
+        variant="titleLarge"
+        style={{ alignSelf: "center", paddingVertical: paddingHeight }}
+      >
         {index + 1}/{length}
       </Text>
       <CardSides
         disabled
         borderSize={20}
-        cardHeight={120}
-        style={margin.base2}
+        cardHeight={cardHeight}
+        style={margin.x2}
         knowledgeLevel={card.knowledgeLevel}
         sideA={card.sideA}
         sideB={card.sideB}
@@ -79,7 +88,7 @@ export default function CardTest({
       </View>
       <View
         style={[
-          margin.base2,
+          margin.x2,
           {
             flexDirection: "row",
             alignItems: "center",

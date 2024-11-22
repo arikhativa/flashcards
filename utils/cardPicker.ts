@@ -1,5 +1,6 @@
 import { Card } from "@/types/Card";
 import { TestSettings } from "@/types/TestSettings";
+import { getRandomIndex } from "./generic";
 
 export function getMatchingCardsForTest(
   allCards: Card[],
@@ -23,7 +24,7 @@ export function generateSmallList(
   const len = Math.min(matchingCards.length, testSettings.numberOfCards);
 
   for (let i = 0; i < len; i++) {
-    const index = getRandomIndex(matchingCards);
+    const index = getRandomIndex(matchingCards.length);
     const [c] = matchingCards.splice(index, 1);
     list.push(c);
   }
@@ -61,8 +62,4 @@ function filterViaTime(list: Card[], testSettings: TestSettings): Card[] {
     );
   }
   return list;
-}
-
-function getRandomIndex(cards: Card[]): number {
-  return Math.floor(Math.random() * cards.length);
 }

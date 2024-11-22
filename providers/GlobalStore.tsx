@@ -22,6 +22,7 @@ import {
 import { Conf } from "@/types/Conf";
 import { CARDS, TAGS } from "@/constants/db";
 import { Metadata } from "@/types/Metadata";
+import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 
 interface StoreContextType {
   cards: Card[];
@@ -34,6 +35,7 @@ interface StoreContextType {
   tagService: TagService;
   cardTagService: CardTagService;
   confService: ConfService;
+  keyboardHeight: number;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -57,6 +59,7 @@ export const StoreProvider = ({
   const [tags, setTags] = useState<Tag[]>([]);
   const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
   const [metadata, setMetadata] = useState<Metadata>({} as Metadata);
+  const { keyboardHeight } = useKeyboardHeight();
 
   const fetchAll = async () => {
     await fetchArchiveCards();
@@ -164,6 +167,7 @@ export const StoreProvider = ({
         tagService,
         cardTagService,
         confService,
+        keyboardHeight,
       }}
     >
       {children}
