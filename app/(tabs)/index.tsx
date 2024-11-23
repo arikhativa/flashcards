@@ -6,30 +6,33 @@ import { getCardHref } from "@/utils/links";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
-import {
-  FilterChip,
-  FilterNames,
-  ObjType,
-  Sort,
-  SortNames,
-  TimeRange,
-} from "@/types/generic";
+import { FilterChip, FilterNames, ObjType, TimeRange } from "@/types/generic";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
-import { defaultSort } from "@/utils/generic";
-import { sorByAlpha, sortByDate, sortByKL } from "@/utils/sort";
+import {
+  getSortDirectionByName,
+  sorByAlpha,
+  sortByDate,
+  sortByKL,
+} from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import { NEW_ID } from "../[objType]";
 import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import ListActions from "@/components/shared/ListActions";
 import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
+import { Sort, SortNames } from "@/types/Sort";
 
 export default function CardsScreen() {
-  const { cards, cardService } = useStore();
+  const { cards, cardService, conf } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [range, setRange] = useState<TimeRange>({});
   const [filters, setFilters] = useState<FilterChip[]>([]);
-  const [sort, setSort] = useState<Sort>(defaultSort);
+
+  const [sort, setSort] = useState<Sort>({
+    field: conf.sortBy,
+    direction: getSortDirectionByName(conf.sortBy),
+  });
+
   const {
     isMultiSelect,
     selectedIds,
@@ -66,6 +69,17 @@ export default function CardsScreen() {
 
     removeFilterIfNeeded();
   }, [filters, range, selectedKL]);
+
+  useEffect(() => {
+    if (!conf) {
+      return;
+    }
+
+    setSort({
+      field: conf.sortBy,
+      direction: getSortDirectionByName(conf.sortBy),
+    });
+  }, [conf]);
 
   const handleGenericFilterSet = (name: FilterNames, onClose: () => void) => {
     if (filters.find((filter) => filter.name === name)) {

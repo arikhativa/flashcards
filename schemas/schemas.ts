@@ -84,6 +84,10 @@ export class ConfSchema extends BaseEntity {
   @Column({ type: "text", default: "A" })
   testSide: string;
 
+  // NOTE - this is an enum of type SortNames
+  @Column({ type: "text", length: 10, default: "TIME" })
+  sortBy: string;
+
   @Column({ type: "integer", default: 10 })
   numberOfCards: number;
 }

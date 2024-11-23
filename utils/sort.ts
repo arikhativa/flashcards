@@ -1,4 +1,4 @@
-import { SortDir } from "@/types/generic";
+import { SortDir, SortNames } from "@/types/Sort";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { KLToNumber } from "./knowledgeLevel";
 
@@ -44,4 +44,15 @@ export function sortByKL<T extends BaseKL>(list: T[], dir: SortDir) {
     }
     return KLToNumber(bVal) - KLToNumber(aVal);
   });
+}
+
+export function isSortName(v: string): boolean {
+  return Object.values(SortNames).includes(v as SortNames);
+}
+
+export function getSortDirectionByName(name: SortNames) {
+  if (name === SortNames.TIME || name === SortNames.KL) {
+    return SortDir.DESC;
+  }
+  return SortDir.ASC;
 }

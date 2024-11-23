@@ -6,7 +6,9 @@ import {
 } from "@/constants/general";
 import { ConfSchema } from "@/schemas/schemas";
 import { Conf, ConfUpdate } from "@/types/Conf";
+import { SortNames } from "@/types/Sort";
 import { isInRange, isTestSide } from "@/utils/generic";
+import { isSortName } from "@/utils/sort";
 import { Repository } from "typeorm";
 
 export class ConfService {
@@ -17,6 +19,7 @@ export class ConfService {
     updatedAt: new Date(),
     numberOfCards: 0,
     testSide: "A",
+    sortBy: SortNames.TIME,
   };
 
   constructor(
@@ -93,6 +96,11 @@ export class ConfService {
     if (payload.testSide && isTestSide(payload.testSide)) {
       entity.testSide = payload.testSide;
     }
+
+    if (payload.sortBy && isSortName(payload.sortBy)) {
+      entity.sortBy = payload.sortBy;
+    }
+
     if (
       payload.numberOfCards &&
       isInRange(payload.numberOfCards, MIN_NUMBER_OF_CARDS, MAX_NUMBER_OF_CARDS)

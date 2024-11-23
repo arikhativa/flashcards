@@ -2,8 +2,9 @@ import { baseUnit } from "@/constants/styles";
 import { useState } from "react";
 import { View } from "react-native";
 import { Menu, IconButton, Divider, useTheme } from "react-native-paper";
-import { Sort, SortDir, SortNames } from "@/types/generic";
+import { Sort, SortDir, SortNames } from "@/types/Sort";
 import { useStore } from "@/providers/GlobalStore";
+import { getSortDirectionByName } from "@/utils/sort";
 
 interface SortCardsProps {
   sort: Sort;
@@ -30,6 +31,7 @@ export default function SortCards({ sort, onSortChange }: SortCardsProps) {
   const byCreationTime = () => {
     onSortChange({
       ...sort,
+      direction: getSortDirectionByName(SortNames.TIME),
       field: SortNames.TIME,
     });
   };
@@ -37,6 +39,7 @@ export default function SortCards({ sort, onSortChange }: SortCardsProps) {
   const byKL = () => {
     onSortChange({
       ...sort,
+      direction: getSortDirectionByName(SortNames.KL),
       field: SortNames.KL,
     });
   };
@@ -44,6 +47,7 @@ export default function SortCards({ sort, onSortChange }: SortCardsProps) {
   const bySideA = () => {
     onSortChange({
       ...sort,
+      direction: getSortDirectionByName(SortNames.SIDE_A_ABC),
       field: SortNames.SIDE_A_ABC,
     });
   };
@@ -51,6 +55,7 @@ export default function SortCards({ sort, onSortChange }: SortCardsProps) {
   const bySideB = () => {
     onSortChange({
       ...sort,
+      direction: getSortDirectionByName(SortNames.SIDE_B_ABC),
       field: SortNames.SIDE_B_ABC,
     });
   };

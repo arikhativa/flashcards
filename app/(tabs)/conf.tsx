@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Conf } from "@/types/Conf";
 import { useStore } from "@/providers/GlobalStore";
 import { Keyboard } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text, Divider } from "react-native-paper";
 import { View } from "react-native";
 import { container, margin, padding } from "@/constants/styles";
 import NumberInput from "@/components/shared/NumberInput";
@@ -14,20 +14,24 @@ import {
   MIN_NUMBER_OF_CARDS,
   MIN_SIDE_LENGTH,
 } from "@/constants/general";
-import { Dropdown } from "react-native-paper-dropdown";
+import { Dropdown, Option } from "react-native-paper-dropdown";
 import { TestSide } from "@/types/TestSettings";
 import InputHelper from "@/components/shared/InputHelper";
 import { CardsSideOptions } from "@/utils/testForm";
+import { isSortName } from "@/utils/sort";
+import { SortNames } from "@/types/Sort";
 
 export default function ConfScreen() {
   const { conf, confService } = useStore();
 
   const [localConf, setLocalConf] = useState<Conf>(conf);
   const [testSide, setTestSide] = useState<TestSide | undefined>(conf.testSide);
+  const [sortName, setSortName] = useState<SortNames | undefined>(conf.sortBy);
   const [numberOfCardsError, setNumberOfCardsError] = useState<boolean>(false);
   const [cardsSideOptions, setCardsSideOptions] = useState<CardsSideOptions[]>(
     []
   );
+  const [sortOptions, setSortOptions] = useState<Option[]>([]);
 
   useEffect(() => {
     setLocalConf(conf);
@@ -35,19 +39,40 @@ export default function ConfScreen() {
     if (!conf) {
       return;
     }
-    const cardsSideOptions: CardsSideOptions[] = [
-      { label: conf.sideA, value: "A" },
-      { label: conf.sideB, value: "B" },
-      { label: "Both", value: "Both" },
-    ];
-    setCardsSideOptions(cardsSideOptions);
+    updateSortOptions();
+    updateSideOptions();
   }, [conf]);
+
+  useEffect(() => {
+    if (sortName) {
+      setLocalConf({ ...localConf, sortBy: sortName });
+    }
+  }, [sortName]);
 
   useEffect(() => {
     if (testSide) {
       setLocalConf({ ...localConf, testSide: testSide });
     }
   }, [testSide]);
+
+  const updateSortOptions = () => {
+    const options: Option[] = [
+      { label: `by ${conf.sideA}`, value: SortNames.SIDE_A_ABC },
+      { label: `by ${conf.sideB}`, value: SortNames.SIDE_B_ABC },
+      { label: `by Time`, value: SortNames.TIME },
+      { label: `by Knowledge Level`, value: SortNames.KL },
+    ];
+    setSortOptions(options);
+  };
+
+  const updateSideOptions = () => {
+    const cardsSideOptions: CardsSideOptions[] = [
+      { label: conf.sideA, value: "A" },
+      { label: conf.sideB, value: "B" },
+      { label: "Both", value: "Both" },
+    ];
+    setCardsSideOptions(cardsSideOptions);
+  };
 
   const handleSubmit = async () => {
     Keyboard.dismiss(); // TODO not sure if this is needed
@@ -63,6 +88,7 @@ export default function ConfScreen() {
       localConf.sideA !== conf.sideA ||
       localConf.sideB !== conf.sideB ||
       localConf.numberOfCards !== conf.numberOfCards ||
+      localConf.sortBy !== conf.sortBy ||
       localConf.testSide !== conf.testSide
     );
   };
@@ -73,6 +99,10 @@ export default function ConfScreen() {
 
   const isTestSideValid = (): boolean => {
     return !!testSide && isTestSide(testSide);
+  };
+
+  const isSortValid = (): boolean => {
+    return !!sortName && isSortName(sortName);
   };
 
   const isNumberOfCardsValid = (): boolean => {
@@ -90,6 +120,7 @@ export default function ConfScreen() {
     return (
       isSideValid(localConf.sideA) &&
       isSideValid(localConf.sideB) &&
+      isSortValid() &&
       isTestSideValid() &&
       isNumberOfCardsValid()
     );
@@ -118,7 +149,7 @@ export default function ConfScreen() {
           </Text>
           <InputHelper error={!isTestSideValid() ? "Please select a side" : ""}>
             <Dropdown
-              label="Default Test Side"
+              label="Default side to hide"
               options={cardsSideOptions}
               value={testSide}
               error={!isTestSideValid()}
@@ -131,9 +162,28 @@ export default function ConfScreen() {
               }}
             />
           </InputHelper>
+          <Divider />
+          <Text variant="titleMedium" style={padding.bottom}>
+            Default Sort
+          </Text>
+          <InputHelper error={!isSortValid() ? "Please select " : ""}>
+            <Dropdown
+              label="Default sort"
+              options={sortOptions}
+              value={sortName}
+              error={!isSortValid()}
+              onSelect={(value) => {
+                if (!value || !isSortName(value)) {
+                  setSortName(undefined);
+                  return;
+                }
+                setSortName(value as SortNames);
+              }}
+            />
+          </InputHelper>
           <NumberInput
             onError={setNumberOfCardsError}
-            label="Number of Cards"
+            label="Number of cards"
             min={MIN_NUMBER_OF_CARDS}
             max={MAX_NUMBER_OF_CARDS}
             value={localConf.numberOfCards}
