@@ -1,13 +1,9 @@
-import { View, FlatList } from "react-native";
-import { Text } from "react-native-paper";
-import { container, text } from "@/constants/styles";
-import { GestureWrapper } from "../shared/GestureWrapper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
-import MultiSelectActionBar from "../shared/MultiSelectActionBar";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID } from "@/app/[objType]";
 import { ObjType } from "@/types/generic";
+import { ManyTiles } from "../shared/ManyTiles";
 
 export type TagsManyTilesProps = {
   isMultiSelect: boolean;
@@ -38,43 +34,33 @@ export function TagsManyTiles({
     }
   };
 
+  const renderItem = ({ item }: { item: Tag }) => (
+    <TagTile
+      disabledLink={isMultiSelect}
+      isSelected={selectedIds.includes(item.id)}
+      onLongPress={handleLongPress}
+      onPress={handlePress}
+      showSize
+      tag={item}
+    />
+  );
+
   return (
-    <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
-      <View style={{ flex: 1 }}>
-        {!tags || tags.length === 0 ? (
-          // TODO this needs to be responsive
-          <View style={[container.center]}>
-            <Text style={text.grayMessage}>No tags</Text>
-          </View>
-        ) : (
-          <FlatList
-            contentContainerStyle={{
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-            }}
-            data={tags}
-            keyExtractor={(tag) => tag.id.toString()}
-            renderItem={({ item }) => (
-              <TagTile
-                disabledLink={isMultiSelect}
-                isSelected={selectedIds.includes(item.id)}
-                onLongPress={handleLongPress}
-                onPress={handlePress}
-                showSize
-                tag={item}
-              />
-            )}
-          />
-        )}
-        <MultiSelectActionBar
-          isMultiSelect={isMultiSelect}
-          selectedIds={selectedIds}
-          onDeleteMany={onDeleteMany}
-          type={ObjType.Tag}
-          onTestMany={onTestMany}
-          href={getTagHref(NEW_ID)}
-        />
-      </View>
-    </GestureWrapper>
+    <ManyTiles
+      isMultiSelect={isMultiSelect}
+      selectedIds={selectedIds}
+      clearSelectedIds={clearSelectedIds}
+      onDeleteMany={onDeleteMany}
+      onTestMany={onTestMany}
+      objs={tags}
+      renderItem={renderItem}
+      noObjsMessage="No tags"
+      contentContainerStyle={{
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+      }}
+      href={getTagHref(NEW_ID)}
+      type={ObjType.Tag}
+    />
   );
 }

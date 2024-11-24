@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
 import ListActions from "@/components/shared/ListActions";
 import { TagsManyTiles } from "@/components/tags/TagsManyTiles";
+import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
+import { useVisible } from "@/hooks/useVisible";
 
 export default function TagsScreen() {
   const { tags, tagService } = useStore();
@@ -19,6 +21,8 @@ export default function TagsScreen() {
     clearSelectedIds,
     handelTestMany,
   } = useMultiSelect();
+
+  const { visible, toggleVisible } = useVisible();
 
   useEffect(() => {
     setTagsLocal(
@@ -38,13 +42,23 @@ export default function TagsScreen() {
       <ListActions query={query} onQueryChange={setQuery} />
 
       <TagsManyTiles
-        onDeleteMany={handelDeleteMany}
+        onDeleteMany={toggleVisible}
         onTestMany={handelTestMany}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         clearSelectedIds={clearSelectedIds}
         tags={tagsLocal}
+      />
+
+      <ConfirmationDialog
+        visible={visible}
+        onDismiss={toggleVisible}
+        title="Delete Selected Tags?"
+        approveText="Delete"
+        cancelText="Cancel"
+        onCancel={toggleVisible}
+        onApprove={handelDeleteMany}
       />
     </View>
   );

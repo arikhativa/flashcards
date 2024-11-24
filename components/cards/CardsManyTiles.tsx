@@ -1,14 +1,11 @@
 import { Card } from "@/types/Card";
-import { View, FlatList, Dimensions } from "react-native";
-import { Text } from "react-native-paper";
+import { View, Dimensions } from "react-native";
 import { CardTile } from "./CardTile";
-import { text } from "@/constants/styles";
 import { useEffect, useState } from "react";
-import { GestureWrapper } from "../shared/GestureWrapper";
-import MultiSelectActionBar from "../shared/MultiSelectActionBar";
 import { ObjType } from "@/types/generic";
 import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { Href } from "expo-router";
+import { ManyTiles } from "../shared/ManyTiles";
 
 const maxSize = Dimensions.get("window").width;
 const minCardSize = 51.8;
@@ -102,37 +99,22 @@ export function CardsManyTiles({
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
-        <View style={{ flex: 1 }}>
-          {!rows || rows.length === 0 ? (
-            // TODO this needs to be responsive
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <Text style={text.grayMessage}>No cards</Text>
-            </View>
-          ) : (
-            <FlatList
-              data={rows}
-              keyExtractor={(_, index) => index.toString()}
-              contentContainerStyle={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              renderItem={renderRow}
-            />
-          )}
-        </View>
-      </GestureWrapper>
-      <MultiSelectActionBar
-        type={ObjType.Card}
-        isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
-        onDeleteMany={onDeleteMany}
-        onUnTagMany={onUnTagMany}
-        href={href}
-        onTestMany={onTestMany}
-      />
-    </View>
+    <ManyTiles
+      isMultiSelect={isMultiSelect}
+      selectedIds={selectedIds}
+      clearSelectedIds={clearSelectedIds}
+      onDeleteMany={onDeleteMany}
+      onTestMany={onTestMany}
+      objs={rows}
+      renderItem={renderRow}
+      noObjsMessage="No cards"
+      contentContainerStyle={{
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      href={href}
+      type={ObjType.Card}
+    />
   );
 }
 
