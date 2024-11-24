@@ -1,6 +1,6 @@
-import { baseUnit,  margin } from "@/constants/styles";
+import { baseUnit, margin } from "@/constants/styles";
 import React from "react";
-import {  View } from "react-native";
+import { View } from "react-native";
 import { FAB } from "react-native-paper";
 
 export interface FABProps {
@@ -26,12 +26,10 @@ interface ActionsBarProps {
   toggledButtons?: MainButtons;
   dangerButtons?: DangerButtons;
   toggledDangerButtons?: DangerButtons;
-  marginTop?: number;
   isDisabled?: (index: number) => boolean;
 }
 
 export default function ActionsBar({
-  marginTop,
   buttons,
   toggle,
   toggledButtons,
@@ -151,12 +149,7 @@ export default function ActionsBar({
       );
     }
     return (
-      <View
-        style={[
-          margin.base2,
-          { position: "absolute", top: 0, left: 0, marginTop: marginTop || 0 },
-        ]}
-      >
+      <View style={[margin.base2, { position: "absolute", top: 0, right: 0 }]}>
         {list}
       </View>
     );

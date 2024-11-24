@@ -4,23 +4,29 @@ import { container, text } from "@/constants/styles";
 import { GestureWrapper } from "../shared/GestureWrapper";
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
+import MultiSelectActionBar from "../shared/MultiSelectActionBar";
+import { getTagHref } from "@/utils/links";
+import { NEW_ID } from "@/app/[objType]";
+import { ObjType } from "@/types/generic";
 
 export type TagsManyTilesProps = {
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
+  onDeleteMany?: () => void;
+  onTestMany?: (type?: ObjType) => void;
   tags?: Tag[];
-  disabledLink?: boolean;
 };
 
 export function TagsManyTiles({
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
+  onDeleteMany,
+  onTestMany,
   clearSelectedIds,
   tags,
-  disabledLink,
 }: TagsManyTilesProps) {
   const handleLongPress = (id: number) => {
     toggleIdSelection(id);
@@ -60,6 +66,14 @@ export function TagsManyTiles({
             )}
           />
         )}
+        <MultiSelectActionBar
+          isMultiSelect={isMultiSelect}
+          selectedIds={selectedIds}
+          onDeleteMany={onDeleteMany}
+          type={ObjType.Tag}
+          onTestMany={onTestMany}
+          href={getTagHref(NEW_ID)}
+        />
       </View>
     </GestureWrapper>
   );

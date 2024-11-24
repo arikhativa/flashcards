@@ -5,6 +5,10 @@ import { CardTile } from "./CardTile";
 import { text } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { GestureWrapper } from "../shared/GestureWrapper";
+import MultiSelectActionBar from "../shared/MultiSelectActionBar";
+import { ObjType } from "@/types/generic";
+import { getCardHref } from "@/utils/links";
+import { NEW_ID } from "@/app/[objType]";
 
 const maxSize = Dimensions.get("window").width;
 const minCardSize = 51.8;
@@ -16,6 +20,8 @@ export type CardManyTilesProps = {
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
+  onDeleteMany?: () => void;
+  onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
   disabledLink?: boolean;
 };
@@ -24,6 +30,8 @@ export function CardsManyTiles({
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
+  onDeleteMany,
+  onTestMany,
   clearSelectedIds,
   cards,
   disabledLink,
@@ -108,6 +116,14 @@ export function CardsManyTiles({
             renderItem={renderRow}
           />
         )}
+        <MultiSelectActionBar
+          type={ObjType.Card}
+          isMultiSelect={isMultiSelect}
+          selectedIds={selectedIds}
+          onDeleteMany={onDeleteMany}
+          href={getCardHref(NEW_ID)}
+          onTestMany={onTestMany}
+        />
       </View>
     </GestureWrapper>
   );

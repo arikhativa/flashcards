@@ -174,19 +174,13 @@ export default function CardsScreen() {
       />
 
       <CardsManyTiles
+        onDeleteMany={handelDeleteMany}
+        onTestMany={handelTestMany}
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
-      />
-      <MultiSelectActionBar
-        type={ObjType.Card}
-        isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
-        onDeleteMany={handelDeleteMany}
-        href={getCardHref(NEW_ID)}
-        onTestMany={handelTestMany}
       />
     </View>
   );

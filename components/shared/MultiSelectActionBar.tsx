@@ -93,7 +93,6 @@ export default function MultiSelectActionBar({
 
   return (
     <ActionsBar
-      marginTop={200}
       buttons={buttons}
       toggle={isMultiSelect}
       toggledButtons={toggledButtons}
