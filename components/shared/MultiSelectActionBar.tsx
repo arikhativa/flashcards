@@ -64,7 +64,7 @@ export default function MultiSelectActionBar({
           },
         },
         b: {
-          icon: "test-tube",
+          icon: "school-outline",
           onPress: () => {
             router.push(getTestHref());
           },
@@ -78,7 +78,10 @@ export default function MultiSelectActionBar({
     let dangerButton: FABProps | undefined = undefined;
 
     if (onTestMany && isTestVisible()) {
-      testMany = { icon: "test-tube", onPress: () => onTestMany(type) };
+      testMany = {
+        icon: "school-outline",
+        onPress: () => onTestMany(type),
+      };
     }
 
     if (onDeleteMany) {
