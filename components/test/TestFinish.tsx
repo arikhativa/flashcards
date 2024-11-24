@@ -7,9 +7,9 @@ import { KnowledgeLevel } from "../../types/KnowledgeLevel";
 import { margin, padding } from "@/constants/styles";
 import { getHomeHref } from "@/utils/links";
 import { Card as PaperCard } from "react-native-paper";
-import { useVisible } from "@/hooks/useVisibale";
+import { useVisible } from "@/hooks/useVisible";
 import TestFinishDialog from "./TestFinishDialog";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 
 interface TestFinishProps {
   cards: Card[];
@@ -24,6 +24,8 @@ export default function TestFinish({
   onChangeKnowledgeLevel,
   onRetakeTest,
 }: TestFinishProps) {
+  const router = useRouter();
+
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const { visible, toggleVisible } = useVisible();
 
@@ -47,28 +49,35 @@ export default function TestFinish({
           >
             Test Is Done!
           </Text>
-          <Text
-            style={[padding.bottom3, { alignSelf: "center" }]}
-            variant="headlineMedium"
-          >
+          <Text style={[{ alignSelf: "center" }]} variant="headlineMedium">
             You got {correctAnswers}/{cards.length}!
           </Text>
         </PaperCard.Content>
-        <PaperCard.Actions style={{ flexDirection: "column", gap: 40 }}>
-          <Link href={getHomeHref()}>
-            <Button>Done</Button>
-          </Link>
-          <Button onPress={() => onRetakeTest(cards)}>Retake Test</Button>
-          <Button
-            onPress={() => {
-              Keyboard.dismiss();
-              toggleVisible();
-            }}
-          >
-            Adjust Knowledge Level
-          </Button>
-        </PaperCard.Actions>
       </PaperCard>
+      <View
+        style={{
+          marginTop: 40,
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 40,
+        }}
+      >
+        <Button
+          mode="contained"
+          onPress={() => {
+            Keyboard.dismiss();
+            toggleVisible();
+          }}
+        >
+          View Test
+        </Button>
+        <Button mode="elevated" onPress={() => onRetakeTest(cards)}>
+          Retake Test
+        </Button>
+        <Button mode="elevated" onPress={() => router.push(getHomeHref())}>
+          Done
+        </Button>
+      </View>
       <TestFinishDialog
         cards={cards}
         cardsMeta={cardsMeta}

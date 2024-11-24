@@ -81,7 +81,6 @@ const CardsSection = ({
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
-        disabledLink
         cards={cards}
       />
 
