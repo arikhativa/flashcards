@@ -42,6 +42,7 @@ export function CardsManyTiles({
       const newCardSize = getCardSize(card);
       const rowSize = getRowSize(tmpRow);
       if (rowSize + newCardSize > maxSize || tmpRow.length === 4) {
+        newRows.push(tmpRow);
         tmpRow = [];
       }
       tmpRow.push(card);

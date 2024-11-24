@@ -1,10 +1,14 @@
-import { useEffect } from "react";
-import ActionsBar, { FABProps } from "../shared/ActionsBar";
-import { useActionBar } from "@/hooks/useActionBar";
+import { useEffect, useState } from "react";
+import ActionsBar, {
+  DangerButtons,
+  FABProps,
+  MainButtons,
+} from "../shared/ActionsBar";
 
 interface TagActionBarProps {
   isMultiSelect: boolean;
   selectedIds: number[];
+  onAddCard: () => void;
   onTestMany: () => void;
   onRemoveCardsFromTag: () => void;
 }
@@ -12,50 +16,50 @@ interface TagActionBarProps {
 export default function TagActionBar({
   isMultiSelect,
   selectedIds,
+  onAddCard,
   onTestMany,
   onRemoveCardsFromTag,
 }: TagActionBarProps) {
-  const { buttons, toggledButtons, setToggledButtons } = useActionBar();
+  const [buttons] = useState<MainButtons>({
+    a: {
+      icon: "plus",
+      onPress: onAddCard,
+    },
+  });
+
+  const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
+  const [toggledDangerButtons, setToggledDangerButtons] =
+    useState<DangerButtons>({});
 
   useEffect(() => {
     setMultiSelectButtons();
   }, [selectedIds]);
 
   const setMultiSelectButtons = () => {
-    const list: FABProps[] = [];
+    let testMany: FABProps | undefined = undefined;
 
     if (selectedIds.length > 1) {
-      list.push({
-        icon: "test-tube",
-        onPress: () => onTestMany(),
-      });
-    } else {
-      list.push({
-        icon: "",
-      });
+      testMany = { icon: "test-tube", onPress: () => onTestMany() };
     }
 
-    list.push({
-      icon: "",
+    setToggledButtons({
+      b: testMany,
     });
-
-    list.push({
-      icon: "",
+    setToggledDangerButtons({
+      a: {
+        icon: "tag-off-outline",
+        onPress: onRemoveCardsFromTag,
+      },
     });
-
-    list.push({
-      icon: "tag-off-outline",
-      onPress: onRemoveCardsFromTag,
-    });
-
-    setToggledButtons(list);
   };
 
   return (
     <ActionsBar
-      toggle={isMultiSelect}
+      marginTop={0}
       buttons={buttons}
+      toggle={isMultiSelect}
       toggledButtons={toggledButtons}
+      toggledDangerButtons={toggledDangerButtons}
     />
   );
 }

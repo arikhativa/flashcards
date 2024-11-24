@@ -6,6 +6,7 @@ import { Card } from "@/types/Card";
 import Autocomplete from "../shared/Autocomplete";
 import { baseUnit, container, margin, padding } from "@/constants/styles";
 import { CardsManyTiles } from "../cards/CardsManyTiles";
+import TagActionBar from "./TagActionBar";
 
 interface CardsSectionProps {
   allCards: Card[];
@@ -15,6 +16,8 @@ interface CardsSectionProps {
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
+  onTestMany: () => void;
+  onRemoveCardsFromTag: () => void;
 }
 
 const CardsSection = ({
@@ -25,6 +28,8 @@ const CardsSection = ({
   selectedIds,
   clearSelectedIds,
   toggleIdSelection,
+  onTestMany,
+  onRemoveCardsFromTag,
 }: CardsSectionProps) => {
   const [visible, setVisible] = React.useState(false);
 
@@ -64,17 +69,7 @@ const CardsSection = ({
           },
           padding.bottom,
         ]}
-      >
-        <Text style={padding.bottom} variant="titleMedium">
-          Cards
-        </Text>
-        <IconButton
-          icon="plus"
-          size={baseUnit * 2}
-          mode="contained-tonal"
-          onPress={showDialog}
-        ></IconButton>
-      </View>
+      ></View>
 
       <CardsManyTiles
         clearSelectedIds={clearSelectedIds}
@@ -82,6 +77,14 @@ const CardsSection = ({
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         cards={cards}
+      />
+
+      <TagActionBar
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        onAddCard={showDialog}
+        onTestMany={onTestMany}
+        onRemoveCardsFromTag={onRemoveCardsFromTag}
       />
 
       <Portal>

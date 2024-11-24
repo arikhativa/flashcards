@@ -1,7 +1,7 @@
 import { Href, RouteParamInput, useRouter } from "expo-router";
 import { getTestHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { useEffect, useState } from "react";
-import ActionsBar from "./ActionsBar";
+import ActionsBar, { DangerButtons, MainButtons } from "./ActionsBar";
 import { ObjType } from "@/types/generic";
 
 interface FABProps {
@@ -28,8 +28,10 @@ export default function MultiSelectActionBar({
   onTestMany,
 }: MultiSelectActionBarProps) {
   const router = useRouter();
-  const [buttons, setButtons] = useState<FABProps[]>([]);
-  const [toggledButtons, setToggledButtons] = useState<FABProps[]>([]);
+  const [buttons, setButtons] = useState<MainButtons>({});
+  const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
+  const [toggledDangerButtons, setToggledDangerButtons] =
+    useState<DangerButtons>({});
 
   useEffect(() => {
     setGeneralButtons();
@@ -40,55 +42,46 @@ export default function MultiSelectActionBar({
   }, [selectedIds]);
 
   const setGeneralButtons = () => {
-    const list: FABProps[] = [];
     if (href) {
-      list.push({
-        icon: "plus",
-        onPress: () => {
-          router.push(href);
+      setButtons({
+        a: {
+          icon: "plus",
+          onPress: () => {
+            router.push(href);
+          },
         },
-      });
-      list.push({
-        icon: "test-tube",
-        onPress: () => {
-          router.push(getTestHref());
+        b: {
+          icon: "test-tube",
+          onPress: () => {
+            router.push(getTestHref());
+          },
         },
       });
     }
-    setButtons(list);
   };
 
   const setMultiSelectButtons = () => {
-    const list: FABProps[] = [];
+    let testMany: FABProps | undefined = undefined;
+    let deleteMany: FABProps | undefined = undefined;
 
-    list.push({
-      icon: "test-tube",
-    });
-
-    if (onTestMany) {
-      if (isTestVisible()) {
-        list.push({
-          icon: "test-tube",
-          onPress: () => onTestMany(type),
-        });
-      } else {
-        list.push({
-          icon: "test-tube",
-        });
-      }
+    if (onTestMany && isTestVisible()) {
+      testMany = { icon: "test-tube", onPress: () => onTestMany(type) };
     }
-    list.push({
-      icon: "test-tube",
-    });
 
     if (onDeleteMany) {
-      list.push({
+      deleteMany = {
         icon: "trash-can-outline",
         onPress: onDeleteMany,
-      });
+      };
     }
 
-    setToggledButtons(list);
+    setToggledButtons({
+      b: testMany,
+    });
+
+    setToggledDangerButtons({
+      a: deleteMany,
+    });
   };
 
   const isTestVisible = () => {
@@ -100,9 +93,11 @@ export default function MultiSelectActionBar({
 
   return (
     <ActionsBar
+      marginTop={200}
       buttons={buttons}
       toggle={isMultiSelect}
       toggledButtons={toggledButtons}
+      toggledDangerButtons={toggledDangerButtons}
     />
   );
 }

@@ -156,6 +156,8 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
         </View>
 
         <CardsSection
+          onRemoveCardsFromTag={handleRemoveCards}
+          onTestMany={handelTestMany}
           isMultiSelect={isMultiSelect}
           selectedIds={selectedIds}
           toggleIdSelection={toggleIdSelection}
@@ -163,13 +165,6 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
           clearSelectedIds={clearSelectedIds}
           cards={tagLocal.cards as Card[]}
           allCards={cards}
-        />
-
-        <TagActionBar
-          isMultiSelect={isMultiSelect}
-          selectedIds={selectedIds}
-          onTestMany={handelTestMany}
-          onRemoveCardsFromTag={handleRemoveCards}
         />
       </View>
     </CRUDWrapper>

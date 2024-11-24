@@ -9,7 +9,7 @@ import { isTestSide } from "@/utils/generic";
 import { Tag } from "@/types/Tag";
 import { ListKLToSelectedKL } from "@/utils/knowledgeLevel";
 import { Card } from "@/types/Card";
-import ActionsBar, { FABProps } from "@/components/shared/ActionsBar";
+import ActionsBar, { MainButtons } from "@/components/shared/ActionsBar";
 import {
   CardsSideOptions,
   KL_OPTIONS,
@@ -40,12 +40,12 @@ export default function TestForm({
 }: TestFormProps) {
   const { conf, tags } = useStore();
 
-  const actionButtons: FABProps[] = [
-    {
+  const actionButtons: MainButtons = {
+    a: {
       icon: "check",
       onPress: onSubmit,
     },
-  ];
+  };
 
   const [testSide, setTestSide] = useState<TestSide | undefined>(
     testSettings.testSide
