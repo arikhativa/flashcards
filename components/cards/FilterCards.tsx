@@ -4,31 +4,29 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Menu, IconButton } from "react-native-paper";
 import MultiSelectKLDialog from "./MultiSelectKLDialog";
-import { DatePickerModal } from "react-native-paper-dates";
-import { TimeRange } from "@/types/generic";
+import TimeDialog from "./TimeDialog";
+import { TimeDropdown } from "@/hooks/useTimeDropdown";
 
 interface FilterCardsProps {
   hide?: boolean;
   selectedKL?: SelectedKL;
   onKLChange?: (selectedKL: SelectedKL) => void;
-  range?: TimeRange;
-  onRangeChange?: (range: TimeRange) => void;
+  timeDropdown?: TimeDropdown;
 }
 
 export default function FilterCards({
   hide,
   selectedKL,
   onKLChange,
-  range,
-  onRangeChange,
+  timeDropdown,
 }: FilterCardsProps) {
   const [visible, setVisible] = useState(true);
-  const [timeRangeVisible, setTimeRangeVisible] = useState(false);
+  const [timeDialogVisible, setTimeDialogVisible] = useState(false);
   const [isKLVisible, setIsKLVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
-
   const closeMenu = () => setVisible(false);
+
   return (
     <View>
       <Menu
@@ -44,11 +42,11 @@ export default function FilterCards({
           />
         }
       >
-        {range && onRangeChange && (
+        {timeDropdown && (
           <Menu.Item
             onPress={() => {
               closeMenu();
-              setTimeRangeVisible(true);
+              setTimeDialogVisible(true);
             }}
             title="By Time Interval"
           />
@@ -64,20 +62,11 @@ export default function FilterCards({
         )}
       </Menu>
 
-      {range && onRangeChange && (
-        <DatePickerModal
-          locale="en"
-          mode="range"
-          visible={timeRangeVisible}
-          onDismiss={() => {
-            setTimeRangeVisible(false);
-          }}
-          startDate={range.startDate}
-          endDate={range.endDate}
-          onConfirm={(newRange: TimeRange) => {
-            onRangeChange(newRange);
-            setTimeRangeVisible(false);
-          }}
+      {timeDropdown && timeDialogVisible && (
+        <TimeDialog
+          timeDropdown={timeDropdown}
+          visible={timeDialogVisible}
+          onDismiss={() => setTimeDialogVisible(false)}
         />
       )}
 

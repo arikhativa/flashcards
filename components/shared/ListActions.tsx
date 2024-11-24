@@ -1,10 +1,12 @@
 import { baseUnit, gap, margin } from "@/constants/styles";
-import { FilterChip, Sort, TimeRange } from "@/types/generic";
+import { FilterChip } from "@/types/generic";
 import { SelectedKL } from "@/types/KnowledgeLevel";
 import { FlatList, View } from "react-native";
 import { Chip, Searchbar, Surface } from "react-native-paper";
 import SortCards from "../cards/SortCards";
 import FilterCards from "../cards/FilterCards";
+import { Sort } from "@/types/Sort";
+import { TimeDropdown } from "@/hooks/useTimeDropdown";
 
 interface ListActionsProps {
   filters?: FilterChip[];
@@ -12,18 +14,16 @@ interface ListActionsProps {
   onQueryChange?: (text: string) => void;
   sort?: Sort;
   onSortChange?: (sort: Sort) => void;
-  range?: TimeRange;
-  onRangeChange?: (range: TimeRange) => void;
   selectedKL?: SelectedKL;
   onKLChange?: (selectedKL: SelectedKL) => void;
+  timeDropdown?: TimeDropdown;
 }
 
 export default function ListActions({
   sort,
   onSortChange,
   filters,
-  range,
-  onRangeChange,
+  timeDropdown,
   query,
   onQueryChange,
   selectedKL,
@@ -46,8 +46,7 @@ export default function ListActions({
           )}
           <FilterCards
             hide
-            range={range}
-            onRangeChange={onRangeChange}
+            timeDropdown={timeDropdown}
             selectedKL={selectedKL}
             onKLChange={onKLChange}
           />

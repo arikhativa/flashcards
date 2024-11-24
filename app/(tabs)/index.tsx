@@ -20,13 +20,16 @@ import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import ListActions from "@/components/shared/ListActions";
 import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 import { Sort, SortNames } from "@/types/Sort";
+import { useTimeDropdown } from "@/hooks/useTimeDropdown";
+import { OPTIONS_VALUES } from "@/utils/testForm";
 
 export default function CardsScreen() {
   const { cards, cardService, conf } = useStore();
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
-  const [range, setRange] = useState<TimeRange>({});
   const [filters, setFilters] = useState<FilterChip[]>([]);
+
+  const timeDropdown = useTimeDropdown(OPTIONS_VALUES.Anytime);
 
   const [sort, setSort] = useState<Sort>({
     field: conf.sortBy,
@@ -50,7 +53,7 @@ export default function CardsScreen() {
     };
 
     const removeRangeIfNeeded = () => {
-      if (!range.endDate || !range.startDate) {
+      if (!timeDropdown.range.endDate || !timeDropdown.range.startDate) {
         removeFilter(FilterNames.TimeRange);
       }
     };
@@ -68,7 +71,7 @@ export default function CardsScreen() {
     };
 
     removeFilterIfNeeded();
-  }, [filters, range, selectedKL]);
+  }, [filters, timeDropdown.range, selectedKL]);
 
   useEffect(() => {
     if (!conf) {
@@ -101,16 +104,10 @@ export default function CardsScreen() {
     );
   };
 
-  const handleRangeChange = (range: TimeRange) => {
-    setRange(range);
-
-    handleGenericFilterSet(FilterNames.TimeRange, () => setRange({}));
-  };
-
   useEffect(() => {
     const filterCardsByTimeRanger = (list: Card[]) => {
-      const start = range.startDate || 0;
-      const end = range.endDate || Date.now();
+      const start = timeDropdown.range.startDate || 0;
+      const end = timeDropdown.range.endDate || Date.now();
       return list.filter(
         (card) => card.createdAt >= start && card.createdAt <= end
       );
@@ -156,7 +153,7 @@ export default function CardsScreen() {
     };
 
     setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
-  }, [cards, query, selectedKL, range, sort]);
+  }, [cards, query, selectedKL, timeDropdown.range, sort]);
 
   const handelDeleteMany = async () => {
     const ret = await cardService.deleteMany(selectedIdsRef.current);
@@ -169,8 +166,7 @@ export default function CardsScreen() {
         sort={sort}
         onSortChange={setSort}
         filters={filters}
-        range={range}
-        onRangeChange={handleRangeChange}
+        timeDropdown={timeDropdown}
         query={query}
         onQueryChange={setQuery}
         selectedKL={selectedKL}

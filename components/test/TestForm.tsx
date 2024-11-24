@@ -21,6 +21,7 @@ import InputHelper from "../shared/InputHelper";
 import { FULL_UNSELECTED_KL, KnowledgeLevel } from "@/types/KnowledgeLevel";
 import NumberInput from "../shared/NumberInput";
 import TagsSection from "../shared/TagsSection";
+import { useTimeDropdown } from "@/hooks/useTimeDropdown";
 
 interface TestFormProps {
   preSelectedCards: number[];
@@ -49,9 +50,9 @@ export default function TestForm({
   const [testSide, setTestSide] = useState<TestSide | undefined>(
     testSettings.testSide
   );
-  const [timeSelected, setTimeSelected] = useState<
-    OPTIONS_VALUES | undefined
-  >();
+
+  const { timeSelected, setTimeSelectedWrapper, isTimeSelectedValid, range } =
+    useTimeDropdown();
 
   const [kl, setKl] = useState<string[]>([
     KnowledgeLevel.Learning,
@@ -64,8 +65,12 @@ export default function TestForm({
   );
 
   useEffect(() => {
-    setTimeSelected(OPTIONS_VALUES.Anytime);
+    setTimeSelectedWrapper(OPTIONS_VALUES.Anytime);
   }, []);
+
+  useEffect(() => {
+    setTestSettings({ ...testSettings, timeRange: range });
+  }, [range]);
 
   useEffect(() => {
     if (!conf) {
@@ -85,32 +90,6 @@ export default function TestForm({
       return;
     }
   }, [testSide]);
-
-  const handleChangeTimeSelected = (value?: string) => {
-    setTimeSelected(value as OPTIONS_VALUES);
-    if (!value || value === OPTIONS_VALUES.Anytime) {
-      setTestSettings({ ...testSettings, timeRange: {} });
-      return;
-    }
-
-    let past = new Date();
-    if (value === OPTIONS_VALUES.Day) {
-      past.setHours(past.getHours() - 24);
-    }
-    if (value === OPTIONS_VALUES.Week) {
-      past.setHours(past.getHours() - 24 * 7);
-    }
-    if (value === OPTIONS_VALUES.Month) {
-      past.setHours(past.getHours() - 24 * 30);
-    }
-    setTestSettings({
-      ...testSettings,
-      timeRange: {
-        startDate: past,
-        endDate: new Date(),
-      },
-    });
-  };
 
   useEffect(() => {
     if (kl.length === 0) {
@@ -157,10 +136,6 @@ export default function TestForm({
 
   const isTestSideValid = (): boolean => {
     return testSide !== undefined;
-  };
-
-  const isTimeSelectedValid = (): boolean => {
-    return timeSelected !== undefined;
   };
 
   const isFormValid = (): boolean => {
@@ -219,7 +194,7 @@ export default function TestForm({
           ></NumberInput>
           <InputHelper
             error={
-              !isTimeSelectedValid() ? "Please select a Knowledge Level" : ""
+              !isTimeSelectedValid() ? "Please select a Time" : "" // TODO test is not good
             }
           >
             <Dropdown
@@ -228,7 +203,7 @@ export default function TestForm({
               label="Cards from"
               options={TIME_OPTIONS}
               value={timeSelected}
-              onSelect={handleChangeTimeSelected}
+              onSelect={setTimeSelectedWrapper}
             />
           </InputHelper>
           <InputHelper

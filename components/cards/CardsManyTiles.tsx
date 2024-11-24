@@ -92,7 +92,7 @@ export function CardsManyTiles({
       <View style={{ flex: 1 }}>
         {!rows || rows.length === 0 ? (
           // TODO this needs to be responsive
-          <View style={[]}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             <Text style={text.grayMessage}>No cards</Text>
           </View>
         ) : (
