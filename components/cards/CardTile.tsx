@@ -110,9 +110,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: BORDER_SIZE,
   },
   sideViewHeightA: {
+    width: "auto",
     height: HEIGHT,
   },
   sideViewHeightB: {
+    width: "auto",
     marginTop: 10,
     marginBottom: -5,
     height: HEIGHT - BORDER_SIZE,

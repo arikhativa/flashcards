@@ -1,13 +1,15 @@
 import { Card } from "@/types/Card";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Dimensions } from "react-native";
 import { Text } from "react-native-paper";
 import { CardTile } from "./CardTile";
 import { text } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { GestureWrapper } from "../shared/GestureWrapper";
 
-const GAP = 3;
-const MAX_ROW_SIZE = 50;
+const maxSize = Dimensions.get("window").width;
+const minCardSize = 51.8;
+const averageCharWidth = 7.5;
+const gap = 10;
 
 export type CardManyTilesProps = {
   isMultiSelect: boolean;
@@ -30,22 +32,21 @@ export function CardsManyTiles({
 
   useEffect(() => {
     convertCardsToRows(cards || []);
-  }, [cards]);
+  }, [cards, maxSize]);
 
   const convertCardsToRows = (cards: Card[]) => {
     const newRows: Card[][] = [];
     let tmpRow: Card[] = [];
 
     cards.forEach((card, index) => {
-      const cardSize = getCardSize(card);
+      const newCardSize = getCardSize(card);
       const rowSize = getRowSize(tmpRow);
-
-      if (rowSize + cardSize > MAX_ROW_SIZE || tmpRow.length === 4) {
-        newRows.push(tmpRow);
+      if (rowSize + newCardSize > maxSize || tmpRow.length === 4) {
         tmpRow = [];
       }
       tmpRow.push(card);
     });
+
     if (tmpRow.length) {
       newRows.push(tmpRow);
     }
@@ -112,13 +113,15 @@ export function CardsManyTiles({
 }
 
 function getCardSize(c: Card) {
-  return Math.max(c.sideA.length + c.sideB.length);
+  return (
+    minCardSize + Math.max(c.sideA.length + c.sideB.length) * averageCharWidth
+  );
 }
 
 function getRowSize(row: Card[]) {
   let size = 0;
   row.forEach((c) => {
-    size += getCardSize(c) + GAP;
+    size += getCardSize(c) + gap;
   });
   return size;
 }
