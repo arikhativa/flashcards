@@ -5,14 +5,13 @@ import { container, KLMark, margin } from "@/constants/styles";
 import { useEffect } from "react";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
-import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
+import { ComponentProps, CRUDMode } from "@/types/generic";
 import { useNavigation } from "@react-navigation/native";
 import { TagService } from "@/services/Tag";
 import { Card } from "@/types/Card";
 import CardsSection from "./CardsSection";
 import { BAD_ID } from "@/constants/general";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import TagActionBar from "./TagActionBar";
 import CRUDWrapper from "../shared/CRUDWrapper";
 import { useStateDirty } from "@/hooks/useStateDirty";
 

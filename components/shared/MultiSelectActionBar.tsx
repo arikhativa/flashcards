@@ -14,14 +14,18 @@ interface MultiSelectActionBarProps {
   type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
+  onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
+  onAdd?: () => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
 }
 
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
+  onUnTagMany,
+  onAdd,
   onDeleteMany,
   type,
   href,
@@ -42,6 +46,15 @@ export default function MultiSelectActionBar({
   }, [selectedIds]);
 
   const setGeneralButtons = () => {
+    if (onAdd) {
+      setButtons({
+        a: {
+          icon: "plus",
+          onPress: onAdd,
+        },
+        b: undefined,
+      });
+    }
     if (href) {
       setButtons({
         a: {
@@ -62,16 +75,30 @@ export default function MultiSelectActionBar({
 
   const setMultiSelectButtons = () => {
     let testMany: FABProps | undefined = undefined;
-    let deleteMany: FABProps | undefined = undefined;
+    let dangerButton: FABProps | undefined = undefined;
 
     if (onTestMany && isTestVisible()) {
       testMany = { icon: "test-tube", onPress: () => onTestMany(type) };
     }
 
     if (onDeleteMany) {
-      deleteMany = {
+      dangerButton = {
         icon: "trash-can-outline",
         onPress: onDeleteMany,
+      };
+    }
+
+    if (onUnTagMany) {
+      dangerButton = {
+        icon: "trash-can-outline",
+        onPress: onUnTagMany,
+      };
+    }
+
+    if (onUnTagMany) {
+      dangerButton = {
+        icon: "tag-off-outline",
+        onPress: onUnTagMany,
       };
     }
 
@@ -80,7 +107,7 @@ export default function MultiSelectActionBar({
     });
 
     setToggledDangerButtons({
-      a: deleteMany,
+      a: dangerButton,
     });
   };
 

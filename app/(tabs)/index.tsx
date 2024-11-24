@@ -2,11 +2,10 @@ import { View } from "react-native";
 import { useStore } from "@/providers/GlobalStore";
 import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
-import { getCardHref } from "@/utils/links";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
-import { FilterChip, FilterNames, ObjType, TimeRange } from "@/types/generic";
+import { FilterChip, FilterNames } from "@/types/generic";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import {
   getSortDirectionByName,
@@ -15,13 +14,15 @@ import {
   sortByKL,
 } from "@/utils/sort";
 import { useMultiSelect } from "@/hooks/useMultiSelect";
-import { NEW_ID } from "../[objType]";
-import MultiSelectActionBar from "@/components/shared/MultiSelectActionBar";
 import ListActions from "@/components/shared/ListActions";
 import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 import { Sort, SortNames } from "@/types/Sort";
 import { useTimeDropdown } from "@/hooks/useTimeDropdown";
 import { OPTIONS_VALUES } from "@/utils/testForm";
+import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
+import { useVisible } from "@/hooks/useVisible";
+import { getCardHref } from "@/utils/links";
+import { NEW_ID } from "../[objType]";
 
 export default function CardsScreen() {
   const { cards, cardService, conf } = useStore();
@@ -45,6 +46,7 @@ export default function CardsScreen() {
     handelTestMany,
   } = useMultiSelect();
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
+  const { visible, toggleVisible } = useVisible();
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
@@ -174,13 +176,23 @@ export default function CardsScreen() {
       />
 
       <CardsManyTiles
-        onDeleteMany={handelDeleteMany}
+        onDeleteMany={toggleVisible}
         onTestMany={handelTestMany}
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
+        href={getCardHref(NEW_ID)}
+      />
+      <ConfirmationDialog
+        visible={visible}
+        onDismiss={toggleVisible}
+        title="Delete Selected Cards?"
+        approveText="Delete"
+        cancelText="Cancel"
+        onCancel={toggleVisible}
+        onApprove={handelDeleteMany}
       />
     </View>
   );

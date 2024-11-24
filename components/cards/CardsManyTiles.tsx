@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { GestureWrapper } from "../shared/GestureWrapper";
 import MultiSelectActionBar from "../shared/MultiSelectActionBar";
 import { ObjType } from "@/types/generic";
-import { getCardHref } from "@/utils/links";
-import { NEW_ID } from "@/app/[objType]";
+import { ObjLinkProps, TestLinkProps } from "@/utils/links";
+import { Href } from "expo-router";
 
 const maxSize = Dimensions.get("window").width;
 const minCardSize = 51.8;
@@ -20,17 +20,21 @@ export type CardManyTilesProps = {
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
+  onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
   disabledLink?: boolean;
+  href?: Href<ObjLinkProps | TestLinkProps>;
 };
 
 export function CardsManyTiles({
+  href,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
   onDeleteMany,
+  onUnTagMany,
   onTestMany,
   clearSelectedIds,
   cards,
@@ -98,34 +102,37 @@ export function CardsManyTiles({
   };
 
   return (
-    <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
-      <View style={{ flex: 1 }}>
-        {!rows || rows.length === 0 ? (
-          // TODO this needs to be responsive
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={text.grayMessage}>No cards</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={rows}
-            keyExtractor={(_, index) => index.toString()}
-            contentContainerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            renderItem={renderRow}
-          />
-        )}
-        <MultiSelectActionBar
-          type={ObjType.Card}
-          isMultiSelect={isMultiSelect}
-          selectedIds={selectedIds}
-          onDeleteMany={onDeleteMany}
-          href={getCardHref(NEW_ID)}
-          onTestMany={onTestMany}
-        />
-      </View>
-    </GestureWrapper>
+    <View style={{ flex: 1 }}>
+      <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
+        <View style={{ flex: 1 }}>
+          {!rows || rows.length === 0 ? (
+            // TODO this needs to be responsive
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={text.grayMessage}>No cards</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={rows}
+              keyExtractor={(_, index) => index.toString()}
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              renderItem={renderRow}
+            />
+          )}
+        </View>
+      </GestureWrapper>
+      <MultiSelectActionBar
+        type={ObjType.Card}
+        isMultiSelect={isMultiSelect}
+        selectedIds={selectedIds}
+        onDeleteMany={onDeleteMany}
+        onUnTagMany={onUnTagMany}
+        href={href}
+        onTestMany={onTestMany}
+      />
+    </View>
   );
 }
 

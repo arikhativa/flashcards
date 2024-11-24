@@ -97,6 +97,12 @@ export const gap = StyleSheet.create({
   base: {
     gap: baseUnit / 5,
   },
+  base1: {
+    gap: baseUnit / 4,
+  },
+  base2: {
+    gap: baseUnit / 3,
+  },
 });
 
 export const margin = StyleSheet.create({
@@ -164,6 +170,14 @@ export const margin = StyleSheet.create({
   x2: {
     marginLeft: baseUnit * 2,
     marginRight: baseUnit * 2,
+  },
+  x3: {
+    marginLeft: baseUnit * 3,
+    marginRight: baseUnit * 3,
+  },
+  x4: {
+    marginLeft: baseUnit * 4,
+    marginRight: baseUnit * 4,
   },
   y: {
     marginTop: baseUnit,

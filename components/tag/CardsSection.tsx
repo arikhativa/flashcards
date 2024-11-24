@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Dialog, IconButton, Portal, Text } from "react-native-paper";
+import { Dialog, IconButton, Portal } from "react-native-paper";
 import { CardTile } from "../cards/CardTile";
 import { Card } from "@/types/Card";
 import Autocomplete from "../shared/Autocomplete";
 import { baseUnit, container, margin, padding } from "@/constants/styles";
 import { CardsManyTiles } from "../cards/CardsManyTiles";
-import TagActionBar from "./TagActionBar";
+import MultiSelectActionBar from "../shared/MultiSelectActionBar";
+import { ObjType } from "@/types/generic";
 
 interface CardsSectionProps {
   allCards: Card[];
@@ -79,12 +80,13 @@ const CardsSection = ({
         cards={cards}
       />
 
-      <TagActionBar
+      <MultiSelectActionBar
+        type={ObjType.Card}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
-        onAddCard={showDialog}
+        onAdd={showDialog}
         onTestMany={onTestMany}
-        onRemoveCardsFromTag={onRemoveCardsFromTag}
+        onUnTagMany={onRemoveCardsFromTag}
       />
 
       <Portal>
