@@ -7,6 +7,7 @@ import { baseUnit, container, text } from "@/constants/styles";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
 interface TestFinishDialogProps {
+  scrollToPage: (index: number) => void;
   visible: boolean;
   cards: Card[];
   cardsMeta: CardMeta[];
@@ -15,6 +16,7 @@ interface TestFinishDialogProps {
 }
 
 export default function TestFinishDialog({
+  scrollToPage,
   visible,
   cards,
   cardsMeta,
@@ -46,6 +48,10 @@ export default function TestFinishDialog({
                 keyExtractor={(card) => card.id.toString()}
                 renderItem={({ item, index }) => (
                   <TestFinishRow
+                    scrollToPage={(index: number) => {
+                      onDismiss();
+                      scrollToPage(index);
+                    }}
                     index={index}
                     card={item}
                     cardMeta={cardsMeta[index]}

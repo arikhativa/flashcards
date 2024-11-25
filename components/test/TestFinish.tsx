@@ -12,6 +12,7 @@ import TestFinishDialog from "./TestFinishDialog";
 import { useRouter } from "expo-router";
 
 interface TestFinishProps {
+  scrollToPage: (index: number) => void;
   cards: Card[];
   cardsMeta: CardMeta[];
   onChangeKnowledgeLevel: (index: number, newKL: KnowledgeLevel) => void;
@@ -19,6 +20,7 @@ interface TestFinishProps {
 }
 
 export default function TestFinish({
+  scrollToPage,
   cards,
   cardsMeta,
   onChangeKnowledgeLevel,
@@ -79,6 +81,7 @@ export default function TestFinish({
         </Button>
       </View>
       <TestFinishDialog
+        scrollToPage={scrollToPage}
         cards={cards}
         cardsMeta={cardsMeta}
         onChangeKnowledgeLevel={onChangeKnowledgeLevel}

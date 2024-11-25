@@ -8,6 +8,7 @@ import { KLToNumber, NumberToKL } from "@/utils/knowledgeLevel";
 import { CardTile } from "../cards/CardTile";
 
 interface TestFinishRowProps {
+  scrollToPage: (index: number) => void;
   index: number;
   card: Card;
   cardMeta: CardMeta;
@@ -15,6 +16,7 @@ interface TestFinishRowProps {
 }
 
 export default function TestFinishRow({
+  scrollToPage,
   index,
   card,
   cardMeta,
@@ -39,7 +41,11 @@ export default function TestFinishRow({
         icon={cardMeta.success ? "check" : "close"}
       ></IconButton>
       <View style={{ flex: 1 }}>
-        <CardTile disabledLink card={card} />
+        <CardTile
+          onPress={() => scrollToPage(index)}
+          disabledLink
+          card={card}
+        />
       </View>
       <View style={{ flexDirection: "column" }}>
         <IconButton
