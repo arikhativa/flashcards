@@ -40,7 +40,7 @@ export default function CardTest({
 
   const { keyboardHeight } = useStore();
   const containerHeight = Dimensions.get("window").height - keyboardHeight;
-  const cardHeight = containerHeight / 5;
+  const cardHeight = containerHeight / 4;
   const paddingHeight = containerHeight / 60;
 
   return (

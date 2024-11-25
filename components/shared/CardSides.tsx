@@ -82,7 +82,7 @@ export default function CardSides({
               value={sideA}
             ></TextInput>
           ) : (
-            <Plasters />
+            <Plasters cardHeight={height} />
           )}
         </View>
         <Divider />
@@ -98,7 +98,7 @@ export default function CardSides({
               value={sideB}
             ></TextInput>
           ) : (
-            <Plasters />
+            <Plasters cardHeight={height} />
           )}
         </View>
       </PaperCard.Content>
