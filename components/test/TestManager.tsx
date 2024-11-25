@@ -141,6 +141,15 @@ export default function TestManager({
     }
   };
 
+  const scrollToPage = (index: number) => {
+    if (ref.current) {
+      ref.current.scrollTo({
+        index,
+        animated: true,
+      });
+    }
+  };
+
   const handleRetakeTest = (list: Card[]) => {
     router.replace(getTestHref(list.map((card) => card.id)));
   };
@@ -166,6 +175,7 @@ export default function TestManager({
     if (index === randomCards.length) {
       return (
         <TestFinish
+          scrollToPage={scrollToPage}
           cards={randomCards}
           cardsMeta={cardsMeta}
           onChangeKnowledgeLevel={updateKL}
