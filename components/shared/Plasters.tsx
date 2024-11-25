@@ -8,74 +8,76 @@ interface Plaster {
   rotation: number;
 }
 
-interface PlasterProps {}
+interface PlasterProps {
+  cardHeight: number;
+}
 
-export default function Plasters({}: PlasterProps) {
+export default function Plasters({ cardHeight }: PlasterProps) {
   const p0: Plaster[] = [
     {
-      width: 230,
+      width: cardHeight * 2, // 230
       rotation: -12,
     },
     {
-      width: 200,
+      width: cardHeight * 1.739130435, // 200
       rotation: 20,
     },
   ];
 
   const p1: Plaster[] = [
     {
-      width: 180,
+      width: cardHeight * 1.565217391, // 180
       rotation: -15,
     },
     {
-      width: 250,
+      width: cardHeight * 2.173913043, // 250
       rotation: 10,
     },
   ];
 
   const p2: Plaster[] = [
     {
-      width: 220,
+      width: cardHeight * 1.913043478, // 220
       rotation: -10,
     },
     {
-      width: 80,
+      width: cardHeight * 0.6956521739, //  80
       rotation: 80,
     },
   ];
 
   const p3: Plaster[] = [
     {
-      width: 290,
+      width: cardHeight * 2.52173913, // 290
       rotation: 5,
     },
   ];
 
   const p4: Plaster[] = [
     {
-      width: 180,
+      width: cardHeight * 1.565217391, // 180
       rotation: -10,
     },
     {
-      width: 100,
+      width: cardHeight * 0.8695652174, // 100
       rotation: -30,
     },
   ];
 
   const p5: Plaster[] = [
     {
-      width: 80,
+      width: cardHeight * 0.6956521739, //  80
       rotation: 70,
     },
     {
-      width: 200,
+      width: cardHeight * 1.739130435, // 200
       rotation: -10,
     },
   ];
 
   const p6: Plaster[] = [
     {
-      width: 120,
+      width: cardHeight * 1.043478261, // 120
       rotation: 25,
     },
   ];
@@ -100,7 +102,9 @@ export default function Plasters({}: PlasterProps) {
             zIndex: index + 5,
             transform: [{ rotate: `${p.rotation}deg` }],
           }}
-          children={<View style={{ width: p.width, height: 40 }}></View>}
+          children={
+            <View style={{ width: p.width, height: cardHeight * 0.25 }}></View>
+          }
         ></Surface>
       );
     });
