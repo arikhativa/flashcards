@@ -1,14 +1,14 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { Dimensions, Platform, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Dimensions, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import CardTest from "./CardTest";
+import CardTest, { CardTestRef } from "./CardTest";
 import { CardMeta, TestSettings } from "@/types/TestSettings";
 import { Card } from "@/types/Card";
 import { useStore } from "@/providers/GlobalStore";
-import { baseUnit, padding } from "@/constants/styles";
+import { padding } from "@/constants/styles";
 import TestFinish from "./TestFinish";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { generateSmallList } from "@/utils/cardPicker";
@@ -35,6 +35,8 @@ export default function TestManager({
   const progress = useSharedValue<number>(0);
 
   const [data, setData] = React.useState<number[]>([]);
+
+  const cardTestRef = useRef<CardTestRef[]>([]);
 
   const [randomCards, setRandomCards] = React.useState<Card[]>([]);
   const randomCardsRef = React.useRef(randomCards);
@@ -138,6 +140,7 @@ export default function TestManager({
   const scrollToNextPage = () => {
     if (ref.current) {
       ref.current.next();
+      cardTestRef.current[ref.current.getCurrentIndex() + 1].focusOnTextInput();
     }
   };
 
@@ -147,6 +150,7 @@ export default function TestManager({
         index,
         animated: true,
       });
+      cardTestRef.current[index].focusOnTextInput();
     }
   };
 
@@ -161,6 +165,7 @@ export default function TestManager({
     if (index < randomCards.length) {
       return (
         <CardTest
+          ref={(ref: any) => (cardTestRef.current[index] = ref)}
           index={index}
           length={randomCards.length}
           card={randomCards[index]}
