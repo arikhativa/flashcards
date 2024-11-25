@@ -32,6 +32,8 @@ export default function TestFinishRow({
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <IconButton
+        style={{ margin: 0, padding: 0 }}
+        size={baseUnit * 1.5}
         mode="contained-tonal"
         containerColor={getContainerColor(cardMeta.success)}
         icon={cardMeta.success ? "check" : "close"}
@@ -39,20 +41,22 @@ export default function TestFinishRow({
       <View style={{ flex: 1 }}>
         <CardTile disabledLink card={card} />
       </View>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "column" }}>
         <IconButton
-          mode="contained"
-          icon="minus"
-          onPress={() => {
-            const n = KLToNumber(card.knowledgeLevel) - 1;
-            onChangeKnowledgeLevel(index, NumberToKL(n));
-          }}
-        />
-        <IconButton
+          size={baseUnit * 1.5}
           mode="contained"
           icon="plus"
           onPress={() => {
             const n = KLToNumber(card.knowledgeLevel) + 1;
+            onChangeKnowledgeLevel(index, NumberToKL(n));
+          }}
+        />
+        <IconButton
+          size={baseUnit * 1.5}
+          mode="contained"
+          icon="minus"
+          onPress={() => {
+            const n = KLToNumber(card.knowledgeLevel) - 1;
             onChangeKnowledgeLevel(index, NumberToKL(n));
           }}
         />

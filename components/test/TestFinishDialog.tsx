@@ -1,10 +1,9 @@
 import { Card } from "@/types/Card";
-import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { Dialog, Portal, IconButton } from "react-native-paper";
 import TestFinishRow from "./TestFinishRow";
 import { CardMeta } from "@/types/TestSettings";
-import { baseUnit, container } from "@/constants/styles";
+import { baseUnit, container, text } from "@/constants/styles";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 
 interface TestFinishDialogProps {
@@ -31,16 +30,18 @@ export default function TestFinishDialog({
           }}
         >
           <Dialog visible={visible} onDismiss={onDismiss}>
-            <Dialog.Title>Adjust Knowledge Level</Dialog.Title>
+            <Dialog.Title style={text.dialogTitle}>
+              Adjust Knowledge Level
+            </Dialog.Title>
             <IconButton
               style={container.buttonTopRight}
               icon="close"
               size={baseUnit * 2}
               onPress={onDismiss}
             ></IconButton>
-            <Dialog.Content>
+            <Dialog.ScrollArea>
               <FlatList
-                style={[{ height: "90%" }]}
+                style={[{ height: "95%" }]}
                 data={cards}
                 keyExtractor={(card) => card.id.toString()}
                 renderItem={({ item, index }) => (
@@ -52,7 +53,7 @@ export default function TestFinishDialog({
                   />
                 )}
               />
-            </Dialog.Content>
+            </Dialog.ScrollArea>
           </Dialog>
         </View>
       )}
