@@ -10,7 +10,7 @@ import { ManyTiles } from "../shared/ManyTiles";
 const maxSize = Dimensions.get("window").width;
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
-const gap = 10;
+const gap = 20;
 
 export type CardManyTilesProps = {
   isMultiSelect: boolean;
@@ -120,14 +120,17 @@ export function CardsManyTiles({
 
 function getCardSize(c: Card) {
   return (
-    minCardSize + Math.max(c.sideA.length + c.sideB.length) * averageCharWidth
+    minCardSize + Math.max(c.sideA.length, c.sideB.length) * averageCharWidth
   );
 }
 
 function getRowSize(row: Card[]) {
   let size = 0;
-  row.forEach((c) => {
-    size += getCardSize(c) + gap;
+  row.forEach((c, index) => {
+    if (index !== 0) {
+      size += gap;
+    }
+    size += getCardSize(c);
   });
   return size;
 }
