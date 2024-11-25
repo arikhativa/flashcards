@@ -90,6 +90,9 @@ export const color = StyleSheet.create({
 });
 
 export const text = StyleSheet.create({
+  dialogTitle: {
+    fontSize: 18,
+  },
   grayMessage: { opacity: 0.3, width: "100%", textAlign: "center" },
 });
 
