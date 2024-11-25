@@ -5,7 +5,7 @@ import { container } from "../../constants/styles";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
 import { Card } from "@/types/Card";
-import { FilterChip, FilterNames } from "@/types/generic";
+import { CRUDMode, FilterChip, FilterNames } from "@/types/generic";
 import { isKnowledgeLevelFullOn } from "@/utils/knowledgeLevel";
 import {
   getSortDirectionByName,
@@ -21,8 +21,9 @@ import { useTimeDropdown } from "@/hooks/useTimeDropdown";
 import { OPTIONS_VALUES } from "@/utils/testForm";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { useVisible } from "@/hooks/useVisible";
-import { getCardHref } from "@/utils/links";
+import { getCardHref, getTagHref } from "@/utils/links";
 import { NEW_ID } from "../[objType]";
+import { router } from "expo-router";
 
 export default function CardsScreen() {
   const { cards, cardService, conf } = useStore();
@@ -162,6 +163,12 @@ export default function CardsScreen() {
     clearSelectedIds();
   };
 
+  const handleTagMany = async () => {
+    const href = getTagHref(NEW_ID, CRUDMode.Create, selectedIdsRef.current);
+    router.push(href);
+    clearSelectedIds();
+  };
+
   return (
     <View style={[container.flex1, margin.top2]}>
       <ListActions
@@ -177,6 +184,7 @@ export default function CardsScreen() {
 
       <CardsManyTiles
         onDeleteMany={toggleVisible}
+        onTagMany={handleTagMany}
         onTestMany={handelTestMany}
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
@@ -185,6 +193,7 @@ export default function CardsScreen() {
         cards={cardsLocal}
         href={getCardHref(NEW_ID)}
       />
+
       <ConfirmationDialog
         visible={visible}
         onDismiss={toggleVisible}

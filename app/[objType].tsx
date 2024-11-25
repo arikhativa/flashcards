@@ -4,17 +4,16 @@ import TagComponent from "@/components/tag/Tag";
 import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
 import CardComponent from "@/components/card/Card";
 import NotFoundScreen from "./+not-found";
-
-type localSearchParams = {
-  objType: ObjType;
-  id: string;
-  mode: CRUDMode;
-};
+import { ObjLinkProps } from "@/utils/links";
+import { Tag } from "@/types/Tag";
+import { Card } from "@/types/Card";
+import { rawStringArrayToIntArray } from "@/utils/generic";
 
 export const NEW_ID = "new";
 
 const ObjPage: React.FC = () => {
-  const { id, mode, objType } = useLocalSearchParams<localSearchParams>();
+  const { id, mode, objType, rawIds } =
+    useLocalSearchParams<ObjLinkProps>() as unknown as ObjLinkProps;
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -30,9 +29,13 @@ const ObjPage: React.FC = () => {
     }
   }, []);
 
-  const getGenericComponent = <T,>(component: React.FC<ComponentProps<T>>) => {
+  const getGenericComponent = <T,>(
+    component: React.FC<ComponentProps<T>>,
+    data?: T
+  ) => {
     if (id === NEW_ID) {
       return React.createElement(component, {
+        data: data,
         mode: CRUDMode.Create,
       });
     }
@@ -50,6 +53,17 @@ const ObjPage: React.FC = () => {
 
   const getComponent = () => {
     if (objType === ObjType.Tag) {
+      if (rawIds) {
+        const idsList = rawStringArrayToIntArray(rawIds);
+
+        if (idsList.length) {
+          const data: Tag = {
+            cards: idsList as unknown as Card[],
+          } as Tag;
+
+          return getGenericComponent(TagComponent, data);
+        }
+      }
       return getGenericComponent(TagComponent);
     } else if (objType === ObjType.Card) {
       return getGenericComponent(CardComponent);
