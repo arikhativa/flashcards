@@ -17,6 +17,7 @@ export type ManyTilesProps<T> = {
   isMultiSelect: boolean;
   selectedIds: number[];
   clearSelectedIds: () => void;
+  onTagMany?: () => void;
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
@@ -33,6 +34,7 @@ export function ManyTiles<T>({
   isMultiSelect,
   selectedIds,
   onDeleteMany,
+  onTagMany,
   onUnTagMany,
   onTestMany,
   renderItem,
@@ -65,6 +67,7 @@ export function ManyTiles<T>({
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onDeleteMany={onDeleteMany}
+        onTagMany={onTagMany}
         onUnTagMany={onUnTagMany}
         href={href}
         onTestMany={onTestMany}

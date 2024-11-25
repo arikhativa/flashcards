@@ -1,8 +1,8 @@
 import { Card } from "@/types/Card";
-import { Chip, IconButton, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
-import { color, container, margin, text } from "@/constants/styles";
+import { margin } from "@/constants/styles";
 import { Link } from "expo-router";
 import {
   Pressable,

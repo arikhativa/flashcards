@@ -1,13 +1,12 @@
 import { CRUDMode, ObjType } from "@/types/generic";
-import { Href, RouteParamInput } from "expo-router";
+import { Href, RouteParamInput, Routes } from "expo-router";
 import { toStringIds } from "./generic";
 
-export type ObjLinkProps = {
-  params: {
-    objType: ObjType;
-    id: string;
-    mode: CRUDMode;
-  };
+export type ObjLinkProps = Routes & {
+  objType: ObjType;
+  id: string;
+  mode: CRUDMode;
+  rawIds?: string;
 };
 
 export type TestLinkProps = {
@@ -21,17 +20,23 @@ export function getCardHref(
 ): Href<ObjLinkProps> {
   return {
     pathname: "/[objType]",
-    params: { objType: ObjType.Card, id: id, mode: mode },
+    params: { objType: ObjType.Card, id, mode },
   };
 }
 
 export function getTagHref(
   id: string | number,
-  mode?: CRUDMode
+  mode?: CRUDMode,
+  cardIds?: number[]
 ): Href<ObjLinkProps> {
   return {
     pathname: "/[objType]",
-    params: { objType: ObjType.Tag, id: id, mode: mode },
+    params: {
+      objType: ObjType.Tag,
+      id,
+      mode,
+      rawIds: cardIds ? toStringIds(cardIds) : "",
+    },
   };
 }
 

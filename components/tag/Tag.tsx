@@ -40,6 +40,7 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
     if (mode === CRUDMode.Create) {
       navigation.setOptions({ title: "New Tag" });
       const tagCreate: TagCreate = TagService.EMPTY;
+      tagCreate.cards = handleRawIds();
       setTagLocal(tagCreate);
     } else if (mode === CRUDMode.Update) {
       navigation.setOptions({ title: `Edit Tag` });
@@ -66,6 +67,23 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
       setTagLocal(data);
     }
   }, []);
+
+  const handleRawIds = (): Card[] => {
+    const tmpCards: Card[] = [];
+
+    if (data?.cards) {
+      const ids = data.cards as unknown as number[];
+
+      ids.forEach((id) => {
+        const card = cards.find((card) => card.id === id);
+        if (card) {
+          tmpCards.push(card);
+        }
+      });
+      data.cards = tmpCards;
+    }
+    return tmpCards;
+  };
 
   const handleLocalChange = (field: keyof Tag, value: string) => {
     setTagLocal({ ...tagLocal, [field]: value });
