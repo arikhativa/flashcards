@@ -14,22 +14,26 @@ interface MultiSelectActionBarProps {
   type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
+  onSelectMany?: () => void;
   onTagMany?: () => void;
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   onAdd?: () => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
+  isRootless?: boolean;
 }
 
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
   onTagMany,
+  onSelectMany,
   onUnTagMany,
   onAdd,
   onDeleteMany,
   type,
+  isRootless,
   href,
   onTestMany,
 }: MultiSelectActionBarProps) {
@@ -48,6 +52,16 @@ export default function MultiSelectActionBar({
   }, [selectedIds]);
 
   const setGeneralButtons = () => {
+    if (isRootless) {
+      setButtons({
+        a: {
+          icon: "check",
+          onPress: onSelectMany,
+        },
+      });
+      return; // NOTE this return!
+    }
+
     if (onAdd) {
       setButtons({
         a: {
@@ -76,6 +90,15 @@ export default function MultiSelectActionBar({
   };
 
   const setMultiSelectButtons = () => {
+    if (isRootless) {
+      setToggledButtons({
+        a: {
+          icon: "check",
+          onPress: onSelectMany,
+        },
+      });
+      return; // NOTE this return!
+    }
     let testMany: FABProps | undefined = undefined;
     let tagMany: FABProps | undefined = undefined;
     let dangerButton: FABProps | undefined = undefined;

@@ -3,16 +3,16 @@ import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
 import { TagTile } from "../tags/TagTile";
 import { Tag } from "@/types/Tag";
-import Autocomplete from "./Autocomplete";
 import { baseUnit, container, margin, padding, text } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
+import TagsSectionDialog from "./TagsSectionDialog";
 
 interface TagsSectionProps {
   title?: string;
   disabled?: boolean;
   allTags: Tag[];
   tags?: Tag[];
-  addTag: (tag: Tag) => void;
+  addTags: (tags: Tag[]) => void;
   removeTag: (tag: Tag) => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -23,7 +23,7 @@ const TagsSection = ({
   disabled,
   tags,
   allTags,
-  addTag,
+  addTags,
   removeTag,
 }: TagsSectionProps) => {
   const { tagService } = useStore();
@@ -35,9 +35,9 @@ const TagsSection = ({
 
   const keyExtractor = (tag: Tag): string => tag.id.toString();
 
-  const onSelect = (tag: Tag) => {
-    addTag(tag);
-  };
+  // const onSelect = (tag: Tag) => {
+  //   addTag(tag);
+  // };
 
   const onSearchChange = (query: string): Tag[] => {
     if (!query) {
@@ -49,10 +49,10 @@ const TagsSection = ({
       .filter((tag) => !tags?.find((t) => t.id === tag.id));
   };
 
-  const handleCreateTag = async (name: string): Promise<void> => {
-    const tag = await tagService.create({ name });
-    if (tag) addTag(tag);
-  };
+  // const handleCreateTag = async (name: string): Promise<void> => {
+  //   const tag = await tagService.create({ name });
+  //   if (tag) addTag(tag);
+  // };
 
   const getList = () => {
     if (!tags || tags.length === 0) {
@@ -91,7 +91,13 @@ const TagsSection = ({
         <Card.Content>{getList()}</Card.Content>
       </Card>
 
-      <Portal>
+      <TagsSectionDialog
+        addTags={addTags}
+        visible={visible}
+        onDismiss={hideDialog}
+      />
+
+      {/* <Portal>
         {visible && (
           <View style={styles.viewContainer}>
             <Dialog
@@ -125,7 +131,7 @@ const TagsSection = ({
             </Dialog>
           </View>
         )}
-      </Portal>
+      </Portal> */}
     </View>
   );
 };

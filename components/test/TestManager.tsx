@@ -140,7 +140,15 @@ export default function TestManager({
   const scrollToNextPage = () => {
     if (ref.current) {
       ref.current.next();
-      cardTestRef.current[ref.current.getCurrentIndex() + 1].focusOnTextInput();
+
+      if (
+        cardTestRef.current &&
+        ref.current.getCurrentIndex() + 1 < cardTestRef.current.length
+      ) {
+        cardTestRef.current[
+          ref.current.getCurrentIndex() + 1
+        ].focusOnTextInput();
+      }
     }
   };
 
@@ -150,7 +158,9 @@ export default function TestManager({
         index,
         animated: true,
       });
-      cardTestRef.current[index].focusOnTextInput();
+      if (cardTestRef.current && index < cardTestRef.current.length) {
+        cardTestRef.current[index].focusOnTextInput();
+      }
     }
   };
 

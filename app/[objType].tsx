@@ -1,15 +1,13 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import TagComponent from "@/components/tag/Tag";
-import { ComponentProps, CRUDMode, ObjType } from "@/types/generic";
+import { ComponentProps, CRUDMode, NEW_ID, ObjType } from "@/types/generic";
 import CardComponent from "@/components/card/Card";
 import NotFoundScreen from "./+not-found";
 import { ObjLinkProps } from "@/utils/links";
 import { Tag } from "@/types/Tag";
 import { Card } from "@/types/Card";
 import { rawStringArrayToIntArray } from "@/utils/generic";
-
-export const NEW_ID = "new";
 
 const ObjPage: React.FC = () => {
   const { id, mode, objType, rawIds } =

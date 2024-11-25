@@ -1,5 +1,7 @@
 import { ObjectLiteral } from "typeorm";
 
+export const NEW_ID = "new";
+
 export type BaseCrud = ObjectLiteral & {
   id: number;
 };

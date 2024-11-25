@@ -27,9 +27,11 @@ export type ManyTilesProps<T> = {
   contentContainerStyle?: StyleProp<ViewStyle>;
   href?: Href<ObjLinkProps | TestLinkProps>;
   type: ObjType;
+  isRootless?: boolean;
 };
 
 export function ManyTiles<T>({
+  isRootless,
   href,
   isMultiSelect,
   selectedIds,
@@ -63,6 +65,10 @@ export function ManyTiles<T>({
         </View>
       </GestureWrapper>
       <MultiSelectActionBar
+        isRootless={isRootless}
+        onSelectMany={() => {
+          console.log("onSelectMany");
+        }}
         type={type}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
