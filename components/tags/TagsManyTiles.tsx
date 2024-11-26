@@ -11,12 +11,14 @@ export type TagsManyTilesProps = {
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
   onDeleteMany?: () => void;
+  onSelectMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   tags?: Tag[];
 };
 
 export function TagsManyTiles({
   isRootless,
+  onSelectMany,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
@@ -54,6 +56,7 @@ export function TagsManyTiles({
       isRootless={isRootless}
       isMultiSelect={isMultiSelect}
       selectedIds={selectedIds}
+      onSelectMany={onSelectMany}
       clearSelectedIds={clearSelectedIds}
       onDeleteMany={onDeleteMany}
       onTestMany={onTestMany}

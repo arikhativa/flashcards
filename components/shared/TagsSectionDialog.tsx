@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Dialog, Portal } from "react-native-paper";
 import Tags from "../tags/Tags";
 import { useStore } from "@/providers/GlobalStore";
 import { Tag } from "@/types/Tag";
+import { useMultiSelect } from "@/hooks/useMultiSelect";
 
 interface TagsSectionDialogProps {
   onDismiss: () => void;
-  addTags: (tags: Tag[]) => void;
+  setTags: (tags: Tag[]) => void;
   visible: boolean;
+  tagsLocal?: Tag[];
 }
 
 const TagsSectionDialog = ({
+  tagsLocal,
   visible,
   onDismiss,
-  addTags,
+  setTags,
 }: TagsSectionDialogProps) => {
   const { tags, tagService } = useStore();
-  // move useMultiSelect to here
+  const multiSelect = useMultiSelect();
+
+  useEffect(() => {
+    if (tagsLocal) {
+      multiSelect.setSelectedIds(tagsLocal.map((t) => t.id));
+    }
+  }, [tagsLocal]);
+
+  const handleSelectMany = () => {
+    const tagList: Tag[] = multiSelect.selectedIdsRef.current.map((id) =>
+      tags.find((t) => t.id === id)
+    ) as Tag[];
+
+    multiSelect.clearSelectedIds();
+    setTags(tagList);
+    onDismiss();
+  };
 
   return (
     <Portal>
@@ -32,7 +51,13 @@ const TagsSectionDialog = ({
             visible={visible}
             onDismiss={onDismiss}
           >
-            <Tags isRootless tags={tags} tagService={tagService} />
+            <Tags
+              isRootless
+              onSelectMany={handleSelectMany}
+              tags={tags}
+              tagService={tagService}
+              multiSelect={multiSelect}
+            />
           </Dialog>
         </View>
       )}

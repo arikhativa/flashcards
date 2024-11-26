@@ -17,6 +17,7 @@ export type ManyTilesProps<T> = {
   isMultiSelect: boolean;
   selectedIds: number[];
   clearSelectedIds: () => void;
+  onSelectMany?: () => void;
   onTagMany?: () => void;
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
@@ -31,6 +32,7 @@ export type ManyTilesProps<T> = {
 };
 
 export function ManyTiles<T>({
+  onSelectMany,
   isRootless,
   href,
   isMultiSelect,
@@ -66,9 +68,7 @@ export function ManyTiles<T>({
       </GestureWrapper>
       <MultiSelectActionBar
         isRootless={isRootless}
-        onSelectMany={() => {
-          console.log("onSelectMany");
-        }}
+        onSelectMany={onSelectMany}
         type={type}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}

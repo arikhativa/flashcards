@@ -35,19 +35,13 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
 
-  const addTags = (tags: Tag[]) => {
-    const currTags = cardLocal.tags || [];
-
+  const setTags = (tags: Tag[]) => {
     let newTags: Tag[] = [];
 
     tags.forEach((tag) => {
-      if (currTags.find((t) => t.id === tag.id)) {
-        console.error("tag already exists");
-        return;
-      }
       newTags.push(tag);
     });
-    setCardLocal({ ...cardLocal, tags: [...currTags, ...newTags] });
+    setCardLocal({ ...cardLocal, tags: [...newTags] });
   };
 
   const removeTag = (tag: Tag) => {
@@ -129,10 +123,9 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         <TagsSection
           style={[margin.base2]}
           disabled={isDisable()}
-          addTags={addTags}
+          setTags={setTags}
           removeTag={removeTag}
           tags={cardLocal.tags}
-          allTags={tags}
         />
         <KnowledgeLevelSection
           knowledgeLevel={cardLocal.knowledgeLevel}

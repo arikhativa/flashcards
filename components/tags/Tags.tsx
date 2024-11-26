@@ -1,8 +1,8 @@
 import { View } from "react-native";
 
-import { container, margin, padding } from "@/constants/styles";
+import { container } from "@/constants/styles";
 import { useEffect, useState } from "react";
-import { useMultiSelect } from "@/hooks/useMultiSelect";
+import { MultiSelect } from "@/hooks/useMultiSelect";
 import ListActions from "@/components/shared/ListActions";
 import { TagsManyTiles } from "@/components/tags/TagsManyTiles";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
@@ -11,12 +11,20 @@ import { Tag } from "@/types/Tag";
 import { TagService } from "@/services/Tag";
 
 interface TagsProps {
-  isRootless: boolean;
+  isRootless?: boolean;
   tags: Tag[];
   tagService: TagService;
+  multiSelect: MultiSelect;
+  onSelectMany?: () => void;
 }
 
-export default function Tags({ isRootless, tags, tagService }: TagsProps) {
+export default function Tags({
+  isRootless,
+  tags,
+  tagService,
+  onSelectMany,
+  multiSelect,
+}: TagsProps) {
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState("");
   const {
@@ -26,7 +34,7 @@ export default function Tags({ isRootless, tags, tagService }: TagsProps) {
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,
-  } = useMultiSelect();
+  } = multiSelect;
 
   const { visible, toggleVisible } = useVisible();
 
@@ -49,6 +57,7 @@ export default function Tags({ isRootless, tags, tagService }: TagsProps) {
 
       <TagsManyTiles
         isRootless={isRootless}
+        onSelectMany={onSelectMany}
         onDeleteMany={toggleVisible}
         onTestMany={handelTestMany}
         isMultiSelect={isMultiSelect}
