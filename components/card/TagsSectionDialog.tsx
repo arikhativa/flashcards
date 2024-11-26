@@ -47,6 +47,7 @@ const TagsSectionDialog = ({
           }}
         >
           <Dialog
+            dismissableBackButton
             style={{ flex: 1, overflow: "hidden" }}
             visible={visible}
             onDismiss={onDismiss}

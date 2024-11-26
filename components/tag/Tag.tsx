@@ -89,14 +89,13 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
     setTagLocal({ ...tagLocal, [field]: value });
   };
 
-  const addCard = (card: Card) => {
-    const currCards = tagLocal.cards || [];
-    if (currCards.find((e) => e.id === card.id)) {
-      console.error("tag already exists");
-      return;
-    }
-    const newCards = [...currCards, card];
-    setTagLocal({ ...tagLocal, cards: newCards });
+  const setCards = (list: Card[]) => {
+    let newList: Card[] = [];
+
+    list.forEach((e) => {
+      newList.push(e);
+    });
+    setTagLocal({ ...tagLocal, cards: newList });
   };
 
   const handleRemoveCards = () => {
@@ -178,10 +177,9 @@ const TagComponent = ({ mode, data, id }: TagComponentProps) => {
           isMultiSelect={isMultiSelect}
           selectedIds={selectedIds}
           toggleIdSelection={toggleIdSelection}
-          addCard={addCard}
+          setCards={setCards}
           clearSelectedIds={clearSelectedIds}
           cards={tagLocal.cards as Card[]}
-          allCards={cards}
         />
       </View>
     </CRUDWrapper>

@@ -19,7 +19,7 @@ interface MultiSelectActionBarProps {
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
-  onAdd?: () => void;
+  onEditCards?: () => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
   isRootless?: boolean;
 }
@@ -30,7 +30,7 @@ export default function MultiSelectActionBar({
   onTagMany,
   onSelectMany,
   onUnTagMany,
-  onAdd,
+  onEditCards,
   onDeleteMany,
   type,
   isRootless,
@@ -62,15 +62,16 @@ export default function MultiSelectActionBar({
       return; // NOTE this return!
     }
 
-    if (onAdd) {
+    // This is expanded tag editing cards
+    if (onEditCards) {
       setButtons({
         a: {
-          icon: "plus",
-          onPress: onAdd,
+          icon: "square-edit-outline",
+          onPress: onEditCards,
         },
-        b: undefined,
       });
     }
+
     if (href) {
       setButtons({
         a: {

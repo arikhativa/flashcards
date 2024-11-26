@@ -18,7 +18,7 @@ import CRUDWrapper from "../shared/CRUDWrapper";
 type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
-  const { cards, tags, cardService } = useStore();
+  const { cards, cardService } = useStore();
 
   let idLocal: number = id ? parseInt(id, 10) : BAD_ID;
 
@@ -35,13 +35,13 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
 
-  const setTags = (tags: Tag[]) => {
-    let newTags: Tag[] = [];
+  const setTags = (list: Tag[]) => {
+    let newList: Tag[] = [];
 
-    tags.forEach((tag) => {
-      newTags.push(tag);
+    list.forEach((e) => {
+      newList.push(e);
     });
-    setCardLocal({ ...cardLocal, tags: [...newTags] });
+    setCardLocal({ ...cardLocal, tags: newList });
   };
 
   const removeTag = (tag: Tag) => {

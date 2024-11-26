@@ -25,8 +25,10 @@ export default function ObjectMenu({
     >
       <Menu.Item
         onPress={() => {
-          closeMenu();
-          onDelete();
+          if (visible) {
+            closeMenu();
+            onDelete();
+          }
         }}
         title={deleteMessage}
       />

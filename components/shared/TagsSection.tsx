@@ -1,10 +1,10 @@
 import React from "react";
-import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { FlatList, StyleProp, View, ViewStyle } from "react-native";
 import { IconButton, Card, Text } from "react-native-paper";
 import { TagTile } from "../tags/TagTile";
 import { Tag } from "@/types/Tag";
 import { baseUnit, container, padding, text } from "@/constants/styles";
-import TagsSectionDialog from "./TagsSectionDialog";
+import TagsSectionDialog from "../card/TagsSectionDialog";
 
 interface TagsSectionProps {
   title?: string;

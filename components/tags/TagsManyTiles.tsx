@@ -6,12 +6,12 @@ import { ManyTiles } from "../shared/ManyTiles";
 
 export type TagsManyTilesProps = {
   isRootless?: boolean;
+  onSelectMany?: () => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
   onDeleteMany?: () => void;
-  onSelectMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   tags?: Tag[];
 };

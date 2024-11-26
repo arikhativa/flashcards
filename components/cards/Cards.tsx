@@ -1,6 +1,4 @@
 import { View } from "react-native";
-import { useStore } from "@/providers/GlobalStore";
-import { margin } from "@/constants/styles";
 import { container } from "../../constants/styles";
 import { useEffect, useState } from "react";
 import { FULL_SELECTED_KL, SelectedKL } from "@/types/KnowledgeLevel";
@@ -13,7 +11,7 @@ import {
   sortByDate,
   sortByKL,
 } from "@/utils/sort";
-import { useMultiSelect } from "@/hooks/useMultiSelect";
+import { MultiSelect } from "@/hooks/useMultiSelect";
 import ListActions from "@/components/shared/ListActions";
 import { CardsManyTiles } from "@/components/cards/CardsManyTiles";
 import { Sort, SortNames } from "@/types/Sort";
@@ -23,9 +21,26 @@ import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { useVisible } from "@/hooks/useVisible";
 import { getCardHref, getTagHref } from "@/utils/links";
 import { router } from "expo-router";
+import { CardService } from "@/services/Card";
+import { Conf } from "@/types/Conf";
 
-export default function Cards() {
-  const { cards, cardService, conf } = useStore();
+interface CardsProps {
+  isRootless?: boolean;
+  conf: Conf;
+  cards: Card[];
+  cardService: CardService;
+  multiSelect: MultiSelect;
+  onSelectMany?: () => void;
+}
+
+export default function Cards({
+  isRootless,
+  conf,
+  cards,
+  cardService,
+  onSelectMany,
+  multiSelect,
+}: CardsProps) {
   const [cardsLocal, setCardsLocal] = useState(cards);
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterChip[]>([]);
@@ -44,7 +59,8 @@ export default function Cards() {
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,
-  } = useMultiSelect();
+  } = multiSelect;
+
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
   const { visible, toggleVisible } = useVisible();
 
@@ -171,6 +187,7 @@ export default function Cards() {
   return (
     <View style={[container.flex1]}>
       <ListActions
+        conf={conf}
         sort={sort}
         onSortChange={setSort}
         filters={filters}
@@ -182,6 +199,8 @@ export default function Cards() {
       />
 
       <CardsManyTiles
+        isRootless={isRootless}
+        onSelectMany={onSelectMany}
         onDeleteMany={toggleVisible}
         onTagMany={handleTagMany}
         onTestMany={handelTestMany}
