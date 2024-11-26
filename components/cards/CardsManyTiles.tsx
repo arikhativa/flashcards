@@ -18,6 +18,7 @@ export type CardManyTilesProps = {
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
+  onBrowseMany?: () => void;
   onTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
@@ -28,6 +29,7 @@ export type CardManyTilesProps = {
 
 export function CardsManyTiles({
   isRootless,
+  onBrowseMany,
   onSelectMany,
   href,
   isMultiSelect,
@@ -111,6 +113,7 @@ export function CardsManyTiles({
   return (
     <ManyTiles
       isRootless={isRootless}
+      onBrowseMany={onBrowseMany}
       onSelectMany={onSelectMany}
       isMultiSelect={isMultiSelect}
       selectedIds={selectedIds}
