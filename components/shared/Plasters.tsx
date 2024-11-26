@@ -48,7 +48,7 @@ export default function Plasters({ cardHeight }: PlasterProps) {
 
   const p3: Plaster[] = [
     {
-      width: cardHeight * 2.52173913, // 290
+      width: cardHeight * 2.3, // 290 - something
       rotation: 5,
     },
   ];
