@@ -76,7 +76,7 @@ export default function TestFinish({
         <Button mode="elevated" onPress={() => onRetakeTest(cards)}>
           Retake Test
         </Button>
-        <Button mode="elevated" onPress={() => router.push(getHomeHref())}>
+        <Button mode="elevated" onPress={() => router.replace(getHomeHref())}>
           Done
         </Button>
       </View>
