@@ -100,14 +100,13 @@ export default function TestForm({
     setTestSettings({ ...testSettings, knowledgeLevels: klSelected });
   }, [kl]);
 
-  const addTag = (tag: Tag) => {
-    const list = testSettings.selectedTags;
-    if (list.find((t) => t.id === tag.id)) {
-      console.error("tag already exists");
-      return;
-    }
-    list.push(tag);
-    setTestSettings({ ...testSettings, selectedTags: list });
+  const setTags = (list: Tag[]) => {
+    let newList: Tag[] = [];
+
+    list.forEach((e) => {
+      newList.push(e);
+    });
+    setTestSettings({ ...testSettings, selectedTags: newList });
   };
 
   const removeTag = (tag: Tag) => {
@@ -226,10 +225,9 @@ export default function TestForm({
         disabled={!!preSelectedCards.length}
         style={margin.top2}
         title="Choose cards from specific lists"
-        addTag={addTag}
+        setTags={setTags}
         removeTag={removeTag}
         tags={testSettings.selectedTags}
-        allTags={tags}
       />
       <ActionsBar buttons={actionButtons} isDisabled={() => !isFormValid()} />
     </View>
