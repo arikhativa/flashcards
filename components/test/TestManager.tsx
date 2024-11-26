@@ -1,9 +1,7 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
-import { Dimensions, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { useSharedValue } from "react-native-reanimated";
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import CardTest, { CardTestRef } from "./CardTest";
 import { CardMeta, TestSettings } from "@/types/TestSettings";
 import { Card } from "@/types/Card";
@@ -14,9 +12,7 @@ import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import { generateSmallList } from "@/utils/cardPicker";
 import { useRouter } from "expo-router";
 import { getTestHref } from "@/utils/links";
-
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+import CarouselWrapper, { CarouselWrapperRef } from "../shared/CarouselWrapper";
 
 interface TestManagerProps {
   matchingCards: Card[];
@@ -31,22 +27,19 @@ export default function TestManager({
 }: TestManagerProps) {
   const router = useRouter();
   const { cardService } = useStore();
-  const ref = React.useRef<ICarouselInstance>(null);
-  const progress = useSharedValue<number>(0);
 
-  const [data, setData] = React.useState<number[]>([]);
-
+  const carouselWrapperRef = useRef<CarouselWrapperRef>(null);
   const cardTestRef = useRef<CardTestRef[]>([]);
 
-  const [randomCards, setRandomCards] = React.useState<Card[]>([]);
-  const randomCardsRef = React.useRef(randomCards);
+  const [randomCards, setRandomCards] = useState<Card[]>([]);
+  const randomCardsRef = useRef(randomCards);
 
   useEffect(() => {
     randomCardsRef.current = randomCards;
   }, [randomCards]);
 
-  const [cardsMeta, setCardsMeta] = React.useState<CardMeta[]>([]);
-  const cardsMetaRef = React.useRef(cardsMeta);
+  const [cardsMeta, setCardsMeta] = useState<CardMeta[]>([]);
+  const cardsMetaRef = useRef(cardsMeta);
 
   useEffect(() => {
     cardsMetaRef.current = cardsMeta;
@@ -63,7 +56,6 @@ export default function TestManager({
 
   useEffect(() => {
     if (cardsMeta.length === 0) {
-      setData([...new Array(randomCards.length + 1).keys()]);
       const list: CardMeta[] = [];
       randomCards.forEach((_card) => {
         list.push(getCardMeta(testSettings));
@@ -116,7 +108,7 @@ export default function TestManager({
   const updateSuccess = (index: number, newSuccess: boolean) => {
     if (cardsMeta[index].success === undefined) {
       setTimeout(() => {
-        const cur = ref.current?.getCurrentIndex();
+        const cur = carouselWrapperRef.current?.currentIndex();
         if (cur === index) {
           scrollToNextPage();
         }
@@ -138,26 +130,24 @@ export default function TestManager({
   };
 
   const scrollToNextPage = () => {
-    if (ref.current) {
-      ref.current.next();
+    if (carouselWrapperRef.current) {
+      carouselWrapperRef.current.scrollToNextPage();
 
       if (
         cardTestRef.current &&
-        ref.current.getCurrentIndex() + 1 < cardTestRef.current.length
+        carouselWrapperRef.current.currentIndex() + 1 <
+          cardTestRef.current.length
       ) {
         cardTestRef.current[
-          ref.current.getCurrentIndex() + 1
+          carouselWrapperRef.current.currentIndex() + 1
         ].focusOnTextInput();
       }
     }
   };
 
   const scrollToPage = (index: number) => {
-    if (ref.current) {
-      ref.current.scrollTo({
-        index,
-        animated: true,
-      });
+    if (carouselWrapperRef.current) {
+      carouselWrapperRef.current.scrollToPage(index);
       if (cardTestRef.current && index < cardTestRef.current.length) {
         cardTestRef.current[index].focusOnTextInput();
       }
@@ -200,30 +190,28 @@ export default function TestManager({
     }
   };
 
+  const renderItem = ({ index }: { index: number }) => {
+    return (
+      <View
+        style={[
+          padding.top3,
+          {
+            flex: 1,
+            justifyContent: "flex-start",
+          },
+        ]}
+      >
+        {getChild(index)}
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <Carousel
-        loop={false}
-        ref={ref}
-        width={width}
-        height={height}
-        data={data}
-        onProgressChange={(_, absoluteProgress) => {
-          progress.value = absoluteProgress;
-        }}
-        renderItem={({ index }) => (
-          <View
-            style={[
-              padding.top3,
-              {
-                flex: 1,
-                justifyContent: "flex-start",
-              },
-            ]}
-          >
-            {getChild(index)}
-          </View>
-        )}
+      <CarouselWrapper
+        ref={carouselWrapperRef}
+        length={randomCards.length}
+        renderItem={renderItem}
       />
     </View>
   );

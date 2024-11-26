@@ -14,6 +14,10 @@ export type TestLinkProps = {
   type: ObjType;
 };
 
+export type BrowseLinkProps = {
+  rawIds: string;
+};
+
 export function getCardHref(
   id: string | number,
   mode?: CRUDMode
@@ -51,6 +55,19 @@ export function getTestHref(
 
   return {
     pathname: "/TestPage",
+    params: prop,
+  };
+}
+
+export function getBrowseHref(
+  selectedIds?: number[]
+): Href<RouteParamInput<BrowseLinkProps>> {
+  const prop: RouteParamInput<TestLinkProps> = {
+    rawIds: (selectedIds ? toStringIds(selectedIds) : []) as unknown as string,
+  };
+
+  return {
+    pathname: "/BrowsePage",
     params: prop,
   };
 }

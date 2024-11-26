@@ -1,8 +1,6 @@
-import { Dimensions, ScrollView, View } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
-import { Text, TextInput } from "react-native-paper";
-import { Card as PaperCard } from "react-native-paper";
-import { margin, padding } from "@/constants/styles";
+import { margin } from "@/constants/styles";
 import { useStore } from "@/providers/GlobalStore";
 import { KnowledgeLevel } from "@/types/KnowledgeLevel";
 import TagsSection from "@/components/shared/TagsSection";
@@ -14,6 +12,7 @@ import CardSides from "../shared/CardSides";
 import KnowledgeLevelSection from "./KnowledgeLevelSection";
 import { useStateDirty } from "@/hooks/useStateDirty";
 import CRUDWrapper from "../shared/CRUDWrapper";
+import CardComment from "./CardComment";
 
 type CardComponentProps = ComponentProps<Card>;
 
@@ -96,29 +95,14 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
           onChangeTextB={(text) => handleLocalChange("sideB", text)}
         />
 
-        <View style={[margin.base2]}>
-          <Text style={padding.bottom} variant="titleMedium">
-            Comment
-          </Text>
-          <PaperCard>
-            <PaperCard.Content>
-              <TextInput
-                disabled={isDisable()}
-                style={{
-                  backgroundColor: "transparent",
-                }}
-                underlineColor="transparent"
-                activeUnderlineColor="transparent"
-                multiline
-                numberOfLines={3}
-                onChangeText={(text) => {
-                  handleLocalChange("comment", text);
-                }}
-                value={cardLocal.comment}
-              ></TextInput>
-            </PaperCard.Content>
-          </PaperCard>
-        </View>
+        <CardComment
+          disabled={isDisable()}
+          style={[margin.base2]}
+          onChangeText={(text) => {
+            handleLocalChange("comment", text);
+          }}
+          value={cardLocal.comment}
+        />
 
         <TagsSection
           style={[margin.base2]}

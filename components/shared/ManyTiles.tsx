@@ -20,6 +20,7 @@ export type ManyTilesProps<T> = {
   onSelectMany?: () => void;
   onTagMany?: () => void;
   onUnTagMany?: () => void;
+  onBrowseMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   objs?: T[];
@@ -37,6 +38,7 @@ export function ManyTiles<T>({
   href,
   isMultiSelect,
   selectedIds,
+  onBrowseMany,
   onDeleteMany,
   onTagMany,
   onUnTagMany,
@@ -69,6 +71,7 @@ export function ManyTiles<T>({
       <MultiSelectActionBar
         isRootless={isRootless}
         onSelectMany={onSelectMany}
+        onBrowseMany={onBrowseMany}
         type={type}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}

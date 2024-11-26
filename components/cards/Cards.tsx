@@ -19,7 +19,7 @@ import { useTimeDropdown } from "@/hooks/useTimeDropdown";
 import { OPTIONS_VALUES } from "@/utils/testForm";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { useVisible } from "@/hooks/useVisible";
-import { getCardHref, getTagHref } from "@/utils/links";
+import { getBrowseHref, getCardHref, getTagHref } from "@/utils/links";
 import { router } from "expo-router";
 import { CardService } from "@/services/Card";
 import { Conf } from "@/types/Conf";
@@ -184,6 +184,10 @@ export default function Cards({
     clearSelectedIds();
   };
 
+  const handelBrowseMany = () => {
+    router.push(getBrowseHref(selectedIdsRef.current));
+  };
+
   return (
     <View style={[container.flex1]}>
       <ListActions
@@ -200,6 +204,7 @@ export default function Cards({
 
       <CardsManyTiles
         isRootless={isRootless}
+        onBrowseMany={handelBrowseMany}
         onSelectMany={onSelectMany}
         onDeleteMany={toggleVisible}
         onTagMany={handleTagMany}

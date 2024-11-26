@@ -18,6 +18,7 @@ interface MultiSelectActionBarProps {
   onTagMany?: () => void;
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
+  onBrowseMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   onEditCards?: () => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
@@ -27,6 +28,7 @@ interface MultiSelectActionBarProps {
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
+  onBrowseMany,
   onTagMany,
   onSelectMany,
   onUnTagMany,
@@ -102,12 +104,20 @@ export default function MultiSelectActionBar({
     }
     let testMany: FABProps | undefined = undefined;
     let tagMany: FABProps | undefined = undefined;
+    let browseMany: FABProps | undefined = undefined;
     let dangerButton: FABProps | undefined = undefined;
 
     if (onTestMany && isTestVisible()) {
       testMany = {
         icon: "school-outline",
         onPress: () => onTestMany(type),
+      };
+    }
+
+    if (onBrowseMany) {
+      browseMany = {
+        icon: "card-search-outline",
+        onPress: onBrowseMany,
       };
     }
 
@@ -134,7 +144,8 @@ export default function MultiSelectActionBar({
 
     setToggledButtons({
       b: testMany,
-      c: tagMany,
+      c: browseMany,
+      d: tagMany,
     });
 
     setToggledDangerButtons({
