@@ -14,22 +14,26 @@ interface MultiSelectActionBarProps {
   type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
+  onSelectMany?: () => void;
   onTagMany?: () => void;
   onUnTagMany?: () => void;
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
-  onAdd?: () => void;
+  onEditCards?: () => void;
   href?: Href<ObjLinkProps | TestLinkProps>;
+  isRootless?: boolean;
 }
 
 export default function MultiSelectActionBar({
   isMultiSelect,
   selectedIds,
   onTagMany,
+  onSelectMany,
   onUnTagMany,
-  onAdd,
+  onEditCards,
   onDeleteMany,
   type,
+  isRootless,
   href,
   onTestMany,
 }: MultiSelectActionBarProps) {
@@ -48,15 +52,26 @@ export default function MultiSelectActionBar({
   }, [selectedIds]);
 
   const setGeneralButtons = () => {
-    if (onAdd) {
+    if (isRootless) {
       setButtons({
         a: {
-          icon: "plus",
-          onPress: onAdd,
+          icon: "check",
+          onPress: onSelectMany,
         },
-        b: undefined,
+      });
+      return; // NOTE this return!
+    }
+
+    // This is expanded tag editing cards
+    if (onEditCards) {
+      setButtons({
+        a: {
+          icon: "square-edit-outline",
+          onPress: onEditCards,
+        },
       });
     }
+
     if (href) {
       setButtons({
         a: {
@@ -76,6 +91,15 @@ export default function MultiSelectActionBar({
   };
 
   const setMultiSelectButtons = () => {
+    if (isRootless) {
+      setToggledButtons({
+        a: {
+          icon: "check",
+          onPress: onSelectMany,
+        },
+      });
+      return; // NOTE this return!
+    }
     let testMany: FABProps | undefined = undefined;
     let tagMany: FABProps | undefined = undefined;
     let dangerButton: FABProps | undefined = undefined;

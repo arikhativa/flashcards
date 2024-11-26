@@ -26,7 +26,7 @@ export default function ConfirmationDialog({
     <Portal>
       {visible && (
         <View style={container.fullScreen}>
-          <Dialog visible={visible} onDismiss={onDismiss}>
+          <Dialog dismissableBackButton visible={visible} onDismiss={onDismiss}>
             <Dialog.Title style={[padding.bottom4, { alignSelf: "center" }]}>
               {title}
             </Dialog.Title>

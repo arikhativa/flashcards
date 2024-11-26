@@ -7,12 +7,13 @@ import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { Href } from "expo-router";
 import { ManyTiles } from "../shared/ManyTiles";
 
-const maxSize = Dimensions.get("window").width;
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
 const gap = 20;
 
 export type CardManyTilesProps = {
+  isRootless?: boolean;
+  onSelectMany?: () => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
@@ -26,6 +27,8 @@ export type CardManyTilesProps = {
 };
 
 export function CardsManyTiles({
+  isRootless,
+  onSelectMany,
   href,
   isMultiSelect,
   selectedIds,
@@ -37,6 +40,10 @@ export function CardsManyTiles({
   cards,
   disabledLink,
 }: CardManyTilesProps) {
+  const maxSize = isRootless
+    ? Dimensions.get("window").width * 0.9
+    : Dimensions.get("window").width;
+
   const [rows, setRows] = useState<Card[][]>([]);
 
   useEffect(() => {
@@ -71,6 +78,9 @@ export function CardsManyTiles({
     if (isMultiSelect) {
       toggleIdSelection(id);
     }
+    if (isRootless) {
+      toggleIdSelection(id);
+    }
   };
 
   const renderRow = ({ item }: { item: Card[] }) => {
@@ -78,7 +88,7 @@ export function CardsManyTiles({
       return (
         <CardTile
           key={card.id}
-          disabledLink={isMultiSelect ? true : disabledLink}
+          disabledLink={isRootless || isMultiSelect ? true : disabledLink}
           card={card}
           onLongPress={handleLongPress}
           onPress={handlePress}
@@ -100,6 +110,8 @@ export function CardsManyTiles({
 
   return (
     <ManyTiles
+      isRootless={isRootless}
+      onSelectMany={onSelectMany}
       isMultiSelect={isMultiSelect}
       selectedIds={selectedIds}
       clearSelectedIds={clearSelectedIds}

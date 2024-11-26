@@ -1,11 +1,12 @@
 import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
 import { getTagHref } from "@/utils/links";
-import { NEW_ID } from "@/app/[objType]";
-import { ObjType } from "@/types/generic";
+import { NEW_ID, ObjType } from "@/types/generic";
 import { ManyTiles } from "../shared/ManyTiles";
 
 export type TagsManyTilesProps = {
+  isRootless?: boolean;
+  onSelectMany?: () => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
@@ -16,6 +17,8 @@ export type TagsManyTilesProps = {
 };
 
 export function TagsManyTiles({
+  isRootless,
+  onSelectMany,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
@@ -32,11 +35,14 @@ export function TagsManyTiles({
     if (isMultiSelect) {
       toggleIdSelection(id);
     }
+    if (isRootless) {
+      toggleIdSelection(id);
+    }
   };
 
   const renderItem = ({ item }: { item: Tag }) => (
     <TagTile
-      disabledLink={isMultiSelect}
+      disabledLink={isMultiSelect || isRootless}
       isSelected={selectedIds.includes(item.id)}
       onLongPress={handleLongPress}
       onPress={handlePress}
@@ -47,8 +53,10 @@ export function TagsManyTiles({
 
   return (
     <ManyTiles
+      isRootless={isRootless}
       isMultiSelect={isMultiSelect}
       selectedIds={selectedIds}
+      onSelectMany={onSelectMany}
       clearSelectedIds={clearSelectedIds}
       onDeleteMany={onDeleteMany}
       onTestMany={onTestMany}

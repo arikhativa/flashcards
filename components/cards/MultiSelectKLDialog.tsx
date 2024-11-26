@@ -27,7 +27,7 @@ export default function MultiSelectKLDialog({
     <Portal>
       {visible && (
         <View style={container.fullScreen}>
-          <Dialog visible={visible} onDismiss={onDismiss}>
+          <Dialog dismissableBackButton visible={visible} onDismiss={onDismiss}>
             <Dialog.Title>Select Knowledge Level</Dialog.Title>
             <Dialog.Content>
               <CheckboxText

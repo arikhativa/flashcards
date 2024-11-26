@@ -1,18 +1,16 @@
 import React from "react";
-import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { Dialog, IconButton, Card, Portal, Text } from "react-native-paper";
+import { FlatList, StyleProp, View, ViewStyle } from "react-native";
+import { IconButton, Card, Text } from "react-native-paper";
 import { TagTile } from "../tags/TagTile";
 import { Tag } from "@/types/Tag";
-import Autocomplete from "./Autocomplete";
-import { baseUnit, container, margin, padding, text } from "@/constants/styles";
-import { useStore } from "@/providers/GlobalStore";
+import { baseUnit, container, padding, text } from "@/constants/styles";
+import TagsSectionDialog from "../card/TagsSectionDialog";
 
 interface TagsSectionProps {
   title?: string;
   disabled?: boolean;
-  allTags: Tag[];
   tags?: Tag[];
-  addTag: (tag: Tag) => void;
+  setTags: (tags: Tag[]) => void;
   removeTag: (tag: Tag) => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -22,37 +20,14 @@ const TagsSection = ({
   title,
   disabled,
   tags,
-  allTags,
-  addTag,
+  setTags,
   removeTag,
 }: TagsSectionProps) => {
-  const { tagService } = useStore();
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
-
-  const keyExtractor = (tag: Tag): string => tag.id.toString();
-
-  const onSelect = (tag: Tag) => {
-    addTag(tag);
-  };
-
-  const onSearchChange = (query: string): Tag[] => {
-    if (!query) {
-      return [];
-    }
-
-    return allTags
-      .filter((tag) => tag.name.toLowerCase().includes(query.toLowerCase()))
-      .filter((tag) => !tags?.find((t) => t.id === tag.id));
-  };
-
-  const handleCreateTag = async (name: string): Promise<void> => {
-    const tag = await tagService.create({ name });
-    if (tag) addTag(tag);
-  };
 
   const getList = () => {
     if (!tags || tags.length === 0) {
@@ -91,56 +66,14 @@ const TagsSection = ({
         <Card.Content>{getList()}</Card.Content>
       </Card>
 
-      <Portal>
-        {visible && (
-          <View style={styles.viewContainer}>
-            <Dialog
-              style={[styles.dialogContainer]}
-              visible={visible}
-              onDismiss={hideDialog}
-            >
-              <Dialog.Title>Add Tags</Dialog.Title>
-              <IconButton
-                style={container.buttonTopRight}
-                icon="close"
-                size={baseUnit * 2}
-                onPress={hideDialog}
-              ></IconButton>
-              <Dialog.Content>
-                <Autocomplete
-                  icon={"tag-outline"}
-                  buttonText="Create Tag"
-                  onSelect={onSelect}
-                  keyExtractor={keyExtractor}
-                  onSearchChange={onSearchChange}
-                  itemComponent={({ item }) => (
-                    <TagTile disabledLink tag={item}></TagTile>
-                  )}
-                  onCreateEmpty={(text: string) => {
-                    hideDialog();
-                    return handleCreateTag(text);
-                  }}
-                />
-              </Dialog.Content>
-            </Dialog>
-          </View>
-        )}
-      </Portal>
+      <TagsSectionDialog
+        tagsLocal={tags}
+        setTags={setTags}
+        visible={visible}
+        onDismiss={hideDialog}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  viewContainer: {
-    flex: 1,
-  },
-  dialogContainer: {
-    position: "absolute",
-    backgroundColor: "white", // TODO bad color use the one in stye or them
-    width: "90%",
-    top: 0,
-    alignSelf: "center",
-  },
-});
 
 export default TagsSection;

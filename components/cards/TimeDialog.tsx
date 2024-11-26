@@ -21,7 +21,7 @@ export default function TimeDialog({
     <Portal>
       {visible && (
         <View style={container.fullScreen}>
-          <Dialog visible={visible} onDismiss={onDismiss}>
+          <Dialog dismissableBackButton visible={visible} onDismiss={onDismiss}>
             <Dialog.Title>Select Time</Dialog.Title>
             <Dialog.Content>
               <Dropdown

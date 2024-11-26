@@ -66,7 +66,6 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
         </Text>
         <CardSides
           disabled
-          borderSize={20}
           cardHeight={cardHeight}
           style={margin.x2}
           knowledgeLevel={card.knowledgeLevel}

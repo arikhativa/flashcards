@@ -3,17 +3,21 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Menu, IconButton, Divider, useTheme } from "react-native-paper";
 import { Sort, SortDir, SortNames } from "@/types/Sort";
-import { useStore } from "@/providers/GlobalStore";
 import { getSortDirectionByName } from "@/utils/sort";
+import { Conf } from "@/types/Conf";
 
 interface SortCardsProps {
+  conf: Conf;
   sort: Sort;
   onSortChange: (sort: Sort) => void;
 }
 
-export default function SortCards({ sort, onSortChange }: SortCardsProps) {
+export default function SortCards({
+  conf,
+  sort,
+  onSortChange,
+}: SortCardsProps) {
   const theme = useTheme();
-  const { conf } = useStore();
   const [visible, setVisible] = useState(true);
 
   const openMenu = () => setVisible(true);

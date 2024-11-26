@@ -3,7 +3,17 @@ import { getTestHref } from "@/utils/links";
 import { useRouter } from "expo-router";
 import { useState, useEffect, useRef } from "react";
 
-export function useMultiSelect() {
+export interface MultiSelect {
+  isMultiSelect: boolean;
+  selectedIds: number[];
+  selectedIdsRef: React.MutableRefObject<number[]>;
+  toggleIdSelection: (id: number) => void;
+  clearSelectedIds: () => void;
+  handelTestMany: (type?: ObjType) => void;
+  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+export function useMultiSelect(): MultiSelect {
   const [isMultiSelect, setIsMultiSelect] = useState(false);
   const router = useRouter();
 
@@ -42,5 +52,6 @@ export function useMultiSelect() {
     toggleIdSelection,
     clearSelectedIds,
     handelTestMany,
+    setSelectedIds,
   };
 }

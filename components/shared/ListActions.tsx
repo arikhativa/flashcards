@@ -7,8 +7,10 @@ import SortCards from "../cards/SortCards";
 import FilterCards from "../cards/FilterCards";
 import { Sort } from "@/types/Sort";
 import { TimeDropdown } from "@/hooks/useTimeDropdown";
+import { Conf } from "@/types/Conf";
 
 interface ListActionsProps {
+  conf: Conf;
   filters?: FilterChip[];
   query?: string;
   onQueryChange?: (text: string) => void;
@@ -20,6 +22,7 @@ interface ListActionsProps {
 }
 
 export default function ListActions({
+  conf,
   sort,
   onSortChange,
   filters,
@@ -42,7 +45,7 @@ export default function ListActions({
             />
           )}
           {sort && onSortChange && (
-            <SortCards sort={sort} onSortChange={onSortChange} />
+            <SortCards conf={conf} sort={sort} onSortChange={onSortChange} />
           )}
           <FilterCards
             hide

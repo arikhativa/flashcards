@@ -31,7 +31,7 @@ export default function TestFinishDialog({
             flex: 1,
           }}
         >
-          <Dialog visible={visible} onDismiss={onDismiss}>
+          <Dialog dismissableBackButton visible={visible} onDismiss={onDismiss}>
             <Dialog.Title style={text.dialogTitle}>
               Adjust Knowledge Level
             </Dialog.Title>

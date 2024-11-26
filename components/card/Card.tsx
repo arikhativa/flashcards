@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import { Card, CardCreate, CardUpdate } from "@/types/Card";
 import { Text, TextInput } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
@@ -18,7 +18,7 @@ import CRUDWrapper from "../shared/CRUDWrapper";
 type CardComponentProps = ComponentProps<Card>;
 
 const CardComponent = ({ mode, data, id }: CardComponentProps) => {
-  const { cards, tags, cardService } = useStore();
+  const { cards, cardService } = useStore();
 
   let idLocal: number = id ? parseInt(id, 10) : BAD_ID;
 
@@ -35,14 +35,13 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     setCardLocal({ ...cardLocal, [field]: value });
   };
 
-  const addTag = (tag: Tag) => {
-    const currTags = cardLocal.tags || [];
-    if (currTags.find((t) => t.id === tag.id)) {
-      console.error("tag already exists");
-      return;
-    }
-    const newTags = [...currTags, tag];
-    setCardLocal({ ...cardLocal, tags: newTags });
+  const setTags = (list: Tag[]) => {
+    let newList: Tag[] = [];
+
+    list.forEach((e) => {
+      newList.push(e);
+    });
+    setCardLocal({ ...cardLocal, tags: newList });
   };
 
   const removeTag = (tag: Tag) => {
@@ -69,6 +68,10 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     return card.failure || 0;
   };
 
+  const { keyboardHeight } = useStore();
+  const containerHeight = Dimensions.get("window").height - keyboardHeight;
+  const cardHeight = containerHeight / 4;
+
   return (
     <CRUDWrapper
       array={array}
@@ -83,8 +86,7 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
     >
       <ScrollView>
         <CardSides
-          borderSize={20}
-          cardHeight={120}
+          cardHeight={cardHeight}
           style={margin.base2}
           disabled={isDisable()}
           knowledgeLevel={cardLocal.knowledgeLevel}
@@ -95,14 +97,6 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         />
 
         <View style={[margin.base2]}>
-          {/* TODO */}
-          <Text style={padding.bottom} variant="titleMedium">
-            Success {getSuccess()}
-          </Text>
-          <Text style={padding.bottom} variant="titleMedium">
-            Failure {getFailure()}
-          </Text>
-          {/* TODO */}
           <Text style={padding.bottom} variant="titleMedium">
             Comment
           </Text>
@@ -129,12 +123,10 @@ const CardComponent = ({ mode, data, id }: CardComponentProps) => {
         <TagsSection
           style={[margin.base2]}
           disabled={isDisable()}
-          addTag={addTag}
+          setTags={setTags}
           removeTag={removeTag}
           tags={cardLocal.tags}
-          allTags={tags}
         />
-
         <KnowledgeLevelSection
           knowledgeLevel={cardLocal.knowledgeLevel}
           setKnowledgeLevel={setKL}

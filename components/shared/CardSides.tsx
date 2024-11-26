@@ -25,8 +25,8 @@ interface CardSidesProps {
   cardHeight?: number;
 }
 
-const HEIGHT = 200;
-const BORDER_SIZE = 30;
+const HEIGHT = 140;
+const BORDER_SIZE = 20;
 
 export default function CardSides({
   knowledgeLevel,
