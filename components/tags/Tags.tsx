@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { container } from "@/constants/styles";
+import { baseUnit, container } from "@/constants/styles";
 import { useEffect, useState } from "react";
 import { MultiSelect } from "@/hooks/useMultiSelect";
 import ListActions from "@/components/shared/ListActions";
@@ -9,9 +9,11 @@ import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { useVisible } from "@/hooks/useVisible";
 import { Tag } from "@/types/Tag";
 import { TagService } from "@/services/Tag";
+import { Conf } from "@/types/Conf";
 
 interface TagsProps {
   isRootless?: boolean;
+  conf: Conf;
   tags: Tag[];
   tagService: TagService;
   multiSelect: MultiSelect;
@@ -20,6 +22,7 @@ interface TagsProps {
 
 export default function Tags({
   isRootless,
+  conf,
   tags,
   tagService,
   onSelectMany,
@@ -47,13 +50,13 @@ export default function Tags({
   }, [tags, query]);
 
   const handelDeleteMany = async () => {
-    const ret = await tagService.deleteMany(selectedIdsRef.current);
+    await tagService.deleteMany(selectedIdsRef.current);
     clearSelectedIds();
   };
 
   return (
     <View style={[container.flex1]}>
-      <ListActions query={query} onQueryChange={setQuery} />
+      <ListActions conf={conf} query={query} onQueryChange={setQuery} />
 
       <TagsManyTiles
         isRootless={isRootless}

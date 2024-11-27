@@ -22,6 +22,7 @@ export function useKeyboardHeight() {
     return () => {
       showSubscription.remove();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { keyboardHeight };

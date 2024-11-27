@@ -148,6 +148,7 @@ export const StoreProvider = ({
       confService.init();
       metadataService.init();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dbIsReady]);
 
   if (!dbIsReady) {

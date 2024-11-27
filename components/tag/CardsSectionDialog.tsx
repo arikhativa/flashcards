@@ -26,6 +26,7 @@ const CardsSectionDialog = ({
     if (cardsLocal) {
       multiSelect.setSelectedIds(cardsLocal.map((t) => t.id));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsLocal]);
 
   const handleSelectMany = () => {

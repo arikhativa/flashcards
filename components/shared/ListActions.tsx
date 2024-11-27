@@ -1,7 +1,7 @@
 import { baseUnit, gap, margin } from "@/constants/styles";
 import { FilterChip } from "@/types/generic";
 import { SelectedKL } from "@/types/KnowledgeLevel";
-import { FlatList, View } from "react-native";
+import { FlatList, StyleProp, View, ViewStyle } from "react-native";
 import { Chip, Searchbar, Surface } from "react-native-paper";
 import SortCards from "../cards/SortCards";
 import FilterCards from "../cards/FilterCards";
@@ -11,6 +11,7 @@ import { Conf } from "@/types/Conf";
 
 interface ListActionsProps {
   conf: Conf;
+  style?: StyleProp<ViewStyle>;
   filters?: FilterChip[];
   query?: string;
   onQueryChange?: (text: string) => void;
@@ -22,6 +23,7 @@ interface ListActionsProps {
 }
 
 export default function ListActions({
+  style,
   conf,
   sort,
   onSortChange,
@@ -33,8 +35,8 @@ export default function ListActions({
   onKLChange,
 }: ListActionsProps) {
   return (
-    <Surface mode="flat" elevation={1}>
-      <View style={[margin.x2, margin.top3, margin.bottom2]}>
+    <Surface style={[style, margin.bottom2]} mode="flat" elevation={1}>
+      <View style={[margin.x2, margin.top4, margin.bottom2]}>
         <View style={[margin.bottom2, gap.base, { flexDirection: "row" }]}>
           {query !== undefined && onQueryChange && (
             <Searchbar
@@ -59,9 +61,6 @@ export default function ListActions({
             contentContainerStyle={{
               justifyContent: "center",
               alignItems: "center",
-            }}
-            style={{
-              height: 40,
             }}
             data={filters}
             horizontal

@@ -19,7 +19,7 @@ const TagsSectionDialog = ({
   onDismiss,
   setTags,
 }: TagsSectionDialogProps) => {
-  const { tags, tagService } = useStore();
+  const { tags, conf, tagService } = useStore();
   const multiSelect = useMultiSelect();
 
   useEffect(() => {
@@ -53,6 +53,7 @@ const TagsSectionDialog = ({
             onDismiss={onDismiss}
           >
             <Tags
+              conf={conf}
               isRootless
               onSelectMany={handleSelectMany}
               tags={tags}

@@ -166,6 +166,12 @@ export const margin = StyleSheet.create({
   bottom2: {
     marginBottom: baseUnit * 2,
   },
+  bottom3: {
+    marginBottom: baseUnit * 3,
+  },
+  bottom4: {
+    marginBottom: baseUnit * 4,
+  },
   x: {
     marginLeft: baseUnit,
     marginRight: baseUnit,

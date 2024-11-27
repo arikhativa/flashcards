@@ -161,7 +161,7 @@ export default function ActionsBar({
 
       <View
         style={[
-          margin.y4,
+          margin.base4,
           {
             alignSelf: "center",
             position: "absolute",
