@@ -56,6 +56,22 @@ export class BaseCrudService<
     return null;
   }
 
+  async getByIds(
+    ids: TSchema["id"][],
+    withArchive: boolean = true
+  ): Promise<T[] | null> {
+    try {
+      const promises = ids.map((id) => this.getById(id, withArchive));
+      const results = await Promise.all(promises);
+
+      if (results.length) return results as unknown as T[];
+      return null;
+    } catch (e) {
+      console.error("getByIds error: ", e);
+      return null;
+    }
+  }
+
   async create(payload: TCreate): Promise<T | null> {
     const entity = this.repo.create();
 
