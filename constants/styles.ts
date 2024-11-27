@@ -106,6 +106,15 @@ export const gap = StyleSheet.create({
   base2: {
     gap: baseUnit / 3,
   },
+  base3: {
+    gap: baseUnit / 2,
+  },
+  base4: {
+    gap: baseUnit,
+  },
+  base5: {
+    gap: baseUnit * 2,
+  },
 });
 
 export const margin = StyleSheet.create({
