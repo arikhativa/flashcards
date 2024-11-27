@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { Dialog, Portal, Button } from "react-native-paper";
 import { container, gap, margin, padding } from "@/constants/styles";
 import React from "react";
+import { color } from "../../constants/styles";
 
 type CreateOrAddTagDialogProps = {
   visible: boolean;
@@ -21,9 +22,6 @@ export default function CreateOrAddTagDialog({
       {visible && (
         <View style={container.fullScreen}>
           <Dialog dismissableBackButton visible={visible} onDismiss={onDismiss}>
-            <Dialog.Title style={[padding.bottom4, { alignSelf: "center" }]}>
-              Create or Add Tag
-            </Dialog.Title>
             <Dialog.Actions
               style={[
                 margin.x4,
