@@ -1,4 +1,4 @@
-import { ObjectLiteral } from "typeorm";
+import { ObjectLiteral, Repository } from "typeorm";
 
 export const NEW_ID = "new";
 

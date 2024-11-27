@@ -102,10 +102,12 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PaperProvider theme={theme}>
         <StoreProvider
-          metadataRepository={metadataRepository}
-          cardRepository={cardRepository}
-          tagRepository={tagRepository}
-          confRepository={confRepository}
+          repos={{
+            cardRepository,
+            tagRepository,
+            confRepository,
+            metadataRepository,
+          }}
         >
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

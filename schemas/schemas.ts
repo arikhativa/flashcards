@@ -8,7 +8,15 @@ import {
   ManyToMany,
   JoinTable,
   DeleteDateColumn,
+  Repository,
 } from "typeorm";
+
+export interface Repositories {
+  metadataRepository: Repository<MetadataSchema>;
+  cardRepository: Repository<CardSchema>;
+  tagRepository: Repository<TagSchema>;
+  confRepository: Repository<ConfSchema>;
+}
 
 @Entity()
 export class CardSchema extends BaseEntity {

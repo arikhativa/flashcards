@@ -12,21 +12,15 @@ import { CardService } from "@/services/Card";
 import { TagService } from "@/services/Tag";
 import { CardTagService } from "@/services/CardTag";
 import { ConfService } from "@/services/Conf";
-import { Repository } from "typeorm";
-import {
-  CardSchema,
-  ConfSchema,
-  MetadataSchema,
-  TagSchema,
-} from "@/schemas/schemas";
+import { Repositories } from "@/schemas/schemas";
 import { Conf } from "@/types/Conf";
 import { CARDS, TAGS } from "@/constants/db";
 import { Metadata } from "@/types/Metadata";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
+import { useServices } from "@/hooks/useServices";
 
 export interface StoreContextType {
   cards: Card[];
-  archiveCards: Card[];
   tags: Tag[];
   conf: Conf;
   metadata: Metadata;
@@ -42,66 +36,27 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider = ({
   children,
-  metadataRepository,
-  cardRepository,
-  tagRepository,
-  confRepository,
+  repos,
 }: {
   children: ReactNode;
-  metadataRepository: Repository<MetadataSchema>;
-  cardRepository: Repository<CardSchema>;
-  tagRepository: Repository<TagSchema>;
-  confRepository: Repository<ConfSchema>;
+  repos: Repositories;
 }) => {
   const [dbIsReady, setDbIsReady] = useState(false);
-  const [cards, setCards] = useState<Card[]>([]);
-  const [archiveCards, setArchiveCards] = useState<Card[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
-  const [metadata, setMetadata] = useState<Metadata>({} as Metadata);
   const { keyboardHeight } = useKeyboardHeight();
 
-  const fetchAll = async () => {
-    await fetchArchiveCards();
-    await fetchCards();
-    await fetchTags();
-    await fetchConf();
-    await fetchMetadata();
-  };
-
-  const fetchMetadata = async () => {
-    const md = await metadataService.get();
-    if (md) setMetadata(md);
-  };
-
-  const fetchConf = async () => {
-    const conf = await confService.get();
-    if (conf) setConf(conf);
-  };
-
-  const fetchArchiveCards = async () => {
-    const list = await cardService.getAllArchive();
-
-    if (list) {
-      setArchiveCards(list.filter((e) => e.deletedAt));
-    }
-  };
-
-  const fetchCards = async () => {
-    const cardList = await cardService.getAll();
-    if (cardList) setCards(cardList);
-  };
-
-  const fetchTags = async () => {
-    const tagList = await tagService.getAll();
-    if (tagList) setTags(tagList);
-  };
-
-  const metadataService = new MetadataService(metadataRepository, fetchAll);
-  const cardService = new CardService(cardRepository, fetchAll);
-  const tagService = new TagService(tagRepository, fetchAll);
-  const cardTagService = new CardTagService(cardService, tagService);
-  const confService = new ConfService(confRepository, fetchAll);
+  const {
+    cards,
+    tags,
+    conf,
+    metadata,
+    cardService,
+    tagService,
+    cardTagService,
+    confService,
+    metadataService,
+    fetchCards,
+    fetchTags,
+  } = useServices(repos);
 
   useEffect(() => {
     const init = async () => {
@@ -159,7 +114,6 @@ export const StoreProvider = ({
     <StoreContext.Provider
       value={{
         cards,
-        archiveCards,
         tags,
         conf,
         metadata,
