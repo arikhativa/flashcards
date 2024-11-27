@@ -19,7 +19,7 @@ const CardsSectionDialog = ({
   onDismiss,
   setTags,
 }: CardsSectionDialogProps) => {
-  const { conf, cards, cardService } = useStore();
+  const store = useStore();
   const multiSelect = useMultiSelect();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const CardsSectionDialog = ({
 
   const handleSelectMany = () => {
     const cardList: Card[] = multiSelect.selectedIdsRef.current.map((id) =>
-      cards.find((t) => t.id === id)
+      store.cards.find((t) => t.id === id)
     ) as Card[];
 
     multiSelect.clearSelectedIds();
@@ -56,9 +56,7 @@ const CardsSectionDialog = ({
             <Cards
               isRootless
               onSelectMany={handleSelectMany}
-              conf={conf}
-              cards={cards}
-              cardService={cardService}
+              store={store}
               multiSelect={multiSelect}
             />
           </Dialog>

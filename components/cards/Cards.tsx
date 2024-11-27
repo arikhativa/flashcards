@@ -23,33 +23,34 @@ import { getBrowseHref, getCardHref, getTagHref } from "@/utils/links";
 import { router } from "expo-router";
 import { CardService } from "@/services/Card";
 import { Conf } from "@/types/Conf";
+import CreateOrAddTagDialog from "../shared/CreateOrAddTagDialog";
+import TagsSectionDialog from "../card/TagsSectionDialog";
+import { Tag } from "@/types/Tag";
+import { TagService } from "@/services/Tag";
+import { StoreContextType } from "@/providers/GlobalStore";
 
 interface CardsProps {
   isRootless?: boolean;
-  conf: Conf;
-  cards: Card[];
-  cardService: CardService;
+  store: StoreContextType;
   multiSelect: MultiSelect;
   onSelectMany?: () => void;
 }
 
 export default function Cards({
   isRootless,
-  conf,
-  cards,
-  cardService,
+  store,
   onSelectMany,
   multiSelect,
 }: CardsProps) {
-  const [cardsLocal, setCardsLocal] = useState(cards);
+  const [cardsLocal, setCardsLocal] = useState(store.cards);
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterChip[]>([]);
 
   const timeDropdown = useTimeDropdown(OPTIONS_VALUES.Anytime);
 
   const [sort, setSort] = useState<Sort>({
-    field: conf.sortBy,
-    direction: getSortDirectionByName(conf.sortBy),
+    field: store.conf.sortBy,
+    direction: getSortDirectionByName(store.conf.sortBy),
   });
 
   const {
@@ -62,7 +63,10 @@ export default function Cards({
   } = multiSelect;
 
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
-  const { visible, toggleVisible } = useVisible();
+  const [tagsLocal, setTagsLocal] = useState<Tag[]>([]);
+  const confirmation = useVisible();
+  const addOrCreateTag = useVisible();
+  const addTagDialog = useVisible();
 
   useEffect(() => {
     const removeFilterIfNeeded = () => {
@@ -92,15 +96,15 @@ export default function Cards({
   }, [filters, timeDropdown.range, selectedKL]);
 
   useEffect(() => {
-    if (!conf) {
+    if (!store.conf) {
       return;
     }
 
     setSort({
-      field: conf.sortBy,
-      direction: getSortDirectionByName(conf.sortBy),
+      field: store.conf.sortBy,
+      direction: getSortDirectionByName(store.conf.sortBy),
     });
-  }, [conf]);
+  }, [store.conf]);
 
   const handleGenericFilterSet = (name: FilterNames, onClose: () => void) => {
     if (filters.find((filter) => filter.name === name)) {
@@ -170,15 +174,25 @@ export default function Cards({
       return list;
     };
 
-    setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(cards)));
-  }, [cards, query, selectedKL, timeDropdown.range, sort]);
+    setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(store.cards)));
+  }, [store.cards, query, selectedKL, timeDropdown.range, sort]);
 
   const handelDeleteMany = async () => {
-    const ret = await cardService.deleteMany(selectedIdsRef.current);
+    await store.cardService.deleteMany(selectedIdsRef.current);
     clearSelectedIds();
   };
 
-  const handleTagMany = async () => {
+  const handleAddTag = (tags: Tag[]) => {
+    tags.forEach((tag) => {
+      const newCards: Card[] = selectedIdsRef.current.map((id) => {
+        return { id } as Card;
+      });
+      store.tagService.update(tag.id, { cards: [...tag.cards, ...newCards] });
+    });
+    clearSelectedIds();
+  };
+
+  const handleCreateTag = async () => {
     const href = getTagHref(NEW_ID, CRUDMode.Create, selectedIdsRef.current);
     router.push(href);
     clearSelectedIds();
@@ -191,7 +205,7 @@ export default function Cards({
   return (
     <View style={[container.flex1]}>
       <ListActions
-        conf={conf}
+        conf={store.conf}
         sort={sort}
         onSortChange={setSort}
         filters={filters}
@@ -206,8 +220,8 @@ export default function Cards({
         isRootless={isRootless}
         onBrowseMany={handelBrowseMany}
         onSelectMany={onSelectMany}
-        onDeleteMany={toggleVisible}
-        onTagMany={handleTagMany}
+        onDeleteMany={confirmation.toggleVisible}
+        onTagMany={addOrCreateTag.toggleVisible}
         onTestMany={handelTestMany}
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
@@ -218,13 +232,27 @@ export default function Cards({
       />
 
       <ConfirmationDialog
-        visible={visible}
-        onDismiss={toggleVisible}
+        visible={confirmation.visible}
+        onDismiss={confirmation.toggleVisible}
         title="Delete Selected Cards?"
         approveText="Delete"
         cancelText="Cancel"
-        onCancel={toggleVisible}
+        onCancel={confirmation.toggleVisible}
         onApprove={handelDeleteMany}
+      />
+
+      <CreateOrAddTagDialog
+        visible={addOrCreateTag.visible}
+        onDismiss={addOrCreateTag.toggleVisible}
+        onAdd={addTagDialog.toggleVisible}
+        onCreate={handleCreateTag}
+      />
+
+      <TagsSectionDialog
+        tagsLocal={tagsLocal}
+        setTags={handleAddTag}
+        visible={addTagDialog.visible}
+        onDismiss={addTagDialog.toggleVisible}
       />
     </View>
   );

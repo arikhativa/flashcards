@@ -24,7 +24,7 @@ import { CARDS, TAGS } from "@/constants/db";
 import { Metadata } from "@/types/Metadata";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 
-interface StoreContextType {
+export interface StoreContextType {
   cards: Card[];
   archiveCards: Card[];
   tags: Tag[];

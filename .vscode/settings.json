@@ -1,4 +1,4 @@
 {
-  "cSpell.words": ["Appbar", "Pressable", "Searchbar"],
+  "cSpell.words": ["Appbar", "dismissable", "Pressable", "Searchbar"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
