@@ -248,12 +248,14 @@ export default function Cards({
         onCreate={handleCreateTag}
       />
 
-      <TagsSectionDialog
-        tagsLocal={tagsLocal}
-        setTags={handleAddTag}
-        visible={addTagDialog.visible}
-        onDismiss={addTagDialog.toggleVisible}
-      />
+      {!isRootless && (
+        <TagsSectionDialog
+          tagsLocal={tagsLocal}
+          setTags={handleAddTag}
+          visible={addTagDialog.visible}
+          onDismiss={addTagDialog.toggleVisible}
+        />
+      )}
     </View>
   );
 }

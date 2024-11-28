@@ -18,7 +18,10 @@ export class CardService extends BaseCrudService<
     knowledgeLevel: KnowledgeLevel.Learning,
   };
 
-  constructor(repo: Repository<CardSchema>, onUpdate: () => void) {
+  constructor(
+    repo: Repository<CardSchema>,
+    onUpdate: (ids?: Card["id"][]) => void
+  ) {
     const relations = ["tags"];
     super(repo, onUpdate, relations);
   }

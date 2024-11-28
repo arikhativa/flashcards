@@ -6,10 +6,15 @@ import { ObjType } from "@/types/generic";
 import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { Href } from "expo-router";
 import { ManyTiles } from "../shared/ManyTiles";
+import { BaseCrud } from "@/types/generic";
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
 const gap = 20;
+
+type Row = BaseCrud & {
+  cards: Card[];
+};
 
 export type CardManyTilesProps = {
   isRootless?: boolean;
@@ -46,28 +51,35 @@ export function CardsManyTiles({
     ? Dimensions.get("window").width * 0.9
     : Dimensions.get("window").width;
 
-  const [rows, setRows] = useState<Card[][]>([]);
+  const [rows, setRows] = useState<Row[]>([]);
 
   useEffect(() => {
     convertCardsToRows(cards || []);
   }, [cards, maxSize]);
 
   const convertCardsToRows = (cards: Card[]) => {
-    const newRows: Card[][] = [];
+    const newRows: Row[] = [];
     let tmpRow: Card[] = [];
 
     cards.forEach((card, index) => {
       const newCardSize = getCardSize(card);
       const rowSize = getRowSize(tmpRow);
       if (rowSize + newCardSize > maxSize || tmpRow.length === 4) {
-        newRows.push(tmpRow);
+        newRows.push({
+          id: getMixedIds(tmpRow),
+          cards: tmpRow,
+        });
+
         tmpRow = [];
       }
       tmpRow.push(card);
     });
 
     if (tmpRow.length) {
-      newRows.push(tmpRow);
+      newRows.push({
+        id: getMixedIds(tmpRow),
+        cards: tmpRow,
+      });
     }
     setRows(newRows);
   };
@@ -85,8 +97,8 @@ export function CardsManyTiles({
     }
   };
 
-  const renderRow = ({ item }: { item: Card[] }) => {
-    const children = item.map((card) => {
+  const renderRow = ({ item }: { item: Row }) => {
+    const children = item.cards.map((card) => {
       return (
         <CardTile
           key={card.id}
@@ -101,6 +113,7 @@ export function CardsManyTiles({
 
     return (
       <View
+        key={item.id}
         style={{
           flexDirection: "row",
         }}
@@ -149,4 +162,10 @@ function getRowSize(row: Card[]) {
     size += getCardSize(c);
   });
   return size;
+}
+
+function getMixedIds(row: Card[]): number {
+  let mixedIds: string = "";
+  row.forEach((c) => (mixedIds += c.id));
+  return parseInt(mixedIds, 10);
 }
