@@ -1,8 +1,11 @@
-import { TagTile } from "./TagTile";
 import { Tag } from "@/types/Tag";
 import { getTagHref } from "@/utils/links";
 import { NEW_ID, ObjType } from "@/types/generic";
 import { ManyTiles } from "../shared/ManyTiles";
+import { useRouter } from "expo-router";
+import TagTileMemo from "./TagTileMemo";
+
+const TILE_HEIGHT = 55;
 
 export type TagsManyTilesProps = {
   isRootless?: boolean;
@@ -27,32 +30,35 @@ export function TagsManyTiles({
   clearSelectedIds,
   tags,
 }: TagsManyTilesProps) {
+  const router = useRouter();
+
   const handleLongPress = (id: number) => {
     toggleIdSelection(id);
   };
 
+  // TODO this can be in a custom useHook since we have the same func in CardsManyTiles
   const handlePress = (id: number) => {
-    if (isMultiSelect) {
+    if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
-    }
-    if (isRootless) {
-      toggleIdSelection(id);
+    } else {
+      router.push(getTagHref(id));
     }
   };
 
   const renderItem = ({ item }: { item: Tag }) => (
-    <TagTile
-      disabledLink={isMultiSelect || isRootless}
-      isSelected={selectedIds.includes(item.id)}
+    <TagTileMemo
+      tileHeight={TILE_HEIGHT}
+      isSelected={(id: number) => selectedIds.includes(id)}
+      item={item}
       onLongPress={handleLongPress}
       onPress={handlePress}
       showSize
-      tag={item}
     />
   );
 
   return (
     <ManyTiles
+      tileHeight={TILE_HEIGHT}
       isRootless={isRootless}
       isMultiSelect={isMultiSelect}
       selectedIds={selectedIds}

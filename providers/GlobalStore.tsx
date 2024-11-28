@@ -88,6 +88,18 @@ export const StoreProvider = ({
         await cardTagService.link(8, 2); // il fait chaud + phrases
         await cardTagService.link(9, 2); // quelque chose + phrases
         await cardTagService.link(10, 2); // ou est la rue? + phrases
+
+        // Agriculture
+        await cardTagService.link(11, 5); // Farm
+        await cardTagService.link(12, 5); // Farm
+        await cardTagService.link(13, 5); // Farm
+        await cardTagService.link(14, 5); // Farm
+        await cardTagService.link(15, 5); // Farm
+        await cardTagService.link(16, 5); // Farm
+        await cardTagService.link(17, 5); // Farm
+        await cardTagService.link(18, 5); // Farm
+        await cardTagService.link(19, 5); // Farm
+        await cardTagService.link(20, 5); // Farm
       }
 
       setDbIsReady(true);

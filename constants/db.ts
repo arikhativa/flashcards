@@ -63,6 +63,66 @@ export const CARDS: CardCreate[] = [
     comment: "",
     knowledgeLevel: KnowledgeLevel.Confident,
   },
+  {
+    sideA: "Agriculture",
+    sideB: "Farming",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Confident,
+  },
+  {
+    sideA: "Récolte",
+    sideB: "Harvest",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Learning,
+  },
+  {
+    sideA: "Sol",
+    sideB: "Soil",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Learning,
+  },
+  {
+    sideA: "Vache",
+    sideB: "Cow",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Confident,
+  },
+  {
+    sideA: "Bétail",
+    sideB: "Livestock",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.GettingThere,
+  },
+  {
+    sideA: "Chèvre",
+    sideB: "Goat",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Confident,
+  },
+  {
+    sideA: "Labour",
+    sideB: "Plowing",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Confident,
+  },
+  {
+    sideA: "Graine",
+    sideB: "Seed",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Confident,
+  },
+  {
+    sideA: "Durabilité",
+    sideB: "Sustainability",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.Learning,
+  },
+  {
+    sideA: "Grange",
+    sideB: "Barn",
+    comment: "",
+    knowledgeLevel: KnowledgeLevel.GettingThere,
+  },
 ];
 
 export const TAGS: TagCreate[] = [
@@ -77,5 +137,8 @@ export const TAGS: TagCreate[] = [
   },
   {
     name: "Food",
+  },
+  {
+    name: "Agriculture",
   },
 ];

@@ -1,14 +1,12 @@
-import { Pressable, View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import { Tag } from "@/types/Tag";
 import { Chip } from "react-native-paper";
 import { baseUnit, margin } from "@/constants/styles";
-import { getTagHref } from "@/utils/links";
-import { Link } from "expo-router";
 import { GestureWrapper } from "../shared/GestureWrapper";
 
 export type TagTileProps = {
+  style?: StyleProp<ViewStyle>;
   tag: Tag;
-  disabledLink?: boolean;
   showSize?: boolean;
   onClose?: () => void;
   onPress?: (id: number) => void;
@@ -17,12 +15,11 @@ export type TagTileProps = {
 };
 
 // TODO add option to chose an icon for the list?
-
 export function TagTile({
+  style,
   tag,
   showSize,
   onClose,
-  disabledLink,
   onPress,
   onLongPress,
   isSelected,
@@ -43,30 +40,29 @@ export function TagTile({
       onTap={onPress && (() => onPress(tag.id))}
       onLongPress={onLongPress && (() => onLongPress(tag.id))}
     >
-      <Link disabled={disabledLink} href={getTagHref(tag.id)} asChild>
-        <Pressable>
-          <View
-            style={{
-              padding: baseUnit,
-              flexDirection: "row",
-            }}
-          >
-            <Chip
-              closeIcon={onClose ? "close" : undefined}
-              onClose={onClose}
-              selected={isSelected}
-              style={[
-                {
-                  alignSelf: "flex-start",
-                },
-              ]}
-            >
-              {tag.name}
-            </Chip>
-            {getSumOfCards(tag)}
-          </View>
-        </Pressable>
-      </Link>
+      <View
+        style={[
+          style,
+          {
+            padding: baseUnit,
+            flexDirection: "row",
+          },
+        ]}
+      >
+        <Chip
+          closeIcon={onClose ? "close" : undefined}
+          onClose={onClose}
+          selected={isSelected}
+          style={[
+            {
+              alignSelf: "flex-start",
+            },
+          ]}
+        >
+          {tag.name}
+        </Chip>
+        {getSumOfCards(tag)}
+      </View>
     </GestureWrapper>
   );
 }
