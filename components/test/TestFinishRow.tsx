@@ -41,11 +41,7 @@ export default function TestFinishRow({
         icon={cardMeta.success ? "check" : "close"}
       ></IconButton>
       <View style={{ flex: 1 }}>
-        <CardTile
-          onPress={() => scrollToPage(index)}
-          disabledLink
-          card={card}
-        />
+        <CardTile onPress={() => scrollToPage(index)} card={card} />
       </View>
       <View style={{ flexDirection: "column" }}>
         <IconButton

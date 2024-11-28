@@ -21,12 +21,9 @@ import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { useVisible } from "@/hooks/useVisible";
 import { getBrowseHref, getCardHref, getTagHref } from "@/utils/links";
 import { router } from "expo-router";
-import { CardService } from "@/services/Card";
-import { Conf } from "@/types/Conf";
 import CreateOrAddTagDialog from "../shared/CreateOrAddTagDialog";
 import TagsSectionDialog from "../card/TagsSectionDialog";
 import { Tag } from "@/types/Tag";
-import { TagService } from "@/services/Tag";
 import { StoreContextType } from "@/providers/GlobalStore";
 
 interface CardsProps {

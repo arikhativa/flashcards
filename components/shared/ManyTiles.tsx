@@ -9,6 +9,7 @@ import { Href } from "expo-router";
 import { useCallback } from "react";
 
 export type ManyTilesProps<T> = {
+  tileHeight: number;
   isMultiSelect: boolean;
   selectedIds: number[];
   clearSelectedIds: () => void;
@@ -28,6 +29,7 @@ export type ManyTilesProps<T> = {
 };
 
 export function ManyTiles<T extends BaseCrud>({
+  tileHeight,
   onSelectMany,
   isRootless,
   href,
@@ -47,6 +49,17 @@ export function ManyTiles<T extends BaseCrud>({
 }: ManyTilesProps<T>) {
   const betterRenderItem = useCallback(renderItem, [renderItem]);
 
+  const getItemLayout = (
+    data: ArrayLike<T> | undefined | null,
+    index: number
+  ) => {
+    return {
+      length: tileHeight,
+      offset: tileHeight * index,
+      index,
+    };
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
@@ -57,6 +70,7 @@ export function ManyTiles<T extends BaseCrud>({
             </View>
           ) : (
             <FlatList
+              getItemLayout={getItemLayout}
               data={objs}
               keyExtractor={(objs) => objs.id.toString()}
               contentContainerStyle={contentContainerStyle}

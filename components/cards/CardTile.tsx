@@ -3,29 +3,21 @@ import { Text, useTheme } from "react-native-paper";
 import { Card as PaperCard } from "react-native-paper";
 import { Divider } from "react-native-paper";
 import { margin } from "@/constants/styles";
-import { Link } from "expo-router";
-import {
-  Pressable,
-  View,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-} from "react-native";
-import { getCardHref } from "@/utils/links";
+import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { KnowledgeLevel, KnowledgeLevelColor } from "@/types/KnowledgeLevel";
 import { GestureWrapper } from "../shared/GestureWrapper";
 
 export type CardTileProps = {
+  style?: StyleProp<ViewStyle>;
   card: Card;
-  disabledLink?: boolean;
   onPress?: (id: number) => void;
   onLongPress?: (id: number) => void;
   isSelected?: boolean;
 };
 
 export function CardTile({
+  style,
   card,
-  disabledLink,
   onPress,
   onLongPress,
   isSelected,
@@ -38,13 +30,6 @@ export function CardTile({
           backgroundColor: colors.secondaryContainer,
         }
       : {};
-  };
-
-  const isLinkDisabled = () => {
-    if (isSelected) {
-      return true;
-    }
-    return disabledLink;
   };
 
   const getKLStyle = () => {
@@ -65,27 +50,23 @@ export function CardTile({
       onTap={onPress && (() => onPress(card.id))}
       onLongPress={onLongPress && (() => onLongPress(card.id))}
     >
-      <Link disabled={isLinkDisabled()} href={getCardHref(card.id)} asChild>
-        <Pressable>
-          <View>
-            <PaperCard style={[margin.base, getSelectedStyle(), getKLStyle()]}>
-              <PaperCard.Content>
-                <View style={[styles.sideViewHeightA]}>
-                  <Text style={styles.text} variant="titleSmall">
-                    {card.sideA}
-                  </Text>
-                </View>
-                <Divider></Divider>
-                <View style={[styles.sideViewHeightB]}>
-                  <Text style={styles.text} variant="titleSmall">
-                    {card.sideB}
-                  </Text>
-                </View>
-              </PaperCard.Content>
-            </PaperCard>
-          </View>
-        </Pressable>
-      </Link>
+      <View style={style}>
+        <PaperCard style={[margin.base, getSelectedStyle(), getKLStyle()]}>
+          <PaperCard.Content>
+            <View style={[styles.sideViewHeightA]}>
+              <Text style={styles.text} variant="titleSmall">
+                {card.sideA}
+              </Text>
+            </View>
+            <Divider></Divider>
+            <View style={[styles.sideViewHeightB]}>
+              <Text style={styles.text} variant="titleSmall">
+                {card.sideB}
+              </Text>
+            </View>
+          </PaperCard.Content>
+        </PaperCard>
+      </View>
     </GestureWrapper>
   );
 }

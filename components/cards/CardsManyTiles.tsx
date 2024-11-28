@@ -1,20 +1,16 @@
 import { Card } from "@/types/Card";
-import { View, Dimensions } from "react-native";
-import { CardTile } from "./CardTile";
+import { Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { ObjType } from "@/types/generic";
-import { ObjLinkProps, TestLinkProps } from "@/utils/links";
-import { Href } from "expo-router";
+import { getCardHref, ObjLinkProps, TestLinkProps } from "@/utils/links";
+import { Href, useRouter } from "expo-router";
 import { ManyTiles } from "../shared/ManyTiles";
-import { BaseCrud } from "@/types/generic";
+import CardRowMemo, { Row } from "./CardRowMemo";
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
 const gap = 20;
-
-type Row = BaseCrud & {
-  cards: Card[];
-};
+const TILE_HEIGHT = 120;
 
 export type CardManyTilesProps = {
   isRootless?: boolean;
@@ -28,7 +24,6 @@ export type CardManyTilesProps = {
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
-  disabledLink?: boolean;
   href?: Href<ObjLinkProps | TestLinkProps>;
 };
 
@@ -45,8 +40,9 @@ export function CardsManyTiles({
   onTestMany,
   clearSelectedIds,
   cards,
-  disabledLink,
 }: CardManyTilesProps) {
+  const router = useRouter();
+
   const maxSize = isRootless
     ? Dimensions.get("window").width * 0.9
     : Dimensions.get("window").width;
@@ -89,42 +85,28 @@ export function CardsManyTiles({
   };
 
   const handlePress = (id: number) => {
-    if (isMultiSelect) {
+    if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
-    }
-    if (isRootless) {
-      toggleIdSelection(id);
+    } else {
+      router.push(getCardHref(id));
     }
   };
 
   const renderRow = ({ item }: { item: Row }) => {
-    const children = item.cards.map((card) => {
-      return (
-        <CardTile
-          key={card.id}
-          disabledLink={isRootless || isMultiSelect ? true : disabledLink}
-          card={card}
-          onLongPress={handleLongPress}
-          onPress={handlePress}
-          isSelected={selectedIds.includes(card.id)}
-        />
-      );
-    });
-
     return (
-      <View
-        key={item.id}
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        {children}
-      </View>
+      <CardRowMemo
+        item={item}
+        tileHeight={TILE_HEIGHT}
+        onLongPress={handleLongPress}
+        onPress={handlePress}
+        isSelected={(id: number) => selectedIds.includes(id)}
+      />
     );
   };
 
   return (
     <ManyTiles
+      tileHeight={TILE_HEIGHT}
       isRootless={isRootless}
       onBrowseMany={onBrowseMany}
       onSelectMany={onSelectMany}
