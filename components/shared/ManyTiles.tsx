@@ -1,17 +1,12 @@
-import {
-  View,
-  FlatList,
-  ListRenderItem,
-  StyleProp,
-  ViewStyle,
-} from "react-native";
+import { View, FlatList, StyleProp, ViewStyle } from "react-native";
 import { Text } from "react-native-paper";
 import { text } from "@/constants/styles";
 import { GestureWrapper } from "../shared/GestureWrapper";
 import MultiSelectActionBar from "../shared/MultiSelectActionBar";
-import { ObjType } from "@/types/generic";
+import { BaseCrud, ObjType } from "@/types/generic";
 import { ObjLinkProps, TestLinkProps } from "@/utils/links";
 import { Href } from "expo-router";
+import { useCallback } from "react";
 
 export type ManyTilesProps<T> = {
   isMultiSelect: boolean;
@@ -24,7 +19,7 @@ export type ManyTilesProps<T> = {
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   objs?: T[];
-  renderItem: ListRenderItem<T> | null | undefined;
+  renderItem: ({ item }: { item: T }) => React.JSX.Element;
   noObjsMessage: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
   href?: Href<ObjLinkProps | TestLinkProps>;
@@ -32,7 +27,7 @@ export type ManyTilesProps<T> = {
   isRootless?: boolean;
 };
 
-export function ManyTiles<T>({
+export function ManyTiles<T extends BaseCrud>({
   onSelectMany,
   isRootless,
   href,
@@ -50,6 +45,8 @@ export function ManyTiles<T>({
   type,
   objs,
 }: ManyTilesProps<T>) {
+  const betterRenderItem = useCallback(renderItem, [renderItem]);
+
   return (
     <View style={{ flex: 1 }}>
       <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
@@ -61,9 +58,9 @@ export function ManyTiles<T>({
           ) : (
             <FlatList
               data={objs}
-              keyExtractor={(_, index) => index.toString()}
+              keyExtractor={(objs) => objs.id.toString()}
               contentContainerStyle={contentContainerStyle}
-              renderItem={renderItem}
+              renderItem={betterRenderItem}
             />
           )}
         </View>

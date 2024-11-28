@@ -9,7 +9,7 @@ export class BaseCrudService<
 > {
   constructor(
     protected repo: Repository<TSchema>,
-    protected onUpdate: () => void,
+    protected onUpdate: (ids?: T["id"][]) => void,
     private relations?: string[]
   ) {}
 
@@ -62,7 +62,7 @@ export class BaseCrudService<
   ): Promise<T[] | null> {
     try {
       const promises = ids.map((id) => this.getById(id, withArchive));
-      const results = await Promise.all(promises);
+      const results = (await Promise.all(promises)).filter((e) => e);
 
       if (results.length) return results as unknown as T[];
       return null;
@@ -79,7 +79,7 @@ export class BaseCrudService<
 
     try {
       const ret = await this.repo.save(entity);
-      this.onUpdate();
+      this.onUpdate([ret.id]);
       return ret as unknown as T;
     } catch (e) {
       console.error("create error: ", e);
@@ -98,7 +98,7 @@ export class BaseCrudService<
 
     try {
       const ret = await this.repo.save(entity);
-      this.onUpdate();
+      this.onUpdate([ret.id]);
       return ret as unknown as T;
     } catch (e) {
       console.error("update error: ", e);
@@ -109,8 +109,8 @@ export class BaseCrudService<
 
   async updateMany(list: TUpdate[]): Promise<boolean> {
     try {
-      await this.repo.save(list as unknown as TSchema[]);
-      this.onUpdate();
+      const ret = await this.repo.save(list as unknown as TSchema[]);
+      this.onUpdate([...ret.map((e) => e.id)]);
       return true;
     } catch (e) {
       console.error("updateMany error: ", e);
@@ -128,7 +128,7 @@ export class BaseCrudService<
 
     try {
       await this.repo.delete({ id });
-      this.onUpdate();
+      this.onUpdate([id]);
       return true;
     } catch (e) {
       console.error("delete error: ", e);
@@ -141,7 +141,7 @@ export class BaseCrudService<
   async deleteMany(list: TSchema["id"][]): Promise<boolean> {
     try {
       await this.repo.delete(list);
-      this.onUpdate();
+      this.onUpdate(list);
       return true;
     } catch (e) {
       console.error("deleteMany error: ", e);

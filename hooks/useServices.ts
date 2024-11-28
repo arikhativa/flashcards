@@ -9,11 +9,12 @@ import { Conf } from "@/types/Conf";
 import { Metadata } from "@/types/Metadata";
 import { Tag } from "@/types/Tag";
 import { useState } from "react";
+import { useList } from "./useList";
 
 export function useServices(repos: Repositories) {
   const [archiveCards, setArchiveCards] = useState<Card[]>([]);
-  const [cards, setCards] = useState<Card[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [cards, setCards, modifyCards, filterCards] = useList<Card>([]);
+  const [tags, setTags, modifyTags, filterTags] = useList<Tag>([]);
   const [conf, setConf] = useState<Conf>(ConfService.EMPTY);
   const [metadata, setMetadata] = useState<Metadata>({} as Metadata);
 
@@ -48,34 +49,31 @@ export function useServices(repos: Repositories) {
     if (cardList) setCards(cardList);
   };
 
-  // const fetchSpecificCards = async (ids: Card["id"][]) => {
-  //   const dirtyCards = await cardService.getByIds(ids);
+  // TODO not good enough
+  const fetchSpecificCards = async (ids: Card["id"][]) => {
+    const dirtyCards = await cardService.getByIds(ids);
 
-  //   if (!dirtyCards || !dirtyCards.length) return;
+    if (!dirtyCards || !dirtyCards.length) {
+      filterCards(ids);
+      fetchTags();
+      return;
+    }
 
-  //   let dirtyTagIds: Tag["id"][] = [];
+    const dirtyTagIds: Tag["id"][] = [];
 
-  //   dirtyCards.forEach((card) => {
-  //     card.tags.forEach((tag) => {
-  //       dirtyTagIds.push(tag.id);
-  //     });
-  //   });
+    dirtyCards.forEach((card) => {
+      card.tags.forEach((tag) => {
+        dirtyTagIds.push(tag.id);
+      });
+    });
 
-  //   const dirtyTags = await tagService.getByIds(dirtyTagIds);
-  //   if (dirtyTags) {
-  //     const tagMap = new Map(tags.map((tag) => [tag.id, tag]));
-  //     dirtyTags.forEach((tag) => {
-  //       tagMap.set(tag.id, tag);
-  //     });
-  //     setTags(Array.from(tagMap.values()));
-  //   }
+    const dirtyTags = await tagService.getByIds(dirtyTagIds);
+    if (dirtyTags) {
+      modifyTags(dirtyTags);
+    }
 
-  //   const cardMap = new Map(cards.map((card) => [card.id, card]));
-  //   dirtyCards.forEach((card) => {
-  //     cardMap.set(card.id, card);
-  //   });
-  //   setCards(Array.from(cardMap.values()));
-  // };
+    modifyCards(dirtyCards);
+  };
 
   const fetchTags = async () => {
     const tagList = await tagService.getAll();
@@ -87,9 +85,13 @@ export function useServices(repos: Repositories) {
     fetchMetadata
   );
 
-  const handleCardUpdate = async () => {
-    await fetchCards();
-    await fetchTags();
+  const handleCardUpdate = async (ids?: Card["id"][]) => {
+    if (!ids) {
+      await fetchCards();
+      await fetchTags();
+      return;
+    }
+    await fetchSpecificCards(ids);
   };
 
   const handleTagUpdate = async () => {
