@@ -50,6 +50,7 @@ export function useServices(repos: Repositories) {
   };
 
   // TODO not good enough
+  // There is a bug on create
   const fetchSpecificCards = async (ids: Card["id"][]) => {
     const dirtyCards = await cardService.getByIds(ids);
 
@@ -86,12 +87,12 @@ export function useServices(repos: Repositories) {
   );
 
   const handleCardUpdate = async (ids?: Card["id"][]) => {
-    if (!ids) {
-      await fetchCards();
-      await fetchTags();
-      return;
-    }
-    await fetchSpecificCards(ids);
+    await fetchCards();
+    await fetchTags();
+    // if (ids) {
+    // await fetchSpecificCards(ids);
+    //   return;
+    // }
   };
 
   const handleTagUpdate = async () => {
