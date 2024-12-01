@@ -54,11 +54,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/preset-react": "^7.25.9",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.9.1",
     "@types/react": "~18.2.45",
     "@types/react-native-sqlite-storage": "^6.0.5",
     "@types/react-test-renderer": "^18.0.7",
+    "@welldone-software/why-did-you-render": "^8.0.3",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.57.0",
     "eslint-config-expo": "~7.1.2",
