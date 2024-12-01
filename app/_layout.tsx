@@ -1,22 +1,27 @@
-import 'reflect-metadata'; // NOTE - this must be at the top of the app
+import {DefaultTheme, PaperProvider, MD3Theme} from 'react-native-paper';
+import {useFonts} from 'expo-font';
+import {Stack} from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import {useEffect, useState} from 'react';
+import 'react-native-reanimated';
 
-import React, {useEffect, useState} from 'react';
-import {Repository} from 'typeorm';
+import {StoreProvider} from '../providers/GlobalStore';
+import {AppDataSource} from '../db/AppDataSource';
 import {
   CardSchema,
   ConfSchema,
   MetadataSchema,
   TagSchema,
-} from './schemas/schemas';
-import {AppDataSource} from './db/AppDataSource';
+} from '../schemas/schemas';
+import {Repository} from 'typeorm';
+
+import {en, registerTranslation} from 'react-native-paper-dates';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {DefaultTheme, PaperProvider} from 'react-native-paper';
-import {MD3Colors, MD3Theme} from 'react-native-paper/lib/typescript/types';
-import {StoreProvider} from './providers/GlobalStore';
-import {NavigationContainer} from '@react-navigation/native';
-import IndexScreen from './app/(tabs)';
-import {createStackNavigator} from '@react-navigation/stack';
-import TabLayout from './app/(tabs)/_layout';
+import {MD3Colors} from 'react-native-paper/lib/typescript/types';
+registerTranslation('en', en);
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
 
 export type CustomColors = MD3Colors & {
   successContainer: string;
@@ -35,9 +40,11 @@ const theme: CustomTheme = {
   },
 };
 
-const Stack = createStackNavigator();
+export default function RootLayout() {
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
 
-function App(): React.JSX.Element {
   const [dbInitialized, setDbInitialized] = useState(false);
 
   const [cardRepository, setCardRepository] = useState<Repository<CardSchema>>(
@@ -55,6 +62,12 @@ function App(): React.JSX.Element {
   const [metadataRepository, setMetadataRepository] = useState<
     Repository<MetadataSchema>
   >({} as Repository<MetadataSchema>);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
 
   useEffect(() => {
     const initDB = async () => {
@@ -81,8 +94,8 @@ function App(): React.JSX.Element {
     initDB();
   }, []);
 
-  if (!dbInitialized) {
-    return <></>;
+  if (!loaded || !dbInitialized) {
+    return null;
   }
 
   return (
@@ -95,17 +108,12 @@ function App(): React.JSX.Element {
             confRepository,
             metadataRepository,
           }}>
-          <TabLayout />
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Cards" id={undefined}>
-              <Stack.Screen name="Cards" component={IndexScreen} />
-              <Stack.Screen name="Tags" component={IndexScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
         </StoreProvider>
       </PaperProvider>
     </GestureHandlerRootView>
   );
 }
-
-export default App;

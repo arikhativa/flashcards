@@ -1,4 +1,4 @@
-import {baseUnit, margin} from '../constants/styles';
+import {baseUnit, margin} from '../../constants/styles';
 import React from 'react';
 import {View} from 'react-native';
 import {FAB} from 'react-native-paper';

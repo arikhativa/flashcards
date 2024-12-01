@@ -1,8 +1,7 @@
-import {Href, RouteParamInput, useRouter} from 'expo-router';
-import {getTestHref, ObjLinkProps, TestLinkProps} from '../utils/links';
+import {getTestHref, ObjLinkProps, TestLinkProps} from '../../utils/links';
 import {useEffect, useState} from 'react';
 import ActionsBar, {DangerButtons, MainButtons} from './ActionsBar';
-import {ObjType} from '../types/generic';
+import {ObjType} from '../../types/generic';
 
 interface FABProps {
   icon: string;

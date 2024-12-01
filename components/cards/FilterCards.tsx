@@ -1,11 +1,11 @@
-import {baseUnit} from '../constants/styles';
-import {SelectedKL} from '../types/KnowledgeLevel';
+import {baseUnit} from '../../constants/styles';
+import {SelectedKL} from '../../types/KnowledgeLevel';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {Menu, IconButton} from 'react-native-paper';
 import MultiSelectKLDialog from './MultiSelectKLDialog';
 import TimeDialog from './TimeDialog';
-import {TimeDropdown} from '../hooks/useTimeDropdown';
+import {TimeDropdown} from '../../hooks/useTimeDropdown';
 
 interface FilterCardsProps {
   hide?: boolean;

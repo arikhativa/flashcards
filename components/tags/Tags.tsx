@@ -1,15 +1,15 @@
 import {View} from 'react-native';
 
-import {baseUnit, container} from '../constants/styles';
+import {baseUnit, container} from '../../constants/styles';
 import {useEffect, useState} from 'react';
-import {MultiSelect} from '../hooks/useMultiSelect';
-import ListActions from '../components/shared/ListActions';
-import {TagsManyTiles} from '../components/tags/TagsManyTiles';
-import ConfirmationDialog from '../components/shared/ConfirmationDialog';
-import {useVisible} from '../hooks/useVisible';
-import {Tag} from '../types/Tag';
-import {TagService} from '../services/Tag';
-import {Conf} from '../types/Conf';
+import {MultiSelect} from '../../hooks/useMultiSelect';
+import ListActions from '../../components/shared/ListActions';
+import {TagsManyTiles} from '../../components/tags/TagsManyTiles';
+import ConfirmationDialog from '../../components/shared/ConfirmationDialog';
+import {useVisible} from '../../hooks/useVisible';
+import {Tag} from '../../types/Tag';
+import {TagService} from '../../services/Tag';
+import {Conf} from '../../types/Conf';
 
 interface TagsProps {
   isRootless?: boolean;

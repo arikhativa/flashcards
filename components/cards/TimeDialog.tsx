@@ -1,10 +1,10 @@
 import {View} from 'react-native';
 import {Dialog, Portal} from 'react-native-paper';
-import {container} from '../constants/styles';
-import {TimeDropdown} from '../hooks/useTimeDropdown';
+import {container} from '../../constants/styles';
+import {TimeDropdown} from '../../hooks/useTimeDropdown';
 import {Dropdown} from 'react-native-paper-dropdown';
 import React from 'react';
-import {TIME_OPTIONS} from '../utils/testForm';
+import {TIME_OPTIONS} from '../../utils/testForm';
 
 type TimeDialogProps = {
   visible: boolean;

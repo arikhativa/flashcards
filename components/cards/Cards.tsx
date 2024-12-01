@@ -1,30 +1,31 @@
+import React from 'react';
 import {View} from 'react-native';
 import {container} from '../../constants/styles';
 import {useEffect, useState} from 'react';
-import {FULL_SELECTED_KL, SelectedKL} from '../types/KnowledgeLevel';
-import {Card} from '../types/Card';
-import {CRUDMode, FilterChip, FilterNames, NEW_ID} from '../types/generic';
-import {isKnowledgeLevelFullOn} from '../utils/knowledgeLevel';
+import {FULL_SELECTED_KL, SelectedKL} from '../../types/KnowledgeLevel';
+import {Card} from '../../types/Card';
+import {CRUDMode, FilterChip, FilterNames, NEW_ID} from '../../types/generic';
+import {isKnowledgeLevelFullOn} from '../../utils/knowledgeLevel';
 import {
   getSortDirectionByName,
   sorByAlpha,
   sortByDate,
   sortByKL,
-} from '../utils/sort';
-import {MultiSelect} from '../hooks/useMultiSelect';
-import ListActions from '../components/shared/ListActions';
-import {CardsManyTiles} from '../components/cards/CardsManyTiles';
-import {Sort, SortNames} from '../types/Sort';
-import {useTimeDropdown} from '../hooks/useTimeDropdown';
-import {OPTIONS_VALUES} from '../utils/testForm';
-import ConfirmationDialog from '../components/shared/ConfirmationDialog';
-import {useVisible} from '../hooks/useVisible';
-import {getBrowseHref, getCardHref, getTagHref} from '../utils/links';
-import {router} from 'expo-router';
+} from '../../utils/sort';
+import {MultiSelect} from '../../hooks/useMultiSelect';
+import ListActions from '../../components/shared/ListActions';
+import {CardsManyTiles} from '../../components/cards/CardsManyTiles';
+import {Sort, SortNames} from '../../types/Sort';
+import {useTimeDropdown} from '../../hooks/useTimeDropdown';
+import {OPTIONS_VALUES} from '../../utils/testForm';
+import ConfirmationDialog from '../../components/shared/ConfirmationDialog';
+import {useVisible} from '../../hooks/useVisible';
+import {getBrowseHref, getCardHref, getTagHref} from '../../utils/links';
 import CreateOrAddTagDialog from '../shared/CreateOrAddTagDialog';
 import TagsSectionDialog from '../card/TagsSectionDialog';
-import {Tag} from '../types/Tag';
-import {StoreContextType} from '../providers/GlobalStore';
+import {Tag} from '../../types/Tag';
+import {StoreContextType} from '../../providers/GlobalStore';
+import {Text} from 'react-native-paper';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -202,7 +203,8 @@ export default function Cards({
 
   return (
     <View style={[container.flex1]}>
-      <ListActions
+      <Text>asd</Text>
+      {/* <ListActions
         conf={store.conf}
         sort={sort}
         onSortChange={setSort}
@@ -253,7 +255,7 @@ export default function Cards({
           visible={addTagDialog.visible}
           onDismiss={addTagDialog.toggleVisible}
         />
-      )}
+      )} */}
     </View>
   );
 }

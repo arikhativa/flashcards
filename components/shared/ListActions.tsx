@@ -1,13 +1,13 @@
-import {baseUnit, gap, margin} from '../constants/styles';
-import {FilterChip} from '../types/generic';
-import {SelectedKL} from '../types/KnowledgeLevel';
+import {baseUnit, gap, margin} from '../../constants/styles';
+import {FilterChip} from '../../types/generic';
+import {SelectedKL} from '../../types/KnowledgeLevel';
 import {FlatList, StyleProp, View, ViewStyle} from 'react-native';
 import {Chip, Searchbar, Surface} from 'react-native-paper';
 import SortCards from '../cards/SortCards';
 import FilterCards from '../cards/FilterCards';
-import {Sort} from '../types/Sort';
-import {TimeDropdown} from '../hooks/useTimeDropdown';
-import {Conf} from '../types/Conf';
+import {Sort} from '../../types/Sort';
+import {TimeDropdown} from '../../hooks/useTimeDropdown';
+import {Conf} from '../../types/Conf';
 
 interface ListActionsProps {
   conf: Conf;

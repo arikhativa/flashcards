@@ -1,8 +1,7 @@
-import {Tag} from '../types/Tag';
-import {getTagHref} from '../utils/links';
-import {NEW_ID, ObjType} from '../types/generic';
+import {Tag} from '../../types/Tag';
+import {getTagHref} from '../../utils/links';
+import {NEW_ID, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
-import {useRouter} from 'expo-router';
 import TagTileMemo from './TagTileMemo';
 
 const TILE_HEIGHT = 55;

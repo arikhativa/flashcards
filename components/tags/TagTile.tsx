@@ -1,7 +1,7 @@
 import {StyleProp, View, ViewStyle} from 'react-native';
-import {Tag} from '../types/Tag';
+import {Tag} from '../../types/Tag';
 import {Chip} from 'react-native-paper';
-import {baseUnit, margin} from '../constants/styles';
+import {baseUnit, margin} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
 
 export type TagTileProps = {

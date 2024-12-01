@@ -1,10 +1,10 @@
-import {baseUnit} from '../constants/styles';
+import {baseUnit} from '../../constants/styles';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {Menu, IconButton, Divider, useTheme} from 'react-native-paper';
-import {Sort, SortDir, SortNames} from '../types/Sort';
-import {getSortDirectionByName} from '../utils/sort';
-import {Conf} from '../types/Conf';
+import {Sort, SortDir, SortNames} from '../../types/Sort';
+import {getSortDirectionByName} from '../../utils/sort';
+import {Conf} from '../../types/Conf';
 
 interface SortCardsProps {
   conf: Conf;

@@ -1,4 +1,9 @@
-import {CardSchema, ConfSchema, MetadataSchema, TagSchema} from './schemas';
+import {
+  CardSchema,
+  ConfSchema,
+  MetadataSchema,
+  TagSchema,
+} from '../schemas/schemas';
 import {DataSource} from 'typeorm';
 import {migrations} from './migrations';
 

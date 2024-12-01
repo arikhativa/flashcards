@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import {Dialog, Portal, Button} from 'react-native-paper';
-import {container, gap, margin, padding} from '../constants/styles';
+import {container, gap, margin, padding} from '../../constants/styles';
 import React from 'react';
 
 type ConfirmationDialogProps = {

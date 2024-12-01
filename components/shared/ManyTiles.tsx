@@ -1,11 +1,10 @@
 import {View, FlatList, StyleProp, ViewStyle} from 'react-native';
 import {Text} from 'react-native-paper';
-import {text} from '../constants/styles';
+import {text} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
 import MultiSelectActionBar from '../shared/MultiSelectActionBar';
-import {BaseCrud, ObjType} from '../types/generic';
-import {ObjLinkProps, TestLinkProps} from '../utils/links';
-import {Href} from 'expo-router';
+import {BaseCrud, ObjType} from '../../types/generic';
+import {ObjLinkProps, TestLinkProps} from '../../utils/links';
 import {useCallback} from 'react';
 
 export type ManyTilesProps<T> = {
