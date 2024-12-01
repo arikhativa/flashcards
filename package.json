@@ -7,14 +7,28 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "cache": "npm run start --reset-cache",
+    "test": "jest",
+    "dryCompile": "tsc --project tsconfig.json --noEmit --skipLibCheck"
   },
   "dependencies": {
     "react": "18.3.1",
-    "react-native": "0.76.3"
+    "react-native": "0.76.3",
+    "react-native-gesture-handler": "^2.21.2",
+    "react-native-paper": "^5.12.5",
+    "react-native-paper-dropdown": "^2.3.1",
+    "react-native-reanimated": "^3.16.3",
+    "react-native-safe-area-context": "^4.14.0",
+    "react-native-sqlite-storage": "^6.0.1",
+    "react-native-vector-icons": "^10.2.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-decorators": "^7.25.9",
+    "@babel/plugin-syntax-decorators": "^7.25.9",
+    "@babel/plugin-transform-class-static-block": "^7.26.0",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@react-native-community/cli": "15.0.1",
