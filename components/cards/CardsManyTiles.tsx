@@ -1,11 +1,12 @@
-import {Card} from '../types/Card';
+import React from 'react';
+import {Card} from '../../types/Card';
 import {Dimensions} from 'react-native';
 import {useEffect, useState} from 'react';
-import {ObjType} from '../types/generic';
-import {getCardHref, ObjLinkProps, TestLinkProps} from '../utils/links';
-import {Href, useRouter} from 'expo-router';
+import {ObjType} from '../../types/generic';
+import {getCardHref, ObjLinkProps, TestLinkProps} from '../../utils/links';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
+import {useNavigation} from '@react-navigation/native';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -41,7 +42,7 @@ export function CardsManyTiles({
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
-  const router = useRouter();
+  const navigation = useNavigation();
 
   const maxSize = isRootless
     ? Dimensions.get('window').width * 0.9
@@ -57,7 +58,7 @@ export function CardsManyTiles({
     const newRows: Row[] = [];
     let tmpRow: Card[] = [];
 
-    cards.forEach((card, index) => {
+    cards.forEach(card => {
       const newCardSize = getCardSize(card);
       const rowSize = getRowSize(tmpRow);
       if (rowSize + newCardSize > maxSize || tmpRow.length === 4) {
@@ -88,7 +89,8 @@ export function CardsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
-      router.push(getCardHref(id));
+      // TODO Nav
+      // navigation.navigate(getCardHref(id));
     }
   };
 

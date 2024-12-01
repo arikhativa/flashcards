@@ -1,10 +1,10 @@
-import {Card} from '../types/Card';
+import {Card} from '../../types/Card';
 import {Text, useTheme} from 'react-native-paper';
 import {Card as PaperCard} from 'react-native-paper';
 import {Divider} from 'react-native-paper';
-import {margin} from '../constants/styles';
+import {margin} from '../../constants/styles';
 import {View, StyleSheet, StyleProp, ViewStyle} from 'react-native';
-import {KnowledgeLevel, KnowledgeLevelColor} from '../types/KnowledgeLevel';
+import {KnowledgeLevel, KnowledgeLevelColor} from '../../types/KnowledgeLevel';
 import {GestureWrapper} from '../shared/GestureWrapper';
 
 export type CardTileProps = {

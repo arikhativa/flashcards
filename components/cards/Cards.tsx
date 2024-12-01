@@ -25,7 +25,6 @@ import CreateOrAddTagDialog from '../shared/CreateOrAddTagDialog';
 import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
-import {Text} from 'react-native-paper';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -67,94 +66,94 @@ export default function Cards({
   const addOrCreateTag = useVisible();
   const addTagDialog = useVisible();
 
-  // useEffect(() => {
-  //   const removeFilterIfNeeded = () => {
-  //     removeRangeIfNeeded();
-  //     removeKLIfNeeded();
-  //   };
+  useEffect(() => {
+    const removeFilterIfNeeded = () => {
+      removeRangeIfNeeded();
+      removeKLIfNeeded();
+    };
 
-  //   const removeRangeIfNeeded = () => {
-  //     if (!timeDropdown.range.endDate || !timeDropdown.range.startDate) {
-  //       removeFilter(FilterNames.TimeRange);
-  //     }
-  //   };
+    const removeRangeIfNeeded = () => {
+      if (!timeDropdown.range.endDate || !timeDropdown.range.startDate) {
+        removeFilter(FilterNames.TimeRange);
+      }
+    };
 
-  //   const removeKLIfNeeded = () => {
-  //     if (isKnowledgeLevelFullOn(selectedKL)) {
-  //       removeFilter(FilterNames.KL);
-  //     }
-  //   };
+    const removeKLIfNeeded = () => {
+      if (isKnowledgeLevelFullOn(selectedKL)) {
+        removeFilter(FilterNames.KL);
+      }
+    };
 
-  //   const removeFilter = (name: FilterNames) => {
-  //     if (filters.find((filter) => filter.name === name)) {
-  //       setFilters([...filters.filter((filter) => filter.name !== name)]);
-  //     }
-  //   };
+    const removeFilter = (name: FilterNames) => {
+      if (filters.find(filter => filter.name === name)) {
+        setFilters([...filters.filter(filter => filter.name !== name)]);
+      }
+    };
 
-  //   removeFilterIfNeeded();
-  // }, [filters, timeDropdown.range, selectedKL]);
+    removeFilterIfNeeded();
+  }, [filters, timeDropdown.range, selectedKL]);
 
-  // useEffect(() => {
-  //   if (!store.conf) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!store.conf) {
+      return;
+    }
 
-  //   setSort({
-  //     field: store.conf.sortBy,
-  //     direction: getSortDirectionByName(store.conf.sortBy),
-  //   });
-  // }, [store.conf]);
+    setSort({
+      field: store.conf.sortBy,
+      direction: getSortDirectionByName(store.conf.sortBy),
+    });
+  }, [store.conf]);
 
-  // useEffect(() => {
-  //   const filterCardsByTimeRanger = (list: Card[]) => {
-  //     const start = timeDropdown.range.startDate || 0;
-  //     const end = timeDropdown.range.endDate || Date.now();
-  //     return list.filter(
-  //       (card) => card.createdAt >= start && card.createdAt <= end
-  //     );
-  //   };
+  useEffect(() => {
+    const filterCardsByTimeRanger = (list: Card[]) => {
+      const start = timeDropdown.range.startDate || 0;
+      const end = timeDropdown.range.endDate || Date.now();
+      return list.filter(
+        card => card.createdAt >= start && card.createdAt <= end,
+      );
+    };
 
-  //   const filterCardsByKL = (list: Card[]) => {
-  //     return list.filter((card) => selectedKL[card.knowledgeLevel]);
-  //   };
+    const filterCardsByKL = (list: Card[]) => {
+      return list.filter(card => selectedKL[card.knowledgeLevel]);
+    };
 
-  //   const filterCardsBySearch = (list: Card[]) => {
-  //     if (!query || query === "") {
-  //       return list;
-  //     }
+    const filterCardsBySearch = (list: Card[]) => {
+      if (!query || query === '') {
+        return list;
+      }
 
-  //     return list.filter(
-  //       (card) =>
-  //         card.sideA.toLowerCase().includes(query.toLowerCase()) ||
-  //         card.sideB.toLowerCase().includes(query.toLowerCase())
-  //     );
-  //   };
+      return list.filter(
+        card =>
+          card.sideA.toLowerCase().includes(query.toLowerCase()) ||
+          card.sideB.toLowerCase().includes(query.toLowerCase()),
+      );
+    };
 
-  //   const setCardsLocalWitFilters = (list: Card[]) => {
-  //     list = filterCardsByTimeRanger(list);
-  //     list = filterCardsByKL(list);
-  //     list = filterCardsBySearch(list);
-  //     return list;
-  //   };
+    const setCardsLocalWitFilters = (list: Card[]) => {
+      list = filterCardsByTimeRanger(list);
+      list = filterCardsByKL(list);
+      list = filterCardsBySearch(list);
+      return list;
+    };
 
-  //   const setCardsLocalSort = (list: Card[]) => {
-  //     if (sort.field === SortNames.TIME) {
-  //       return sortByDate(list, sort.direction);
-  //     }
-  //     if (sort.field === SortNames.KL) {
-  //       return sortByKL(list, sort.direction);
-  //     }
-  //     if (sort.field === SortNames.SIDE_A_ABC) {
-  //       return sorByAlpha(list, "sideA", sort.direction);
-  //     }
-  //     if (sort.field === SortNames.SIDE_B_ABC) {
-  //       return sorByAlpha(list, "sideB", sort.direction);
-  //     }
-  //     return list;
-  //   };
+    const setCardsLocalSort = (list: Card[]) => {
+      if (sort.field === SortNames.TIME) {
+        return sortByDate(list, sort.direction);
+      }
+      if (sort.field === SortNames.KL) {
+        return sortByKL(list, sort.direction);
+      }
+      if (sort.field === SortNames.SIDE_A_ABC) {
+        return sorByAlpha(list, 'sideA', sort.direction);
+      }
+      if (sort.field === SortNames.SIDE_B_ABC) {
+        return sorByAlpha(list, 'sideB', sort.direction);
+      }
+      return list;
+    };
 
-  //   setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(store.cards)));
-  // }, [store.cards, query, selectedKL, timeDropdown.range, sort]);
+    setCardsLocal(setCardsLocalSort(setCardsLocalWitFilters(store.cards)));
+  }, [store.cards, query, selectedKL, timeDropdown.range, sort]);
 
   const handleGenericFilterSet = (name: FilterNames, onClose: () => void) => {
     if (filters.find(filter => filter.name === name)) {
@@ -193,18 +192,19 @@ export default function Cards({
 
   const handleCreateTag = async () => {
     const href = getTagHref(NEW_ID, CRUDMode.Create, selectedIdsRef.current);
-    router.push(href);
+    // TODO Nav
+    // router.push(href);
     clearSelectedIds();
   };
 
   const handelBrowseMany = () => {
-    router.push(getBrowseHref(selectedIdsRef.current));
+    // TODO Nav
+    // router.push(getBrowseHref(selectedIdsRef.current));
   };
 
   return (
     <View style={[container.flex1]}>
-      <Text>asd</Text>
-      {/* <ListActions
+      <ListActions
         conf={store.conf}
         sort={sort}
         onSortChange={setSort}
@@ -255,7 +255,7 @@ export default function Cards({
           visible={addTagDialog.visible}
           onDismiss={addTagDialog.toggleVisible}
         />
-      )} */}
+      )}
     </View>
   );
 }

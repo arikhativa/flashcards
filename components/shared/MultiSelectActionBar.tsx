@@ -38,7 +38,6 @@ export default function MultiSelectActionBar({
   href,
   onTestMany,
 }: MultiSelectActionBarProps) {
-  const router = useRouter();
   const [buttons, setButtons] = useState<MainButtons>({});
   const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
   const [toggledDangerButtons, setToggledDangerButtons] =
@@ -78,13 +77,15 @@ export default function MultiSelectActionBar({
         a: {
           icon: 'plus',
           onPress: () => {
-            router.push(href);
+            // TODO Nav
+            // router.push(href);
           },
         },
         b: {
           icon: 'school-outline',
           onPress: () => {
-            router.push(getTestHref());
+            // TODO Nav
+            // router.push(getTestHref());
           },
         },
       });

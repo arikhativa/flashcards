@@ -1,3 +1,4 @@
+import React from 'react';
 import {baseUnit, gap, margin} from '../../constants/styles';
 import {FilterChip} from '../../types/generic';
 import {SelectedKL} from '../../types/KnowledgeLevel';

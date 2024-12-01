@@ -16,7 +16,6 @@ import {StoreProvider} from './providers/GlobalStore';
 import {NavigationContainer} from '@react-navigation/native';
 import IndexScreen from './app/(tabs)';
 import {createStackNavigator} from '@react-navigation/stack';
-import TabLayout from './app/(tabs)/_layout';
 
 export type CustomColors = MD3Colors & {
   successContainer: string;
@@ -87,23 +86,21 @@ function App(): React.JSX.Element {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <PaperProvider theme={theme}>
-        <StoreProvider
-          repos={{
-            cardRepository,
-            tagRepository,
-            confRepository,
-            metadataRepository,
-          }}>
-          <TabLayout />
+      <StoreProvider
+        repos={{
+          cardRepository,
+          tagRepository,
+          confRepository,
+          metadataRepository,
+        }}>
+        <PaperProvider theme={theme}>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Cards" id={undefined}>
               <Stack.Screen name="Cards" component={IndexScreen} />
-              <Stack.Screen name="Tags" component={IndexScreen} />
             </Stack.Navigator>
           </NavigationContainer>
-        </StoreProvider>
-      </PaperProvider>
+        </PaperProvider>
+      </StoreProvider>
     </GestureHandlerRootView>
   );
 }

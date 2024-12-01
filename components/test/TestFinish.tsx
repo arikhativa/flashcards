@@ -1,15 +1,15 @@
-import {Card} from '../types/Card';
-import {CardMeta} from '../types/TestSettings';
+import React from 'react';
+import {Card} from '../../types/Card';
+import {CardMeta} from '../../types/TestSettings';
 import {useEffect, useState} from 'react';
 import {Keyboard, View} from 'react-native';
 import {Text, Button} from 'react-native-paper';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
-import {margin, padding} from '../constants/styles';
-import {getHomeHref} from '../utils/links';
+import {margin, padding} from '../../constants/styles';
+import {getHomeHref} from '../../utils/links';
 import {Card as PaperCard} from 'react-native-paper';
-import {useVisible} from '../hooks/useVisible';
+import {useVisible} from '../../hooks/useVisible';
 import TestFinishDialog from './TestFinishDialog';
-import {useRouter} from 'expo-router';
 
 interface TestFinishProps {
   scrollToPage: (index: number) => void;
@@ -26,8 +26,6 @@ export default function TestFinish({
   onChangeKnowledgeLevel,
   onRetakeTest,
 }: TestFinishProps) {
-  const router = useRouter();
-
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const {visible, toggleVisible} = useVisible();
 
@@ -73,7 +71,12 @@ export default function TestFinish({
         <Button mode="elevated" onPress={() => onRetakeTest(cards)}>
           Retake Test
         </Button>
-        <Button mode="elevated" onPress={() => router.replace(getHomeHref())}>
+        <Button
+          mode="elevated"
+          onPress={() => {
+            // TODO Nav
+            // router.replace(getHomeHref())
+          }}>
           Done
         </Button>
       </View>

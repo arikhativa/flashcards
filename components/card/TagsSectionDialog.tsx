@@ -2,9 +2,9 @@ import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {Dialog, Portal} from 'react-native-paper';
 import Tags from '../tags/Tags';
-import {useStore} from '../providers/GlobalStore';
-import {Tag} from '../types/Tag';
-import {useMultiSelect} from '../hooks/useMultiSelect';
+import {useStore} from '../../providers/GlobalStore';
+import {Tag} from '../../types/Tag';
+import {useMultiSelect} from '../../hooks/useMultiSelect';
 
 interface TagsSectionDialogProps {
   onDismiss: () => void;
