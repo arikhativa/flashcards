@@ -7,6 +7,7 @@ import {getCardHref, ObjLinkProps, TestLinkProps} from '../../utils/links';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
 import {useNavigation} from '@react-navigation/native';
+import {CardsScreenNavigationProp} from '../../screens/CardsNavigationStack';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -42,8 +43,7 @@ export function CardsManyTiles({
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<CardsScreenNavigationProp>();
   const maxSize = isRootless
     ? Dimensions.get('window').width * 0.9
     : Dimensions.get('window').width;
@@ -89,8 +89,7 @@ export function CardsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
-      // TODO Nav
-      // navigation.navigate(getCardHref(id));
+      navigation.navigate('Card', {id: id.toString()});
     }
   };
 

@@ -1,25 +1,25 @@
-import {useEffect, useState} from 'react';
-import {Conf} from '../../types/Conf';
-import {useStore} from '../../providers/GlobalStore';
+import React, {useEffect, useState} from 'react';
+import {Conf} from '../types/Conf';
+import {useStore} from '../providers/GlobalStore';
 import {Keyboard} from 'react-native';
 import {Button, Card, Text, Divider} from 'react-native-paper';
 import {View} from 'react-native';
-import {container, margin, padding} from '../../constants/styles';
-import NumberInput from '../../components/shared/NumberInput';
-import TextInput from '../../components/shared/CustomTextInput';
-import {isInRange, isTestSide} from '../../utils/generic';
+import {container, margin, padding} from '../constants/styles';
+import NumberInput from '../components/shared/NumberInput';
+import TextInput from '../components/shared/CustomTextInput';
+import {isInRange, isTestSide} from '../utils/generic';
 import {
   MAX_NUMBER_OF_CARDS,
   MAX_SIDE_LENGTH,
   MIN_NUMBER_OF_CARDS,
   MIN_SIDE_LENGTH,
-} from '../../constants/general';
+} from '../constants/general';
 import {Dropdown, Option} from 'react-native-paper-dropdown';
-import {TestSide} from '../../types/TestSettings';
-import InputHelper from '../../components/shared/InputHelper';
-import {CardsSideOptions} from '../../utils/testForm';
-import {isSortName} from '../../utils/sort';
-import {SortNames} from '../../types/Sort';
+import {TestSide} from '../types/TestSettings';
+import InputHelper from '../components/shared/InputHelper';
+import {CardsSideOptions} from '../utils/testForm';
+import {isSortName} from '../utils/sort';
+import {SortNames} from '../types/Sort';
 
 export default function ConfScreen() {
   const {conf, confService} = useStore();

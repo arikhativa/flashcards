@@ -14,8 +14,7 @@ import {DefaultTheme, PaperProvider} from 'react-native-paper';
 import {MD3Colors, MD3Theme} from 'react-native-paper/lib/typescript/types';
 import {StoreProvider} from './providers/GlobalStore';
 import {NavigationContainer} from '@react-navigation/native';
-import IndexScreen from './app/(tabs)';
-import {createStackNavigator} from '@react-navigation/stack';
+import NavigationBar from './screens/NavigationBar';
 
 export type CustomColors = MD3Colors & {
   successContainer: string;
@@ -33,8 +32,6 @@ const theme: CustomTheme = {
     success: '#81c784',
   },
 };
-
-const Stack = createStackNavigator();
 
 function App(): React.JSX.Element {
   const [dbInitialized, setDbInitialized] = useState(false);
@@ -95,9 +92,7 @@ function App(): React.JSX.Element {
         }}>
         <PaperProvider theme={theme}>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName="Cards" id={undefined}>
-              <Stack.Screen name="Cards" component={IndexScreen} />
-            </Stack.Navigator>
+            <NavigationBar />
           </NavigationContainer>
         </PaperProvider>
       </StoreProvider>
