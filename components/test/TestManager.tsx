@@ -10,8 +10,10 @@ import {padding} from '../../constants/styles';
 import TestFinish from './TestFinish';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {generateSmallList} from '../../utils/cardPicker';
-import {getTestHref} from '../../utils/links';
 import CarouselWrapper, {CarouselWrapperRef} from '../shared/CarouselWrapper';
+import {useNavigation} from '@react-navigation/native';
+import {RootStack} from '../../navigation/MainStack';
+import {ObjType} from '../../types/generic';
 
 interface TestManagerProps {
   matchingCards: Card[];
@@ -25,6 +27,7 @@ export default function TestManager({
   testSettings,
 }: TestManagerProps) {
   const {cardService} = useStore();
+  const navigation = useNavigation<RootStack>();
 
   const carouselWrapperRef = useRef<CarouselWrapperRef>(null);
   const cardTestRef = useRef<CardTestRef[]>([]);
@@ -153,7 +156,11 @@ export default function TestManager({
   };
 
   const handleRetakeTest = (list: Card[]) => {
-    // router.replace(getTestHref(list.map(card => card.id)));
+    navigation.replace('Test', {
+      cardIds: list.map(card => card.id),
+      tagIds: [],
+      type: ObjType.Card,
+    });
   };
 
   const getChild = (index: number) => {

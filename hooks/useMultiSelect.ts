@@ -1,5 +1,3 @@
-import {ObjType} from '../types/generic';
-// import {getTestHref} from '../utils/links';
 import {useState, useEffect, useRef} from 'react';
 
 export interface MultiSelect {
@@ -8,7 +6,6 @@ export interface MultiSelect {
   selectedIdsRef: React.MutableRefObject<number[]>;
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
-  handelTestMany: (type?: ObjType) => void;
   setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
@@ -38,18 +35,12 @@ export function useMultiSelect(): MultiSelect {
     setSelectedIds([]);
   };
 
-  const handelTestMany = (type: ObjType = ObjType.Card) => {
-    // router.push(getTestHref(selectedIdsRef.current, type));
-    clearSelectedIds();
-  };
-
   return {
     isMultiSelect,
     selectedIds,
     selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
-    handelTestMany,
     setSelectedIds,
   };
 }

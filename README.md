@@ -23,3 +23,28 @@ npm run updateMigrations
 NOTE - make sure the order of migrations stays the same
 
 now when running the app the new migrations will be added :)
+
+
+# Random Error
+if you get an error like this:
+```
+ (NOBRIDGE) ERROR  Warning: A props object containing a "key" prop is being spread into JSX:
+  let props = {key: someKey, route: ..., borderless: ..., centered: ..., rippleColor: ..., onPress: ..., onLongPress: ..., testID: ..., accessibilityLabel: ..., accessibilityRole: ..., accessibilityState: ..., style: ..., children: ...};
+  <Touchable {...props} />
+React keys must be passed directly to JSX without using spread:
+  let props = {route: ..., borderless: ..., centered: ..., rippleColor: ..., onPress: ..., onLongPress: ..., testID: ..., accessibilityLabel: ..., accessibilityRole: ..., accessibilityState: ..., style: ..., children: ...};
+  <Touchable key={someKey} {...props} />
+    in BottomNavigation.Bar (created by BottomNavigation)
+```
+then replace the line in this file:
+```
+node_modules/react-native-paper/src/components/BottomNavigation/BottomNavigationBar.tsx
+```
+Bad line:
+```
+renderTouchable = (props: TouchableProps<Route>) => <Touchable {...props} />,
+```
+good line:
+```
+renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={key} {...props} />,
+```

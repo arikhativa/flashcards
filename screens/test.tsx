@@ -4,7 +4,6 @@ import TestManager from '../components/test/TestManager';
 import {Card} from '../types/Card';
 import {getMatchingCardsForTest} from '../utils/cardPicker';
 import {useStore} from '../providers/GlobalStore';
-import {rawStringArrayToIntArray} from '../utils/generic';
 import {ObjType} from '../types/generic';
 import {Tag} from '../types/Tag';
 import TestForm from '../components/test/TestForm';
@@ -12,7 +11,8 @@ import {StackEndpoints} from '../navigation/MainStack';
 import {RouteProp} from '@react-navigation/native';
 
 export type TestParam = {
-  ids: number[];
+  cardIds: number[];
+  tagIds: number[];
   type: ObjType;
 };
 
@@ -23,9 +23,8 @@ interface Props {
 const TestScreen: React.FC = ({route}: Props) => {
   const {cards, tags, conf} = useStore();
 
-  const {ids, type} = route.params;
+  const {cardIds, tagIds, type} = route.params;
 
-  // const [ids, setIds] = useState<number[]>([]);
   const [isTestSetupDone, setIsTestSetupDone] = useState(false);
   const [testSettings, setTestSettings] =
     useState<TestSettings>(EMPTY_TEST_SETTING);
@@ -37,18 +36,12 @@ const TestScreen: React.FC = ({route}: Props) => {
     let tagList: Tag[] = [];
     let numberOfCards = conf.numberOfCards;
     let testSide = conf.testSide;
-    // if (rawIds) {
-    //   const idsList = rawStringArrayToIntArray(rawIds);
-
-    //   if (idsList.length) {
-    //     setIds(idsList);
-    //     if (type === ObjType.Tag) {
-    //       tagList = idsList.map(id => tags.find(tag => tag.id === id)!);
-    //     } else {
-    //       numberOfCards = idsList.length;
-    //     }
-    //   }
-    // }
+    if (cardIds.length) {
+      numberOfCards = cardIds.length;
+    }
+    if (tagIds.length) {
+      tagList = tagIds.map(id => tags.find(tag => tag.id === id)!);
+    }
 
     setTestSettings({
       ...testSettings,
@@ -61,8 +54,8 @@ const TestScreen: React.FC = ({route}: Props) => {
   }, []);
 
   useEffect(() => {
-    if (ids.length && type === ObjType.Card) {
-      const list = getCardsById(ids);
+    if (cardIds.length && type === ObjType.Card) {
+      const list = getCardsById(cardIds);
       setMatchingCards(list);
     } else {
       const list = getMatchingCardsForTest(cards, testSettings);
@@ -75,8 +68,8 @@ const TestScreen: React.FC = ({route}: Props) => {
   };
 
   const getPreSelectedCards = (): number[] => {
-    if (type === ObjType.Card && ids.length) {
-      return ids;
+    if (type === ObjType.Card && cardIds.length) {
+      return cardIds;
     }
     return [];
   };

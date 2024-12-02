@@ -20,7 +20,7 @@ export type StackEndpoints = {
   Test: TestParam;
 };
 
-export type MainStackProp = StackNavigationProp<StackEndpoints>;
+export type RootStack = StackNavigationProp<StackEndpoints>;
 
 const Stack = createStackNavigator<StackEndpoints>();
 

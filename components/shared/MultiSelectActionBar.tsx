@@ -2,7 +2,7 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import ActionsBar, {DangerButtons, FABProps, MainButtons} from './ActionsBar';
 import {CRUDMode, NEW_ID, ObjType} from '../../types/generic';
-import {MainStackProp} from '../../navigation/MainStack';
+import {RootStack} from '../../navigation/MainStack';
 import {useNavigation} from '@react-navigation/native';
 
 interface MultiSelectActionBarProps {
@@ -32,7 +32,7 @@ export default function MultiSelectActionBar({
   isRootless,
   onTestMany,
 }: MultiSelectActionBarProps) {
-  const navigation = useNavigation<MainStackProp>();
+  const navigation = useNavigation<RootStack>();
 
   const [buttons, setButtons] = useState<MainButtons>({});
   const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
@@ -85,7 +85,7 @@ export default function MultiSelectActionBar({
         b: {
           icon: 'school-outline',
           onPress: () => {
-            navigation.navigate('Test', {ids: undefined, type: type});
+            navigation.navigate('Test', {tagIds: [], cardIds: [], type: type});
           },
         },
       });

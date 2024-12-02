@@ -4,7 +4,13 @@ import {container} from '../../constants/styles';
 import {useEffect, useState} from 'react';
 import {FULL_SELECTED_KL, SelectedKL} from '../../types/KnowledgeLevel';
 import {Card} from '../../types/Card';
-import {CRUDMode, FilterChip, FilterNames, NEW_ID} from '../../types/generic';
+import {
+  CRUDMode,
+  FilterChip,
+  FilterNames,
+  NEW_ID,
+  ObjType,
+} from '../../types/generic';
 import {isKnowledgeLevelFullOn} from '../../utils/knowledgeLevel';
 import {
   getSortDirectionByName,
@@ -25,7 +31,7 @@ import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
 import {useNavigation} from '@react-navigation/native';
-import {MainStackProp} from '../../navigation/MainStack';
+import {RootStack} from '../../navigation/MainStack';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -40,9 +46,7 @@ export default function Cards({
   onSelectMany,
   multiSelect,
 }: CardsProps) {
-  console.log('Cards render 2');
-
-  const navigation = useNavigation<MainStackProp>();
+  const navigation = useNavigation<RootStack>();
   const [cardsLocal, setCardsLocal] = useState(store.cards);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<FilterChip[]>([]);
@@ -60,7 +64,6 @@ export default function Cards({
     selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
-    handelTestMany,
   } = multiSelect;
 
   const [selectedKL, setSelectedKL] = useState<SelectedKL>(FULL_SELECTED_KL);
@@ -194,17 +197,30 @@ export default function Cards({
   };
 
   const handleCreateTag = async () => {
+    const list = selectedIdsRef.current;
+    clearSelectedIds();
     navigation.navigate('Tag', {
       mode: CRUDMode.Create,
       id: NEW_ID,
-      cardIds: selectedIdsRef.current,
+      cardIds: list,
     });
-    clearSelectedIds();
   };
 
   const handelBrowseMany = () => {
+    const list = selectedIdsRef.current;
+    clearSelectedIds();
     navigation.navigate('Browse', {
-      ids: selectedIdsRef.current,
+      ids: list,
+    });
+  };
+
+  const handelTestMany = () => {
+    const list = selectedIdsRef.current;
+    clearSelectedIds();
+    navigation.navigate('Test', {
+      cardIds: list,
+      tagIds: [],
+      type: ObjType.Card,
     });
   };
 

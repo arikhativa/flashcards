@@ -4,7 +4,7 @@ import {CRUDMode, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
 import {useNavigation} from '@react-navigation/native';
-import {MainStackProp} from '../../navigation/MainStack';
+import {RootStack} from '../../navigation/MainStack';
 
 const TILE_HEIGHT = 55;
 
@@ -31,7 +31,7 @@ export function TagsManyTiles({
   clearSelectedIds,
   tags,
 }: TagsManyTilesProps) {
-  const navigation = useNavigation<MainStackProp>();
+  const navigation = useNavigation<RootStack>();
 
   const handleLongPress = (id: number) => {
     toggleIdSelection(id);

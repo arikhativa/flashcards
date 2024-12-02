@@ -1,13 +1,9 @@
 import React from 'react';
 
 import ConfScreen from '../screens/conf';
-
 import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import CardsNavigationStack from './CardsNavigationStack';
-
 import type {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import TagsNavigationStack from './TagsNavigationStack';
 import CardsScreen from '../screens/cards';
 import TagsScreen from '../screens/tags';
 

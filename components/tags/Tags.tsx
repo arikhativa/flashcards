@@ -10,6 +10,9 @@ import {useVisible} from '../../hooks/useVisible';
 import {Tag} from '../../types/Tag';
 import {TagService} from '../../services/Tag';
 import {Conf} from '../../types/Conf';
+import {ObjType} from '../../types/generic';
+import {useNavigation} from '@react-navigation/native';
+import {RootStack} from '../../navigation/MainStack';
 
 interface TagsProps {
   isRootless?: boolean;
@@ -28,6 +31,7 @@ export default function Tags({
   onSelectMany,
   multiSelect,
 }: TagsProps) {
+  const navigation = useNavigation<RootStack>();
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState('');
   const {
@@ -36,7 +40,6 @@ export default function Tags({
     selectedIds,
     toggleIdSelection,
     clearSelectedIds,
-    handelTestMany,
   } = multiSelect;
 
   const {visible, toggleVisible} = useVisible();
@@ -52,6 +55,14 @@ export default function Tags({
   const handelDeleteMany = async () => {
     await tagService.deleteMany(selectedIdsRef.current);
     clearSelectedIds();
+  };
+
+  const handelTestMany = () => {
+    navigation.navigate('Test', {
+      tagIds: selectedIdsRef.current,
+      cardIds: [],
+      type: ObjType.Tag,
+    });
   };
 
   return (

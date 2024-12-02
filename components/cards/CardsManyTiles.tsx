@@ -6,7 +6,7 @@ import {CRUDMode, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
 import {useNavigation} from '@react-navigation/native';
-import {MainStackProp} from '../../navigation/MainStack';
+import {RootStack} from '../../navigation/MainStack';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -40,7 +40,7 @@ export function CardsManyTiles({
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
-  const navigation = useNavigation<MainStackProp>();
+  const navigation = useNavigation<RootStack>();
   const maxSize = isRootless
     ? Dimensions.get('window').width * 0.9
     : Dimensions.get('window').width;

@@ -10,7 +10,7 @@ import {Card as PaperCard} from 'react-native-paper';
 import {useVisible} from '../../hooks/useVisible';
 import TestFinishDialog from './TestFinishDialog';
 import {useNavigation} from '@react-navigation/native';
-import {MainStackProp} from '../../navigation/MainStack';
+import {RootStack} from '../../navigation/MainStack';
 
 interface TestFinishProps {
   scrollToPage: (index: number) => void;
@@ -27,7 +27,7 @@ export default function TestFinish({
   onChangeKnowledgeLevel,
   onRetakeTest,
 }: TestFinishProps) {
-  const navigation = useNavigation<MainStackProp>();
+  const navigation = useNavigation<RootStack>();
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const {visible, toggleVisible} = useVisible();
 
