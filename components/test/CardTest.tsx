@@ -1,11 +1,11 @@
 import {Dimensions, View} from 'react-native';
 import {Text, IconButton, TextInput} from 'react-native-paper';
 import CardSides from '../shared/CardSides';
-import {Card} from '../types/Card';
-import {margin} from '../constants/styles';
-import {CardMeta} from '../types/TestSettings';
+import {Card} from '../../types/Card';
+import {margin} from '../../constants/styles';
+import {CardMeta} from '../../types/TestSettings';
 import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {useStore} from '../providers/GlobalStore';
+import {useStore} from '../../providers/GlobalStore';
 
 export interface CardTestRef {
   focusOnTextInput: () => void;

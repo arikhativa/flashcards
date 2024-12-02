@@ -2,12 +2,11 @@ import React from 'react';
 import {Card} from '../../types/Card';
 import {Dimensions} from 'react-native';
 import {useEffect, useState} from 'react';
-import {ObjType} from '../../types/generic';
-import {getCardHref, ObjLinkProps, TestLinkProps} from '../../utils/links';
+import {CRUDMode, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
 import {useNavigation} from '@react-navigation/native';
-import {CardsScreenNavigationProp} from '../../screens/CardsNavigationStack';
+import {MainStackProp} from '../../navigation/MainStack';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -26,14 +25,12 @@ export type CardManyTilesProps = {
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
-  href?: Href<ObjLinkProps | TestLinkProps>;
 };
 
 export function CardsManyTiles({
   isRootless,
   onBrowseMany,
   onSelectMany,
-  href,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
@@ -43,7 +40,7 @@ export function CardsManyTiles({
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
-  const navigation = useNavigation<CardsScreenNavigationProp>();
+  const navigation = useNavigation<MainStackProp>();
   const maxSize = isRootless
     ? Dimensions.get('window').width * 0.9
     : Dimensions.get('window').width;
@@ -89,7 +86,10 @@ export function CardsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
-      navigation.navigate('Card', {id: id.toString()});
+      navigation.navigate('Card', {
+        id: id.toString(),
+        mode: CRUDMode.Update,
+      });
     }
   };
 
@@ -124,7 +124,6 @@ export function CardsManyTiles({
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      href={href}
       type={ObjType.Card}
     />
   );

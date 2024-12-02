@@ -1,23 +1,27 @@
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Tag, TagCreate, TagUpdate} from '../types/Tag';
+import {Tag, TagCreate, TagUpdate} from '../../types/Tag';
 import {Card as PaperCard, TextInput} from 'react-native-paper';
-import {container, KLMark, margin} from '../constants/styles';
-import {useEffect} from 'react';
-import {useStore} from '../providers/GlobalStore';
-import {KnowledgeLevel} from '../types/KnowledgeLevel';
-import {ComponentProps, CRUDMode} from '../types/generic';
+import {container, KLMark, margin} from '../../constants/styles';
+import {useStore} from '../../providers/GlobalStore';
+import {KnowledgeLevel} from '../../types/KnowledgeLevel';
+import {ComponentProps, CRUDMode} from '../../types/generic';
 import {useNavigation} from '@react-navigation/native';
-import {TagService} from '../services/Tag';
-import {Card} from '../types/Card';
+import {TagService} from '../../services/Tag';
+import {Card} from '../../types/Card';
 import CardsSection from './CardsSection';
-import {BAD_ID} from '../constants/general';
-import {useMultiSelect} from '../hooks/useMultiSelect';
+import {BAD_ID} from '../../constants/general';
+import {useMultiSelect} from '../../hooks/useMultiSelect';
 import CRUDWrapper from '../shared/CRUDWrapper';
-import {useStateDirty} from '../hooks/useStateDirty';
+import {useStateDirty} from '../../hooks/useStateDirty';
 
-type TagComponentProps = ComponentProps<Tag>;
+export type TagParam = ComponentProps & {
+  cardIds?: number[];
+};
 
-const TagComponent = ({mode, data, id}: TagComponentProps) => {
+type TagComponentProps = TagParam;
+
+const TagComponent = ({mode, cardIds, id}: TagComponentProps) => {
   const navigation = useNavigation();
   const {cards, tags, tagService} = useStore();
   const {
@@ -58,29 +62,19 @@ const TagComponent = ({mode, data, id}: TagComponentProps) => {
       }
 
       setTagLocal(tagUpdate);
-    } else if (mode === CRUDMode.Read) {
-      if (!data) {
-        console.error('TagComponent: invalid Tag');
-        return;
-      }
-
-      setTagLocal(data);
     }
   }, []);
 
   const handleRawIds = (): Card[] => {
     const tmpCards: Card[] = [];
 
-    if (data?.cards) {
-      const ids = data.cards as unknown as number[];
-
-      ids.forEach(id => {
-        const card = cards.find(card => card.id === id);
+    if (cardIds) {
+      cardIds.forEach(id => {
+        const card = cards.find(e => e.id === id);
         if (card) {
           tmpCards.push(card);
         }
       });
-      data.cards = tmpCards;
     }
     return tmpCards;
   };

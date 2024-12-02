@@ -1,13 +1,15 @@
 import React from 'react';
 
-import TagsScreen from './tags';
-import ConfScreen from './conf';
+import ConfScreen from '../screens/conf';
 
 import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CardsNavigationStack from './CardsNavigationStack';
 
 import type {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import TagsNavigationStack from './TagsNavigationStack';
+import CardsScreen from '../screens/cards';
+import TagsScreen from '../screens/tags';
 
 export type RootTabParamList = BottomTabScreenProps<{
   Home: undefined;
@@ -45,14 +47,13 @@ const ConfIcon = ({focused, color}) => (
 
 export default function NavigationBar() {
   return (
-    <Tab.Navigator id={undefined} initialRouteName="Home">
+    <Tab.Navigator id={undefined} initialRouteName="Cards">
       <Tab.Screen
         options={{
           tabBarIcon: CardsIcon,
         }}
-        name="Home"
-        initialParams={{id: '1'}}
-        component={CardsNavigationStack}
+        name="Cards"
+        component={CardsScreen}
       />
       <Tab.Screen
         options={{

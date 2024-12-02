@@ -1,10 +1,10 @@
 import {StyleSheet, View} from 'react-native';
 import {IconButton, Icon, useTheme} from 'react-native-paper';
-import {Card} from '../types/Card';
-import {CardMeta} from '../types/TestSettings';
-import {baseUnit} from '../constants/styles';
-import {KnowledgeLevel} from '../types/KnowledgeLevel';
-import {KLToNumber, NumberToKL} from '../utils/knowledgeLevel';
+import {Card} from '../../types/Card';
+import {CardMeta} from '../../types/TestSettings';
+import {baseUnit} from '../../constants/styles';
+import {KnowledgeLevel} from '../../types/KnowledgeLevel';
+import {KLToNumber, NumberToKL} from '../../utils/knowledgeLevel';
 import {CardTile} from '../cards/CardTile';
 
 interface TestFinishRowProps {

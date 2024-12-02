@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {Dialog, Portal} from 'react-native-paper';
-import {useStore} from '../providers/GlobalStore';
-import {Card} from '../types/Card';
-import {useMultiSelect} from '../hooks/useMultiSelect';
+import {useStore} from '../../providers/GlobalStore';
+import {Card} from '../../types/Card';
+import {useMultiSelect} from '../../hooks/useMultiSelect';
 import Cards from '../cards/Cards';
 
 interface CardsSectionDialogProps {

@@ -2,8 +2,8 @@ import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import {Text} from 'react-native-paper';
-import {Card} from '../types/Card';
-import {padding} from '../constants/styles';
+import {Card} from '../../types/Card';
+import {padding} from '../../constants/styles';
 import CarouselWrapper, {CarouselWrapperRef} from '../shared/CarouselWrapper';
 import CardBrowse from './CardBrowse';
 

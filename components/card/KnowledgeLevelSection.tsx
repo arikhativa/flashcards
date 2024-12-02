@@ -1,12 +1,12 @@
-import {baseUnit, padding} from '../constants/styles';
+import {baseUnit, padding} from '../../constants/styles';
 import {StyleProp, View, ViewStyle} from 'react-native';
 import {Card as PaperCard, Text, Button, useTheme} from 'react-native-paper';
-import {KnowledgeLevel} from '../types/KnowledgeLevel';
+import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {
   knowledgeLevelToColor,
   knowledgeLevelToLightColor,
   knowledgeLevelToName,
-} from '../utils/knowledgeLevel';
+} from '../../utils/knowledgeLevel';
 
 interface KnowledgeLevelSectionProps {
   disabled?: boolean;

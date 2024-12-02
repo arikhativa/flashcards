@@ -1,31 +1,6 @@
 import {CRUDMode, ObjType} from '../types/generic';
 import {toStringIds} from './generic';
 
-type Routes = {};
-
-export type ObjLinkProps = Routes & {
-  objType: ObjType;
-  id: string;
-  mode: CRUDMode;
-  rawIds?: string;
-};
-
-export type TestLinkProps = {
-  rawIds: string;
-  type: ObjType;
-};
-
-export type BrowseLinkProps = {
-  rawIds: string;
-};
-
-export function getCardHref(id: string | number, mode?: CRUDMode) {
-  return {
-    pathname: '/[objType]',
-    params: {objType: ObjType.Card, id, mode},
-  };
-}
-
 export function getTagHref(
   id: string | number,
   mode?: CRUDMode,
@@ -68,7 +43,7 @@ export function getBrowseHref(selectedIds?: number[]) {
   };
 }
 
-export function getHomeHref() {
+export function goToCard() {
   return {
     pathname: '/',
   };

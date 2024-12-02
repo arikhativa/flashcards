@@ -1,12 +1,12 @@
 import React from 'react';
-import {BAD_ID} from '../constants/general';
-import {useStateDirty, UseStateDirtyArray} from '../hooks/useStateDirty';
-import {BaseCrudService} from '../services/BaseCrud';
-import {CRUDMode} from '../types/generic';
-import {useNavigation} from 'expo-router';
+import {BAD_ID} from '../../constants/general';
+import {useStateDirty, UseStateDirtyArray} from '../../hooks/useStateDirty';
+import {BaseCrudService} from '../../services/BaseCrud';
+import {CRUDMode} from '../../types/generic';
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {ObjectLiteral} from 'typeorm';
 import ObjectHeader from './ObjectHeader';
+import {useNavigation} from '@react-navigation/native';
 
 type CRUDWrapperProps<T> = PropsWithChildren<{
   array: UseStateDirtyArray<T>;

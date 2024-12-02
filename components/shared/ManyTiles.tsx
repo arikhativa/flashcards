@@ -1,10 +1,10 @@
+import React from 'react';
 import {View, FlatList, StyleProp, ViewStyle} from 'react-native';
 import {Text} from 'react-native-paper';
 import {text} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
 import MultiSelectActionBar from '../shared/MultiSelectActionBar';
 import {BaseCrud, ObjType} from '../../types/generic';
-import {ObjLinkProps, TestLinkProps} from '../../utils/links';
 import {useCallback} from 'react';
 
 export type ManyTilesProps<T> = {
@@ -22,7 +22,6 @@ export type ManyTilesProps<T> = {
   renderItem: ({item}: {item: T}) => React.JSX.Element;
   noObjsMessage: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  href?: Href<ObjLinkProps | TestLinkProps>;
   type: ObjType;
   isRootless?: boolean;
 };
@@ -31,7 +30,6 @@ export function ManyTiles<T extends BaseCrud>({
   tileHeight,
   onSelectMany,
   isRootless,
-  href,
   isMultiSelect,
   selectedIds,
   onBrowseMany,
@@ -88,7 +86,6 @@ export function ManyTiles<T extends BaseCrud>({
         onDeleteMany={onDeleteMany}
         onTagMany={onTagMany}
         onUnTagMany={onUnTagMany}
-        href={href}
         onTestMany={onTestMany}
       />
     </View>

@@ -2,8 +2,8 @@ import React from 'react';
 import {FlatList, StyleProp, View, ViewStyle} from 'react-native';
 import {IconButton, Card, Text} from 'react-native-paper';
 import {TagTile} from '../tags/TagTile';
-import {Tag} from '../types/Tag';
-import {baseUnit, container, padding, text} from '../constants/styles';
+import {Tag} from '../../types/Tag';
+import {baseUnit, container, padding, text} from '../../constants/styles';
 import TagsSectionDialog from '../card/TagsSectionDialog';
 
 interface TagsSectionProps {
@@ -40,7 +40,6 @@ const TagsSection = ({
         keyExtractor={tag => tag.id.toString()}
         renderItem={({item}) => (
           <TagTile
-            disabledLink
             onClose={disabled ? undefined : () => removeTag(item)}
             tag={item}
           />

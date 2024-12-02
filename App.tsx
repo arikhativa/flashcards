@@ -14,7 +14,7 @@ import {DefaultTheme, PaperProvider} from 'react-native-paper';
 import {MD3Colors, MD3Theme} from 'react-native-paper/lib/typescript/types';
 import {StoreProvider} from './providers/GlobalStore';
 import {NavigationContainer} from '@react-navigation/native';
-import NavigationBar from './screens/NavigationBar';
+import MainStack from './navigation/MainStack';
 
 export type CustomColors = MD3Colors & {
   successContainer: string;
@@ -92,7 +92,7 @@ function App(): React.JSX.Element {
         }}>
         <PaperProvider theme={theme}>
           <NavigationContainer>
-            <NavigationBar />
+            <MainStack />
           </NavigationContainer>
         </PaperProvider>
       </StoreProvider>

@@ -20,11 +20,12 @@ import {useTimeDropdown} from '../../hooks/useTimeDropdown';
 import {OPTIONS_VALUES} from '../../utils/testForm';
 import ConfirmationDialog from '../../components/shared/ConfirmationDialog';
 import {useVisible} from '../../hooks/useVisible';
-import {getBrowseHref, getCardHref, getTagHref} from '../../utils/links';
 import CreateOrAddTagDialog from '../shared/CreateOrAddTagDialog';
 import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
+import {useNavigation} from '@react-navigation/native';
+import {TagsScreenNavigationProp} from '../../navigation/TagsNavigationStack';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -40,6 +41,8 @@ export default function Cards({
   multiSelect,
 }: CardsProps) {
   console.log('Cards render 2');
+
+  const navigation = useNavigation<TagsScreenNavigationProp>();
   const [cardsLocal, setCardsLocal] = useState(store.cards);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<FilterChip[]>([]);
@@ -191,9 +194,7 @@ export default function Cards({
   };
 
   const handleCreateTag = async () => {
-    const href = getTagHref(NEW_ID, CRUDMode.Create, selectedIdsRef.current);
-    // TODO Nav
-    // router.push(href);
+    navigation.navigate('Tag', {mode: CRUDMode.Create, id: NEW_ID});
     clearSelectedIds();
   };
 
@@ -228,7 +229,6 @@ export default function Cards({
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
-        href={getCardHref(NEW_ID)}
       />
 
       <ConfirmationDialog

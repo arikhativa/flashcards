@@ -1,13 +1,9 @@
-import {getTestHref, ObjLinkProps, TestLinkProps} from '../../utils/links';
+import React from 'react';
 import {useEffect, useState} from 'react';
-import ActionsBar, {DangerButtons, MainButtons} from './ActionsBar';
-import {ObjType} from '../../types/generic';
-
-interface FABProps {
-  icon: string;
-  onPress?: () => void;
-  href?: Href<RouteParamInput<ObjLinkProps | TestLinkProps>>;
-}
+import ActionsBar, {DangerButtons, FABProps, MainButtons} from './ActionsBar';
+import {CRUDMode, NEW_ID, ObjType} from '../../types/generic';
+import {MainStackProp} from '../../navigation/MainStack';
+import {useNavigation} from '@react-navigation/native';
 
 interface MultiSelectActionBarProps {
   type: ObjType;
@@ -20,7 +16,6 @@ interface MultiSelectActionBarProps {
   onBrowseMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   onEditCards?: () => void;
-  href?: Href<ObjLinkProps | TestLinkProps>;
   isRootless?: boolean;
 }
 
@@ -35,9 +30,10 @@ export default function MultiSelectActionBar({
   onDeleteMany,
   type,
   isRootless,
-  href,
   onTestMany,
 }: MultiSelectActionBarProps) {
+  const navigate = useNavigation<MainStackProp>();
+
   const [buttons, setButtons] = useState<MainButtons>({});
   const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
   const [toggledDangerButtons, setToggledDangerButtons] =
@@ -72,20 +68,23 @@ export default function MultiSelectActionBar({
       });
     }
 
-    if (href) {
+    if (!isRootless) {
       setButtons({
         a: {
           icon: 'plus',
           onPress: () => {
-            // TODO Nav
-            // router.push(href);
+            if (type === ObjType.Card) {
+              navigate.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create});
+            }
+            if (type === ObjType.Tag) {
+              navigate.navigate('Tag', {id: NEW_ID, mode: CRUDMode.Create});
+            }
           },
         },
         b: {
           icon: 'school-outline',
           onPress: () => {
-            // TODO Nav
-            // router.push(getTestHref());
+            navigate.navigate('Test', {rawIds: undefined, type: type});
           },
         },
       });

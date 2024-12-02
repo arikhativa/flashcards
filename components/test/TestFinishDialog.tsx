@@ -1,10 +1,10 @@
-import {Card} from '../types/Card';
+import {Card} from '../../types/Card';
 import {FlatList, View} from 'react-native';
 import {Dialog, Portal, IconButton} from 'react-native-paper';
 import TestFinishRow from './TestFinishRow';
-import {CardMeta} from '../types/TestSettings';
-import {baseUnit, container, text} from '../constants/styles';
-import {KnowledgeLevel} from '../types/KnowledgeLevel';
+import {CardMeta} from '../../types/TestSettings';
+import {baseUnit, container, text} from '../../constants/styles';
+import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 
 interface TestFinishDialogProps {
   scrollToPage: (index: number) => void;

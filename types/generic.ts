@@ -1,26 +1,29 @@
-import { ObjectLiteral } from "typeorm";
+import {ObjectLiteral} from 'typeorm';
 
-export const NEW_ID = "new";
+export const NEW_ID = 'new';
 
 export type BaseCrud = ObjectLiteral & {
   id: number;
 };
 
-export type ComponentProps<T> = {
+export type ComponentProps = {
   mode: CRUDMode;
-  data?: T;
-  id?: string;
+  id: string;
+};
+
+export type RawIds = {
+  rawIds: string;
 };
 
 export enum CRUDMode {
-  Read = "read",
-  Create = "create",
-  Update = "update",
+  Read = 'read',
+  Create = 'create',
+  Update = 'update',
 }
 
 export enum ObjType {
-  Tag = "tag",
-  Card = "card",
+  Tag = 'tag',
+  Card = 'card',
 }
 
 export interface TimeRange {
@@ -29,8 +32,8 @@ export interface TimeRange {
 }
 
 export enum FilterNames {
-  TimeRange = "Time Range",
-  KL = "Knowledge Level",
+  TimeRange = 'Time Range',
+  KL = 'Knowledge Level',
 }
 
 export interface FilterChip {

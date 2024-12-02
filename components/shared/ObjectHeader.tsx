@@ -1,9 +1,9 @@
-import {useNavigation} from 'expo-router';
 import {Appbar} from 'react-native-paper';
 import ObjectMenu from './ObjectMenu';
-import {useMenu} from '../hooks/useMenu';
+import {useMenu} from '../../hooks/useMenu';
 import {PropsWithChildren} from 'react';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 type ObjectHeaderProps = PropsWithChildren<{
   title: string;

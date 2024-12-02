@@ -1,6 +1,6 @@
-import {padding} from '../constants/styles';
-import {useStore} from '../providers/GlobalStore';
-import {KnowledgeLevel, KnowledgeLevelColor} from '../types/KnowledgeLevel';
+import {padding} from '../../constants/styles';
+import {useStore} from '../../providers/GlobalStore';
+import {KnowledgeLevel, KnowledgeLevelColor} from '../../types/KnowledgeLevel';
 import React from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {Card as PaperCard, Text, TextInput, Divider} from 'react-native-paper';

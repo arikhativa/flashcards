@@ -1,10 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Card} from '../types/Card';
-import {margin, padding} from '../constants/styles';
+import {Card} from '../../types/Card';
+import {margin, padding} from '../../constants/styles';
 import {CardsManyTiles} from '../cards/CardsManyTiles';
 import MultiSelectActionBar from '../shared/MultiSelectActionBar';
-import {ObjType} from '../types/generic';
+import {ObjType} from '../../types/generic';
 import CardsSectionDialog from './CardsSectionDialog';
 
 interface CardsSectionProps {

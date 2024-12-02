@@ -1,9 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {View, Text, Button} from 'react-native';
-import {RootTabParamList} from './NavigationBar';
+import {RootTabParamList} from '../navigation/NavigationBar';
 import {RouteProp} from '@react-navigation/native';
-import {CardsStackParamList} from './CardsNavigationStack';
+import {CardsStackParamList} from '../navigation/CardsNavigationStack';
 
 type CardScreenRouteProp = RouteProp<CardsStackParamList, 'Card'>;
 

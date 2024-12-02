@@ -1,23 +1,26 @@
 import React, {useLayoutEffect, useState} from 'react';
-import {useLocalSearchParams, useNavigation} from 'expo-router';
 import {Card} from '../types/Card';
 import {useStore} from '../providers/GlobalStore';
 import {rawStringArrayToIntArray} from '../utils/generic';
-import {TestLinkProps} from '../utils/links';
 import BrowseManager from '../components/browse/BrowseManager';
+import {RouteProp, useNavigation} from '@react-navigation/native';
+import {StackEndpoints} from '../navigation/MainStack';
+import {RawIds} from '../types/generic';
 
-const BrowsePage: React.FC = () => {
+interface Props {
+  route: RouteProp<StackEndpoints, 'Browse'>;
+}
+
+const BrowseScreen: React.FC = ({route}: Props) => {
   const {cards} = useStore();
   const navigation = useNavigation();
-  const {rawIds} = useLocalSearchParams<TestLinkProps>();
+  const {rawIds} = route.params;
 
   const [cardsToBrowse, setCardsToBrowse] = useState<Card[]>([]);
 
   const [isInitialized, setIsInitialized] = useState(false);
 
   useLayoutEffect(() => {
-    navigation.setOptions({title: 'Browsing Cards', headerShown: true});
-
     if (rawIds) {
       const idsList = rawStringArrayToIntArray(rawIds);
 
@@ -40,4 +43,4 @@ const BrowsePage: React.FC = () => {
   return <BrowseManager cards={cardsToBrowse} />;
 };
 
-export default BrowsePage;
+export default BrowseScreen;

@@ -72,7 +72,6 @@ export function TagsManyTiles({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
       }}
-      href={getTagHref(NEW_ID)}
       type={ObjType.Tag}
     />
   );

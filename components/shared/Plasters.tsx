@@ -1,4 +1,4 @@
-import {getRandomIndex} from '../utils/generic';
+import {getRandomIndex} from '../../utils/generic';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {Surface, useTheme} from 'react-native-paper';

@@ -1,27 +1,31 @@
-import {container, margin} from '../constants/styles';
+import React from 'react';
+import {container, margin} from '../../constants/styles';
 import {View} from 'react-native';
 import {Card as PaperCard, Text, Chip} from 'react-native-paper';
-import {TestSettings, TestSide} from '../types/TestSettings';
+import {TestSettings, TestSide} from '../../types/TestSettings';
 import {useEffect, useState} from 'react';
 import {Dropdown, MultiSelectDropdown} from 'react-native-paper-dropdown';
-import {useStore} from '../providers/GlobalStore';
-import {isTestSide} from '../utils/generic';
-import {Tag} from '../types/Tag';
-import {ListKLToSelectedKL} from '../utils/knowledgeLevel';
-import {Card} from '../types/Card';
-import ActionsBar, {MainButtons} from '../components/shared/ActionsBar';
+import {useStore} from '../../providers/GlobalStore';
+import {isTestSide} from '../../utils/generic';
+import {Tag} from '../../types/Tag';
+import {ListKLToSelectedKL} from '../../utils/knowledgeLevel';
+import {Card} from '../../types/Card';
+import ActionsBar, {MainButtons} from '../../components/shared/ActionsBar';
 import {
   CardsSideOptions,
   KL_OPTIONS,
   OPTIONS_VALUES,
   TIME_OPTIONS,
-} from '../utils/testForm';
-import {MAX_NUMBER_OF_CARDS, MIN_NUMBER_OF_CARDS} from '../constants/general';
+} from '../../utils/testForm';
+import {
+  MAX_NUMBER_OF_CARDS,
+  MIN_NUMBER_OF_CARDS,
+} from '../../constants/general';
 import InputHelper from '../shared/InputHelper';
-import {FULL_UNSELECTED_KL, KnowledgeLevel} from '../types/KnowledgeLevel';
+import {FULL_UNSELECTED_KL, KnowledgeLevel} from '../../types/KnowledgeLevel';
 import NumberInput from '../shared/NumberInput';
 import TagsSection from '../shared/TagsSection';
-import {useTimeDropdown} from '../hooks/useTimeDropdown';
+import {useTimeDropdown} from '../../hooks/useTimeDropdown';
 
 interface TestFormProps {
   preSelectedCards: number[];
