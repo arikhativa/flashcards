@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Conf} from '../types/Conf';
 import {useStore} from '../providers/GlobalStore';
 import {Keyboard} from 'react-native';
-import {Button, Card, Text, Divider} from 'react-native-paper';
+import {Button, Card, Text, Divider, useTheme} from 'react-native-paper';
 import {View} from 'react-native';
-import {container, margin, padding} from '../constants/styles';
+import {container, dynamicStyle, margin, padding} from '../constants/styles';
 import NumberInput from '../components/shared/NumberInput';
 import TextInput from '../components/shared/CustomTextInput';
 import {isInRange, isTestSide} from '../utils/generic';
@@ -126,6 +126,10 @@ export default function ConfScreen() {
     );
   };
 
+  const isDisabled = (): boolean => {
+    return !isDirty() || !isFormValid();
+  };
+
   return (
     <View style={[container.center, padding.x]}>
       <Card style={[margin.base2]}>
@@ -194,7 +198,7 @@ export default function ConfScreen() {
           <Button
             mode={'contained'}
             onPress={handleSubmit}
-            disabled={!isDirty() || !isFormValid()}>
+            disabled={isDisabled()}>
             Save
           </Button>
         </Card.Actions>

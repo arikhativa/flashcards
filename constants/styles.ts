@@ -1,61 +1,68 @@
-import { StyleSheet } from "react-native";
-import { KnowledgeLevelColor } from "../types/KnowledgeLevel";
+import {StyleSheet} from 'react-native';
+import {KnowledgeLevelColor} from '../types/KnowledgeLevel';
+import {MD3Theme} from 'react-native-paper';
 
 export const baseUnit = 10;
 export const BORDER_SIZE = 30;
+
+export function dynamicStyle(theme: MD3Theme) {
+  return StyleSheet.create({
+    buttonDisabled: {},
+  });
+}
 
 export const container = StyleSheet.create({
   flex1: {
     flex: 1,
   },
   center: {
-    display: "flex",
-    height: "100%",
-    width: "100%",
-    justifyContent: "center",
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
   },
   flexXSpace: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
   flexX: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   },
   space: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   fullScreen: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
   },
   hFull: {
-    height: "100%",
+    height: '100%',
   },
   wFull: {
-    width: "100%",
+    width: '100%',
   },
   bottom: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   buttonTop: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   buttonBottomRight: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     right: 0,
     margin: baseUnit * 2,
   },
   buttonTopRight: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     right: 0,
     margin: baseUnit * 2,
@@ -78,22 +85,22 @@ export const KLMark = StyleSheet.create({
 });
 
 export const color = StyleSheet.create({
-  bgTransparent: { backgroundColor: "transparent" },
-  bgPurple: { backgroundColor: "purple" },
-  bgGreen: { backgroundColor: "green" },
-  bgPink: { backgroundColor: "pink" },
-  bgBlue: { backgroundColor: "blue" },
-  bgRed: { backgroundColor: "red" },
-  opacity1: { opacity: 0.1 },
-  opacity3: { opacity: 0.3 },
-  opacity5: { opacity: 0.5 },
+  bgTransparent: {backgroundColor: 'transparent'},
+  bgPurple: {backgroundColor: 'purple'},
+  bgGreen: {backgroundColor: 'green'},
+  bgPink: {backgroundColor: 'pink'},
+  bgBlue: {backgroundColor: 'blue'},
+  bgRed: {backgroundColor: 'red'},
+  opacity1: {opacity: 0.1},
+  opacity3: {opacity: 0.3},
+  opacity5: {opacity: 0.5},
 });
 
 export const text = StyleSheet.create({
   dialogTitle: {
     fontSize: 18,
   },
-  grayMessage: { opacity: 0.3, width: "100%", textAlign: "center" },
+  grayMessage: {opacity: 0.3, width: '100%', textAlign: 'center'},
 });
 
 export const gap = StyleSheet.create({
