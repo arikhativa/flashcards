@@ -1,15 +1,13 @@
 import React from 'react';
 import {RouteProp, useNavigation} from '@react-navigation/native';
-import {CardsStackParamList} from '../navigation/CardsNavigationStack';
 import Card from '../components/card/Card';
+import {StackEndpoints} from '../navigation/MainStack';
 
-type CardScreenRouteProp = RouteProp<CardsStackParamList, 'Card'>;
-
-interface CardScreenProps {
-  route: CardScreenRouteProp;
+interface Props {
+  route: RouteProp<StackEndpoints, 'Card'>;
 }
 
-export default function CardScreen({route}: CardScreenProps) {
+export default function CardScreen({route}: Props) {
   const {id, mode} = route.params;
 
   if (!id) {

@@ -4,19 +4,19 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
-import {ComponentProps, RawIds} from '../types/generic';
+import {ComponentProps} from '../types/generic';
 import CardScreen from '../screens/card';
 import NavigationBar from './NavigationBar';
 import {TagParam} from '../components/tag/Tag';
 import TagScreen from '../screens/tag';
-import BrowseScreen from '../screens/browse';
+import BrowseScreen, {BrowseParam} from '../screens/browse';
 import TestScreen, {TestParam} from '../screens/test';
 
 export type StackEndpoints = {
   Home: undefined;
   Card: ComponentProps;
   Tag: TagParam;
-  Browse: RawIds;
+  Browse: BrowseParam;
   Test: TestParam;
 };
 

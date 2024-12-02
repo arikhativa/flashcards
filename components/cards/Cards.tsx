@@ -25,7 +25,7 @@ import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
 import {useNavigation} from '@react-navigation/native';
-import {TagsScreenNavigationProp} from '../../navigation/TagsNavigationStack';
+import {MainStackProp} from '../../navigation/MainStack';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -42,7 +42,7 @@ export default function Cards({
 }: CardsProps) {
   console.log('Cards render 2');
 
-  const navigation = useNavigation<TagsScreenNavigationProp>();
+  const navigation = useNavigation<MainStackProp>();
   const [cardsLocal, setCardsLocal] = useState(store.cards);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<FilterChip[]>([]);
@@ -194,13 +194,18 @@ export default function Cards({
   };
 
   const handleCreateTag = async () => {
-    navigation.navigate('Tag', {mode: CRUDMode.Create, id: NEW_ID});
+    navigation.navigate('Tag', {
+      mode: CRUDMode.Create,
+      id: NEW_ID,
+      cardIds: selectedIdsRef.current,
+    });
     clearSelectedIds();
   };
 
   const handelBrowseMany = () => {
-    // TODO Nav
-    // router.push(getBrowseHref(selectedIdsRef.current));
+    navigation.navigate('Browse', {
+      ids: selectedIdsRef.current,
+    });
   };
 
   return (

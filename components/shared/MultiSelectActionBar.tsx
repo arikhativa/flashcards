@@ -32,7 +32,7 @@ export default function MultiSelectActionBar({
   isRootless,
   onTestMany,
 }: MultiSelectActionBarProps) {
-  const navigate = useNavigation<MainStackProp>();
+  const navigation = useNavigation<MainStackProp>();
 
   const [buttons, setButtons] = useState<MainButtons>({});
   const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
@@ -68,23 +68,24 @@ export default function MultiSelectActionBar({
       });
     }
 
+    // this is not good enough
     if (!isRootless) {
       setButtons({
         a: {
           icon: 'plus',
           onPress: () => {
             if (type === ObjType.Card) {
-              navigate.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create});
+              navigation.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create});
             }
             if (type === ObjType.Tag) {
-              navigate.navigate('Tag', {id: NEW_ID, mode: CRUDMode.Create});
+              navigation.navigate('Tag', {id: NEW_ID, mode: CRUDMode.Create});
             }
           },
         },
         b: {
           icon: 'school-outline',
           onPress: () => {
-            navigate.navigate('Test', {rawIds: undefined, type: type});
+            navigation.navigate('Test', {ids: undefined, type: type});
           },
         },
       });

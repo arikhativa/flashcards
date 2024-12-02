@@ -5,13 +5,14 @@ import {Card} from '../types/Card';
 import {getMatchingCardsForTest} from '../utils/cardPicker';
 import {useStore} from '../providers/GlobalStore';
 import {rawStringArrayToIntArray} from '../utils/generic';
-import {ObjType, RawIds} from '../types/generic';
+import {ObjType} from '../types/generic';
 import {Tag} from '../types/Tag';
 import TestForm from '../components/test/TestForm';
 import {StackEndpoints} from '../navigation/MainStack';
 import {RouteProp} from '@react-navigation/native';
 
-export type TestParam = RawIds & {
+export type TestParam = {
+  ids: number[];
   type: ObjType;
 };
 
@@ -22,9 +23,9 @@ interface Props {
 const TestScreen: React.FC = ({route}: Props) => {
   const {cards, tags, conf} = useStore();
 
-  const {rawIds, type} = route.params;
+  const {ids, type} = route.params;
 
-  const [ids, setIds] = useState<number[]>([]);
+  // const [ids, setIds] = useState<number[]>([]);
   const [isTestSetupDone, setIsTestSetupDone] = useState(false);
   const [testSettings, setTestSettings] =
     useState<TestSettings>(EMPTY_TEST_SETTING);
@@ -36,18 +37,18 @@ const TestScreen: React.FC = ({route}: Props) => {
     let tagList: Tag[] = [];
     let numberOfCards = conf.numberOfCards;
     let testSide = conf.testSide;
-    if (rawIds) {
-      const idsList = rawStringArrayToIntArray(rawIds);
+    // if (rawIds) {
+    //   const idsList = rawStringArrayToIntArray(rawIds);
 
-      if (idsList.length) {
-        setIds(idsList);
-        if (type === ObjType.Tag) {
-          tagList = idsList.map(id => tags.find(tag => tag.id === id)!);
-        } else {
-          numberOfCards = idsList.length;
-        }
-      }
-    }
+    //   if (idsList.length) {
+    //     setIds(idsList);
+    //     if (type === ObjType.Tag) {
+    //       tagList = idsList.map(id => tags.find(tag => tag.id === id)!);
+    //     } else {
+    //       numberOfCards = idsList.length;
+    //     }
+    //   }
+    // }
 
     setTestSettings({
       ...testSettings,

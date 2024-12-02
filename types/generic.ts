@@ -11,10 +11,6 @@ export type ComponentProps = {
   id: string;
 };
 
-export type RawIds = {
-  rawIds: string;
-};
-
 export enum CRUDMode {
   Read = 'read',
   Create = 'create',

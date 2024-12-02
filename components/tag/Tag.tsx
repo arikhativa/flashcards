@@ -6,11 +6,9 @@ import {container, KLMark, margin} from '../../constants/styles';
 import {useStore} from '../../providers/GlobalStore';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {ComponentProps, CRUDMode} from '../../types/generic';
-import {useNavigation} from '@react-navigation/native';
 import {TagService} from '../../services/Tag';
 import {Card} from '../../types/Card';
 import CardsSection from './CardsSection';
-import {BAD_ID} from '../../constants/general';
 import {useMultiSelect} from '../../hooks/useMultiSelect';
 import CRUDWrapper from '../shared/CRUDWrapper';
 import {useStateDirty} from '../../hooks/useStateDirty';
@@ -19,10 +17,9 @@ export type TagParam = ComponentProps & {
   cardIds?: number[];
 };
 
-type TagComponentProps = TagParam;
+type Props = TagParam;
 
-const TagComponent = ({mode, cardIds, id}: TagComponentProps) => {
-  const navigation = useNavigation();
+const TagComponent = ({mode, cardIds, id}: Props) => {
   const {cards, tags, tagService} = useStore();
   const {
     isMultiSelect,
@@ -41,41 +38,22 @@ const TagComponent = ({mode, cardIds, id}: TagComponentProps) => {
   const [tagLocal, setTagLocal] = array;
 
   useEffect(() => {
-    if (mode === CRUDMode.Create) {
-      navigation.setOptions({title: 'New Tag'});
-      const tagCreate: TagCreate = TagService.EMPTY;
-      tagCreate.cards = handleRawIds();
-      setTagLocal(tagCreate);
-    } else if (mode === CRUDMode.Update) {
-      navigation.setOptions({title: 'Edit Tag'});
-
-      if (idLocal === BAD_ID) {
-        console.error('TagComponent: invalid Tag id, idLocal', id, idLocal);
-        return;
-      }
-
-      const tagUpdate = tags.find(tag => tag.id === idLocal);
-
-      if (!tagUpdate) {
-        console.error('TagComponent: Tag not found');
-        return;
-      }
-
-      setTagLocal(tagUpdate);
+    if (mode === CRUDMode.Create && cardIds) {
+      setTagLocal(prev => {
+        return {...prev, cards: idsToCards()};
+      });
     }
   }, []);
 
-  const handleRawIds = (): Card[] => {
+  const idsToCards = (): Card[] => {
     const tmpCards: Card[] = [];
 
-    if (cardIds) {
-      cardIds.forEach(id => {
-        const card = cards.find(e => e.id === id);
-        if (card) {
-          tmpCards.push(card);
-        }
-      });
-    }
+    cardIds.forEach(id => {
+      const card = cards.find(e => e.id === id);
+      if (card) {
+        tmpCards.push(card);
+      }
+    });
     return tmpCards;
   };
 

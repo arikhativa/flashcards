@@ -6,7 +6,7 @@ import {useStore} from '../..//providers/GlobalStore';
 import {KnowledgeLevel} from '../..//types/KnowledgeLevel';
 import TagsSection from '../..//components/shared/TagsSection';
 import {Tag} from '../..//types/Tag';
-import {CRUDMode} from '../..//types/generic';
+import {ComponentProps, CRUDMode} from '../..//types/generic';
 import {CardService} from '../..//services/Card';
 import {BAD_ID} from '../..//constants/general';
 import KnowledgeLevelSection from './KnowledgeLevelSection';
@@ -14,11 +14,10 @@ import {useStateDirty} from '../..//hooks/useStateDirty';
 import CardComment from './CardComment';
 import CRUDWrapper from '../shared/CRUDWrapper';
 import CardSides from '../shared/CardSides';
-import {CardParam} from '../../navigation/CardsNavigationStack';
 
-type CardComponentProps = CardParam;
+type Props = ComponentProps;
 
-const CardComponent = ({mode, id}: CardComponentProps) => {
+const CardComponent = ({mode, id}: Props) => {
   const {cards, cardService} = useStore();
 
   let idLocal: number = id ? parseInt(id, 10) : BAD_ID;

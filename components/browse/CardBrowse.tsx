@@ -1,9 +1,10 @@
+import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import CardSides from '../shared/CardSides';
 import {Card} from '../../types/Card';
 import {margin} from '../../constants/styles';
-import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import {forwardRef, useRef} from 'react';
 import {useStore} from '../../providers/GlobalStore';
 import CardComment from '../card/CardComment';
 

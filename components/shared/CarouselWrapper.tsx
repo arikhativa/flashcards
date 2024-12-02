@@ -1,13 +1,23 @@
-import * as React from "react";
-import { Dimensions, View } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
+import * as React from 'react';
+import {Dimensions, View} from 'react-native';
 import Carousel, {
   CarouselRenderItem,
   ICarouselInstance,
-} from "react-native-reanimated-carousel";
+} from 'react-native-reanimated-carousel';
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+
+// This is to remove a redundant warning the the carousel does in strict mode
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false,
+});
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export interface CarouselWrapperRef {
   scrollToNextPage: () => void;
@@ -21,9 +31,8 @@ interface CarouselProps {
 }
 
 const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
-  ({ renderItem, length }, ref) => {
+  ({renderItem, length}, ref) => {
     const carouselRef = React.useRef<ICarouselInstance>(null);
-    const progress = useSharedValue<number>(0);
 
     const [data, setData] = React.useState<number[]>([
       ...new Array(length + 1).keys(),
@@ -59,23 +68,20 @@ const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
     }));
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <Carousel
           loop={false}
           ref={carouselRef}
           width={width}
           height={height}
           data={data}
-          onProgressChange={(_, absoluteProgress) => {
-            progress.value = absoluteProgress;
-          }}
           renderItem={renderItem}
         />
       </View>
     );
-  }
+  },
 );
 
-CarouselWrapper.displayName = "CarouselWrapper";
+CarouselWrapper.displayName = 'CarouselWrapper';
 
 export default CarouselWrapper;

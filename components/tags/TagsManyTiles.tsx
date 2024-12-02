@@ -1,9 +1,10 @@
 import React from 'react';
 import {Tag} from '../../types/Tag';
-import {getTagHref} from '../../utils/links';
-import {NEW_ID, ObjType} from '../../types/generic';
+import {CRUDMode, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
+import {useNavigation} from '@react-navigation/native';
+import {MainStackProp} from '../../navigation/MainStack';
 
 const TILE_HEIGHT = 55;
 
@@ -30,6 +31,8 @@ export function TagsManyTiles({
   clearSelectedIds,
   tags,
 }: TagsManyTilesProps) {
+  const navigation = useNavigation<MainStackProp>();
+
   const handleLongPress = (id: number) => {
     toggleIdSelection(id);
   };
@@ -39,8 +42,10 @@ export function TagsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
-      // TODO Nav
-      // router.push(getTagHref(id));
+      navigation.navigate('Tag', {
+        id: id.toString(),
+        mode: CRUDMode.Update,
+      });
     }
   };
 

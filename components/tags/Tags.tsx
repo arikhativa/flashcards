@@ -1,6 +1,6 @@
+import React from 'react';
 import {View} from 'react-native';
-
-import {baseUnit, container} from '../../constants/styles';
+import {container} from '../../constants/styles';
 import {useEffect, useState} from 'react';
 import {MultiSelect} from '../../hooks/useMultiSelect';
 import ListActions from '../../components/shared/ListActions';
