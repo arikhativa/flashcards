@@ -3,9 +3,8 @@ import {useEffect, useState} from 'react';
 import ActionsBar, {DangerButtons, FABProps, MainButtons} from './ActionsBar';
 import {CRUDMode, NEW_ID, ObjType} from '../../types/generic';
 import {RootStack} from '../../navigation/MainStack';
-import {useNavigation} from '@react-navigation/native';
 
-interface MultiSelectActionBarProps {
+interface Props {
   type: ObjType;
   isMultiSelect: boolean;
   selectedIds: number[];
@@ -17,6 +16,7 @@ interface MultiSelectActionBarProps {
   onTestMany?: (type?: ObjType) => void;
   onEditCards?: () => void;
   isRootless?: boolean;
+  navigation?: RootStack;
 }
 
 export default function MultiSelectActionBar({
@@ -31,9 +31,8 @@ export default function MultiSelectActionBar({
   type,
   isRootless,
   onTestMany,
-}: MultiSelectActionBarProps) {
-  const navigation = useNavigation<RootStack>();
-
+  navigation,
+}: Props) {
   const [buttons, setButtons] = useState<MainButtons>({});
   const [toggledButtons, setToggledButtons] = useState<MainButtons>({});
   const [toggledDangerButtons, setToggledDangerButtons] =
@@ -65,7 +64,9 @@ export default function MultiSelectActionBar({
           icon: 'square-edit-outline',
           onPress: onEditCards,
         },
+        b: undefined,
       });
+      return;
     }
 
     // this is not good enough
@@ -74,6 +75,10 @@ export default function MultiSelectActionBar({
         a: {
           icon: 'plus',
           onPress: () => {
+            if (!navigation) {
+              console.log('No');
+              return;
+            }
             if (type === ObjType.Card) {
               navigation.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create});
             }
@@ -85,6 +90,9 @@ export default function MultiSelectActionBar({
         b: {
           icon: 'school-outline',
           onPress: () => {
+            if (!navigation) {
+              return;
+            }
             navigation.navigate('Test', {tagIds: [], cardIds: [], type: type});
           },
         },

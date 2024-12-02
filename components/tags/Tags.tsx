@@ -11,7 +11,6 @@ import {Tag} from '../../types/Tag';
 import {TagService} from '../../services/Tag';
 import {Conf} from '../../types/Conf';
 import {ObjType} from '../../types/generic';
-import {useNavigation} from '@react-navigation/native';
 import {RootStack} from '../../navigation/MainStack';
 
 interface TagsProps {
@@ -21,6 +20,7 @@ interface TagsProps {
   tagService: TagService;
   multiSelect: MultiSelect;
   onSelectMany?: () => void;
+  navigation?: RootStack;
 }
 
 export default function Tags({
@@ -30,8 +30,8 @@ export default function Tags({
   tagService,
   onSelectMany,
   multiSelect,
+  navigation,
 }: TagsProps) {
-  const navigation = useNavigation<RootStack>();
   const [tagsLocal, setTagsLocal] = useState(tags);
   const [query, setQuery] = useState('');
   const {
@@ -58,11 +58,13 @@ export default function Tags({
   };
 
   const handelTestMany = () => {
-    navigation.navigate('Test', {
-      tagIds: selectedIdsRef.current,
-      cardIds: [],
-      type: ObjType.Tag,
-    });
+    if (navigation) {
+      navigation.navigate('Test', {
+        tagIds: selectedIdsRef.current,
+        cardIds: [],
+        type: ObjType.Tag,
+      });
+    }
   };
 
   return (
@@ -70,6 +72,7 @@ export default function Tags({
       <ListActions conf={conf} query={query} onQueryChange={setQuery} />
 
       <TagsManyTiles
+        navigation={navigation}
         isRootless={isRootless}
         onSelectMany={onSelectMany}
         onDeleteMany={toggleVisible}

@@ -76,7 +76,7 @@ export default function TestFinish({
         <Button
           mode="elevated"
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.replace('Home');
           }}>
           Done
         </Button>

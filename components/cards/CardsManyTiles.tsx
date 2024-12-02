@@ -25,9 +25,11 @@ export type CardManyTilesProps = {
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
+  navigation?: RootStack;
 };
 
 export function CardsManyTiles({
+  navigation,
   isRootless,
   onBrowseMany,
   onSelectMany,
@@ -40,7 +42,6 @@ export function CardsManyTiles({
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
-  const navigation = useNavigation<RootStack>();
   const maxSize = isRootless
     ? Dimensions.get('window').width * 0.9
     : Dimensions.get('window').width;
@@ -86,6 +87,9 @@ export function CardsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
+      if (!navigation) {
+        return;
+      }
       navigation.navigate('Card', {
         id: id.toString(),
         mode: CRUDMode.Update,
@@ -107,6 +111,7 @@ export function CardsManyTiles({
 
   return (
     <ManyTiles
+      navigation={navigation}
       tileHeight={TILE_HEIGHT}
       isRootless={isRootless}
       onBrowseMany={onBrowseMany}

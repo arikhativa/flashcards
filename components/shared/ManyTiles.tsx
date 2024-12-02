@@ -6,8 +6,10 @@ import {GestureWrapper} from '../shared/GestureWrapper';
 import MultiSelectActionBar from '../shared/MultiSelectActionBar';
 import {BaseCrud, ObjType} from '../../types/generic';
 import {useCallback} from 'react';
+import {RootStack} from '../../navigation/MainStack';
 
 export type ManyTilesProps<T> = {
+  navigation?: RootStack;
   tileHeight: number;
   isMultiSelect: boolean;
   selectedIds: number[];
@@ -27,6 +29,7 @@ export type ManyTilesProps<T> = {
 };
 
 export function ManyTiles<T extends BaseCrud>({
+  navigation,
   tileHeight,
   onSelectMany,
   isRootless,
@@ -77,6 +80,7 @@ export function ManyTiles<T extends BaseCrud>({
         </View>
       </GestureWrapper>
       <MultiSelectActionBar
+        navigation={navigation}
         isRootless={isRootless}
         onSelectMany={onSelectMany}
         onBrowseMany={onBrowseMany}

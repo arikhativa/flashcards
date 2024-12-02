@@ -30,7 +30,6 @@ import CreateOrAddTagDialog from '../shared/CreateOrAddTagDialog';
 import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
-import {useNavigation} from '@react-navigation/native';
 import {RootStack} from '../../navigation/MainStack';
 
 interface CardsProps {
@@ -38,15 +37,16 @@ interface CardsProps {
   store: StoreContextType;
   multiSelect: MultiSelect;
   onSelectMany?: () => void;
+  navigation?: RootStack;
 }
 
 export default function Cards({
   isRootless,
   store,
+  navigation,
   onSelectMany,
   multiSelect,
 }: CardsProps) {
-  const navigation = useNavigation<RootStack>();
   const [cardsLocal, setCardsLocal] = useState(store.cards);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<FilterChip[]>([]);
@@ -239,6 +239,7 @@ export default function Cards({
       />
 
       <CardsManyTiles
+        navigation={navigation}
         isRootless={isRootless}
         onBrowseMany={handelBrowseMany}
         onSelectMany={onSelectMany}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteProp, useNavigation} from '@react-navigation/native';
+import {RouteProp} from '@react-navigation/native';
 import Card from '../components/card/Card';
 import {StackEndpoints} from '../navigation/MainStack';
 

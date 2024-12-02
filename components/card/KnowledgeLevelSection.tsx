@@ -1,3 +1,4 @@
+import React from 'react';
 import {baseUnit, padding} from '../../constants/styles';
 import {StyleProp, View, ViewStyle} from 'react-native';
 import {Card as PaperCard, Text, Button, useTheme} from 'react-native-paper';

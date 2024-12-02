@@ -3,7 +3,6 @@ import {Tag} from '../../types/Tag';
 import {CRUDMode, ObjType} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
-import {useNavigation} from '@react-navigation/native';
 import {RootStack} from '../../navigation/MainStack';
 
 const TILE_HEIGHT = 55;
@@ -18,6 +17,7 @@ export type TagsManyTilesProps = {
   onDeleteMany?: () => void;
   onTestMany?: (type?: ObjType) => void;
   tags?: Tag[];
+  navigation?: RootStack;
 };
 
 export function TagsManyTiles({
@@ -29,10 +29,9 @@ export function TagsManyTiles({
   onDeleteMany,
   onTestMany,
   clearSelectedIds,
+  navigation,
   tags,
 }: TagsManyTilesProps) {
-  const navigation = useNavigation<RootStack>();
-
   const handleLongPress = (id: number) => {
     toggleIdSelection(id);
   };
@@ -42,10 +41,12 @@ export function TagsManyTiles({
     if (isMultiSelect || isRootless) {
       toggleIdSelection(id);
     } else {
-      navigation.navigate('Tag', {
-        id: id.toString(),
-        mode: CRUDMode.Update,
-      });
+      if (navigation) {
+        navigation.navigate('Tag', {
+          id: id.toString(),
+          mode: CRUDMode.Update,
+        });
+      }
     }
   };
 
@@ -62,6 +63,7 @@ export function TagsManyTiles({
 
   return (
     <ManyTiles
+      navigation={navigation}
       tileHeight={TILE_HEIGHT}
       isRootless={isRootless}
       isMultiSelect={isMultiSelect}
