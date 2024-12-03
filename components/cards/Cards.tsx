@@ -31,6 +31,8 @@ import TagsSectionDialog from '../card/TagsSectionDialog';
 import {Tag} from '../../types/Tag';
 import {StoreContextType} from '../../providers/GlobalStore';
 import {RootStack} from '../../navigation/MainStack';
+import CardsActionBar from './CardsActionBar';
+import DialogActionBar from '../shared/DialogActionBar';
 
 interface CardsProps {
   isRootless?: boolean;
@@ -241,17 +243,28 @@ export default function Cards({
       <CardsManyTiles
         navigation={navigation}
         isRootless={isRootless}
-        onBrowseMany={handelBrowseMany}
-        onSelectMany={onSelectMany}
-        onDeleteMany={confirmation.toggleVisible}
-        onTagMany={addOrCreateTag.toggleVisible}
-        onTestMany={handelTestMany}
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
         toggleIdSelection={toggleIdSelection}
         isMultiSelect={isMultiSelect}
         cards={cardsLocal}
-      />
+      >
+        {isRootless ? (
+          <DialogActionBar onSelectMany={onSelectMany} />
+        ) : (
+          <CardsActionBar
+            isMultiSelect={isMultiSelect}
+            selectedIds={selectedIds}
+            onTagMany={addOrCreateTag.toggleVisible}
+            onDeleteMany={confirmation.toggleVisible}
+            onBrowseMany={handelBrowseMany}
+            onTestMany={handelTestMany}
+            onEditCard={() =>
+              navigation.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create})
+            }
+          />
+        )}
+      </CardsManyTiles>
 
       <ConfirmationDialog
         visible={confirmation.visible}

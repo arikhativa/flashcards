@@ -170,7 +170,8 @@ export default function ActionsBar({
             flexDirection: 'row-reverse',
             gap: baseUnit * 3,
           },
-        ]}>
+        ]}
+      >
         {getButtons()}
       </View>
     </>

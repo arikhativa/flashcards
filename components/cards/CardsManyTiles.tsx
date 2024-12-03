@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Card} from '../../types/Card';
-import {Dimensions} from 'react-native';
+import {Dimensions, StyleProp, ViewStyle} from 'react-native';
 import {useEffect, useState} from 'react';
-import {CRUDMode, ObjType} from '../../types/generic';
+import {CRUDMode} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
-import {useNavigation} from '@react-navigation/native';
 import {RootStack} from '../../navigation/MainStack';
 
 const minCardSize = 51.8;
@@ -13,32 +12,23 @@ const averageCharWidth = 7.5;
 const gap = 20;
 const TILE_HEIGHT = 120;
 
-export type CardManyTilesProps = {
+export type CardManyTilesProps = PropsWithChildren<{
   isRootless?: boolean;
-  onSelectMany?: () => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
-  onBrowseMany?: () => void;
-  onTagMany?: () => void;
-  onDeleteMany?: () => void;
-  onTestMany?: (type?: ObjType) => void;
   cards?: Card[];
   navigation?: RootStack;
-};
+}>;
 
 export function CardsManyTiles({
+  children,
   navigation,
   isRootless,
-  onBrowseMany,
-  onSelectMany,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
-  onDeleteMany,
-  onTagMany,
-  onTestMany,
   clearSelectedIds,
   cards,
 }: CardManyTilesProps) {
@@ -109,28 +99,23 @@ export function CardsManyTiles({
     );
   };
 
+  const contentContainerStyle: StyleProp<ViewStyle> = {
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
   return (
     <ManyTiles
-      navigation={navigation}
       tileHeight={TILE_HEIGHT}
-      isRootless={isRootless}
-      onBrowseMany={onBrowseMany}
-      onSelectMany={onSelectMany}
       isMultiSelect={isMultiSelect}
-      selectedIds={selectedIds}
       clearSelectedIds={clearSelectedIds}
-      onTagMany={onTagMany}
-      onDeleteMany={onDeleteMany}
-      onTestMany={onTestMany}
       objs={rows}
       renderItem={renderRow}
       noObjsMessage="No cards"
-      contentContainerStyle={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      type={ObjType.Card}
-    />
+      contentContainerStyle={contentContainerStyle}
+    >
+      {children}
+    </ManyTiles>
   );
 }
 

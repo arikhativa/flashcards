@@ -1,11 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Card} from '../../types/Card';
-import {margin, padding} from '../../constants/styles';
+import {flex, margin, padding} from '../../constants/styles';
 import {CardsManyTiles} from '../cards/CardsManyTiles';
-import MultiSelectActionBar from '../shared/MultiSelectActionBar';
-import {ObjType} from '../../types/generic';
 import CardsSectionDialog from './CardsSectionDialog';
+import CardsSectionActionBar from './CardsSectionActionBar';
 
 interface CardsSectionProps {
   cards?: Card[];
@@ -35,15 +34,13 @@ const CardsSection = ({
   const hideDialog = () => setVisible(false);
 
   return (
-    <View style={[{flex: 1}]}>
+    <View style={[flex.f1]}>
       <View
         style={[
           margin.base2,
-          {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          },
+          flex.row,
+          flex.justifySpace,
+          flex.alignCenter,
           padding.bottom,
         ]}
       />
@@ -56,13 +53,12 @@ const CardsSection = ({
         cards={cards}
       />
 
-      <MultiSelectActionBar
-        type={ObjType.Card}
+      <CardsSectionActionBar
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         onEditCards={showDialog}
         onTestMany={onTestMany}
-        onUnTagMany={onRemoveCardsFromTag}
+        onUntagCards={onRemoveCardsFromTag}
       />
 
       <CardsSectionDialog

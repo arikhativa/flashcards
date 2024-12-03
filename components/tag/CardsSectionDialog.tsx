@@ -45,12 +45,14 @@ const CardsSectionDialog = ({
         <View
           style={{
             flex: 1,
-          }}>
+          }}
+        >
           <Dialog
             dismissableBackButton
             style={{flex: 1, overflow: 'hidden'}}
             visible={visible}
-            onDismiss={onDismiss}>
+            onDismiss={onDismiss}
+          >
             <Cards
               isRootless
               onSelectMany={handleSelectMany}

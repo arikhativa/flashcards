@@ -5,13 +5,15 @@ import {Card as PaperCard, TextInput} from 'react-native-paper';
 import {container, KLMark, margin} from '../../constants/styles';
 import {useStore} from '../../providers/GlobalStore';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
-import {ComponentProps, CRUDMode} from '../../types/generic';
+import {ComponentProps, CRUDMode, ObjType} from '../../types/generic';
 import {TagService} from '../../services/Tag';
 import {Card} from '../../types/Card';
 import CardsSection from './CardsSection';
 import {useMultiSelect} from '../../hooks/useMultiSelect';
 import CRUDWrapper from '../shared/CRUDWrapper';
 import {useStateDirty} from '../../hooks/useStateDirty';
+import {useNavigation} from '@react-navigation/native';
+import {RootStack} from '../../navigation/MainStack';
 
 export type TagParam = ComponentProps & {
   cardIds?: number[];
@@ -20,6 +22,7 @@ export type TagParam = ComponentProps & {
 type Props = TagParam;
 
 const TagComponent = ({mode, cardIds, id}: Props) => {
+  const navigation = useNavigation<RootStack>();
   const {cards, tags, tagService} = useStore();
   const {
     isMultiSelect,
@@ -27,7 +30,6 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
     selectedIdsRef,
     toggleIdSelection,
     clearSelectedIds,
-    handelTestMany,
   } = useMultiSelect();
 
   let idLocal: number = parseInt(id || '-1', 10);
@@ -115,6 +117,16 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
     return KLMark.Confident;
   };
 
+  const handelTestMany = () => {
+    const list = selectedIdsRef.current;
+    clearSelectedIds();
+    navigation.navigate('Test', {
+      cardIds: list,
+      tagIds: [],
+      type: ObjType.Card,
+    });
+  };
+
   return (
     <CRUDWrapper
       array={array}
@@ -125,7 +137,8 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
       updateTitle="Edit Tag"
       deleteMessage="Delete Tag"
       empty={TagService.EMPTY}
-      all={tags}>
+      all={tags}
+    >
       <View style={[container.flex1, margin.top2]}>
         <View style={[margin.base2]}>
           <PaperCard>

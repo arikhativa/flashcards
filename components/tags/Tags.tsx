@@ -10,8 +10,10 @@ import {useVisible} from '../../hooks/useVisible';
 import {Tag} from '../../types/Tag';
 import {TagService} from '../../services/Tag';
 import {Conf} from '../../types/Conf';
-import {ObjType} from '../../types/generic';
+import {CRUDMode, NEW_ID, ObjType} from '../../types/generic';
 import {RootStack} from '../../navigation/MainStack';
+import TagsActionBar from './TagsActionBar';
+import DialogActionBar from '../shared/DialogActionBar';
 
 interface TagsProps {
   isRootless?: boolean;
@@ -74,15 +76,25 @@ export default function Tags({
       <TagsManyTiles
         navigation={navigation}
         isRootless={isRootless}
-        onSelectMany={onSelectMany}
-        onDeleteMany={toggleVisible}
-        onTestMany={handelTestMany}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}
         toggleIdSelection={toggleIdSelection}
         clearSelectedIds={clearSelectedIds}
         tags={tagsLocal}
-      />
+      >
+        {isRootless ? (
+          <DialogActionBar onSelectMany={onSelectMany} />
+        ) : (
+          <TagsActionBar
+            isMultiSelect={isMultiSelect}
+            onDeleteMany={toggleVisible}
+            onTestMany={handelTestMany}
+            onEditTag={() =>
+              navigation.navigate('Tag', {id: NEW_ID, mode: CRUDMode.Create})
+            }
+          />
+        )}
+      </TagsManyTiles>
 
       <ConfirmationDialog
         visible={visible}

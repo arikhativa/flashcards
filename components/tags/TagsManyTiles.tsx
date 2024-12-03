@@ -1,35 +1,31 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Tag} from '../../types/Tag';
-import {CRUDMode, ObjType} from '../../types/generic';
+import {CRUDMode} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
 import {RootStack} from '../../navigation/MainStack';
+import {StyleProp, ViewStyle} from 'react-native';
 
 const TILE_HEIGHT = 55;
 
-export type TagsManyTilesProps = {
+export type TagsManyTilesProps = PropsWithChildren<{
   isRootless?: boolean;
-  onSelectMany?: () => void;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
   clearSelectedIds: () => void;
-  onDeleteMany?: () => void;
-  onTestMany?: (type?: ObjType) => void;
   tags?: Tag[];
   navigation?: RootStack;
-};
+}>;
 
 export function TagsManyTiles({
   isRootless,
-  onSelectMany,
   isMultiSelect,
   selectedIds,
   toggleIdSelection,
-  onDeleteMany,
-  onTestMany,
   clearSelectedIds,
   navigation,
+  children,
   tags,
 }: TagsManyTilesProps) {
   const handleLongPress = (id: number) => {
@@ -63,23 +59,20 @@ export function TagsManyTiles({
 
   return (
     <ManyTiles
-      navigation={navigation}
       tileHeight={TILE_HEIGHT}
-      isRootless={isRootless}
       isMultiSelect={isMultiSelect}
-      selectedIds={selectedIds}
-      onSelectMany={onSelectMany}
       clearSelectedIds={clearSelectedIds}
-      onDeleteMany={onDeleteMany}
-      onTestMany={onTestMany}
       objs={tags}
       renderItem={renderItem}
       noObjsMessage="No tags"
-      contentContainerStyle={{
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-      }}
-      type={ObjType.Tag}
-    />
+      contentContainerStyle={contentContainerStyle}
+    >
+      {children}
+    </ManyTiles>
   );
 }
+
+const contentContainerStyle: StyleProp<ViewStyle> = {
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start',
+};

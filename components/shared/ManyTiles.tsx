@@ -1,51 +1,30 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {View, FlatList, StyleProp, ViewStyle} from 'react-native';
 import {Text} from 'react-native-paper';
 import {text} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
-import MultiSelectActionBar from '../shared/MultiSelectActionBar';
-import {BaseCrud, ObjType} from '../../types/generic';
+import {BaseCrud} from '../../types/generic';
 import {useCallback} from 'react';
-import {RootStack} from '../../navigation/MainStack';
 
-export type ManyTilesProps<T> = {
-  navigation?: RootStack;
+export type ManyTilesProps<T> = PropsWithChildren<{
   tileHeight: number;
   isMultiSelect: boolean;
-  selectedIds: number[];
   clearSelectedIds: () => void;
-  onSelectMany?: () => void;
-  onTagMany?: () => void;
-  onUnTagMany?: () => void;
-  onBrowseMany?: () => void;
-  onDeleteMany?: () => void;
-  onTestMany?: (type?: ObjType) => void;
   objs?: T[];
   renderItem: ({item}: {item: T}) => React.JSX.Element;
   noObjsMessage: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  type: ObjType;
-  isRootless?: boolean;
-};
+}>;
 
 export function ManyTiles<T extends BaseCrud>({
-  navigation,
   tileHeight,
-  onSelectMany,
-  isRootless,
   isMultiSelect,
-  selectedIds,
-  onBrowseMany,
-  onDeleteMany,
-  onTagMany,
-  onUnTagMany,
-  onTestMany,
   renderItem,
   clearSelectedIds,
   noObjsMessage,
   contentContainerStyle,
-  type,
   objs,
+  children,
 }: ManyTilesProps<T>) {
   const betterRenderItem = useCallback(renderItem, [renderItem]);
 
@@ -79,19 +58,7 @@ export function ManyTiles<T extends BaseCrud>({
           )}
         </View>
       </GestureWrapper>
-      <MultiSelectActionBar
-        navigation={navigation}
-        isRootless={isRootless}
-        onSelectMany={onSelectMany}
-        onBrowseMany={onBrowseMany}
-        type={type}
-        isMultiSelect={isMultiSelect}
-        selectedIds={selectedIds}
-        onDeleteMany={onDeleteMany}
-        onTagMany={onTagMany}
-        onUnTagMany={onUnTagMany}
-        onTestMany={onTestMany}
-      />
+      {children}
     </View>
   );
 }
