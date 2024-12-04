@@ -1,4 +1,4 @@
-package com.flashcards
+package com.pigafetta.flashcards
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
