@@ -7,7 +7,7 @@ import {
 import {DataSource} from 'typeorm';
 import {migrations} from './migrations';
 
-const DB_NAME = 'flashcards.db';
+export const DB_NAME = 'flashcards.db';
 
 export const AppDataSource = new DataSource({
   database: DB_NAME,

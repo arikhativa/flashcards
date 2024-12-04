@@ -21,6 +21,13 @@ import {CardsSideOptions} from '../utils/testForm';
 import {isSortName} from '../utils/sort';
 import {SortNames} from '../types/Sort';
 
+// TODO Delete
+import RNFS from 'react-native-fs';
+import {DB_NAME} from '../db/AppDataSource';
+
+const currentDbPath = `${RNFS.DocumentDirectoryPath}/../databases/${DB_NAME}`;
+const exportPath = `${RNFS.DownloadDirectoryPath}/exported-database.db`; // Or any other path you prefer
+
 export default function ConfScreen() {
   const {conf, confService} = useStore();
 
@@ -125,6 +132,23 @@ export default function ConfScreen() {
       isNumberOfCardsValid()
     );
   };
+  const exportDB = async () => {
+    try {
+      await RNFS.copyFile(currentDbPath, exportPath);
+      console.log('Database exported to:', exportPath);
+    } catch (error) {
+      console.error('Error exporting database:', error);
+    }
+  };
+
+  const importDatabase = async () => {
+    try {
+      await RNFS.copyFile(exportPath, currentDbPath);
+      console.log('Database imported from:', exportPath);
+    } catch (error) {
+      console.error('Error importing database:', error);
+    }
+  };
 
   return (
     <View style={[container.center, padding.x]}>
@@ -194,8 +218,17 @@ export default function ConfScreen() {
           <Button
             mode={'contained'}
             onPress={handleSubmit}
-            disabled={!isDirty() || !isFormValid()}>
+            disabled={!isDirty() || !isFormValid()}
+          >
             Save
+          </Button>
+        </Card.Actions>
+        <Card.Actions>
+          <Button mode={'contained'} onPress={exportDB}>
+            Export DB
+          </Button>
+          <Button mode={'contained'} onPress={importDatabase}>
+            import DB
           </Button>
         </Card.Actions>
       </Card>
