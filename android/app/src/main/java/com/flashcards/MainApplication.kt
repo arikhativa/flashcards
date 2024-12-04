@@ -1,4 +1,4 @@
-package com.flashcards
+package com.pigafetta.flashcards
 
 import android.app.Application
 import com.facebook.react.PackageList
