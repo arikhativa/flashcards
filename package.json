@@ -9,7 +9,12 @@
     "start": "react-native start",
     "cache": "npm run start --reset-cache",
     "test": "jest",
-    "dryCompile": "tsc --project tsconfig.json --noEmit --skipLibCheck"
+    "dryCompile": "tsc --project tsconfig.json --noEmit --skipLibCheck",
+    "runMigrations": "./scripts/run-migrations.sh",
+    "generateMigrations": "./scripts/generate-migrations.sh",
+    "updateMigrations": "python3 ./scripts/update-migrations.py",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "buildDev": "./scripts/buildDev.sh"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.1.2",
