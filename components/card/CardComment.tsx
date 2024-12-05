@@ -1,7 +1,8 @@
+import React from 'react';
 import {StyleProp, View, ViewStyle} from 'react-native';
 import {Text, TextInput} from 'react-native-paper';
 import {Card as PaperCard} from 'react-native-paper';
-import {padding} from '../../constants/styles';
+import {color, padding} from '../../constants/styles';
 
 type CardCommentProps = {
   style?: StyleProp<ViewStyle>;
@@ -25,9 +26,7 @@ const CardComment = ({
         <PaperCard.Content>
           <TextInput
             editable={!disabled}
-            style={{
-              backgroundColor: 'transparent',
-            }}
+            style={color.bgTransparent}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
             multiline

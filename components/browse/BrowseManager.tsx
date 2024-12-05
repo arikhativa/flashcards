@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import {Text} from 'react-native-paper';
 import {Card} from '../../types/Card';
-import {padding} from '../../constants/styles';
+import {flex, padding} from '../../constants/styles';
 import CarouselWrapper, {CarouselWrapperRef} from '../shared/CarouselWrapper';
 import CardBrowse from './CardBrowse';
 
@@ -29,21 +29,14 @@ export default function BrowseManager({cards}: BrowseManagerProps) {
 
   const renderItem = ({index}: {index: number}) => {
     return (
-      <View
-        style={[
-          padding.top3,
-          {
-            flex: 1,
-            justifyContent: 'flex-start',
-          },
-        ]}>
+      <View style={[padding.top3, flex.f1, flex.justifyStart]}>
         {getPage(index)}
       </View>
     );
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={flex.f1}>
       <CarouselWrapper
         ref={carouselWrapperRef}
         length={cards.length ? cards.length - 1 : 0}
