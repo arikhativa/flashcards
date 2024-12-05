@@ -1,5 +1,5 @@
-import {Card} from '../types/Card';
-import {BaseCrud} from '../types/generic';
+import {Card} from '../../types/Card';
+import {BaseCrud} from '../../types/generic';
 import {memo} from 'react';
 import {View} from 'react-native';
 import {CardTile} from './CardTile';
@@ -36,7 +36,8 @@ const CardRowMemo = memo(
         key={item.id}
         style={{
           flexDirection: 'row',
-        }}>
+        }}
+      >
         {children}
       </View>
     );

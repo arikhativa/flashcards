@@ -1,4 +1,4 @@
-import {color, margin, text} from '../constants/styles';
+import {color, margin, text} from '../../constants/styles';
 import React, {useState} from 'react';
 import {View, FlatList, TouchableOpacity} from 'react-native';
 import {Searchbar, Text, Button, Divider} from 'react-native-paper';
@@ -68,7 +68,8 @@ const Autocomplete = <T,>({
             flexDirection: 'row',
             alignItems: 'center',
           },
-        ]}>
+        ]}
+      >
         <Searchbar
           placeholder={placeholder}
           icon={icon}
@@ -83,7 +84,8 @@ const Autocomplete = <T,>({
           disabled={query.length === 0}
           icon="plus"
           mode="contained-tonal"
-          onPress={() => onCreateEmpty(query)}>
+          onPress={() => onCreateEmpty(query)}
+        >
           {buttonText}
         </Button>
       )}
@@ -113,7 +115,8 @@ const Autocomplete = <T,>({
               disabled={isSelected(item)}
               activeOpacity={0.5}
               style={getStyle(item)}
-              onPress={() => onSelectItem(item)}>
+              onPress={() => onSelectItem(item)}
+            >
               <View pointerEvents="none">
                 {React.createElement(itemComponent, {
                   item,
