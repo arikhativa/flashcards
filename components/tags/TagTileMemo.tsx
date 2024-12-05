@@ -1,6 +1,6 @@
 import {memo} from 'react';
 import {TagTile} from './TagTile';
-import {Tag} from '../types/Tag';
+import {Tag} from '../../types/Tag';
 
 interface TagTileMemoProps {
   item: Tag;

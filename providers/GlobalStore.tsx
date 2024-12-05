@@ -131,7 +131,8 @@ export const StoreProvider = ({
         cardTagService,
         confService,
         keyboardHeight,
-      }}>
+      }}
+    >
       {children}
     </StoreContext.Provider>
   );

@@ -20,6 +20,7 @@ import InputHelper from '../components/shared/InputHelper';
 import {CardsSideOptions} from '../utils/testForm';
 import {isSortName} from '../utils/sort';
 import {SortNames} from '../types/Sort';
+import ImportExportDB from '../components/ImportExportDB';
 
 export default function ConfScreen() {
   const {conf, confService} = useStore();
@@ -194,10 +195,12 @@ export default function ConfScreen() {
           <Button
             mode={'contained'}
             onPress={handleSubmit}
-            disabled={!isDirty() || !isFormValid()}>
+            disabled={!isDirty() || !isFormValid()}
+          >
             Save
           </Button>
         </Card.Actions>
+        <ImportExportDB />
       </Card>
     </View>
   );
