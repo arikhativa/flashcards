@@ -5,9 +5,10 @@ module.exports = {
     '@babel/plugin-transform-class-static-block',
     ['@babel/plugin-proposal-decorators', {legacy: true}],
   ],
-  env: {
-    production: {
-      plugins: ['react-native-paper/babel'],
-    },
-  },
+  // TODO this was crushing the app on production
+  // env: {
+  //   production: {
+  //     plugins: ['react-native-paper/babel'],
+  //   },
+  // },
 };
