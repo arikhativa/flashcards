@@ -14,6 +14,9 @@ export const flex = StyleSheet.create({
   column: {
     flexDirection: 'column',
   },
+  justifyStart: {
+    justifyContent: 'flex-start',
+  },
   justifyCenter: {
     justifyContent: 'center',
   },
@@ -25,6 +28,15 @@ export const flex = StyleSheet.create({
   },
   alignStart: {
     alignItems: 'flex-start',
+  },
+  alignSelfCenter: {
+    alignSelf: 'center',
+  },
+});
+
+export const border = StyleSheet.create({
+  radios0: {
+    borderRadius: 0,
   },
 });
 
