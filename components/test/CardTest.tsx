@@ -1,8 +1,9 @@
+import React from 'react';
 import {Dimensions, View} from 'react-native';
 import {Text, IconButton, TextInput} from 'react-native-paper';
 import CardSides from '../shared/CardSides';
 import {Card} from '../../types/Card';
-import {margin} from '../../constants/styles';
+import {container, flex, margin, padding} from '../../constants/styles';
 import {CardMeta} from '../../types/TestSettings';
 import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import {useStore} from '../../providers/GlobalStore';
@@ -42,9 +43,11 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
     );
 
     const {keyboardHeight} = useStore();
-    const containerHeight = Dimensions.get('window').height - keyboardHeight;
+    const containerHeight = Dimensions.get('window').height - keyboardHeight; // 578
     const cardHeight = containerHeight / 4;
     const paddingHeight = containerHeight / 60;
+    const paddingStyle = {paddingVertical: paddingHeight};
+    const viewStyle = {height: containerHeight};
 
     const inputRef = useRef(null);
 
@@ -57,10 +60,8 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
     }));
 
     return (
-      <View style={{height: containerHeight}}>
-        <Text
-          variant="titleLarge"
-          style={{alignSelf: 'center', paddingVertical: paddingHeight}}>
+      <View style={[viewStyle]}>
+        <Text variant="titleLarge" style={[flex.alignSelfCenter, paddingStyle]}>
           {index + 1}/{length}
         </Text>
         <CardSides
@@ -74,17 +75,11 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
           hideSideB={showAnswer ? false : hideSideB}
         />
         <View
-          style={[
-            margin.base2,
-            {
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            },
-          ]}>
+          style={[margin.base2, flex.row, flex.justifySpace, flex.alignCenter]}
+        >
           <TextInput
             ref={inputRef}
-            style={[{flex: 1}, margin.right]}
+            style={[flex.f1, margin.right]}
             value={cardMeta.answer}
             onChangeText={(v: string) => {
               onChangeAnswer(index, v);
@@ -98,23 +93,10 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
           />
         </View>
         <View
-          style={[
-            margin.x2,
-            {
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            },
-          ]}>
+          style={[margin.x2, flex.row, flex.justifySpace, flex.alignCenter]}
+        >
           <Text variant="titleMedium">Did you get it right?</Text>
-          <View
-            style={[
-              {
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              },
-            ]}>
+          <View style={[flex.row, flex.justifyCenter, flex.alignCenter]}>
             <IconButton
               selected={showBtnColor && !cardMeta.success}
               disabled={!showAnswer}
