@@ -1,7 +1,7 @@
 import React, {PropsWithChildren} from 'react';
 import {View, FlatList, StyleProp, ViewStyle} from 'react-native';
 import {Text} from 'react-native-paper';
-import {text} from '../../constants/styles';
+import {flex, text} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
 import {BaseCrud} from '../../types/generic';
 import {useCallback} from 'react';
@@ -9,7 +9,7 @@ import {useCallback} from 'react';
 export type ManyTilesProps<T> = PropsWithChildren<{
   tileHeight: number;
   isMultiSelect: boolean;
-  clearSelectedIds: () => void;
+  clearSelectedIds?: () => void;
   objs?: T[];
   renderItem: ({item}: {item: T}) => React.JSX.Element;
   noObjsMessage: string;
@@ -40,18 +40,18 @@ export function ManyTiles<T extends BaseCrud>({
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={flex.f1}>
       <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
-        <View style={{flex: 1}}>
+        <View style={flex.f1}>
           {!objs || objs.length === 0 ? (
-            <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={[flex.f1, flex.justifyCenter]}>
               <Text style={text.grayMessage}>{noObjsMessage}</Text>
             </View>
           ) : (
             <FlatList
               getItemLayout={getItemLayout}
               data={objs}
-              keyExtractor={objs => objs.id.toString()}
+              keyExtractor={row => row.id.toString()}
               contentContainerStyle={contentContainerStyle}
               renderItem={betterRenderItem}
             />

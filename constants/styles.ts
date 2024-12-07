@@ -41,8 +41,8 @@ export const border = StyleSheet.create({
 });
 
 export const container = StyleSheet.create({
-  flex1: {
-    flex: 1,
+  overflowHidden: {
+    overflow: 'hidden',
   },
   space: {
     justifyContent: 'space-between',

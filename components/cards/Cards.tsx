@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {container} from '../../constants/styles';
+import {container, flex} from '../../constants/styles';
 import {useEffect, useState} from 'react';
 import {FULL_SELECTED_KL, SelectedKL} from '../../types/KnowledgeLevel';
 import {Card} from '../../types/Card';
@@ -227,7 +227,7 @@ export default function Cards({
   };
 
   return (
-    <View style={[container.flex1]}>
+    <View style={[flex.f1]}>
       <ListActions
         conf={store.conf}
         sort={sort}
