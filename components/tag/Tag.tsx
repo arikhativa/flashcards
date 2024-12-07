@@ -144,7 +144,7 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
           <PaperCard>
             <PaperCard.Content>
               <TextInput
-                style={[{height: 20}, styles.textInput]}
+                style={[styles.textInput]}
                 underlineColor="transparent"
                 onChangeText={text => {
                   handleLocalChange('name', text);
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   textInput: {
+    height: 20,
     backgroundColor: 'transparent',
     textAlign: 'center',
   },
