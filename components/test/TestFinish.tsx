@@ -47,7 +47,8 @@ export default function TestFinish({
         <PaperCard.Content>
           <Text
             style={[padding.bottom, {alignSelf: 'center'}]}
-            variant="headlineLarge">
+            variant="headlineLarge"
+          >
             Test Is Done!
           </Text>
           <Text style={[{alignSelf: 'center'}]} variant="headlineMedium">
@@ -61,13 +62,15 @@ export default function TestFinish({
           justifyContent: 'center',
           alignItems: 'center',
           gap: 40,
-        }}>
+        }}
+      >
         <Button
           mode="contained"
           onPress={() => {
             Keyboard.dismiss();
             toggleVisible();
-          }}>
+          }}
+        >
           View Test
         </Button>
         <Button mode="elevated" onPress={() => onRetakeTest(cards)}>
@@ -77,7 +80,8 @@ export default function TestFinish({
           mode="elevated"
           onPress={() => {
             navigation.replace('Home');
-          }}>
+          }}
+        >
           Done
         </Button>
       </View>

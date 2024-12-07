@@ -68,16 +68,14 @@ const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
     }));
 
     return (
-      <View style={{flex: 1}}>
-        <Carousel
-          loop={false}
-          ref={carouselRef}
-          width={width}
-          height={height}
-          data={data}
-          renderItem={renderItem}
-        />
-      </View>
+      <Carousel
+        loop={false}
+        ref={carouselRef}
+        width={width}
+        height={height}
+        data={data}
+        renderItem={renderItem}
+      />
     );
   },
 );
