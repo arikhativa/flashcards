@@ -1,10 +1,11 @@
 import React, {PropsWithChildren} from 'react';
 import {View, FlatList, StyleProp, ViewStyle} from 'react-native';
-import {Text} from 'react-native-paper';
-import {flex, text} from '../../constants/styles';
+import {Chip, Text} from 'react-native-paper';
+import {flex, margin, position, text} from '../../constants/styles';
 import {GestureWrapper} from '../shared/GestureWrapper';
 import {BaseCrud} from '../../types/generic';
 import {useCallback} from 'react';
+import {useVisible} from '../../hooks/useVisible';
 
 type Props<T> = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
@@ -15,6 +16,7 @@ type Props<T> = PropsWithChildren<{
   renderItem: ({item}: {item: T}) => React.JSX.Element;
   noObjsMessage: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  counter?: number;
 }>;
 
 export function ManyTiles<T extends BaseCrud>({
@@ -27,6 +29,7 @@ export function ManyTiles<T extends BaseCrud>({
   contentContainerStyle,
   objs,
   children,
+  counter,
 }: Props<T>) {
   const betterRenderItem = useCallback(renderItem, [renderItem]);
 
@@ -41,8 +44,25 @@ export function ManyTiles<T extends BaseCrud>({
     };
   };
 
+  const {visible, toggleVisible} = useVisible(true);
+
   return (
     <View style={[style, flex.f1]}>
+      {counter !== undefined && (
+        <Chip
+          style={[
+            position.z1,
+            position.absolute,
+            position.top0,
+            position.right0,
+            margin.right2,
+          ]}
+          onPress={toggleVisible}
+          disabled={visible ? false : true}
+        >
+          {counter}
+        </Chip>
+      )}
       <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
         <View style={flex.f1}>
           {!objs || objs.length === 0 ? (

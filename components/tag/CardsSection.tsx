@@ -38,16 +38,6 @@ const CardsSection = ({
 
   return (
     <View style={[flex.f1]}>
-      <View
-        style={[
-          margin.base2,
-          flex.row,
-          flex.justifySpace,
-          flex.alignCenter,
-          padding.bottom,
-        ]}
-      />
-
       <CardsManyTiles
         isRootless={false}
         navigation={navigation}

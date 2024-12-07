@@ -60,6 +60,7 @@ export function TagsManyTiles({
 
   return (
     <ManyTiles
+      counter={tags && tags.length}
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
       clearSelectedIds={isRootless ? undefined : clearSelectedIds}
