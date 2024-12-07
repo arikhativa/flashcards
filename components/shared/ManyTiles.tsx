@@ -6,7 +6,8 @@ import {GestureWrapper} from '../shared/GestureWrapper';
 import {BaseCrud} from '../../types/generic';
 import {useCallback} from 'react';
 
-export type ManyTilesProps<T> = PropsWithChildren<{
+type Props<T> = PropsWithChildren<{
+  style?: StyleProp<ViewStyle>;
   tileHeight: number;
   isMultiSelect: boolean;
   clearSelectedIds?: () => void;
@@ -17,6 +18,7 @@ export type ManyTilesProps<T> = PropsWithChildren<{
 }>;
 
 export function ManyTiles<T extends BaseCrud>({
+  style,
   tileHeight,
   isMultiSelect,
   renderItem,
@@ -25,7 +27,7 @@ export function ManyTiles<T extends BaseCrud>({
   contentContainerStyle,
   objs,
   children,
-}: ManyTilesProps<T>) {
+}: Props<T>) {
   const betterRenderItem = useCallback(renderItem, [renderItem]);
 
   const getItemLayout = (
@@ -40,7 +42,7 @@ export function ManyTiles<T extends BaseCrud>({
   };
 
   return (
-    <View style={flex.f1}>
+    <View style={[style, flex.f1]}>
       <GestureWrapper onTap={clearSelectedIds} enabled={isMultiSelect}>
         <View style={flex.f1}>
           {!objs || objs.length === 0 ? (

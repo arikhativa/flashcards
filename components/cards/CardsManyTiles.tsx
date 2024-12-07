@@ -6,6 +6,7 @@ import {CRUDMode} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
 import {RootStack} from '../../navigation/MainStack';
+import {baseUnit} from '../../constants/styles';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -102,6 +103,7 @@ export function CardsManyTiles({
   const contentContainerStyle: StyleProp<ViewStyle> = {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: baseUnit * 10,
   };
 
   return (
