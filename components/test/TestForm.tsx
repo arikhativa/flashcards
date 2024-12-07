@@ -1,5 +1,5 @@
 import React from 'react';
-import {container, margin} from '../../constants/styles';
+import {container, flex, margin} from '../../constants/styles';
 import {View} from 'react-native';
 import {Card as PaperCard, Text, Chip} from 'react-native-paper';
 import {TestSettings, TestSide} from '../../types/TestSettings';
@@ -152,7 +152,7 @@ export default function TestForm({
   };
 
   return (
-    <View style={[container.flex1, margin.base2]}>
+    <View style={[flex.f1, margin.base2]}>
       <View
         style={[
           margin.y2,
@@ -161,7 +161,8 @@ export default function TestForm({
             justifyContent: 'space-between',
             alignItems: 'center',
           },
-        ]}>
+        ]}
+      >
         <Text variant="titleLarge">Test Setup</Text>
         <Chip style={{}} disabled mode="outlined">
           {matchingCards.length}
@@ -197,7 +198,8 @@ export default function TestForm({
           <InputHelper
             error={
               !isTimeSelectedValid() ? 'Please select a Time' : '' // TODO test is not good
-            }>
+            }
+          >
             <Dropdown
               disabled={!!preSelectedCards.length}
               error={!isTimeSelectedValid()}
@@ -210,7 +212,8 @@ export default function TestForm({
           <InputHelper
             error={
               !isKnowledgeLevelsValid() ? 'Please select a Knowledge Level' : ''
-            }>
+            }
+          >
             <MultiSelectDropdown
               disabled={!!preSelectedCards.length}
               error={!isKnowledgeLevelsValid()}

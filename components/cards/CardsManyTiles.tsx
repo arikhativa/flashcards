@@ -108,7 +108,7 @@ export function CardsManyTiles({
     <ManyTiles
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
-      clearSelectedIds={clearSelectedIds}
+      clearSelectedIds={isRootless ? undefined : clearSelectedIds}
       objs={rows}
       renderItem={renderRow}
       noObjsMessage="No cards"

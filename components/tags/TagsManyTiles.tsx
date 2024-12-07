@@ -61,7 +61,7 @@ export function TagsManyTiles({
     <ManyTiles
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
-      clearSelectedIds={clearSelectedIds}
+      clearSelectedIds={isRootless ? undefined : clearSelectedIds}
       objs={tags}
       renderItem={renderItem}
       noObjsMessage="No tags"

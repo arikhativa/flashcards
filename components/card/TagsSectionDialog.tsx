@@ -5,6 +5,7 @@ import Tags from '../tags/Tags';
 import {useStore} from '../../providers/GlobalStore';
 import {Tag} from '../../types/Tag';
 import {useMultiSelect} from '../../hooks/useMultiSelect';
+import {container, flex} from '../../constants/styles';
 
 interface TagsSectionDialogProps {
   onDismiss: () => void;
@@ -41,15 +42,13 @@ const TagsSectionDialog = ({
   return (
     <Portal>
       {visible && (
-        <View
-          style={{
-            flex: 1,
-          }}>
+        <View style={flex.f1}>
           <Dialog
             dismissableBackButton
-            style={{flex: 1, overflow: 'hidden'}}
+            style={[flex.f1, container.overflowHidden]}
             visible={visible}
-            onDismiss={onDismiss}>
+            onDismiss={onDismiss}
+          >
             <Tags
               conf={conf}
               isRootless

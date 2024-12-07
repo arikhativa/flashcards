@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Tag, TagCreate, TagUpdate} from '../../types/Tag';
 import {Card as PaperCard, TextInput} from 'react-native-paper';
-import {container, KLMark, margin} from '../../constants/styles';
+import {container, flex, KLMark, margin} from '../../constants/styles';
 import {useStore} from '../../providers/GlobalStore';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {ComponentProps, CRUDMode, ObjType} from '../../types/generic';
@@ -139,7 +139,7 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
       empty={TagService.EMPTY}
       all={tags}
     >
-      <View style={[container.flex1, margin.top2]}>
+      <View style={[flex.f1, margin.top2]}>
         <View style={[margin.base2]}>
           <PaperCard>
             <PaperCard.Content>
