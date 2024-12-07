@@ -106,9 +106,19 @@ export function CardsManyTiles({
     paddingBottom: baseUnit * 10,
   };
 
+  const getCounter = () => {
+    if (isRootless) {
+      return selectedIds.length;
+    }
+    if (cards) {
+      return cards.length;
+    }
+    return undefined;
+  };
+
   return (
     <ManyTiles
-      counter={cards && cards.length}
+      counter={getCounter()}
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
       clearSelectedIds={isRootless ? undefined : clearSelectedIds}

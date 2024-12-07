@@ -57,8 +57,10 @@ export function ManyTiles<T extends BaseCrud>({
             position.right0,
             margin.right2,
           ]}
+          rippleColor="transparent"
           onPress={toggleVisible}
           disabled={visible ? false : true}
+          mode="outlined"
         >
           {counter}
         </Chip>
