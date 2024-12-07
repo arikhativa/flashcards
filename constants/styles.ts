@@ -169,6 +169,18 @@ export const margin = StyleSheet.create({
   base4: {
     margin: baseUnit * 4,
   },
+  base5: {
+    margin: baseUnit * 5,
+  },
+  base6: {
+    margin: baseUnit * 6,
+  },
+  base7: {
+    margin: baseUnit * 7,
+  },
+  base8: {
+    margin: baseUnit * 8,
+  },
   top: {
     marginTop: baseUnit,
   },
@@ -180,6 +192,18 @@ export const margin = StyleSheet.create({
   },
   top4: {
     marginTop: baseUnit * 4,
+  },
+  top5: {
+    marginTop: baseUnit * 5,
+  },
+  top6: {
+    marginTop: baseUnit * 6,
+  },
+  top7: {
+    marginTop: baseUnit * 7,
+  },
+  top8: {
+    marginTop: baseUnit * 8,
   },
   left: {
     marginLeft: baseUnit,
@@ -193,6 +217,18 @@ export const margin = StyleSheet.create({
   left4: {
     marginLeft: baseUnit * 4,
   },
+  left5: {
+    marginLeft: baseUnit * 5,
+  },
+  left6: {
+    marginLeft: baseUnit * 6,
+  },
+  left7: {
+    marginLeft: baseUnit * 7,
+  },
+  left8: {
+    marginLeft: baseUnit * 8,
+  },
   right: {
     marginRight: baseUnit,
   },
@@ -205,6 +241,18 @@ export const margin = StyleSheet.create({
   right4: {
     marginRight: baseUnit * 4,
   },
+  right5: {
+    marginRight: baseUnit * 5,
+  },
+  right6: {
+    marginRight: baseUnit * 6,
+  },
+  right7: {
+    marginRight: baseUnit * 7,
+  },
+  right8: {
+    marginRight: baseUnit * 8,
+  },
   bottom: {
     marginBottom: baseUnit,
   },
@@ -216,6 +264,18 @@ export const margin = StyleSheet.create({
   },
   bottom4: {
     marginBottom: baseUnit * 4,
+  },
+  bottom5: {
+    marginBottom: baseUnit * 5,
+  },
+  bottom6: {
+    marginBottom: baseUnit * 6,
+  },
+  bottom7: {
+    marginBottom: baseUnit * 7,
+  },
+  bottom8: {
+    marginBottom: baseUnit * 8,
   },
   x: {
     marginLeft: baseUnit,
@@ -267,6 +327,18 @@ export const padding = StyleSheet.create({
   base4: {
     padding: baseUnit * 4,
   },
+  base5: {
+    padding: baseUnit * 5,
+  },
+  base6: {
+    padding: baseUnit * 6,
+  },
+  base7: {
+    padding: baseUnit * 7,
+  },
+  base8: {
+    padding: baseUnit * 8,
+  },
   left: {
     paddingLeft: baseUnit,
   },
@@ -282,6 +354,18 @@ export const padding = StyleSheet.create({
   top4: {
     paddingTop: baseUnit * 4,
   },
+  top5: {
+    paddingTop: baseUnit * 5,
+  },
+  top6: {
+    paddingTop: baseUnit * 6,
+  },
+  top7: {
+    paddingTop: baseUnit * 7,
+  },
+  top8: {
+    paddingTop: baseUnit * 8,
+  },
   bottom: {
     paddingBottom: baseUnit,
   },
@@ -293,6 +377,18 @@ export const padding = StyleSheet.create({
   },
   bottom4: {
     paddingBottom: baseUnit * 4,
+  },
+  bottom5: {
+    paddingBottom: baseUnit * 5,
+  },
+  bottom6: {
+    paddingBottom: baseUnit * 6,
+  },
+  bottom7: {
+    paddingBottom: baseUnit * 7,
+  },
+  bottom8: {
+    paddingBottom: baseUnit * 8,
   },
   x: {
     paddingLeft: baseUnit,

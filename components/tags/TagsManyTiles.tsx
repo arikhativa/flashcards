@@ -5,6 +5,7 @@ import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
 import {RootStack} from '../../navigation/MainStack';
 import {StyleProp, ViewStyle} from 'react-native';
+import {baseUnit} from '../../constants/styles';
 
 const TILE_HEIGHT = 55;
 
@@ -75,4 +76,5 @@ export function TagsManyTiles({
 const contentContainerStyle: StyleProp<ViewStyle> = {
   justifyContent: 'flex-start',
   alignItems: 'flex-start',
+  paddingBottom: baseUnit * 10,
 };
