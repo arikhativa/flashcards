@@ -1,5 +1,5 @@
 import React from 'react';
-import {baseUnit, gap, margin} from '../../constants/styles';
+import {baseUnit, flex, gap, margin} from '../../constants/styles';
 import {FilterChip} from '../../types/generic';
 import {SelectedKL} from '../../types/KnowledgeLevel';
 import {FlatList, StyleProp, View, ViewStyle} from 'react-native';
@@ -59,10 +59,7 @@ export default function ListActions({
         </View>
         <View>
           <FlatList
-            contentContainerStyle={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+            contentContainerStyle={[flex.justifyCenter, flex.alignCenter]}
             data={filters}
             horizontal
             keyExtractor={(_filters, index) => index.toString()}
@@ -72,7 +69,8 @@ export default function ListActions({
                 onClose={item.onClose}
                 style={{
                   marginLeft: baseUnit,
-                }}>
+                }}
+              >
                 {item.name}
               </Chip>
             )}

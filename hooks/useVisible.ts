@@ -1,7 +1,7 @@
-import { useState } from "react";
+import {useState} from 'react';
 
-export function useVisible() {
-  const [visible, setVisible] = useState(false);
+export function useVisible(initialState: boolean | (() => boolean) = false) {
+  const [visible, setVisible] = useState(initialState);
 
   const toggleVisible = () => {
     setVisible(!visible);

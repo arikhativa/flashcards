@@ -14,7 +14,7 @@ const gap = 20;
 const TILE_HEIGHT = 120;
 
 export type CardManyTilesProps = PropsWithChildren<{
-  isRootless: boolean;
+  isRootless?: boolean;
   isMultiSelect: boolean;
   selectedIds: number[];
   toggleIdSelection: (id: number) => void;
@@ -106,8 +106,19 @@ export function CardsManyTiles({
     paddingBottom: baseUnit * 10,
   };
 
+  const getCounter = () => {
+    if (isRootless) {
+      return selectedIds.length;
+    }
+    if (cards) {
+      return cards.length;
+    }
+    return undefined;
+  };
+
   return (
     <ManyTiles
+      counter={getCounter()}
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
       clearSelectedIds={isRootless ? undefined : clearSelectedIds}

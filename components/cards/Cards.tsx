@@ -201,7 +201,7 @@ export default function Cards({
   const handleCreateTag = async () => {
     const list = selectedIdsRef.current;
     clearSelectedIds();
-    navigation.navigate('Tag', {
+    navigation?.navigate('Tag', {
       mode: CRUDMode.Create,
       id: NEW_ID,
       cardIds: list,
@@ -211,7 +211,7 @@ export default function Cards({
   const handelBrowseMany = () => {
     const list = selectedIdsRef.current;
     clearSelectedIds();
-    navigation.navigate('Browse', {
+    navigation?.navigate('Browse', {
       ids: list,
     });
   };
@@ -219,7 +219,7 @@ export default function Cards({
   const handelTestMany = () => {
     const list = selectedIdsRef.current;
     clearSelectedIds();
-    navigation.navigate('Test', {
+    navigation?.navigate('Test', {
       cardIds: list,
       tagIds: [],
       type: ObjType.Card,
@@ -260,7 +260,7 @@ export default function Cards({
             onBrowseMany={handelBrowseMany}
             onTestMany={handelTestMany}
             onEditCard={() =>
-              navigation.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create})
+              navigation?.navigate('Card', {id: NEW_ID, mode: CRUDMode.Create})
             }
           />
         )}
