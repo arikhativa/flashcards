@@ -2,7 +2,7 @@ import React from 'react';
 import {baseUnit, flex, gap, margin} from '../../constants/styles';
 import {FilterChip} from '../../types/generic';
 import {SelectedKL} from '../../types/KnowledgeLevel';
-import {FlatList, StyleProp, View, ViewStyle} from 'react-native';
+import {FlatList, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {Chip, Searchbar, Surface} from 'react-native-paper';
 import SortCards from '../cards/SortCards';
 import FilterCards from '../cards/FilterCards';
@@ -38,24 +38,34 @@ export default function ListActions({
   return (
     <Surface style={[style, margin.bottom2]} mode="flat" elevation={1}>
       <View style={[margin.x2, margin.top4, margin.bottom2]}>
-        <View style={[margin.bottom2, gap.base, {flexDirection: 'row'}]}>
+        <View
+          style={[
+            styles.height,
+            margin.bottom2,
+            gap.base,
+            flex.row,
+            flex.alignCenter,
+          ]}
+        >
           {query !== undefined && onQueryChange && (
             <Searchbar
               placeholder="Search"
               onChangeText={onQueryChange}
               value={query}
-              style={{flex: 1}}
+              style={flex.f1}
             />
           )}
           {sort && onSortChange && (
             <SortCards conf={conf} sort={sort} onSortChange={onSortChange} />
           )}
-          <FilterCards
-            hide
-            timeDropdown={timeDropdown}
-            selectedKL={selectedKL}
-            onKLChange={onKLChange}
-          />
+          {selectedKL && onKLChange && (
+            <FilterCards
+              hide
+              timeDropdown={timeDropdown}
+              selectedKL={selectedKL}
+              onKLChange={onKLChange}
+            />
+          )}
         </View>
         <View>
           <FlatList
@@ -80,3 +90,9 @@ export default function ListActions({
     </Surface>
   );
 }
+
+const styles = StyleSheet.create({
+  height: {
+    height: 40,
+  },
+});
