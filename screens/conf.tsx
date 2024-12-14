@@ -20,6 +20,7 @@ import InputHelper from '../components/shared/InputHelper';
 import {CardsSideOptions} from '../utils/testForm';
 import {isSortName} from '../utils/sort';
 import {SortNames} from '../types/Sort';
+import ImportExportDB from '../components/ImportExportDB';
 
 export default function ConfScreen() {
   const {conf, confService} = useStore();
@@ -200,6 +201,7 @@ export default function ConfScreen() {
           </Button>
         </Card.Actions>
       </Card>
+      <ImportExportDB />
     </View>
   );
 }
