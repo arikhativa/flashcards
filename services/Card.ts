@@ -20,7 +20,7 @@ export class CardService extends BaseCrudService<
 
   constructor(
     repo: Repository<CardSchema>,
-    onUpdate: (ids?: Card['id'][]) => void,
+    onUpdate: (ids: Card['id'][]) => void,
   ) {
     const relations = ['tags'];
     super(repo, onUpdate, relations);
