@@ -9,7 +9,7 @@ export class BaseCrudService<
 > {
   constructor(
     protected repo: Repository<TSchema>,
-    protected onUpdate: (ids?: T['id'][]) => void,
+    protected onUpdate: (ids: T['id'][]) => void,
     private relations?: string[],
   ) {}
 

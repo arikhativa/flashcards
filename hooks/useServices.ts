@@ -10,6 +10,9 @@ import {Metadata} from '../types/Metadata';
 import {Tag} from '../types/Tag';
 import {useState} from 'react';
 import {useList} from './useList';
+import {ObjectLiteral} from 'typeorm';
+import {BaseCrudService} from '../services/BaseCrud';
+import {BaseCrud} from '../types/generic';
 
 export function useServices(repos: Repositories) {
   const [archiveCards, setArchiveCards] = useState<Card[]>([]);
@@ -55,33 +58,6 @@ export function useServices(repos: Repositories) {
     }
   };
 
-  // TODO not good enough
-  // There is a bug on create
-  const fetchSpecificCards = async (ids: Card['id'][]) => {
-    const dirtyCards = await cardService.getByIds(ids);
-
-    if (!dirtyCards || !dirtyCards.length) {
-      filterCards(ids);
-      fetchTags();
-      return;
-    }
-
-    const dirtyTagIds: Tag['id'][] = [];
-
-    dirtyCards.forEach(card => {
-      card.tags.forEach(tag => {
-        dirtyTagIds.push(tag.id);
-      });
-    });
-
-    const dirtyTags = await tagService.getByIds(dirtyTagIds);
-    if (dirtyTags) {
-      modifyTags(dirtyTags);
-    }
-
-    modifyCards(dirtyCards);
-  };
-
   const fetchTags = async () => {
     const tagList = await tagService.getAll();
     if (tagList) {
@@ -94,23 +70,41 @@ export function useServices(repos: Repositories) {
     fetchMetadata,
   );
 
-  const handleCardUpdate = async (ids?: Card['id'][]) => {
-    await fetchCards();
-    await fetchTags();
-    // if (ids) {
-    // await fetchSpecificCards(ids);
-    //   return;
-    // }
+  const handleCardUpdate = async (ids: Card['id'][]) => {
+    if (!ids || !ids.length) {
+      console.error('handleCardUpdate: no ids');
+      return;
+    }
+    await fetchItems<Card, Tag>(
+      ids,
+      cardService,
+      tagService,
+      filterCards,
+      fetchTags,
+      modifyCards,
+      modifyTags,
+    );
   };
 
-  const handleTagUpdate = async () => {
-    await fetchCards();
-    await fetchTags();
+  const handleTagUpdate = async (ids: Tag['id'][]) => {
+    if (!ids || !ids.length) {
+      console.error('handleTagUpdate: no ids');
+      return;
+    }
+    await fetchItems<Tag, Card>(
+      ids,
+      tagService,
+      cardService,
+      filterTags,
+      fetchCards,
+      modifyTags,
+      modifyCards,
+    );
   };
 
   const handleConfUpdate = async () => {
-    await fetchCards();
-    await fetchTags();
+    // await fetchCards();
+    // await fetchTags();
     await fetchConf();
   };
 
@@ -132,4 +126,43 @@ export function useServices(repos: Repositories) {
     fetchCards,
     fetchTags,
   };
+}
+
+async function fetchItems<M extends BaseCrud, L extends BaseCrud>(
+  ids: M['id'][],
+  mainService: BaseCrudService<M, ObjectLiteral, ObjectLiteral, ObjectLiteral>,
+  linkedService: BaseCrudService<
+    L,
+    ObjectLiteral,
+    ObjectLiteral,
+    ObjectLiteral
+  >,
+  mainFilter: (ids: number[]) => void,
+  fetchLinked: () => void,
+  modifyMain: (list: M[]) => void,
+  modifyLinked: (list: L[]) => void,
+) {
+  const dirtyCards = await mainService.getByIds(ids);
+
+  // Delete Flow
+  if (!dirtyCards || !dirtyCards.length) {
+    mainFilter(ids);
+    fetchLinked();
+    return;
+  }
+
+  const dirtyTagIds: L['id'][] = [];
+
+  dirtyCards.forEach(card => {
+    card.tags.forEach(tag => {
+      dirtyTagIds.push(tag.id);
+    });
+  });
+
+  const dirtyTags = await linkedService.getByIds(dirtyTagIds);
+  if (dirtyTags) {
+    modifyLinked(dirtyTags);
+  }
+
+  modifyMain(dirtyCards);
 }

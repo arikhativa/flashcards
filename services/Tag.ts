@@ -13,7 +13,10 @@ export class TagService extends BaseCrudService<
     name: '',
   };
 
-  constructor(repo: Repository<TagSchema>, onUpdate: () => void) {
+  constructor(
+    repo: Repository<TagSchema>,
+    onUpdate: (ids: Tag['id'][]) => void,
+  ) {
     const relations = ['cards'];
     super(repo, onUpdate, relations);
   }
