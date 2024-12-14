@@ -15,36 +15,35 @@ export default function ImportExportDB({style}: Props) {
   const [msg, setMsg] = React.useState('');
   const [visible, setVisible] = React.useState(false);
 
-  async function donload() {
-    downloadFile(
-      'https://raw.githubusercontent.com/arikhativa/random/refs/heads/main/exported-database.db',
-    );
-  }
+  // async function donload() {
+  //   downloadFile(
+  //     'https://raw.githubusercontent.com/arikhativa/random/refs/heads/main/exported-database.db',
+  //   );
+  // }
 
-  const downloadFile = async (url: string) => {
-    console.log('url', url);
-    const path = `${RNFS.DocumentDirectoryPath}`;
-    try {
-      // Start the file download
-      const downloadResult = await RNFS.downloadFile({
-        fromUrl: url,
-        toFile: currentDbPath,
-      }).promise;
+  // const downloadFile = async url => {
+  //   const path = `${RNFS.DocumentDirectoryPath}`;
+  //   try {
+  //     // Start the file download
+  //     const downloadResult = await RNFS.downloadFile({
+  //       fromUrl: url,
+  //       toFile: currentDbPath,
+  //     }).promise;
 
-      if (downloadResult.statusCode === 200) {
-        setMsg(`File downloaded successfully: ${currentDbPath}`);
-        onToggleSnackBar();
-      } else {
-        setMsg(
-          `Failed to download file. Status code: ${downloadResult.statusCode}`,
-        );
-        onToggleSnackBar();
-      }
-    } catch (error) {
-      onToggleSnackBar();
-      setMsg('Error downloading file:' + error);
-    }
-  };
+  //     if (downloadResult.statusCode === 200) {
+  //       setMsg(`File downloaded successfully: ${currentDbPath}`);
+  //       onToggleSnackBar();
+  //     } else {
+  //       setMsg(
+  //         `Failed to download file. Status code: ${downloadResult.statusCode}`,
+  //       );
+  //       onToggleSnackBar();
+  //     }
+  //   } catch (error) {
+  //     onToggleSnackBar();
+  //     setMsg('Error downloading file:' + error);
+  //   }
+  // };
 
   const exportDB = async () => {
     try {
@@ -64,9 +63,6 @@ export default function ImportExportDB({style}: Props) {
     <>
       <Card style={style}>
         <Card.Actions>
-          <Button mode={'contained'} onPress={donload}>
-            import DB
-          </Button>
           <Button mode={'contained'} onPress={exportDB}>
             Export DB
           </Button>
