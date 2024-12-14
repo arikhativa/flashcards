@@ -1,5 +1,5 @@
-import {baseUnit, margin} from '../../constants/styles';
 import React from 'react';
+import {flex, gap, margin, position} from '../../constants/styles';
 import {View} from 'react-native';
 import {FAB} from 'react-native-paper';
 
@@ -153,7 +153,9 @@ export default function ActionsBar({
         style={[
           margin.base2,
           margin.top5,
-          {position: 'absolute', top: 0, right: 0},
+          position.absolute,
+          position.top0,
+          position.right0,
         ]}
       >
         {list}
@@ -168,14 +170,12 @@ export default function ActionsBar({
       <View
         style={[
           margin.base4,
-          {
-            alignSelf: 'center',
-            position: 'absolute',
-            flex: 1,
-            bottom: 0,
-            flexDirection: 'row-reverse',
-            gap: baseUnit * 3,
-          },
+          position.absolute,
+          flex.alignSelfCenter,
+          flex.f1,
+          position.bottom0,
+          flex.rowReverse,
+          gap.base6,
         ]}
       >
         {getButtons()}

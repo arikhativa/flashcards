@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
 import {Text} from 'react-native-paper';
 import CardTest, {CardTestRef} from './CardTest';
 import {CardMeta, TestSettings} from '../../types/TestSettings';
@@ -19,7 +18,7 @@ interface TestManagerProps {
   testSettings: TestSettings;
 }
 
-const AUTO_SCROLL_DELAY = 1000;
+const AUTO_SCROLL_DELAY = 0;
 
 export default function TestManager({
   matchingCards,
@@ -162,7 +161,7 @@ export default function TestManager({
     });
   };
 
-  const getChild = ({index}: {index: number}) => {
+  const getChild = ({index}: {index: number}): React.JSX.Element => {
     if (!randomCards.length || !cardsMeta.length) {
       return <Text>No Cards</Text>; // TODO make this better
     }
@@ -181,17 +180,15 @@ export default function TestManager({
         />
       );
     }
-    if (index === randomCards.length) {
-      return (
-        <TestFinish
-          scrollToPage={scrollToPage}
-          cards={randomCards}
-          cardsMeta={cardsMeta}
-          onChangeKnowledgeLevel={updateKL}
-          onRetakeTest={handleRetakeTest}
-        />
-      );
-    }
+    return (
+      <TestFinish
+        scrollToPage={scrollToPage}
+        cards={randomCards}
+        cardsMeta={cardsMeta}
+        onChangeKnowledgeLevel={updateKL}
+        onRetakeTest={handleRetakeTest}
+      />
+    );
   };
 
   return (
