@@ -5,6 +5,8 @@ import {flex, margin, padding} from '../../constants/styles';
 import {CardsManyTiles} from '../cards/CardsManyTiles';
 import CardsSectionDialog from './CardsSectionDialog';
 import CardsSectionActionBar from './CardsSectionActionBar';
+import {useNavigation} from '@react-navigation/native';
+import {RootStack} from '../../navigation/MainStack';
 
 interface CardsSectionProps {
   cards?: Card[];
@@ -27,6 +29,7 @@ const CardsSection = ({
   onTestMany,
   onRemoveCardsFromTag,
 }: CardsSectionProps) => {
+  const navigation = useNavigation<RootStack>();
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -35,17 +38,9 @@ const CardsSection = ({
 
   return (
     <View style={[flex.f1]}>
-      <View
-        style={[
-          margin.base2,
-          flex.row,
-          flex.justifySpace,
-          flex.alignCenter,
-          padding.bottom,
-        ]}
-      />
-
       <CardsManyTiles
+        isRootless={false}
+        navigation={navigation}
         clearSelectedIds={clearSelectedIds}
         isMultiSelect={isMultiSelect}
         selectedIds={selectedIds}

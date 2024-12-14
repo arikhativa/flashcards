@@ -149,7 +149,13 @@ export default function ActionsBar({
       );
     }
     return (
-      <View style={[margin.base2, {position: 'absolute', top: 0, right: 0}]}>
+      <View
+        style={[
+          margin.base2,
+          margin.top5,
+          {position: 'absolute', top: 0, right: 0},
+        ]}
+      >
         {list}
       </View>
     );

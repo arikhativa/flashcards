@@ -5,6 +5,7 @@ import {ManyTiles} from '../shared/ManyTiles';
 import TagTileMemo from './TagTileMemo';
 import {RootStack} from '../../navigation/MainStack';
 import {StyleProp, ViewStyle} from 'react-native';
+import {baseUnit} from '../../constants/styles';
 
 const TILE_HEIGHT = 55;
 
@@ -59,9 +60,10 @@ export function TagsManyTiles({
 
   return (
     <ManyTiles
+      counter={tags && tags.length}
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
-      clearSelectedIds={clearSelectedIds}
+      clearSelectedIds={isRootless ? undefined : clearSelectedIds}
       objs={tags}
       renderItem={renderItem}
       noObjsMessage="No tags"
@@ -75,4 +77,5 @@ export function TagsManyTiles({
 const contentContainerStyle: StyleProp<ViewStyle> = {
   justifyContent: 'flex-start',
   alignItems: 'flex-start',
+  paddingBottom: baseUnit * 10,
 };

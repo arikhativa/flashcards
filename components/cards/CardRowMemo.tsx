@@ -1,8 +1,10 @@
+import React from 'react';
 import {Card} from '../../types/Card';
 import {BaseCrud} from '../../types/generic';
 import {memo} from 'react';
 import {View} from 'react-native';
 import {CardTile} from './CardTile';
+import {flex} from '../../constants/styles';
 
 export type Row = BaseCrud & {
   cards: Card[];
@@ -32,12 +34,7 @@ const CardRowMemo = memo(
     });
 
     return (
-      <View
-        key={item.id}
-        style={{
-          flexDirection: 'row',
-        }}
-      >
+      <View key={item.id} style={flex.row}>
         {children}
       </View>
     );

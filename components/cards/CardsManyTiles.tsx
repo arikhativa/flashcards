@@ -6,6 +6,7 @@ import {CRUDMode} from '../../types/generic';
 import {ManyTiles} from '../shared/ManyTiles';
 import CardRowMemo, {Row} from './CardRowMemo';
 import {RootStack} from '../../navigation/MainStack';
+import {baseUnit} from '../../constants/styles';
 
 const minCardSize = 51.8;
 const averageCharWidth = 7.5;
@@ -102,13 +103,25 @@ export function CardsManyTiles({
   const contentContainerStyle: StyleProp<ViewStyle> = {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: baseUnit * 10,
+  };
+
+  const getCounter = () => {
+    if (isRootless) {
+      return selectedIds.length;
+    }
+    if (cards) {
+      return cards.length;
+    }
+    return undefined;
   };
 
   return (
     <ManyTiles
+      counter={getCounter()}
       tileHeight={TILE_HEIGHT}
       isMultiSelect={isMultiSelect}
-      clearSelectedIds={clearSelectedIds}
+      clearSelectedIds={isRootless ? undefined : clearSelectedIds}
       objs={rows}
       renderItem={renderRow}
       noObjsMessage="No cards"

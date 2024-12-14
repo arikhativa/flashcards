@@ -5,6 +5,7 @@ import {useStore} from '../../providers/GlobalStore';
 import {Card} from '../../types/Card';
 import {useMultiSelect} from '../../hooks/useMultiSelect';
 import Cards from '../cards/Cards';
+import {container, flex} from '../../constants/styles';
 
 interface CardsSectionDialogProps {
   onDismiss: () => void;
@@ -42,14 +43,10 @@ const CardsSectionDialog = ({
   return (
     <Portal>
       {visible && (
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
+        <View style={flex.f1}>
           <Dialog
             dismissableBackButton
-            style={{flex: 1, overflow: 'hidden'}}
+            style={[flex.f1, container.overflowHidden]}
             visible={visible}
             onDismiss={onDismiss}
           >

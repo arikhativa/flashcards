@@ -6,7 +6,6 @@ import CardTest, {CardTestRef} from './CardTest';
 import {CardMeta, TestSettings} from '../../types/TestSettings';
 import {Card} from '../../types/Card';
 import {useStore} from '../../providers/GlobalStore';
-import {padding} from '../../constants/styles';
 import TestFinish from './TestFinish';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {generateSmallList} from '../../utils/cardPicker';
@@ -163,7 +162,7 @@ export default function TestManager({
     });
   };
 
-  const getChild = (index: number) => {
+  const getChild = ({index}: {index: number}) => {
     if (!randomCards.length || !cardsMeta.length) {
       return <Text>No Cards</Text>; // TODO make this better
     }
@@ -195,29 +194,12 @@ export default function TestManager({
     }
   };
 
-  const renderItem = ({index}: {index: number}) => {
-    return (
-      <View
-        style={[
-          padding.top3,
-          {
-            flex: 1,
-            justifyContent: 'flex-start',
-          },
-        ]}>
-        {getChild(index)}
-      </View>
-    );
-  };
-
   return (
-    <View style={{flex: 1}}>
-      <CarouselWrapper
-        ref={carouselWrapperRef}
-        length={randomCards.length}
-        renderItem={renderItem}
-      />
-    </View>
+    <CarouselWrapper
+      ref={carouselWrapperRef}
+      length={randomCards.length}
+      renderItem={getChild}
+    />
   );
 }
 

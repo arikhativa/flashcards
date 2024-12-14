@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "strict": false,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   }

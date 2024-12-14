@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {container} from '../../constants/styles';
+import {container, flex} from '../../constants/styles';
 import {useEffect, useState} from 'react';
 import {MultiSelect} from '../../hooks/useMultiSelect';
 import ListActions from '../../components/shared/ListActions';
@@ -70,7 +70,7 @@ export default function Tags({
   };
 
   return (
-    <View style={[container.flex1]}>
+    <View style={[flex.f1]}>
       <ListActions conf={conf} query={query} onQueryChange={setQuery} />
 
       <TagsManyTiles

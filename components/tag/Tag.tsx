@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Tag, TagCreate, TagUpdate} from '../../types/Tag';
 import {Card as PaperCard, TextInput} from 'react-native-paper';
-import {container, KLMark, margin} from '../../constants/styles';
+import {flex, KLMark, margin} from '../../constants/styles';
 import {useStore} from '../../providers/GlobalStore';
 import {KnowledgeLevel} from '../../types/KnowledgeLevel';
 import {ComponentProps, CRUDMode, ObjType} from '../../types/generic';
@@ -50,12 +50,14 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
   const idsToCards = (): Card[] => {
     const tmpCards: Card[] = [];
 
-    cardIds.forEach(id => {
-      const card = cards.find(e => e.id === id);
-      if (card) {
-        tmpCards.push(card);
-      }
-    });
+    if (cardIds) {
+      cardIds.forEach(id => {
+        const card = cards.find(e => e.id === id);
+        if (card) {
+          tmpCards.push(card);
+        }
+      });
+    }
     return tmpCards;
   };
 
@@ -139,21 +141,19 @@ const TagComponent = ({mode, cardIds, id}: Props) => {
       empty={TagService.EMPTY}
       all={tags}
     >
-      <View style={[container.flex1, margin.top2]}>
-        <View style={[margin.base2]}>
-          <PaperCard>
-            <PaperCard.Content>
-              <TextInput
-                style={[{height: 20}, styles.textInput]}
-                underlineColor="transparent"
-                onChangeText={text => {
-                  handleLocalChange('name', text);
-                }}
-                value={tagLocal.name}
-              />
-            </PaperCard.Content>
-          </PaperCard>
-        </View>
+      <View style={[flex.f1, margin.x2, margin.top2]}>
+        <PaperCard style={margin.bottom2}>
+          <PaperCard.Content>
+            <TextInput
+              style={[styles.textInput]}
+              underlineColor="transparent"
+              onChangeText={text => {
+                handleLocalChange('name', text);
+              }}
+              value={tagLocal.name}
+            />
+          </PaperCard.Content>
+        </PaperCard>
 
         <CardsSection
           onRemoveCardsFromTag={handleRemoveCards}
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   textInput: {
+    height: 20,
     backgroundColor: 'transparent',
     textAlign: 'center',
   },

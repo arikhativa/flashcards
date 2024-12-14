@@ -48,3 +48,9 @@ good line:
 ```
 renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={key} {...props} />,
 ```
+
+# New Arch
+Currently RNP does not support the new arch.
+so now in the android/gradle.properties the "newArchEnabled" is set to false.
+
+change this when the time is right :)
