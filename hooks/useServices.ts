@@ -75,6 +75,17 @@ export function useServices(repos: Repositories) {
       console.error('handleCardUpdate: no ids');
       return;
     }
+
+    const getLinkedIds = (list: Card[]) => {
+      const ret: Tag['id'][] = [];
+      list.forEach(card => {
+        card.tags.forEach(tag => {
+          ret.push(tag.id);
+        });
+      });
+      return ret;
+    };
+
     await fetchItems<Card, Tag>(
       ids,
       cardService,
@@ -83,6 +94,7 @@ export function useServices(repos: Repositories) {
       fetchTags,
       modifyCards,
       modifyTags,
+      getLinkedIds,
     );
   };
 
@@ -91,6 +103,17 @@ export function useServices(repos: Repositories) {
       console.error('handleTagUpdate: no ids');
       return;
     }
+
+    const getLinkedIds = (list: Tag[]) => {
+      const ret: Card['id'][] = [];
+      list.forEach(tag => {
+        tag.cards.forEach(c => {
+          ret.push(c.id);
+        });
+      });
+      return ret;
+    };
+
     await fetchItems<Tag, Card>(
       ids,
       tagService,
@@ -99,12 +122,11 @@ export function useServices(repos: Repositories) {
       fetchCards,
       modifyTags,
       modifyCards,
+      getLinkedIds,
     );
   };
 
   const handleConfUpdate = async () => {
-    // await fetchCards();
-    // await fetchTags();
     await fetchConf();
   };
 
@@ -128,6 +150,9 @@ export function useServices(repos: Repositories) {
   };
 }
 
+// This does not work in case a card is removing a tag
+// the tag will not be updated
+// So i just call fetchLinked instead of specific items
 async function fetchItems<M extends BaseCrud, L extends BaseCrud>(
   ids: M['id'][],
   mainService: BaseCrudService<M, ObjectLiteral, ObjectLiteral, ObjectLiteral>,
@@ -141,28 +166,24 @@ async function fetchItems<M extends BaseCrud, L extends BaseCrud>(
   fetchLinked: () => void,
   modifyMain: (list: M[]) => void,
   modifyLinked: (list: L[]) => void,
+  getLinkedIds: (list: M[]) => L['id'][],
 ) {
-  const dirtyCards = await mainService.getByIds(ids);
+  const dirtyMainItems = await mainService.getByIds(ids);
 
   // Delete Flow
-  if (!dirtyCards || !dirtyCards.length) {
+  if (!dirtyMainItems || !dirtyMainItems.length) {
     mainFilter(ids);
     fetchLinked();
     return;
   }
 
-  const dirtyTagIds: L['id'][] = [];
+  // const dirtyLinkedIds: L['id'][] = getLinkedIds(dirtyMainItems);
 
-  dirtyCards.forEach(card => {
-    card.tags.forEach(tag => {
-      dirtyTagIds.push(tag.id);
-    });
-  });
+  // const dirtyTags = await linkedService.getByIds(dirtyLinkedIds);
+  // if (dirtyTags) {
+  //   modifyLinked(dirtyTags);
+  // }
 
-  const dirtyTags = await linkedService.getByIds(dirtyTagIds);
-  if (dirtyTags) {
-    modifyLinked(dirtyTags);
-  }
-
-  modifyMain(dirtyCards);
+  fetchLinked();
+  modifyMain(dirtyMainItems);
 }
