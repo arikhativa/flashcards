@@ -89,7 +89,8 @@ function App(): React.JSX.Element {
           tagRepository,
           confRepository,
           metadataRepository,
-        }}>
+        }}
+      >
         <PaperProvider theme={theme}>
           <NavigationContainer>
             <MainStack />

@@ -43,11 +43,11 @@ export function CardsManyTiles({
     convertCardsToRows(cards || []);
   }, [cards, maxSize]);
 
-  const convertCardsToRows = (cards: Card[]) => {
+  const convertCardsToRows = (list: Card[]) => {
     const newRows: Row[] = [];
     let tmpRow: Card[] = [];
 
-    cards.forEach(card => {
+    list.forEach(card => {
       const newCardSize = getCardSize(card);
       const rowSize = getRowSize(tmpRow);
       if (rowSize + newCardSize > maxSize || tmpRow.length === 4) {

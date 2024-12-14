@@ -11,8 +11,14 @@ export const flex = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  rowReverse: {
+    flexDirection: 'row-reverse',
+  },
   column: {
     flexDirection: 'column',
+  },
+  columnReverse: {
+    flexDirection: 'column-reverse',
   },
   justifyStart: {
     justifyContent: 'flex-start',
@@ -189,6 +195,9 @@ export const gap = StyleSheet.create({
   },
   base5: {
     gap: baseUnit * 2,
+  },
+  base6: {
+    gap: baseUnit * 3,
   },
 });
 
