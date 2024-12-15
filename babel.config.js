@@ -5,6 +5,11 @@ module.exports = {
     '@babel/plugin-transform-class-static-block',
     ['@babel/plugin-proposal-decorators', {legacy: true}],
   ],
+  env: {
+    development: {
+      plugins: [['@babel/plugin-transform-react-jsx', { runtime: 'classic' }]],
+    },
+  },
   // TODO this was crushing the app on production
   // env: {
   //   production: {

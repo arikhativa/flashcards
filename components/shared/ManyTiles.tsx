@@ -19,7 +19,7 @@ type Props<T> = PropsWithChildren<{
   counter?: number;
 }>;
 
-export function ManyTiles<T extends BaseCrud>({
+const ManyTiles = <T extends BaseCrud>({
   style,
   tileHeight,
   isMultiSelect,
@@ -30,7 +30,7 @@ export function ManyTiles<T extends BaseCrud>({
   objs,
   children,
   counter,
-}: Props<T>) {
+}: Props<T>) => {
   const betterRenderItem = useCallback(renderItem, [renderItem]);
 
   const getItemLayout = (
@@ -85,4 +85,8 @@ export function ManyTiles<T extends BaseCrud>({
       {children}
     </View>
   );
-}
+};
+
+ManyTiles.whyDidYouRender = true;
+
+export {ManyTiles};
