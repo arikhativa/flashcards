@@ -1,7 +1,7 @@
 import React from 'react';
 import {flex, gap, margin, position} from '../../constants/styles';
 import {View} from 'react-native';
-import {FAB} from 'react-native-paper';
+import FABWrapper from './FABWrapper';
 
 export interface FABProps {
   icon: string;
@@ -121,7 +121,7 @@ export default function ActionsBar({
     const list: React.JSX.Element[] = [];
     for (let i = 0; i < 4; i++) {
       list.push(
-        <FAB
+        <FABWrapper
           visible={getVisibility(i)}
           key={i}
           disabled={isDisabled ? isDisabled(i) : false}
@@ -137,7 +137,7 @@ export default function ActionsBar({
     const list: React.JSX.Element[] = [];
     for (let i = 0; i < 2; i++) {
       list.push(
-        <FAB
+        <FABWrapper
           size="small"
           variant="tertiary"
           visible={getDangerVisibility(i)}
