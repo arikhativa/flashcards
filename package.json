@@ -1,6 +1,6 @@
 {
   "name": "flashcards",
-  "version": "0.0.1",
+  "version": "v1.1.5-beta",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

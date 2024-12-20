@@ -168,6 +168,10 @@ export const color = StyleSheet.create({
   opacity1: {opacity: 0.1},
   opacity3: {opacity: 0.3},
   opacity5: {opacity: 0.5},
+  opacity6: {opacity: 0.6},
+  opacity7: {opacity: 0.7},
+  opacity8: {opacity: 0.8},
+  opacity9: {opacity: 0.9},
 });
 
 export const text = StyleSheet.create({
