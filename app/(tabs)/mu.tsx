@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { usersTable } from '@/db/schema';
-import { db } from '@/lib/db';
+import useUsers from '@/hooks/query/useUsers';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function Tab() {
+  const { data, isFetched } = useUsers();
   const onPressIn = async () => {
-    const users = await db.select().from(usersTable);
-    console.log('E', users);
+    console.log('isFetched', isFetched);
+    console.log('E', data);
   };
   return (
     <View style={styles.container}>
