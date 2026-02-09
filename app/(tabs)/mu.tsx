@@ -1,12 +1,16 @@
 import { Button } from '@/components/ui/button';
+import { Card, CardInsert } from '@/db/schema';
+import useCardCrud from '@/hooks/mutation/useCardCrud';
 import useUsers from '@/hooks/query/useUsers';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function Tab() {
   const { data, isFetched } = useUsers();
+  const { create } = useCardCrud();
+
   const onPressIn = async () => {
-    console.log('isFetched', isFetched);
-    console.log('E', data);
+    const c: CardInsert = {};
+    create(c);
   };
   return (
     <View style={styles.container}>

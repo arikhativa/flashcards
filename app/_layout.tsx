@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
-  useDrizzleStudio(expoDBFile); // TODO - remove prod
+  useDrizzleStudio(__DEV__ ? expoDBFile : null);
   useDBMigrations();
 
   return (

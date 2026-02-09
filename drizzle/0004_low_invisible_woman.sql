@@ -1,0 +1,1 @@
+ALTER TABLE `card_table` RENAME COLUMN "created_at" TO "created_at2";
