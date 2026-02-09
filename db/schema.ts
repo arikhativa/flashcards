@@ -1,5 +1,5 @@
 import { int, sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 
 export const usersTable = sqliteTable('users_table', {
   id: int().primaryKey({ autoIncrement: true }),
@@ -72,24 +72,24 @@ export const config = sqliteTable(
 );
 
 // Relations
-// export const cardRelations = relations(cardTable, ({ many }) => ({
-//   tagList: many(cardTag),
-// }));
+export const cardRelations = relations(cardTable, ({ many }) => ({
+  cardToTags: many(cardTag),
+}));
 
-// export const tagRelations = relations(tagTable, ({ many }) => ({
-//   cardList: many(cardTag),
-// }));
+export const tagRelations = relations(tagTable, ({ many }) => ({
+  tagToCards: many(cardTag),
+}));
 
-// export const cardTagRelations = relations(cardTag, ({ one }) => ({
-//   card: one(cardTable, {
-//     fields: [cardTag.cardId],
-//     references: [cards.id],
-//   }),
-//   tag: one(tagTable, {
-//     fields: [cardTag.tagId],
-//     references: [tagTable.id],
-//   }),
-// }));
+export const cardTagRelations = relations(cardTag, ({ one }) => ({
+  card: one(cardTable, {
+    fields: [cardTag.cardId],
+    references: [cardTable.id],
+  }),
+  tag: one(tagTable, {
+    fields: [cardTag.tagId],
+    references: [tagTable.id],
+  }),
+}));
 
 // Type exports for TypeScript
 export type Card = typeof cardTable.$inferSelect;

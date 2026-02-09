@@ -1,0 +1,1 @@
+ALTER TABLE `card_table` RENAME COLUMN "comment" TO "commenta";
