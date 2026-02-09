@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 
 export default function useDBMigrations() {
   const { success, error } = useMigrations(db, migrations);
+
   if (error) {
     console.error('Migration: ', error);
   } else if (success) {
