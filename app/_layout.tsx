@@ -1,3 +1,4 @@
+import DB from '@/app/DB';
 import '@/global.css';
 
 import { NAV_THEME } from '@/lib/theme';
@@ -17,6 +18,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
+      <DB></DB>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack />
       <PortalHost />
