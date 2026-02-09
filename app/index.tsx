@@ -32,7 +32,7 @@ export default function Screen() {
       <View className="flex-1 items-center justify-center gap-8 p-4">
         <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
         <View className="gap-2 p-4">
-          <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
+          <Text className="ios:text-foreground font-mono text-sm text-green-300">
             1. Edit <Text variant="code">app/index.tsx</Text> to get started.
           </Text>
           <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
