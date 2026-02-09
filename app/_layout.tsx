@@ -6,6 +6,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import useDBMigrations from '@/hooks/useDBMigration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import { expoDBFile } from '@/lib/db';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -15,6 +17,7 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
+  useDrizzleStudio(expoDBFile); // TODO - remove prod
   useDBMigrations();
 
   return (
