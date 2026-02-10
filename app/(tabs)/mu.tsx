@@ -15,8 +15,8 @@ export default function Tab() {
   const { create } = useCardEdit();
 
   const onPressIn = async () => {
-    const c: CardInsert = {};
-    create(c);
+    // const c: CardInsert = {};
+    // create(c);
   };
   return (
     <View style={styles.container}>
