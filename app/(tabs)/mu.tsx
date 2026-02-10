@@ -8,7 +8,7 @@ export default function Tab() {
   const { data } = useCardList();
   if (data) {
     for (const e of data) {
-      console.log('e', e.cardToTags);
+      console.log('e', e);
     }
   }
 

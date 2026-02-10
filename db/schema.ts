@@ -1,18 +1,11 @@
-import { int, sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
 import { relations, sql } from 'drizzle-orm';
-
-export const usersTable = sqliteTable('users_table', {
-  id: int().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-  age: int().notNull(),
-  email: text().notNull().unique(),
-});
 
 export const KNOWLEDGE_LEVELS = ['Learning', 'GettingThere', 'Confident'] as const;
 
 export type KnowledgeLevel = (typeof KNOWLEDGE_LEVELS)[number];
 
-export const cardTable = sqliteTable('card_table', {
+export const cardTable = sqliteTable('card', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   sideA: text('side_a').default('').notNull(),
   sideB: text('side_b').default('').notNull(),
@@ -31,20 +24,22 @@ export const cardTable = sqliteTable('card_table', {
 });
 
 // Tag table
-export const tagTable = sqliteTable('tag_table', {
+export const tagTable = sqliteTable('tag', {
   id: integer('id').primaryKey({ autoIncrement: true }).notNull(),
   name: text('name').default(''),
-  createdAt: integer('created_at', { mode: 'timestamp_ms' })
-    .notNull()
-    .$defaultFn(() => new Date()),
 
+  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+    .$default(() => new Date())
+    .notNull(),
+
+  // TODO check if update works
   updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
     .notNull()
-    .$defaultFn(() => new Date())
+    .$default(() => new Date())
     .$onUpdate(() => new Date()),
 });
 
-export const cardTag = sqliteTable('card_tag', {
+export const cardTagTable = sqliteTable('card_tag', {
   cardId: integer('card_id')
     .notNull()
     .references(() => cardTable.id, { onDelete: 'cascade' }),
@@ -73,20 +68,20 @@ export const config = sqliteTable(
 
 // Relations
 export const cardRelations = relations(cardTable, ({ many }) => ({
-  cardToTags: many(cardTag),
+  tagList: many(cardTagTable),
 }));
 
 export const tagRelations = relations(tagTable, ({ many }) => ({
-  tagToCards: many(cardTag),
+  cardList: many(cardTagTable),
 }));
 
-export const cardTagRelations = relations(cardTag, ({ one }) => ({
+export const cardTagRelations = relations(cardTagTable, ({ one }) => ({
   card: one(cardTable, {
-    fields: [cardTag.cardId],
+    fields: [cardTagTable.cardId],
     references: [cardTable.id],
   }),
   tag: one(tagTable, {
-    fields: [cardTag.tagId],
+    fields: [cardTagTable.tagId],
     references: [tagTable.id],
   }),
 }));
@@ -98,8 +93,8 @@ export type CardInsert = typeof cardTable.$inferInsert;
 export type Tag = typeof tagTable.$inferSelect;
 export type TagInsert = typeof tagTable.$inferInsert;
 
-export type CardTag = typeof cardTag.$inferSelect;
-export type CardTagInsert = typeof cardTag.$inferInsert;
+export type CardTag = typeof cardTagTable.$inferSelect;
+export type CardTagInsert = typeof cardTagTable.$inferInsert;
 
 export type Config = typeof config.$inferSelect;
 export type ConfigInsert = typeof config.$inferInsert;
