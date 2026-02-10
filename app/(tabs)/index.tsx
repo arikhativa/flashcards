@@ -12,11 +12,7 @@ export default function Screen() {
   }
 
   if (data) {
-    return (
-      <View className="flex-1">
-        <CardTileList cardList={data} />
-      </View>
-    );
+    return <CardTileList cardList={data} />;
   }
   return (
     <View className="flex-1 items-center justify-center gap-8 p-4">

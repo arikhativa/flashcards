@@ -6,11 +6,6 @@ import { View, Text, StyleSheet } from 'react-native';
 
 export default function Tab() {
   const { data } = useCardList();
-  if (data) {
-    for (const e of data) {
-      console.log('e', e);
-    }
-  }
 
   const { create } = useCardEdit();
 

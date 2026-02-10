@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { expoDBFile } from '@/lib/db';
 import useDBSeed from '@/hooks/useDBSeed';
+import { View } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
