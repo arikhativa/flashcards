@@ -13,7 +13,7 @@ export default function Screen() {
 
   if (data) {
     return (
-      <View className="flex-1 bg-blue-200">
+      <View className="flex-1">
         <CardTileList cardList={data} />
       </View>
     );

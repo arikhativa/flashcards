@@ -1,9 +1,5 @@
 import { Card } from '@/db/schema';
-import { View } from 'react-native';
-import { Text } from '@/components/ui/text';
-import { Separator } from '@/components/ui/separator';
 import CardTile from '@/components/card/CardTile';
-
 import { FlashList } from '@shopify/flash-list';
 
 interface Props {
@@ -12,13 +8,14 @@ interface Props {
 
 export default function CardTileList({ cardList }: Props) {
   return (
-    <View className="bg-red-200">
-      <FlashList
-        renderItem={({ item }) => {
-          return <CardTile card={item} />;
-        }}
-        data={cardList}
-      />
-    </View>
+    <FlashList
+      horizontal={false}
+      numColumns={3}
+      className="bg-blue-200"
+      renderItem={({ item }) => {
+        return <CardTile className={'m-3'} card={item} />;
+      }}
+      data={cardList}
+    />
   );
 }
