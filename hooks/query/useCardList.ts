@@ -7,7 +7,7 @@ export default function useCardList() {
     queryFn: async () => {
       const result = await db.query.cardTable.findMany({
         with: {
-          cardToTags: {
+          tagList: {
             with: {
               tag: true,
             },

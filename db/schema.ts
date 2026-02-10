@@ -49,7 +49,7 @@ export const cardTagTable = sqliteTable('card_tag', {
 });
 
 // Config table (singleton - one row only)
-export const config = sqliteTable(
+export const configTable = sqliteTable(
   'config',
   {
     id: integer('id').default(1),
@@ -96,5 +96,5 @@ export type TagInsert = typeof tagTable.$inferInsert;
 export type CardTag = typeof cardTagTable.$inferSelect;
 export type CardTagInsert = typeof cardTagTable.$inferInsert;
 
-export type Config = typeof config.$inferSelect;
-export type ConfigInsert = typeof config.$inferInsert;
+export type Config = typeof configTable.$inferSelect;
+export type ConfigInsert = typeof configTable.$inferInsert;
