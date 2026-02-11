@@ -4,7 +4,7 @@ import useCardList from '@/hooks/query/useCardList';
 import * as React from 'react';
 import { View } from 'react-native';
 
-export default function Screen() {
+export default function Tab() {
   const { data, isError } = useCardList();
 
   if (isError) {

@@ -10,6 +10,7 @@ import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { expoDBFile } from '@/lib/db';
 // import useDBSeed from '@/hooks/useDBSeed';
 import { PortalHost } from '@rn-primitives/portal';
+import useSetupConfig from '@/hooks/useSetupConfig';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,7 +22,8 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
   useDrizzleStudio(__DEV__ ? expoDBFile : null);
-  useDBMigrations();
+  const status = useDBMigrations();
+  useSetupConfig(status);
   // useDBSeed();
 
   return (

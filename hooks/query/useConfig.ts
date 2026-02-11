@@ -8,6 +8,9 @@ export default function useConfig() {
     queryKey: ['config'],
     queryFn: async () => {
       const result = await db.query.configTable.findFirst({ where: eq(configTable.id, 1) });
+      if (!result) {
+        throw new Error('Not Config found');
+      }
       return result;
     },
   });

@@ -10,4 +10,5 @@ export default function useDBMigrations() {
   } else if (success) {
     console.log('Migration: Done');
   }
+  return success;
 }

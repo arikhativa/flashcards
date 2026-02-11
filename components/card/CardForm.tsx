@@ -2,6 +2,7 @@ import { Card } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -68,8 +69,18 @@ export default function CardForm({ card }: Props) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
-            <Text>{conft}</Text>
-            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
+            {/* TODO */}
+            <Label nativeID="terms-checkbox" htmlFor="terms-checkbox">
+              {conft}
+            </Label>
+            <Input
+              aria-labelledby="terms-checkbox"
+              id="terms-checkbox"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder="..."
+            />
           </View>
         )}
         name="sideA"
