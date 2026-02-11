@@ -10,6 +10,15 @@ export const queryKeyStore = createQueryKeyStore({
       queryKey: ['list'],
     }),
   },
+  tag: {
+    all: null,
+    detail: (id: string) => ({
+      queryKey: [id],
+    }),
+    list: () => ({
+      queryKey: ['list'],
+    }),
+  },
   config: {
     one: null,
   },

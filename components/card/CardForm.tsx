@@ -1,4 +1,4 @@
-import { Card, Tag } from '@/db/schema';
+import { Card } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
@@ -13,15 +13,17 @@ import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useCallback, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
+import useTagList from '@/hooks/query/useTagList';
 
 const formSchema = z.object({
   sideA: z.string(),
   sideB: z.string(),
   comment: z.string(),
+  tagList: z.array(z.number()),
   //   knowledgeLevel: z.string(),
   //   createdAt: z.string(),
   //   updatedAt: z.string(),
@@ -35,8 +37,10 @@ interface Props {
 
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  // const [tagToShow] = useState();
 
   const { data: conf } = useConfig();
+  const { data: tagList } = useTagList();
   const { update } = useCardEdit();
   const query = useQueryClient();
 
@@ -44,6 +48,23 @@ export default function CardForm({ card }: Props) {
     defaultValues: toSchema(card),
     resolver: zodResolver(formSchema),
   });
+
+  const selectedTagIds = watch('tagList') || [];
+
+  const tagsToRemove = tagList?.filter((t) => selectedTagIds.includes(t.id)) || [];
+  const tagsToAdd = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
+
+  // const toggleTag = (tagId: number) => {
+  //   const isSelected = selectedTagIds.includes(tagId);
+  //   if (isSelected) {
+  //     setValue(
+  //       'tagList',
+  //       selectedTagIds.filter((id) => id !== tagId)
+  //     );
+  //   } else {
+  //     setValue('tagList', [...selectedTagIds, tagId]);
+  //   }
+  // };
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
@@ -72,27 +93,6 @@ export default function CardForm({ card }: Props) {
     onSubmit: handleSubmit(onSubmit),
   });
 
-  const tagList: Tag[] = [
-    {
-      id: 1,
-      name: 'colors',
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    },
-    {
-      id: 2,
-      name: 'ppl',
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    },
-    {
-      id: 3,
-      name: 'animals',
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    },
-  ];
-
   return (
     <GestureHandlerRootView className="flex-1 bg-green-300">
       <View>
@@ -116,7 +116,11 @@ export default function CardForm({ card }: Props) {
         />
 
         <Button onPress={openTags}>
-          <Text>Tags</Text>
+          <Text>Remove Tags</Text>
+        </Button>
+
+        <Button onPress={openTags}>
+          <Text>Add Tags</Text>
         </Button>
       </View>
 
@@ -127,6 +131,12 @@ export default function CardForm({ card }: Props) {
         enablePanDownToClose={false}>
         <BottomSheetView className="flex-1">
           <FlashList
+            data={[
+              { type: 'header', title: 'Selected (Tap to Remove)' },
+              ...tagsToRemove,
+              { type: 'header', title: 'Available (Tap to Add)' },
+              ...tagsToAdd,
+            ]}
             horizontal={false}
             numColumns={3}
             className="px-4"
@@ -141,7 +151,6 @@ export default function CardForm({ card }: Props) {
                 />
               );
             }}
-            data={tagList}
           />
         </BottomSheetView>
       </BottomSheet>
@@ -154,5 +163,6 @@ function toSchema(card?: Card): FormSchema {
     sideA: card?.sideA || '',
     sideB: card?.sideB || '',
     comment: card?.comment || '',
+    tagList: card?.tagList?.map((t) => t.id) || [],
   };
 }

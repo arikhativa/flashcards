@@ -1,6 +1,6 @@
 import { Tag } from '@/db/schema';
 import { Text } from '@/components/ui/text';
-import { Pressable, View } from 'react-native';
+import { Pressable } from 'react-native';
 import { cn } from '@/lib/utils';
 
 interface Props {
