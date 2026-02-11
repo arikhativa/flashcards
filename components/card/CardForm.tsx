@@ -1,4 +1,4 @@
-import { Card } from '@/db/schema';
+import { Card, Tag } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
@@ -15,6 +15,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { FlashList } from '@shopify/flash-list';
+import TagTile from '@/components/tag/TagTile';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -70,6 +72,27 @@ export default function CardForm({ card }: Props) {
     onSubmit: handleSubmit(onSubmit),
   });
 
+  const tagList: Tag[] = [
+    {
+      id: 1,
+      name: 'colors',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    },
+    {
+      id: 2,
+      name: 'ppl',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    },
+    {
+      id: 3,
+      name: 'animals',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    },
+  ];
+
   return (
     <GestureHandlerRootView className="flex-1 bg-green-300">
       <View>
@@ -102,8 +125,24 @@ export default function CardForm({ card }: Props) {
         snapPoints={['90%']}
         ref={bottomSheetRef}
         enablePanDownToClose={false}>
-        <BottomSheetView className="flex-1 items-center p-20">
-          <Text>Awesome 🎉</Text>
+        <BottomSheetView className="flex-1">
+          <FlashList
+            horizontal={false}
+            numColumns={3}
+            className="px-4"
+            renderItem={({ item }) => {
+              return (
+                <TagTile
+                  onPress={(tag) => {
+                    console.log('A', tag.name);
+                  }}
+                  className="m-2"
+                  tag={item}
+                />
+              );
+            }}
+            data={tagList}
+          />
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
