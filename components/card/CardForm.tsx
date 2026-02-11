@@ -2,13 +2,12 @@ import { Card } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import { Input } from '@/components/ui/input';
-import { useEffect } from 'react';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -28,7 +27,7 @@ export default function CardForm({ card }: Props) {
   const { update } = useCardEdit();
   const query = useQueryClient();
   const {
-    register,
+    trigger,
     control,
     handleSubmit,
     watch,
@@ -54,6 +53,12 @@ export default function CardForm({ card }: Props) {
     mutate(data);
   };
 
+  const { manualSubmit } = useAutoSubmit({
+    trigger,
+    watch,
+    onSubmit: handleSubmit(onSubmit),
+  });
+
   const conft = 'SideA';
 
   return (
@@ -69,9 +74,9 @@ export default function CardForm({ card }: Props) {
         name="sideA"
       />
       {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
-      <Button onPress={handleSubmit(onSubmit)}>
+      {/* <Button onPress={handleSubmit(onSubmit)}>
         <Text>Submit</Text>
-      </Button>
+      </Button> */}
     </View>
   );
 }
