@@ -3,4 +3,11 @@ export const STRINGS = {
     sideA: 'Side A',
     sideB: 'Side B',
   },
+  card: {
+    form: {
+      field: {
+        comment: 'comment',
+      },
+    },
+  },
 } as const;

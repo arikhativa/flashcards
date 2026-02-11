@@ -10,6 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
+import useConfig from '@/hooks/query/useConfig';
+import { STRINGS } from '@/lib/strings';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -27,6 +29,7 @@ interface Props {
 }
 
 export default function CardForm({ card }: Props) {
+  const { data: conf } = useConfig();
   const { update } = useCardEdit();
   const query = useQueryClient();
   const {
@@ -57,13 +60,11 @@ export default function CardForm({ card }: Props) {
     mutate(data);
   };
 
-  const { manualSubmit } = useAutoSubmit({
+  useAutoSubmit({
     trigger,
     watch,
     onSubmit: handleSubmit(onSubmit),
   });
-
-  const conft = 'SideA';
 
   return (
     <View>
@@ -73,7 +74,7 @@ export default function CardForm({ card }: Props) {
           <View>
             {/* TODO */}
             <Label nativeID="terms-checkbox" htmlFor="terms-checkbox">
-              {conft}
+              {conf?.sideA}
             </Label>
             <Input
               aria-labelledby="terms-checkbox"
@@ -93,7 +94,7 @@ export default function CardForm({ card }: Props) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
-            <Text>{conft}</Text>
+            <Text>{conf?.sideB}</Text>
             <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
           </View>
         )}
@@ -105,13 +106,13 @@ export default function CardForm({ card }: Props) {
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
-            <Text>{conft}</Text>
+            <Text>{STRINGS.card.form.field.comment}</Text>
             <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
           </View>
         )}
         name="comment"
       />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
+      {errors.sideB && <Text className="text-destructive">{errors.sideB.message}</Text>}
     </View>
   );
 }
