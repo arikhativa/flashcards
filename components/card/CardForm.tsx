@@ -12,12 +12,12 @@ import useConfig from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useRef, useState } from 'react';
+import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
+import { useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
-import useTagList from '@/hooks/query/useTagList';
+import useTagList, { TagFilters } from '@/hooks/query/useTagList';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 
@@ -39,10 +39,11 @@ interface Props {
 
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [tagFilters, setTagFilters] = useState<TagFilters>({});
   const [tagToShow, setTagToShow] = useState<Tag[]>([]);
 
   const { data: conf } = useConfig();
-  const { data: tagList } = useTagList();
+  const { data: tagList } = useTagList(tagFilters);
   const { update } = useCardEdit();
   const query = useQueryClient();
 
@@ -50,6 +51,14 @@ export default function CardForm({ card }: Props) {
     defaultValues: toSchema(card),
     resolver: zodResolver(formSchema),
   });
+
+  const filteredTags = useMemo(() => {
+    const search = tagFilters.search?.trim() || '';
+
+    if (!search) return tagToShow;
+
+    return tagToShow.filter((tag) => tag.name?.toLowerCase().includes(search.toLowerCase()));
+  }, [tagFilters?.search, tagToShow]);
 
   const selectedTagIds = watch('tagList') || [];
 
@@ -147,8 +156,18 @@ export default function CardForm({ card }: Props) {
 
       <BottomSheet index={-1} snapPoints={['90%']} ref={bottomSheetRef} enablePanDownToClose={true}>
         <BottomSheetView className="flex-1">
+          <View className="px-4 py-2">
+            <BottomSheetTextInput
+              placeholder="Search tags..."
+              value={tagFilters.search}
+              onChangeText={(search) => setTagFilters((prev) => ({ ...prev, search }))}
+              autoCorrect={false}
+              className="h-12 rounded-md border border-input bg-background px-3 py-2"
+            />
+          </View>
+
           <FlashList
-            data={tagToShow}
+            data={filteredTags}
             horizontal={false}
             numColumns={3}
             className="px-4"
@@ -164,6 +183,11 @@ export default function CardForm({ card }: Props) {
                 />
               );
             }}
+            ListEmptyComponent={() => (
+              <View className="items-center p-10">
+                <Text className="text-muted-foreground">{`No tags found for "${tagFilters.search}"`}</Text>
+              </View>
+            )}
           />
         </BottomSheetView>
       </BottomSheet>

@@ -1,3 +1,4 @@
+import { TagFilters } from '@/hooks/query/useTagList';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 
 export const queryKeyStore = createQueryKeyStore({
@@ -15,8 +16,8 @@ export const queryKeyStore = createQueryKeyStore({
     detail: (id: string) => ({
       queryKey: [id],
     }),
-    list: () => ({
-      queryKey: ['list'],
+    list: (filters?: TagFilters) => ({
+      queryKey: [filters],
     }),
   },
   config: {
