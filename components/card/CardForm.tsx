@@ -1,4 +1,4 @@
-import { Card } from '@/db/schema';
+import { Card, Tag } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
 import useTagList from '@/hooks/query/useTagList';
+import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -37,34 +39,50 @@ interface Props {
 
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  // const [tagToShow] = useState();
+  const [tagToShow, setTagToShow] = useState<Tag[]>([]);
 
   const { data: conf } = useConfig();
   const { data: tagList } = useTagList();
   const { update } = useCardEdit();
   const query = useQueryClient();
 
-  const { trigger, control, handleSubmit, watch } = useForm<FormSchema>({
+  const { setValue, trigger, control, handleSubmit, watch } = useForm<FormSchema>({
     defaultValues: toSchema(card),
     resolver: zodResolver(formSchema),
   });
 
   const selectedTagIds = watch('tagList') || [];
 
+  const selectedTags = selectedTagIds
+    .map((id) => tagList?.find((t) => t.id === id))
+    .filter((tag) => !!tag);
+
   const tagsToRemove = tagList?.filter((t) => selectedTagIds.includes(t.id)) || [];
   const tagsToAdd = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
 
-  // const toggleTag = (tagId: number) => {
-  //   const isSelected = selectedTagIds.includes(tagId);
-  //   if (isSelected) {
-  //     setValue(
-  //       'tagList',
-  //       selectedTagIds.filter((id) => id !== tagId)
-  //     );
-  //   } else {
-  //     setValue('tagList', [...selectedTagIds, tagId]);
-  //   }
-  // };
+  const openAddTags = () => {
+    bottomSheetRef.current?.expand();
+    setTagToShow(tagsToAdd);
+  };
+
+  const openRemoveTags = () => {
+    bottomSheetRef.current?.expand();
+    setTagToShow(tagsToRemove);
+  };
+
+  const toggleTag = (tag: Tag) => {
+    const isSelected = selectedTagIds.includes(tag.id);
+
+    if (isSelected) {
+      setValue(
+        'tagList',
+        selectedTagIds.filter((id) => id !== tag.id),
+        { shouldDirty: true }
+      );
+    } else {
+      setValue('tagList', [...selectedTagIds, tag.id], { shouldDirty: true });
+    }
+  };
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
@@ -81,10 +99,6 @@ export default function CardForm({ card }: Props) {
 
   const onSubmit: SubmitHandler<FormSchema> = (data: FormSchema) => {
     mutate(data);
-  };
-
-  const openTags = () => {
-    bottomSheetRef.current?.expand();
   };
 
   useAutoSubmit({
@@ -115,38 +129,37 @@ export default function CardForm({ card }: Props) {
           labelText={STRINGS.card.form.field.comment}
         />
 
-        <Button onPress={openTags}>
+        <Label>Tags</Label>
+        <View className="flex flex-row gap-4">
+          {selectedTags.map((e) => (
+            <TagTile key={e.id} tag={e} />
+          ))}
+        </View>
+
+        <Button onPress={openRemoveTags}>
           <Text>Remove Tags</Text>
         </Button>
 
-        <Button onPress={openTags}>
+        <Button onPress={openAddTags}>
           <Text>Add Tags</Text>
         </Button>
       </View>
 
-      <BottomSheet
-        index={-1}
-        snapPoints={['90%']}
-        ref={bottomSheetRef}
-        enablePanDownToClose={false}>
+      <BottomSheet index={-1} snapPoints={['90%']} ref={bottomSheetRef} enablePanDownToClose={true}>
         <BottomSheetView className="flex-1">
           <FlashList
-            data={[
-              { type: 'header', title: 'Selected (Tap to Remove)' },
-              ...tagsToRemove,
-              { type: 'header', title: 'Available (Tap to Add)' },
-              ...tagsToAdd,
-            ]}
+            data={tagToShow}
             horizontal={false}
             numColumns={3}
             className="px-4"
             renderItem={({ item }) => {
+              const wasAdded = selectedTagIds.includes(item.id);
               return (
                 <TagTile
                   onPress={(tag) => {
-                    console.log('A', tag.name);
+                    toggleTag(tag);
                   }}
-                  className="m-2"
+                  className={cn('m-2', wasAdded ? 'border-red-500' : '')}
                   tag={item}
                 />
               );

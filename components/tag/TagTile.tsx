@@ -14,7 +14,7 @@ export default function TagTile({ tag, className, onPress }: Props) {
     <Pressable
       className={cn('flex items-center rounded-md border border-secondary p-1', className)}
       onPress={() => onPress?.(tag)}>
-      <Text disabled>{tag.name}</Text>
+      <Text selectable={false}>{tag.name}</Text>
     </Pressable>
   );
 }
