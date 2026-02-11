@@ -11,6 +11,7 @@ import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import useConfigEdit from '@/hooks/mutation/useConfigEdit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { STRINGS } from '@/lib/strings';
+import Field from '@/components/form/Field';
 
 const formSchema = z.object({
   sideA: z.string().min(1),
@@ -62,47 +63,19 @@ export default function SettingsForm({ conf }: Props) {
 
   return (
     <View>
-      <Controller
+      <Field
         name="sideA"
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            <Label nativeID="settings-side-a" htmlFor="settings-side-a">
-              {STRINGS.settings.sideA}
-            </Label>
-            <Input
-              aria-labelledby="settings-side-a"
-              id="settings-side-a"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-              placeholder="..."
-            />
-          </View>
-        )}
+        labelId={'settings-side-a'}
+        labelText={STRINGS.settings.sideA}
       />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
 
-      <Controller
+      <Field
         name="sideB"
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            <Label nativeID="settings-side-b" htmlFor="settings-side-b">
-              {STRINGS.settings.sideB}
-            </Label>
-            <Input
-              aria-labelledby="settings-side-b"
-              id="settings-side-b"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-              placeholder="..."
-            />
-          </View>
-        )}
+        labelId={'settings-side-b'}
+        labelText={STRINGS.settings.sideB}
       />
-      {errors.sideB && <Text className="text-destructive">{errors.sideB.message}</Text>}
     </View>
   );
 }

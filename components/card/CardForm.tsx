@@ -12,6 +12,7 @@ import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import useConfig from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
+import Field from '@/components/form/Field';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -32,13 +33,8 @@ export default function CardForm({ card }: Props) {
   const { data: conf } = useConfig();
   const { update } = useCardEdit();
   const query = useQueryClient();
-  const {
-    trigger,
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormSchema>({
+
+  const { trigger, control, handleSubmit, watch } = useForm<FormSchema>({
     defaultValues: toSchema(card),
     resolver: zodResolver(formSchema),
   });
@@ -68,51 +64,14 @@ export default function CardForm({ card }: Props) {
 
   return (
     <View>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            {/* TODO */}
-            <Label nativeID="terms-checkbox" htmlFor="terms-checkbox">
-              {conf?.sideA}
-            </Label>
-            <Input
-              aria-labelledby="terms-checkbox"
-              id="terms-checkbox"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-              placeholder="..."
-            />
-          </View>
-        )}
-        name="sideA"
-      />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            <Text>{conf?.sideB}</Text>
-            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
-          </View>
-        )}
-        name="sideB"
-      />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            <Text>{STRINGS.card.form.field.comment}</Text>
-            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
-          </View>
-        )}
+      <Field name="sideA" control={control} labelId={'card-side-a'} labelText={conf?.sideA || ''} />
+      <Field name="sideB" control={control} labelId={'card-side-b'} labelText={conf?.sideB || ''} />
+      <Field
         name="comment"
+        control={control}
+        labelId={'card-comment'}
+        labelText={STRINGS.card.form.field.comment}
       />
-      {errors.sideB && <Text className="text-destructive">{errors.sideB.message}</Text>}
     </View>
   );
 }
