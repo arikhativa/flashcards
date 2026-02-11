@@ -1,34 +1,32 @@
-import { Card } from '@/db/schema';
+import { Config } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAutoSubmit } from '@/hooks/useAutoSubmit';
+import useConfigEdit from '@/hooks/mutation/useConfigEdit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
+import { STRINGS } from '@/lib/strings';
 
 const formSchema = z.object({
-  sideA: z.string(),
-  sideB: z.string(),
-  comment: z.string(),
-  //   knowledgeLevel: z.string(),
-  //   createdAt: z.string(),
-  //   updatedAt: z.string(),
+  sideA: z.string().min(1),
+  sideB: z.string().min(1),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
 
 interface Props {
-  card: Card;
+  conf: Config;
 }
 
-export default function CardForm({ card }: Props) {
-  const { update } = useCardEdit();
+export default function SettingsForm({ conf }: Props) {
+  const { update } = useConfigEdit();
   const query = useQueryClient();
+
   const {
     trigger,
     control,
@@ -36,17 +34,16 @@ export default function CardForm({ card }: Props) {
     watch,
     formState: { errors },
   } = useForm<FormSchema>({
-    defaultValues: toSchema(card),
+    defaultValues: conf,
     resolver: zodResolver(formSchema),
   });
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
-      return update(card.id, variables);
+      return update(variables);
     },
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: queryKeyStore.cards.detail(String(card.id)).queryKey });
-      query.invalidateQueries({ queryKey: queryKeyStore.cards.list._def });
+      query.invalidateQueries({ queryKey: queryKeyStore.config.one.queryKey });
     },
     onError: (e) => {
       console.error('mutate err: ', e);
@@ -57,27 +54,25 @@ export default function CardForm({ card }: Props) {
     mutate(data);
   };
 
-  const { manualSubmit } = useAutoSubmit({
+  useAutoSubmit({
     trigger,
     watch,
     onSubmit: handleSubmit(onSubmit),
   });
 
-  const conft = 'SideA';
-
   return (
     <View>
       <Controller
+        name="sideA"
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
-            {/* TODO */}
-            <Label nativeID="terms-checkbox" htmlFor="terms-checkbox">
-              {conft}
+            <Label nativeID="settings-side-a" htmlFor="settings-side-a">
+              {STRINGS.settings.sideA}
             </Label>
             <Input
-              aria-labelledby="terms-checkbox"
-              id="terms-checkbox"
+              aria-labelledby="settings-side-a"
+              id="settings-side-a"
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
@@ -85,41 +80,29 @@ export default function CardForm({ card }: Props) {
             />
           </View>
         )}
-        name="sideA"
       />
       {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
 
       <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <View>
-            <Text>{conft}</Text>
-            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
-          </View>
-        )}
         name="sideB"
-      />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
-
-      <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
-            <Text>{conft}</Text>
-            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
+            <Label nativeID="settings-side-b" htmlFor="settings-side-b">
+              {STRINGS.settings.sideB}
+            </Label>
+            <Input
+              aria-labelledby="settings-side-b"
+              id="settings-side-b"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder="..."
+            />
           </View>
         )}
-        name="comment"
       />
-      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
+      {errors.sideB && <Text className="text-destructive">{errors.sideB.message}</Text>}
     </View>
   );
-}
-
-function toSchema(card?: Card): FormSchema {
-  return {
-    sideA: card?.sideA || '',
-    sideB: card?.sideB || '',
-    comment: card?.comment || '',
-  };
 }

@@ -53,8 +53,9 @@ export const configTable = sqliteTable(
   'config',
   {
     id: integer('id').default(1),
-    sideA: text('side_a').default('A'),
-    sideB: text('side_b').default('B'),
+    sideA: text('side_a').default('A').notNull(),
+    sideB: text('side_b').default('B').notNull(),
+
     createdAt: integer('created_at', { mode: 'timestamp_ms' })
       .notNull()
       .$defaultFn(() => new Date()),

@@ -14,7 +14,7 @@ export default function CardDetailed() {
 
   const { error, success, data } = schema.safeParse({ id });
 
-  const q = useCard(success ? data.id : null);
+  const q = useCard(success ? data.id : '');
 
   if (!success) {
     console.error('CardDetailed: bad id: ', error);

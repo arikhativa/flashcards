@@ -1,11 +1,12 @@
 import { cardTable } from '@/db/schema';
 import { db } from '@/lib/db';
+import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery } from '@tanstack/react-query';
 import { eq } from 'drizzle-orm';
 
-export default function useCard(id: string | null) {
+export default function useCard(id: string) {
   return useQuery({
-    queryKey: ['card', id],
+    queryKey: queryKeyStore.cards.detail(id).queryKey,
     enabled: id !== null,
     queryFn: async () => {
       const result = await db.query.cardTable.findFirst({
