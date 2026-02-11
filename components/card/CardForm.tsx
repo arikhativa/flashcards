@@ -11,7 +11,8 @@ import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 
 const formSchema = z.object({
   sideA: z.string(),
-  //   sideB: z.string(),
+  sideB: z.string(),
+  comment: z.string(),
   //   knowledgeLevel: z.string(),
   //   createdAt: z.string(),
   //   updatedAt: z.string(),
@@ -65,7 +66,7 @@ export default function CardForm({ card }: Props) {
     <View>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <View>
             <Text>{conft}</Text>
             <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
@@ -74,13 +75,38 @@ export default function CardForm({ card }: Props) {
         name="sideA"
       />
       {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
-      {/* <Button onPress={handleSubmit(onSubmit)}>
-        <Text>Submit</Text>
-      </Button> */}
+
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <Text>{conft}</Text>
+            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
+          </View>
+        )}
+        name="sideB"
+      />
+      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
+
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <Text>{conft}</Text>
+            <Input onChangeText={onChange} onBlur={onBlur} value={value} placeholder="..." />
+          </View>
+        )}
+        name="comment"
+      />
+      {errors.sideA && <Text className="text-destructive">{errors.sideA.message}</Text>}
     </View>
   );
 }
 
 function toSchema(card?: Card): FormSchema {
-  return { sideA: card?.sideA || '' };
+  return {
+    sideA: card?.sideA || '',
+    sideB: card?.sideB || '',
+    comment: card?.comment || '',
+  };
 }
