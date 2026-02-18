@@ -7,6 +7,7 @@ export const STRINGS = {
     form: {
       field: {
         comment: 'comment',
+        knowledgeLevel: 'Knowledge Level',
       },
     },
   },

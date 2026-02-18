@@ -17,8 +17,8 @@ CREATE TABLE `card_tag` (
 --> statement-breakpoint
 CREATE TABLE `config` (
 	`id` integer DEFAULT 1,
-	`side_a` text DEFAULT 'A',
-	`side_b` text DEFAULT 'B',
+	`side_a` text DEFAULT 'A' NOT NULL,
+	`side_b` text DEFAULT 'B' NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
 	CONSTRAINT "id_check" CHECK("config"."id" = 1)

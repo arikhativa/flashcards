@@ -20,7 +20,7 @@ export const cardTable = sqliteTable('card', {
   updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
     .notNull()
     .$default(() => new Date())
-    .$onUpdate(() => new Date()),
+    .$onUpdateFn(() => new Date()),
 });
 
 // Tag table
