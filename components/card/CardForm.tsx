@@ -1,4 +1,4 @@
-import { Card, Tag } from '@/db/schema';
+import { BaseTag, Card } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
@@ -40,7 +40,7 @@ interface Props {
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [tagFilters, setTagFilters] = useState<TagFilters>({});
-  const [tagToShow, setTagToShow] = useState<Tag[]>([]);
+  const [tagToShow, setTagToShow] = useState<BaseTag[]>([]);
 
   const { data: conf } = useConfig();
   const { data: tagList } = useTagList(tagFilters);
@@ -79,7 +79,7 @@ export default function CardForm({ card }: Props) {
     setTagToShow(tagsToRemove);
   };
 
-  const toggleTag = (tag: Tag) => {
+  const toggleTag = (tag: BaseTag) => {
     const isSelected = selectedTagIds.includes(tag.id);
 
     if (isSelected) {

@@ -16,3 +16,17 @@ export type RawCard = BuildQueryResult<
     };
   }
 >;
+
+export type RawTag = BuildQueryResult<
+  TSchema,
+  TSchema['tagTable'],
+  {
+    with: {
+      cardList: {
+        with: {
+          card: true;
+        };
+      };
+    };
+  }
+>;

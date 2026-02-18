@@ -88,8 +88,9 @@ export const cardTagRelations = relations(cardTagTable, ({ one }) => ({
 }));
 
 // Type exports for TypeScript
-export type Card = typeof cardTable.$inferSelect & {
-  tagList: Tag[];
+export type BaseCard = typeof cardTable.$inferSelect;
+export type Card = BaseCard & {
+  tagList: BaseTag[];
 };
 
 export type CardInsert = typeof cardTable.$inferInsert;
@@ -100,8 +101,18 @@ export type CardUpdate = Partial<
   }
 >;
 
-export type Tag = typeof tagTable.$inferSelect;
+export type BaseTag = typeof tagTable.$inferSelect;
+
+export type Tag = BaseTag & {
+  cardList: BaseCard[];
+};
+
 export type TagInsert = typeof tagTable.$inferInsert;
+export type TagUpdate = Partial<
+  Omit<Tag, 'cardList'> & {
+    cardList: number[];
+  }
+>;
 
 export type CardTag = typeof cardTagTable.$inferSelect;
 export type CardTagInsert = typeof cardTagTable.$inferInsert;

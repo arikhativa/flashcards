@@ -1,11 +1,11 @@
-import { Tag } from '@/db/schema';
+import { BaseTag } from '@/db/schema';
 import { Text } from '@/components/ui/text';
 import { Pressable } from 'react-native';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  tag: Tag;
-  onPress?: (t: Tag) => void;
+  tag: BaseTag;
+  onPress?: (t: BaseTag) => void;
   className?: string;
 }
 
