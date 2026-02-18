@@ -86,4 +86,4 @@ function Text({
   );
 }
 
-export { Text, TextClassContext };
+export { Text as Typography, TextClassContext };

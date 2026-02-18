@@ -1,10 +1,7 @@
 import { Config } from '@/db/schema';
-import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import * as z from 'zod';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAutoSubmit } from '@/hooks/useAutoSubmit';

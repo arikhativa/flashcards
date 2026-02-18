@@ -1,7 +1,7 @@
 import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import * as z from 'zod';
 import { View } from 'react-native';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/text';
 import { useEffect } from 'react';
 import useTag from '@/hooks/query/useTag';
 import TagForm from '@/components/tag/TagForm';
@@ -43,7 +43,7 @@ export default function TagDetailed() {
 
   return (
     <View className="flex-1">
-      <Text>Loading</Text>
+      <Typography>Loading</Typography>
     </View>
   );
 }

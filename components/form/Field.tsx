@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/text';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { View } from 'react-native';
 
@@ -38,7 +38,9 @@ export default function Field<T extends FieldValues>({
             value={value}
             placeholder={placeholder}
           />
-          {error && <Text className="mt-1 text-sm text-destructive">{error.message}</Text>}
+          {error && (
+            <Typography className="mt-1 text-sm text-destructive">{error.message}</Typography>
+          )}
         </View>
       )}
     />

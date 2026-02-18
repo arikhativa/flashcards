@@ -1,14 +1,36 @@
-import { Card, CardInsert, cardTable, CardUpdate } from '@/db/schema';
+import { Card, CardInsert, cardTable, cardTagTable, CardUpdate } from '@/db/schema';
 import { db } from '@/lib/db';
 import { eq } from 'drizzle-orm';
 
 export default function useCardEdit() {
   const create = async (card: CardInsert) => {
-    return db.insert(cardTable).values(card);
+    const [newCard] = await db.insert(cardTable).values(card).returning({ id: cardTable.id });
+
+    return newCard.id;
   };
 
   const update = async (id: Card['id'], card: Partial<CardUpdate>) => {
-    return db.update(cardTable).set(card).where(eq(cardTable.id, id));
+    return await db.transaction(async (tx) => {
+      const [updatedCard] = await tx
+        .update(cardTable)
+        .set(card)
+        .where(eq(cardTable.id, id))
+        .returning();
+
+      if (card.tagList) {
+        await tx.delete(cardTagTable).where(eq(cardTagTable.cardId, id));
+
+        if (card.tagList.length > 0) {
+          const relations = card.tagList.map((e) => ({
+            cardId: id,
+            tagId: e,
+          }));
+          await tx.insert(cardTagTable).values(relations);
+        }
+      }
+
+      return updatedCard;
+    });
   };
 
   return { create, update };

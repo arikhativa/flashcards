@@ -1,6 +1,7 @@
 import SettingsForm from '@/components/settings/SettingsForm';
+import { Typography } from '@/components/ui/text';
 import useConfig from '@/hooks/query/useConfig';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 export default function Tab() {
   const { data } = useConfig();
@@ -15,7 +16,7 @@ export default function Tab() {
 
   return (
     <View className="flex-1">
-      <Text>Failed to get data</Text>
+      <Typography>Failed to get data</Typography>
     </View>
   );
 }

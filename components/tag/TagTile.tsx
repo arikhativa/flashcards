@@ -1,5 +1,5 @@
 import { BaseTag } from '@/db/schema';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/text';
 import { Pressable } from 'react-native';
 import { cn } from '@/lib/utils';
 
@@ -14,7 +14,7 @@ export default function TagTile({ tag, className, onPress }: Props) {
     <Pressable
       className={cn('flex items-center rounded-md border border-secondary p-1', className)}
       onPress={() => onPress?.(tag)}>
-      <Text selectable={false}>{tag.name}</Text>
+      <Typography selectable={false}>{tag.name}</Typography>
     </Pressable>
   );
 }

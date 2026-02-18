@@ -1,5 +1,5 @@
 import { BaseTag, Card } from '@/db/schema';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
@@ -34,17 +34,18 @@ const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 interface Props {
-  card: Card;
+  card?: Card;
 }
 
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [currentId, setCurrentId] = useState<number | null>(card ? card.id : null);
   const [tagFilters, setTagFilters] = useState<TagFilters>({});
   const [tagToShow, setTagToShow] = useState<BaseTag[]>([]);
 
   const { data: conf } = useConfig();
   const { data: tagList } = useTagList(tagFilters);
-  const { update } = useCardEdit();
+  const { update, create } = useCardEdit();
   const query = useQueryClient();
 
   const { setValue, trigger, control, handleSubmit, watch } = useForm<FormSchema>({
@@ -91,15 +92,27 @@ export default function CardForm({ card }: Props) {
     } else {
       setValue('tagList', [...selectedTagIds, tag.id], { shouldDirty: true });
     }
+    manualSubmit();
   };
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
-      return update(card.id, variables);
+      if (currentId) {
+        return update(currentId, variables);
+      } else {
+        return create(variables);
+      }
     },
-    onSuccess: () => {
-      query.invalidateQueries({ queryKey: queryKeyStore.cards.detail(String(card.id)).queryKey });
-      query.invalidateQueries({ queryKey: queryKeyStore.cards.list._def });
+    onSuccess: (data) => {
+      if (currentId === null && typeof data === 'number') {
+        setCurrentId(data);
+      }
+      if (card) {
+        query.invalidateQueries({
+          queryKey: queryKeyStore.cards.detail(String(currentId)).queryKey,
+        });
+      }
+      query.invalidateQueries({ queryKey: queryKeyStore.cards.list().queryKey });
     },
     onError: (e) => {
       console.error('mutate err: ', e);
@@ -110,7 +123,7 @@ export default function CardForm({ card }: Props) {
     mutate(data);
   };
 
-  useAutoSubmit({
+  const { manualSubmit } = useAutoSubmit({
     trigger,
     watch,
     onSubmit: handleSubmit(onSubmit),
@@ -137,21 +150,24 @@ export default function CardForm({ card }: Props) {
           labelId={'card-comment'}
           labelText={STRINGS.card.form.field.comment}
         />
+        {currentId && (
+          <>
+            <Label>Tags</Label>
+            <View className="flex flex-row gap-4">
+              {selectedTags.map((e) => (
+                <TagTile key={e.id} tag={e} />
+              ))}
+            </View>
 
-        <Label>Tags</Label>
-        <View className="flex flex-row gap-4">
-          {selectedTags.map((e) => (
-            <TagTile key={e.id} tag={e} />
-          ))}
-        </View>
+            <Button onPress={openRemoveTags}>
+              <Typography>Remove Tags</Typography>
+            </Button>
 
-        <Button onPress={openRemoveTags}>
-          <Text>Remove Tags</Text>
-        </Button>
-
-        <Button onPress={openAddTags}>
-          <Text>Add Tags</Text>
-        </Button>
+            <Button onPress={openAddTags}>
+              <Typography>Add Tags</Typography>
+            </Button>
+          </>
+        )}
       </View>
 
       <BottomSheet index={-1} snapPoints={['90%']} ref={bottomSheetRef} enablePanDownToClose={true}>
@@ -185,7 +201,7 @@ export default function CardForm({ card }: Props) {
             }}
             ListEmptyComponent={() => (
               <View className="items-center p-10">
-                <Text className="text-muted-foreground">{`No tags found for "${tagFilters.search}"`}</Text>
+                <Typography className="text-muted-foreground">{`No tags found for "${tagFilters.search}"`}</Typography>
               </View>
             )}
           />
