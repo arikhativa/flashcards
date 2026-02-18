@@ -58,10 +58,10 @@ export const configTable = sqliteTable(
 
     createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()
-      .$defaultFn(() => new Date()),
+      .$default(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
       .notNull()
-      .$defaultFn(() => new Date())
+      .$default(() => new Date())
       .$onUpdate(() => new Date()),
   },
   (table) => [check('id_check', sql`${table.id} = 1`)]

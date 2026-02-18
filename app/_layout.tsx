@@ -11,6 +11,7 @@ import { expoDBFile } from '@/lib/db';
 // import useDBSeed from '@/hooks/useDBSeed';
 import { PortalHost } from '@rn-primitives/portal';
 import useSetupConfig from '@/hooks/useSetupConfig';
+import { TestProvider } from '@/components/provider/TestProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -29,11 +30,13 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-        <PortalHost />
+        <TestProvider>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+          <PortalHost />
+        </TestProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

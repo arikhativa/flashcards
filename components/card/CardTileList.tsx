@@ -4,7 +4,7 @@ import { FlashList } from '@shopify/flash-list';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react-native';
+import { GraduationCap, Plus } from 'lucide-react-native';
 
 interface Props {
   cardList: Card[];
@@ -47,6 +47,16 @@ export default function CardTileList({ cardList }: Props) {
           variant={'outline'}
           size={'icon'}>
           <Plus />
+        </Button>
+        <Button
+          onPress={() =>
+            router.navigate({
+              pathname: '/test',
+            })
+          }
+          variant={'outline'}
+          size={'icon'}>
+          <GraduationCap />
         </Button>
       </View>
     </View>

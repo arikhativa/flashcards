@@ -30,3 +30,5 @@ export type RawTag = BuildQueryResult<
     };
   }
 >;
+
+export type CardSide = 'A' | 'B';
