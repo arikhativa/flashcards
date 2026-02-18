@@ -1,3 +1,4 @@
+import { rawCardToCard } from '@/hooks/query/useCard';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ export default function useCardList() {
           },
         },
       });
-      return result;
+      return result.map((e) => rawCardToCard(e));
     },
   });
 }
