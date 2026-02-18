@@ -13,14 +13,14 @@ export const cardTable = sqliteTable('card', {
 
   knowledgeLevel: text('knowledge_level', { enum: KNOWLEDGE_LEVELS }).notNull().default('Learning'),
 
-  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+  createdAt: integer('created_at', { mode: 'timestamp' })
     .$default(() => new Date())
     .notNull(),
 
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .$default(() => new Date())
-    .$onUpdateFn(() => new Date()),
+    .$onUpdate(() => new Date()),
 });
 
 // Tag table
@@ -28,12 +28,12 @@ export const tagTable = sqliteTable('tag', {
   id: integer('id').primaryKey({ autoIncrement: true }).notNull(),
   name: text('name').default(''),
 
-  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+  createdAt: integer('created_at', { mode: 'timestamp' })
     .$default(() => new Date())
     .notNull(),
 
   // TODO check if update works
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .$default(() => new Date())
     .$onUpdate(() => new Date()),
@@ -56,10 +56,10 @@ export const configTable = sqliteTable(
     sideA: text('side_a').default('A').notNull(),
     sideB: text('side_b').default('B').notNull(),
 
-    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+    createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()
       .$defaultFn(() => new Date()),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+    updatedAt: integer('updated_at', { mode: 'timestamp' })
       .notNull()
       .$defaultFn(() => new Date())
       .$onUpdate(() => new Date()),
