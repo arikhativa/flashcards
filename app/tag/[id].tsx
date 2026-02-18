@@ -1,11 +1,10 @@
-import CardForm from '@/components/card/CardForm';
-import useCard from '@/hooks/query/useCard';
 import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import * as z from 'zod';
 import { View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { useEffect } from 'react';
 import useTag from '@/hooks/query/useTag';
+import TagForm from '@/components/tag/TagForm';
 
 const schema = z.object({
   id: z.string(),

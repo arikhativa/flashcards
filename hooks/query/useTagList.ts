@@ -1,4 +1,5 @@
-import { tagTable } from '@/db/schema';
+import { Tag, tagTable } from '@/db/schema';
+import { rawTagToTag } from '@/hooks/query/useTag';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery } from '@tanstack/react-query';
@@ -11,18 +12,18 @@ export interface TagFilters {
 export default function useTagList(filters?: TagFilters) {
   return useQuery({
     queryKey: queryKeyStore.tag.list(filters).queryKey,
-    queryFn: async () => {
+    queryFn: async (): Promise<Tag[]> => {
       const result = await db.query.tagTable.findMany({
         where: filters?.search ? like(tagTable.name, `%${filters.search}%`) : undefined,
         with: {
           cardList: {
             with: {
-              tag: true,
+              card: true,
             },
           },
         },
       });
-      return result;
+      return result.map((e) => rawTagToTag(e));
     },
   });
 }

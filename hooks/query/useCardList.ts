@@ -1,3 +1,4 @@
+import { Card } from '@/db/schema';
 import { rawCardToCard } from '@/hooks/query/useCard';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
@@ -6,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function useCardList() {
   return useQuery({
     queryKey: queryKeyStore.cards.list().queryKey,
-    queryFn: async () => {
+    queryFn: async (): Promise<Card[]> => {
       const result = await db.query.cardTable.findMany({
         with: {
           tagList: {
