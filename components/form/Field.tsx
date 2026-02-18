@@ -1,3 +1,4 @@
+import { NumberInput } from '@/components/form/NumberInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
@@ -30,14 +31,26 @@ export default function Field<T extends FieldValues>({
           <Label nativeID={labelId} htmlFor={labelId}>
             {labelText}
           </Label>
-          <Input
-            aria-labelledby={labelId}
-            id={labelId}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            placeholder={placeholder}
-          />
+
+          {typeof value === 'number' ? (
+            <NumberInput
+              aria-labelledby={labelId}
+              id={labelId}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder={placeholder}
+            />
+          ) : (
+            <Input
+              aria-labelledby={labelId}
+              id={labelId}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder={placeholder}
+            />
+          )}
           {error && (
             <Typography className="mt-1 text-sm text-destructive">{error.message}</Typography>
           )}

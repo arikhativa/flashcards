@@ -1,14 +1,22 @@
-import { CardSide } from '@/lib/types';
+import { CARD_SIDE_VALUE } from '@/lib/types';
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
+import * as z from 'zod';
 
-export interface TestSettings {
-  numberOfCards: number;
-  // timeRange: TimeRange;
-  // selectedTags: Tag[];
-  // knowledgeLevels: SelectedKL;
-  testSide: CardSide;
-}
+// export interface TestSettings {
+//   numberOfCards: number;
+//   // timeRange: TimeRange;
+//   // selectedTags: Tag[];
+//   // knowledgeLevels: SelectedKL;
+//   testSide: CardSide;
+// }
+
+export const testSettingsSchema = z.object({
+  numberOfCards: z.number().min(1),
+  testSide: z.enum(CARD_SIDE_VALUE),
+});
+
+export type TestSettings = z.infer<typeof testSettingsSchema>;
 
 interface TestContextType {
   testSettings: TestSettings | null;

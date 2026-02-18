@@ -3,6 +3,14 @@ export const STRINGS = {
     sideA: 'Side A',
     sideB: 'Side B',
   },
+  test: {
+    form: {
+      field: {
+        testSide: 'Choose side to hide',
+        numberOfCards: 'How many cards to test',
+      },
+    },
+  },
   card: {
     form: {
       field: {

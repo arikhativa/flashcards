@@ -1,5 +1,7 @@
 import { BuildQueryResult, ExtractTablesWithRelations } from 'drizzle-orm';
 import * as schema from '@/db/schema';
+import * as z from 'zod';
+import { testSettingsSchema } from '@/components/provider/TestProvider';
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
@@ -31,4 +33,5 @@ export type RawTag = BuildQueryResult<
   }
 >;
 
-export type CardSide = 'A' | 'B';
+export const CARD_SIDE_VALUE = ['A', 'B'] as const;
+export type CardSide = z.infer<typeof testSettingsSchema>['testSide'];

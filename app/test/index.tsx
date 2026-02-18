@@ -1,7 +1,6 @@
-import { Typography } from '@/components/ui/text';
+import TestForm from '@/components/test/TestForm';
 import { useNavigation } from 'expo-router';
 import { useEffect } from 'react';
-import { View } from 'react-native';
 
 export default function TestScreen() {
   const navigation = useNavigation();
@@ -10,9 +9,5 @@ export default function TestScreen() {
     navigation.setOptions({ title: 'Test Setup' });
   }, [navigation]);
 
-  return (
-    <View>
-      <Typography>TestScreen</Typography>
-    </View>
-  );
+  return <TestForm />;
 }
