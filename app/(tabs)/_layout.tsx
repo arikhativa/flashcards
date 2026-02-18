@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Cog, Home } from 'lucide-react-native';
+import { Cog, Files, Home, Tags } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -8,7 +8,14 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Cards',
-          tabBarIcon: ({ color }) => <Home />,
+          tabBarIcon: ({ color }) => <Files />,
+        }}
+      />
+      <Tabs.Screen
+        name="tags"
+        options={{
+          title: 'Tags',
+          tabBarIcon: ({ color }) => <Tags />,
         }}
       />
       <Tabs.Screen
