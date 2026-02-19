@@ -1,4 +1,4 @@
-import { BaseTag, Card, KNOWLEDGE_LEVELS } from '@/db/schema';
+import { BaseTag, Card } from '@/db/schema';
 import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
@@ -11,23 +11,23 @@ import { queryKeyStore } from '@/lib/queryKeyStore';
 import useConfig from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
 import useTagList, { TagFilters } from '@/hooks/query/useTagList';
-import { cn } from '@/lib/utils';
+import { cn, enumToSelectOption } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import SelectField from '@/components/form/SelectField';
+import { knowledgeLevelEnum } from '@/lib/enums';
 
 const formSchema = z.object({
   sideA: z.string(),
   sideB: z.string(),
   comment: z.string(),
   tagList: z.array(z.number()),
-  knowledgeLevel: z.enum(KNOWLEDGE_LEVELS),
+  knowledgeLevel: z.enum(knowledgeLevelEnum),
   //   createdAt: z.string(),
   //   updatedAt: z.string(),
 });
@@ -131,7 +131,7 @@ export default function CardForm({ card }: Props) {
   });
 
   return (
-    <GestureHandlerRootView className="flex-1 bg-green-300">
+    <View className="flex-1 bg-green-300">
       <View>
         <Field
           name="sideA"
@@ -153,7 +153,7 @@ export default function CardForm({ card }: Props) {
         />
         <SelectField
           control={control}
-          options={KNOWLEDGE_LEVELS.map((e) => ({ value: e, label: e }))}
+          options={enumToSelectOption(knowledgeLevelEnum)}
           labelId={'card-knowledgeLevel'}
           labelText={STRINGS.card.form.field.knowledgeLevel}
           name="knowledgeLevel"
@@ -215,7 +215,7 @@ export default function CardForm({ card }: Props) {
           />
         </BottomSheetView>
       </BottomSheet>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

@@ -12,6 +12,7 @@ import { expoDBFile } from '@/lib/db';
 import { PortalHost } from '@rn-primitives/portal';
 import useSetupConfig from '@/hooks/useSetupConfig';
 import { TestProvider } from '@/components/provider/TestProvider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -30,13 +31,15 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <TestProvider>
-          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-          <PortalHost />
-        </TestProvider>
+        <GestureHandlerRootView>
+          <TestProvider>
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+            <PortalHost />
+          </TestProvider>
+        </GestureHandlerRootView>
       </ThemeProvider>
     </QueryClientProvider>
   );

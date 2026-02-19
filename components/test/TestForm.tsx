@@ -10,12 +10,15 @@ import SelectField from '@/components/form/SelectField';
 import { TestSettings, testSettingsSchema, useTest } from '@/components/provider/TestProvider';
 import { CARD_SIDE_VALUE } from '@/lib/types';
 import { Check } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 
 interface Props {
   card?: Card;
 }
 
 export default function TestForm({ card }: Props) {
+  const router = useRouter();
+
   const { testSettings, setTestSettings } = useTest();
   const { data: conf } = useSuspenseConfig();
 
@@ -28,8 +31,10 @@ export default function TestForm({ card }: Props) {
   });
 
   const onSubmit: SubmitHandler<TestSettings> = (data: TestSettings) => {
-    console.log('A', data);
     setTestSettings(data);
+    router.navigate({
+      pathname: '/test/active',
+    });
   };
 
   return (

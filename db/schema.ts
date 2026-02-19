@@ -1,9 +1,6 @@
 import { sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
 import { relations, sql } from 'drizzle-orm';
-
-export const KNOWLEDGE_LEVELS = ['Learning', 'GettingThere', 'Confident'] as const;
-
-export type KnowledgeLevel = (typeof KNOWLEDGE_LEVELS)[number];
+import { knowledgeLevelEnumArray } from '@/lib/enums';
 
 export const cardTable = sqliteTable('card', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -11,7 +8,9 @@ export const cardTable = sqliteTable('card', {
   sideB: text('side_b').default('').notNull(),
   comment: text('comment').default('').notNull(),
 
-  knowledgeLevel: text('knowledge_level', { enum: KNOWLEDGE_LEVELS }).notNull().default('Learning'),
+  knowledgeLevel: text('knowledge_level', { enum: knowledgeLevelEnumArray })
+    .notNull()
+    .default('Learning'),
 
   createdAt: integer('created_at', { mode: 'timestamp' })
     .$default(() => new Date())

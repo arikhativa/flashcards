@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRef } from 'react';
 import type { TriggerRef } from '@rn-primitives/select';
 
-type Option = {
+export type SelectOption = {
   value: string;
   label: string;
 };
@@ -24,7 +24,7 @@ interface Props<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
   labelId: string;
-  options: Option[];
+  options: SelectOption[];
   labelText: string;
   className?: string;
   placeholder?: string;

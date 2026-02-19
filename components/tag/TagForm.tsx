@@ -8,7 +8,6 @@ import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import useConfig from '@/hooks/query/useConfig';
 import Field from '@/components/form/Field';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useRef } from 'react';
 import useTagEdit from '@/hooks/mutation/useTagEdit';
@@ -104,7 +103,7 @@ export default function TagForm({ current }: Props) {
   });
 
   return (
-    <GestureHandlerRootView className="flex-1 bg-green-300">
+    <View className="flex-1 bg-green-300">
       <View>
         <Field name="name" control={control} labelId={'tag-name'} labelText={'Name'} />
 
@@ -161,7 +160,7 @@ export default function TagForm({ current }: Props) {
           />
         </BottomSheetView>
       </BottomSheet> */}
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

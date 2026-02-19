@@ -51,7 +51,7 @@ export default function CardTileList({ cardList }: Props) {
         <Button
           onPress={() =>
             router.navigate({
-              pathname: '/test',
+              pathname: '/test/setup',
             })
           }
           variant={'outline'}
