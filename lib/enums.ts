@@ -11,7 +11,7 @@ export const knowledgeLevelEnumArray = ['Learning', 'GettingThere', 'Confident']
 export const knowledgeLevelColorEnum = {
   Learning: 'border-orange-900',
   GettingThere: 'border-emerald-500',
-  Confident: 'border-purple-700',
+  Confident: 'border-purple-500',
 } as const;
 
 export type KnowledgeLevelColorEnum =

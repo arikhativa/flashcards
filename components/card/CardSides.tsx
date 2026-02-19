@@ -1,4 +1,4 @@
-import { Card as CardRoot, CardContent } from '@/components/ui/card';
+import { CardRoot, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/text';

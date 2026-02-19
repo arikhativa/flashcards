@@ -12,7 +12,7 @@ export default function Tab() {
 
   return (
     <MainScreen>
-      <TagTileList list={data} />;
+      <TagTileList list={data} />
     </MainScreen>
   );
 }

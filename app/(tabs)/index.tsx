@@ -12,7 +12,7 @@ export default function Tab() {
 
   return (
     <MainScreen>
-      <CardTileList cardList={data} />;
+      <CardTileList cardList={data} />
     </MainScreen>
   );
 }

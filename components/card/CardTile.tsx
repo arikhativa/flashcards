@@ -4,6 +4,7 @@ import { Typography } from '@/components/ui/text';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { CardContent, CardRoot } from '@/components/ui/card';
+import { knowledgeLevelColorEnum } from '@/lib/enums';
 
 interface Props {
   card: Card;
@@ -14,10 +15,10 @@ interface Props {
 export default function CardTile({ card, className, onPress }: Props) {
   return (
     <Pressable onPress={() => onPress?.(card)}>
-      <CardRoot className={cn('m-4 gap-2 px-4 py-2', className)}>
-        <CardContent>
+      <CardRoot className={cn('border-0 border-b-8', knowledgeLevelColorEnum[card.knowledgeLevel])}>
+        <CardContent className={cn('flex flex-col gap-2', className)}>
           <Typography className="text-center">{card.sideA}</Typography>
-          <Separator orientation="horizontal" />
+          <Separator className="bg-gray-500" orientation="horizontal" />
           <Typography className="text-center">{card.sideB}</Typography>
         </CardContent>
       </CardRoot>
