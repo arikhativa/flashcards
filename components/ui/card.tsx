@@ -1,4 +1,4 @@
-import { Text, TextClassContext } from '@/components/ui/text';
+import { Typography as Text, TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { View, type ViewProps } from 'react-native';
 
@@ -49,4 +49,4 @@ function CardFooter({ className, ...props }: ViewProps & React.RefAttributes<Vie
   return <View className={cn('flex flex-row items-center px-6', className)} {...props} />;
 }
 
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
+export { Card as CardRoot, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

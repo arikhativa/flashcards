@@ -13,6 +13,7 @@ import { PortalHost } from '@rn-primitives/portal';
 import useSetupConfig from '@/hooks/useSetupConfig';
 import { TestProvider } from '@/components/provider/TestProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect } from 'react';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,7 +23,14 @@ export {
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+
+  useEffect(() => {
+    if (colorScheme === 'light') {
+      toggleColorScheme();
+    }
+  }, [colorScheme, toggleColorScheme]);
+
   useDrizzleStudio(__DEV__ ? expoDBFile : null);
   const status = useDBMigrations();
   useSetupConfig(status);

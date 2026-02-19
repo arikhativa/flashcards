@@ -1,9 +1,11 @@
+import { Icon } from '@/components/ui/icon';
+import { cn } from '@/lib/utils';
 import { Tabs } from 'expo-router';
-import { Cog, Files, Home, Tags } from 'lucide-react-native';
+import { Cog, Files, Tags } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
@@ -22,7 +24,9 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <Cog />,
+          tabBarIcon: ({ color, focused }) => (
+            <Icon as={Cog} className={cn('size-7', focused ? 'text-primary' : '')} />
+          ),
         }}
       />
     </Tabs>

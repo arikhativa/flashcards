@@ -33,5 +33,12 @@ export type RawTag = BuildQueryResult<
   }
 >;
 
-export const CARD_SIDE_VALUE = ['A', 'B'] as const;
+export const CARD_SIDE_VALUE = ['A', 'B', 'Both'] as const;
 export type CardSide = z.infer<typeof testSettingsSchema>['testSide'];
+
+export type CardMeta = {
+  hideSideA?: boolean;
+  hideSideB?: boolean;
+  success?: boolean;
+  answer: string;
+};

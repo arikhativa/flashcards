@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/text';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
-import { knowledgeLevelColorEnum, knowledgeLevelEnum, KnowledgeLevelEnum } from '@/lib/enums';
+import { knowledgeLevelColorEnum, KnowledgeLevelEnum } from '@/lib/enums';
+import { cn } from '@/lib/utils';
 import { View } from 'react-native';
 
 interface CardSidesProps {
@@ -19,9 +20,6 @@ interface CardSidesProps {
   cardHeight?: number;
 }
 
-const HEIGHT = 140;
-const BORDER_SIZE = 20;
-
 export default function CardSides({
   knowledgeLevel,
   disabled,
@@ -35,34 +33,9 @@ export default function CardSides({
   cardHeight,
 }: CardSidesProps) {
   const { data: conf } = useSuspenseConfig();
-  const border = borderSize || BORDER_SIZE;
-  const height = cardHeight || HEIGHT;
-
-  const getKLStyle = () => {
-    switch (knowledgeLevel) {
-      case knowledgeLevelEnum.Learning:
-        return {
-          borderBottomColor: knowledgeLevelColorEnum.Learning,
-          borderBottomWidth: border,
-        };
-      case knowledgeLevelEnum.GettingThere:
-        return {
-          borderBottomColor: knowledgeLevelColorEnum.GettingThere,
-          borderBottomWidth: border,
-        };
-      case knowledgeLevelEnum.Confident:
-        return {
-          borderBottomColor: knowledgeLevelColorEnum.Confident,
-          borderBottomWidth: border,
-        };
-      default:
-        return {};
-    }
-  };
 
   return (
-    <CardRoot>
-      {/* <CardRoot style={[style, getKLStyle()]}> */}
+    <CardRoot className={cn('border-0 border-b-4', knowledgeLevelColorEnum[knowledgeLevel])}>
       <CardContent>
         <View className="">
           <Typography>{conf.sideA}</Typography>
