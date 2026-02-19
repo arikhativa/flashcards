@@ -1,7 +1,17 @@
 import { Icon } from '@/components/ui/icon';
+import { Typography } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { Tabs } from 'expo-router';
-import { Cog, Files, Tags } from 'lucide-react-native';
+import { Cog, Files, LucideIcon, Tags } from 'lucide-react-native';
+import { View } from 'react-native';
+
+function TabBarIcon({ icon, focused }: { icon: LucideIcon; focused: boolean }) {
+  return (
+    <View className={cn('flex rounded-2xl px-3 py-1', focused ? 'bg-background/80' : '')}>
+      <Icon as={icon} className={cn('size-5')} />
+    </View>
+  );
+}
 
 export default function TabLayout() {
   return (
@@ -9,24 +19,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Cards',
-          tabBarIcon: ({ color }) => <Files />,
+          tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Cards</Typography>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Files} />,
         }}
       />
       <Tabs.Screen
         name="tags"
         options={{
-          title: 'Tags',
-          tabBarIcon: ({ color }) => <Tags />,
+          tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Tags</Typography>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Tags} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color, focused }) => (
-            <Icon as={Cog} className={cn('size-7', focused ? 'text-primary' : '')} />
-          ),
+          tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Settings</Typography>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Cog} />,
         }}
       />
     </Tabs>
