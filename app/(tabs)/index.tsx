@@ -1,23 +1,18 @@
 import CardTileList from '@/components/card/CardTileList';
-import { Typography } from '@/components/ui/text';
-import useCardList from '@/hooks/query/useCardList';
+import MainScreen from '@/components/MainScreen';
+import { useSuspenseCardList } from '@/hooks/query/useCardList';
 import * as React from 'react';
-import { View } from 'react-native';
 
 export default function Tab() {
-  const { data, isError } = useCardList();
+  const { data, isError } = useSuspenseCardList();
 
   if (isError) {
     console.log('Error with card list');
   }
 
-  if (data) {
-    return <CardTileList cardList={data} />;
-  }
-
   return (
-    <View className="flex-1 items-center justify-center gap-8 p-4">
-      <Typography>empty</Typography>
-    </View>
+    <MainScreen>
+      <CardTileList cardList={data} />;
+    </MainScreen>
   );
 }

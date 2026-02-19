@@ -59,7 +59,7 @@ export default function SettingsForm({ conf }: Props) {
   });
 
   return (
-    <View>
+    <>
       <Field
         name="sideA"
         control={control}
@@ -73,6 +73,6 @@ export default function SettingsForm({ conf }: Props) {
         labelId={'settings-side-b'}
         labelText={STRINGS.settings.sideB}
       />
-    </View>
+    </>
   );
 }

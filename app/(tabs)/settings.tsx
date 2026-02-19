@@ -1,22 +1,13 @@
+import MainScreen from '@/components/MainScreen';
 import SettingsForm from '@/components/settings/SettingsForm';
-import { Typography } from '@/components/ui/text';
-import useConfig from '@/hooks/query/useConfig';
-import { View } from 'react-native';
+import { useSuspenseConfig } from '@/hooks/query/useConfig';
 
 export default function Tab() {
-  const { data } = useConfig();
-
-  if (data) {
-    return (
-      <View className="flex-1">
-        <SettingsForm conf={data} />
-      </View>
-    );
-  }
+  const { data } = useSuspenseConfig();
 
   return (
-    <View className="flex-1">
-      <Typography>Failed to get data</Typography>
-    </View>
+    <MainScreen>
+      <SettingsForm conf={data} />
+    </MainScreen>
   );
 }
