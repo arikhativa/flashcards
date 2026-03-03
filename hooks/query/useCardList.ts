@@ -1,32 +1,25 @@
 import { Card, cardTable } from '@/db/schema';
 import { rawCardToCard } from '@/hooks/query/useCard';
+import { CardFilters } from '@/hooks/query/useCardListFilters';
 import { db } from '@/lib/db';
-import { CardOrderByEnum, DirectionEnum } from '@/lib/enums';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { asc, desc, like, or } from 'drizzle-orm';
-
-export interface CardFilters {
-  search?: string;
-  orderBy?: CardOrderByEnum;
-  direction?: DirectionEnum;
-}
+import { asc, desc, like, or, sql } from 'drizzle-orm';
 
 function getOrderBy(filters?: CardFilters) {
-  const dir = filters?.direction === 'Asc' ? asc : desc;
+  const dir = filters?.direction === 'Asc' ? 'ASC' : 'DESC';
 
   switch (filters?.orderBy) {
     case 'KnowledgeLevel':
-      return dir(cardTable.knowledgeLevel);
+      return sql`${cardTable.knowledgeLevel} ${sql.raw(dir)}`;
     case 'SideA':
-      return dir(cardTable.sideA);
+      return sql`LOWER(${cardTable.sideA}) ${sql.raw(dir)}`;
     case 'SideB':
-      return dir(cardTable.sideB);
-    default: // CreateionTime
-      return dir(cardTable.createdAt);
+      return sql`LOWER(${cardTable.sideB}) ${sql.raw(dir)}`;
+    default: // CreationTime
+      return sql`${cardTable.createdAt} ${sql.raw(dir)}`;
   }
 }
-
 async function queryFn(filters?: CardFilters): Promise<Card[]> {
   const search = filters?.search?.trim();
 

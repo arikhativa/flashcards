@@ -1,83 +1,73 @@
-import { cardOrderByEnum, CardOrderByEnum, DirectionEnum } from '@/lib/enums';
-
-import { Icon } from '@/components/ui/icon';
-import { ArrowDownUp } from 'lucide-react-native';
+import { CardOrderByEnum, DirectionEnum } from '@/lib/enums';
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectSeparator,
-  SelectTrigger,
-} from '@/components/ui/select';
-import { SelectOption } from '@/components/form/SelectField';
-import useConfig from '@/hooks/query/useConfig';
-import { useMemo } from 'react';
-
-interface Sort {
-  orderBy: CardOrderByEnum;
-  direction: DirectionEnum;
-}
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Icon } from '@/components/ui/icon';
+import { ArrowDown, ArrowDownUp, ArrowUp } from 'lucide-react-native';
+import useSuspenseConfig from '@/hooks/query/useConfig';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Typography } from '@/components/ui/text';
+import { Button } from '@/components/ui/button';
 
 interface Props {
-  //   conf: Conf;
-  sort: Sort;
-  onSortChange?: (sort: Sort) => void;
+  orderBy: CardOrderByEnum;
+  direction: DirectionEnum;
+  onDirectionChange?: (dir: DirectionEnum) => void;
+  onOrderByChange?: (orderBy: CardOrderByEnum) => void;
 }
 
-export default function CardSortPopover({ sort, onSortChange }: Props) {
-  // const {} = useConfig()
+export default function CardSortPopover({
+  orderBy,
+  direction,
+  onDirectionChange,
+  onOrderByChange,
+}: Props) {
+  const { data } = useSuspenseConfig();
 
-  const options: SelectOption[] = useMemo(
-    () => [
-      {
-        value: cardOrderByEnum.CreateionTime,
-        label: 'Createion Time',
-      },
-      {
-        value: cardOrderByEnum.KnowledgeLevel,
-        label: 'Knowledge Level',
-      },
-      {
-        value: cardOrderByEnum.SideA,
-        label: 'Alphabetical A',
-      },
-      {
-        value: cardOrderByEnum.SideB,
-        label: 'Alphabetical B',
-      },
-    ],
-    []
-  );
+  const insets = useSafeAreaInsets();
+  const contentInsets = {
+    top: insets.top,
+    bottom: insets.bottom,
+    left: 4,
+    right: 4,
+  };
 
-  const swapLabel = 'Swap Direction';
+  function Item({ value, label }: { label: string; value: CardOrderByEnum }) {
+    return (
+      <DropdownMenuItem onPress={() => onOrderByChange?.(value)}>
+        <Typography className={orderBy === value ? 'font-extrabold' : ''}>{label}</Typography>
+      </DropdownMenuItem>
+    );
+  }
 
   return (
-    <Select
-      value={
-        selectedOption ? { value: selectedOption.value, label: selectedOption.label } : undefined
-      }
-      onValueChange={(option) => {
-        onSortChange(option?.value);
-      }}>
-      <SelectTrigger>
-        <Icon as={ArrowDownUp} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {options.map((e) => (
-            <SelectItem key={e.value} label={e.label} value={e.value}>
-              {e.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-        <SelectSeparator />
-        <SelectGroup>
-          <SelectItem key={'dir'} label={swapLabel} value={sort.direction}>
-            {swapLabel}
-          </SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={'outline'} size={'icon'}>
+          <Icon as={ArrowDownUp} className="size-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent insets={contentInsets} sideOffset={2} className="w-56" align="start">
+        <DropdownMenuGroup>
+          <Item value="CreationTime" label="Createion Time" />
+          <Item value="KnowledgeLevel" label="Knowledge Level" />
+          <Item value="SideA" label={'Alphabetical ' + data?.sideA} />
+          <Item value="SideB" label={'Alphabetical ' + data?.sideB} />
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            onPress={() => onDirectionChange?.(direction === 'Desc' ? 'Asc' : 'Desc')}>
+            <Typography>Swap Direction</Typography>
+            <Icon as={direction === 'Asc' ? ArrowDown : ArrowUp} />
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

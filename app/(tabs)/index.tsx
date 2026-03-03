@@ -2,12 +2,12 @@ import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
 import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
-import useCardList, { CardFilters } from '@/hooks/query/useCardList';
-import { useState } from 'react';
+import useCardList from '@/hooks/query/useCardList';
+import useCardListFilters from '@/hooks/query/useCardListFilters';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Tab() {
-  const [filters, setFilters] = useState<CardFilters>();
+  const { filters, setFilters } = useCardListFilters();
   const { data, isError, isPending } = useCardList(filters);
 
   if (isError) {
@@ -18,9 +18,14 @@ export default function Tab() {
     <SafeAreaView className="flex-1">
       <ListFilters
         onSearch={(search) => {
-          setFilters((prev) => ({ ...prev, search }));
+          setFilters({ ...filters, search });
         }}>
-        <CardSortPopover />
+        <CardSortPopover
+          orderBy={filters.orderBy}
+          direction={filters.direction}
+          onDirectionChange={(direction) => setFilters({ ...filters, direction })}
+          onOrderByChange={(orderBy) => setFilters({ ...filters, orderBy })}
+        />
       </ListFilters>
       <MainScreen>
         <CardTileList isPending={isPending} cardList={data} />

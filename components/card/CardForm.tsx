@@ -113,7 +113,7 @@ export default function CardForm({ card }: Props) {
           queryKey: queryKeyStore.cards.detail(String(currentId)).queryKey,
         });
       }
-      query.invalidateQueries({ queryKey: queryKeyStore.cards.list().queryKey });
+      query.invalidateQueries({ queryKey: queryKeyStore.cards.list._def });
     },
     onError: (e) => {
       console.error('mutate err: ', e);

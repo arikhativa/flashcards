@@ -18,7 +18,7 @@ export type KnowledgeLevelColorEnum =
   (typeof knowledgeLevelColorEnum)[keyof typeof knowledgeLevelColorEnum];
 
 export const cardOrderByEnum = {
-  CreateionTime: 'CreateionTime',
+  CreationTime: 'CreationTime',
   SideA: 'SideA',
   SideB: 'SideB',
   KnowledgeLevel: 'KnowledgeLevel',
