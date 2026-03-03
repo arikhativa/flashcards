@@ -17,7 +17,7 @@ export default function CardTileList({ cardList }: Props) {
     <View className="flex-1">
       <FlashList
         horizontal={false}
-        numColumns={3}
+        numColumns={1}
         className="p-2"
         renderItem={({ item }) => {
           return (

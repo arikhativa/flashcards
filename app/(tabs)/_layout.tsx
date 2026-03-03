@@ -23,6 +23,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Cards</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Files} />,
         }}
@@ -30,6 +31,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="tags"
         options={{
+          headerShown: false,
           tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Tags</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Tags} />,
         }}
@@ -37,6 +39,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
+          headerShown: false,
           tabBarLabel: () => <Typography className="mt-0.5 text-[10px]">Settings</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Cog} />,
         }}
