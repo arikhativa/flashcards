@@ -1,12 +1,13 @@
 import CardTileList from '@/components/card/CardTileList';
 import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
-import { useSuspenseCardList } from '@/hooks/query/useCardList';
-import * as React from 'react';
+import useCardList, { CardFilters } from '@/hooks/query/useCardList';
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Tab() {
-  const { data, isError } = useSuspenseCardList();
+  const [filters, setFilters] = useState<CardFilters>();
+  const { data, isError } = useCardList(filters);
 
   if (isError) {
     console.log('Error with card list');
@@ -15,12 +16,12 @@ export default function Tab() {
   return (
     <SafeAreaView className="flex-1">
       <ListFilters
-        onSearch={(v) => {
-          console.log('v', v);
+        onSearch={(search) => {
+          setFilters((prev) => ({ ...prev, search }));
         }}
       />
       <MainScreen>
-        <CardTileList cardList={data} />
+        <CardTileList cardList={data || []} />
       </MainScreen>
     </SafeAreaView>
   );

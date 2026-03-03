@@ -1,3 +1,4 @@
+import { CardFilters } from '@/hooks/query/useCardList';
 import { TagFilters } from '@/hooks/query/useTagList';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 
@@ -7,8 +8,8 @@ export const queryKeyStore = createQueryKeyStore({
     detail: (id: string) => ({
       queryKey: [id],
     }),
-    list: () => ({
-      queryKey: ['list'],
+    list: (filters?: CardFilters) => ({
+      queryKey: [filters],
     }),
   },
   tag: {
