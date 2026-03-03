@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Tab() {
   const [filters, setFilters] = useState<CardFilters>();
-  const { data, isError } = useCardList(filters);
+  const { data, isError, isPending } = useCardList(filters);
 
   if (isError) {
     console.log('Error with card list');
@@ -21,7 +21,7 @@ export default function Tab() {
         }}
       />
       <MainScreen>
-        <CardTileList cardList={data || []} />
+        <CardTileList isPending={isPending} cardList={data} />
       </MainScreen>
     </SafeAreaView>
   );
