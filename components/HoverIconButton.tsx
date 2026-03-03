@@ -9,7 +9,10 @@ interface Props {
 
 export default function HoverIconButton({ icon, onPress }: Props) {
   return (
-    <Button onPress={onPress} className="aspect-square w-12">
+    <Button
+      onPress={onPress}
+      variant={'outline'}
+      className="aspect-square w-12 border-primary shadow-md shadow-primary">
       <Icon as={icon} className="size-6" />
     </Button>
   );
