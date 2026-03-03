@@ -1,3 +1,4 @@
+import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
 import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
@@ -18,8 +19,9 @@ export default function Tab() {
       <ListFilters
         onSearch={(search) => {
           setFilters((prev) => ({ ...prev, search }));
-        }}
-      />
+        }}>
+        <CardSortPopover />
+      </ListFilters>
       <MainScreen>
         <CardTileList isPending={isPending} cardList={data} />
       </MainScreen>
