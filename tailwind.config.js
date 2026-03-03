@@ -41,6 +41,15 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        learning: {
+          DEFAULT: 'hsl(var(--learning))',
+        },
+        'getting-there': {
+          DEFAULT: 'hsl(var(--getting-there))',
+        },
+        confident: {
+          DEFAULT: 'hsl(var(--confident))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -27,6 +27,11 @@ export const THEME = {
     chart3: 'hsl(197 37% 24%)',
     chart4: 'hsl(43 74% 66%)',
     chart5: 'hsl(27 87% 67%)',
+
+    // custom
+    learning: 'hsl(3 17.1% 43.5%)',
+    gettingThere: 'hsl(150 52.4% 50.6%)',
+    confident: 'hsl(270 50% 40%)',
   },
   dark: {
     background: 'hsl(246 21% 15%)',
@@ -54,6 +59,11 @@ export const THEME = {
     chart3: 'hsl(30 80% 55%)',
     chart4: 'hsl(280 65% 60%)',
     chart5: 'hsl(340 75% 55%)',
+
+    // custom
+    learning: 'hsl(16 82.6% 27.1%)',
+    gettingThere: 'hsl(160 100% 36.9%)',
+    confident: 'hsl(273 100% 63.7%)',
   },
 };
 

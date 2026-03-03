@@ -131,7 +131,7 @@ export default function CardForm({ card }: Props) {
   });
 
   return (
-    <View className="flex-1 bg-green-300">
+    <View className="flex-1">
       <View>
         <Field
           name="sideA"

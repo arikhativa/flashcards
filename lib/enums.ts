@@ -9,9 +9,9 @@ export type KnowledgeLevelEnum = (typeof knowledgeLevelEnum)[keyof typeof knowle
 export const knowledgeLevelEnumArray = ['Learning', 'GettingThere', 'Confident'] as const;
 
 export const knowledgeLevelColorEnum = {
-  Learning: 'border-orange-900',
-  GettingThere: 'border-emerald-500',
-  Confident: 'border-purple-500',
+  Learning: { border: 'border-b-learning' },
+  GettingThere: { border: 'border-b-getting-there' },
+  Confident: { border: 'border-b-confident' },
 } as const;
 
 export type KnowledgeLevelColorEnum =

@@ -3,8 +3,8 @@ import CardTile from '@/components/card/CardTile';
 import { FlashList } from '@shopify/flash-list';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button } from '@/components/ui/button';
 import { GraduationCap, Plus } from 'lucide-react-native';
+import HoverIconButton from '@/components/HoverIconButton';
 
 interface Props {
   cardList: Card[];
@@ -37,27 +37,23 @@ export default function CardTileList({ cardList }: Props) {
         }}
         data={cardList}
       />
-      <View className="absolute bottom-0 left-0 right-0 flex flex-row-reverse p-4">
-        <Button
+      <View className="absolute bottom-0 left-0 right-0 flex flex-row-reverse gap-4 p-4">
+        <HoverIconButton
           onPress={() =>
             router.navigate({
               pathname: '/card/new',
             })
           }
-          variant={'outline'}
-          size={'icon'}>
-          <Plus />
-        </Button>
-        <Button
+          icon={Plus}
+        />
+        <HoverIconButton
           onPress={() =>
             router.navigate({
               pathname: '/test/setup',
             })
           }
-          variant={'outline'}
-          size={'icon'}>
-          <GraduationCap />
-        </Button>
+          icon={GraduationCap}
+        />
       </View>
     </View>
   );

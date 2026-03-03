@@ -7,7 +7,11 @@ import { View } from 'react-native';
 
 function TabBarIcon({ icon, focused }: { icon: LucideIcon; focused: boolean }) {
   return (
-    <View className={cn('flex rounded-2xl px-3 py-1', focused ? 'bg-background/80' : '')}>
+    <View
+      className={cn(
+        'flex rounded-2xl px-3 py-1',
+        focused ? 'bg-foreground/10 dark:bg-background/80' : ''
+      )}>
       <Icon as={icon} className={cn('size-5')} />
     </View>
   );

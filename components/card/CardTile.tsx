@@ -9,13 +9,14 @@ import { knowledgeLevelColorEnum } from '@/lib/enums';
 interface Props {
   card: Card;
   onPress?: (c: Card) => void;
-
   className?: string;
 }
+
 export default function CardTile({ card, className, onPress }: Props) {
   return (
     <Pressable onPress={() => onPress?.(card)}>
-      <CardRoot className={cn('border-0 border-b-8', knowledgeLevelColorEnum[card.knowledgeLevel])}>
+      <CardRoot
+        className={cn('border-b-8 shadow-xl', knowledgeLevelColorEnum[card.knowledgeLevel].border)}>
         <CardContent className={cn('flex flex-col gap-2', className)}>
           <Typography className="text-center">{card.sideA}</Typography>
           <Separator className="bg-gray-500" orientation="horizontal" />
