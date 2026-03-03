@@ -1,21 +1,24 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { View, TextInput, TextInputProps } from 'react-native';
 import { Search, X } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { cn } from '@/lib/utils';
+import { cn, debounce } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { DEBOUNCE_SEARCH_DELAY } from '@/lib/constants';
 
 interface SearchInputProps extends TextInputProps {
   onSearch?: (value: string) => void;
   onClear?: () => void;
   placeholder?: string;
+  debounceTime?: number;
   className?: string;
 }
 
 export default function SearchInput({
   onSearch,
   onClear,
+  debounceTime = DEBOUNCE_SEARCH_DELAY,
   className,
   placeholder = 'Search...',
   ...props
@@ -24,9 +27,14 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
+  const debounced = useMemo(
+    () => debounce<string>((val) => onSearch?.(val), debounceTime),
+    [onSearch, debounceTime]
+  );
+
   const handleChange = (text: string) => {
     setValue(text);
-    onSearch?.(text);
+    debounced(text);
   };
 
   const handleClear = () => {
@@ -59,7 +67,7 @@ export default function SearchInput({
       />
 
       {value && value.length && (
-        <Button size={'icon'} variant={'ghost'} onPress={handleClear}>
+        <Button size={'icon'} className="h-6 w-6" variant={'ghost'} onPress={handleClear}>
           <Icon as={X} />
         </Button>
       )}
