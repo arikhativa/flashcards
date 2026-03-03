@@ -1,3 +1,4 @@
+import CardFilterPopover from '@/components/card/CardFilterPopover';
 import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
 import ListFilters from '@/components/ListFilters';
@@ -26,6 +27,7 @@ export default function Tab() {
           onDirectionChange={(direction) => setFilters({ ...filters, direction })}
           onOrderByChange={(orderBy) => setFilters({ ...filters, orderBy })}
         />
+        <CardFilterPopover kl={filters.kl} onKLChange={(kl) => setFilters({ ...filters, kl })} />
       </ListFilters>
       <MainScreen>
         <CardTileList isPending={isPending} cardList={data} />

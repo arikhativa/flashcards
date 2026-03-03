@@ -4,7 +4,7 @@ import { CardFilters } from '@/hooks/query/useCardListFilters';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { asc, desc, like, or, sql } from 'drizzle-orm';
+import { and, inArray, like, or, sql } from 'drizzle-orm';
 
 function getOrderBy(filters?: CardFilters) {
   const dir = filters?.direction === 'Asc' ? 'ASC' : 'DESC';
@@ -20,13 +20,26 @@ function getOrderBy(filters?: CardFilters) {
       return sql`${cardTable.createdAt} ${sql.raw(dir)}`;
   }
 }
-async function queryFn(filters?: CardFilters): Promise<Card[]> {
-  const search = filters?.search?.trim();
 
+function getWhere(filters?: CardFilters) {
+  if (!filters) return undefined;
+
+  const conditions = [];
+
+  const search = filters.search?.trim();
+  if (search) {
+    conditions.push(or(like(cardTable.sideA, `%${search}%`), like(cardTable.sideB, `%${search}%`)));
+  }
+
+  conditions.push(inArray(cardTable.knowledgeLevel, [...filters.kl]));
+
+  if (conditions.length === 0) return undefined;
+  if (conditions.length === 1) return conditions[0];
+  return and(...conditions);
+}
+async function queryFn(filters?: CardFilters): Promise<Card[]> {
   const result = await db.query.cardTable.findMany({
-    where: search
-      ? or(like(cardTable.sideA, `%${search}%`), like(cardTable.sideB, `%${search}%`))
-      : undefined,
+    where: getWhere(filters),
     orderBy: getOrderBy(filters),
     with: {
       tagList: {

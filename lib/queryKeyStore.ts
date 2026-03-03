@@ -1,4 +1,4 @@
-import { CardFilters } from '@/hooks/query/useCardList';
+import { CardFilters } from '@/hooks/query/useCardListFilters';
 import { TagFilters } from '@/hooks/query/useTagList';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 

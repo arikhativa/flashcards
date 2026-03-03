@@ -1,9 +1,15 @@
-import { CardOrderByEnum, DirectionEnum } from '@/lib/enums';
+import {
+  CardOrderByEnum,
+  DirectionEnum,
+  knowledgeLevelEnum,
+  KnowledgeLevelEnum,
+} from '@/lib/enums';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 export interface CardFilters {
   search?: string;
   orderBy: CardOrderByEnum;
+  kl: KnowledgeLevelEnum[];
   direction: DirectionEnum;
 }
 
@@ -12,6 +18,7 @@ const QUERY_KEY = ['CardListFilters'];
 const DEFAULT_FILTERS: CardFilters = {
   orderBy: 'CreationTime',
   direction: 'Asc',
+  kl: Object.values(knowledgeLevelEnum),
 } as const;
 
 export default function useCardListFilters() {

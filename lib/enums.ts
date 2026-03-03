@@ -6,6 +6,12 @@ export const knowledgeLevelEnum = {
 
 export type KnowledgeLevelEnum = (typeof knowledgeLevelEnum)[keyof typeof knowledgeLevelEnum];
 
+export const knowledgeLevelText: Record<KnowledgeLevelEnum, string> = {
+  Learning: 'Learning',
+  GettingThere: 'Getting There',
+  Confident: 'Confident',
+} as const;
+
 export const knowledgeLevelEnumArray = ['Learning', 'GettingThere', 'Confident'] as const;
 
 export const knowledgeLevelColorEnum = {
