@@ -1,4 +1,4 @@
-import { KnowledgeLevelEnum } from '@/lib/enums';
+import { knowledgeLevelEnum, KnowledgeLevelEnum } from '@/lib/enums';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,13 +14,10 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { KnolageLevelDialog } from '@/components/KnolageLevelDialog';
 import { TimeRangeDialog } from '@/components/TimeRangeDialog';
+import useCardListFilters from '@/hooks/query/useCardListFilters';
 
-interface Props {
-  kl: KnowledgeLevelEnum[];
-  onKLChange: (kl: KnowledgeLevelEnum[]) => void;
-}
-
-export default function CardFilterDropdown({ kl, onKLChange }: Props) {
+export default function CardFilterDropdown() {
+  const { filters } = useCardListFilters();
   const [klOpen, setKLOpen] = useState<boolean | undefined>(false);
   const [timeOpen, setTimeOpen] = useState<boolean | undefined>(false);
   const insets = useSafeAreaInsets();
@@ -31,10 +28,23 @@ export default function CardFilterDropdown({ kl, onKLChange }: Props) {
     right: 4,
   };
 
+  function isFilterOn(): boolean {
+    if (filters.kl.length < Object.keys(knowledgeLevelEnum).length && filters.kl.length > 0) {
+      return true;
+    }
+    if (filters.dateRange.dateFrom !== null && filters.dateRange.dateTo !== null) {
+      return true;
+    }
+    return false;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'outline'} size={'icon'}>
+        <Button
+          variant={'outline'}
+          size={'icon'}
+          className={isFilterOn() ? 'border-2 border-primary' : ''}>
           <Icon as={Funnel} className="size-5" />
         </Button>
       </DropdownMenuTrigger>
@@ -48,7 +58,7 @@ export default function CardFilterDropdown({ kl, onKLChange }: Props) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
-      <KnolageLevelDialog kl={kl} onKLChange={onKLChange} open={klOpen} onOpenChange={setKLOpen} />
+      <KnolageLevelDialog open={klOpen} onOpenChange={setKLOpen} />
       <TimeRangeDialog open={timeOpen} onOpenChange={setTimeOpen} />
     </DropdownMenu>
   );

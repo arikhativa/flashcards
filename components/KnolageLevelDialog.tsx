@@ -4,27 +4,25 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
+import useCardListFilters from '@/hooks/query/useCardListFilters';
 import { KnowledgeLevelEnum, knowledgeLevelText } from '@/lib/enums';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
 
 interface Props {
-  kl: KnowledgeLevelEnum[];
-  onKLChange: (kl: KnowledgeLevelEnum[]) => void;
   open?: boolean;
   onOpenChange: (open?: boolean) => void;
 }
 
-export function KnolageLevelDialog({ open, onOpenChange, kl, onKLChange }: Props) {
-  const [local, setLocal] = useState(new Set(kl));
+export function KnolageLevelDialog({ open, onOpenChange }: Props) {
+  const { filters, setFilters } = useCardListFilters();
+  const [local, setLocal] = useState(new Set(filters.kl));
 
   function Item({ value }: { value: KnowledgeLevelEnum }) {
     function toggle() {
@@ -69,7 +67,7 @@ export function KnolageLevelDialog({ open, onOpenChange, kl, onKLChange }: Props
           </DialogClose>
           <Button
             onPress={() => {
-              onKLChange(Array.from(local));
+              setFilters({ ...filters, kl: Array.from(local) });
               onOpenChange(false);
             }}>
             <Typography>Save</Typography>
