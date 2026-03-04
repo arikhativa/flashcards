@@ -13,7 +13,6 @@ interface CardSidesProps {
   sideB?: string;
   hideSideA?: boolean;
   hideSideB?: boolean;
-  onChangeTextB?: (text: string) => void;
   customSideA?: React.ReactNode;
   customSideB?: React.ReactNode;
   knowledgeLevel?: KnowledgeLevelEnum;

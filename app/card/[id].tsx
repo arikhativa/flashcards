@@ -5,7 +5,6 @@ import * as z from 'zod';
 import { View } from 'react-native';
 import { Typography } from '@/components/ui/text';
 import { useEffect } from 'react';
-import MainScreen from '@/components/MainScreen';
 
 const schema = z.object({
   id: z.string(),
@@ -36,15 +35,15 @@ export default function CardDetailed() {
 
   if (q.data) {
     return (
-      <MainScreen>
+      <View className="flex-1">
         <CardForm card={q.data} />
-      </MainScreen>
+      </View>
     );
   }
 
   return (
-    <MainScreen>
+    <View className="flex-1">
       <Typography>Loading</Typography>
-    </MainScreen>
+    </View>
   );
 }

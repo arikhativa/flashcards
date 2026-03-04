@@ -1,6 +1,6 @@
 import { BaseTag, Card } from '@/db/schema';
 import { Typography } from '@/components/ui/text';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
-import useConfig from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
@@ -17,11 +16,17 @@ import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
 import useTagList, { TagFilters } from '@/hooks/query/useTagList';
-import { cn, enumToSelectOption } from '@/lib/utils';
+import { enumToSelectOption } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import SelectField from '@/components/form/SelectField';
 import { knowledgeLevelEnum } from '@/lib/enums';
 import CardSides from '@/components/card/CardSides';
+import { Icon } from '@/components/ui/icon';
+import { Plus, X } from 'lucide-react-native';
+import { CardContent, CardRoot } from '@/components/ui/card';
+import MainScreen from '@/components/MainScreen';
+import { NAV_THEME } from '@/lib/theme';
+import { useColorScheme } from 'nativewind';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -76,11 +81,6 @@ export default function CardForm({ card }: Props) {
     setTagToShow(tagsToAdd);
   };
 
-  const openRemoveTags = () => {
-    bottomSheetRef.current?.expand();
-    setTagToShow(tagsToRemove);
-  };
-
   const toggleTag = (tag: BaseTag) => {
     const isSelected = selectedTagIds.includes(tag.id);
 
@@ -130,16 +130,12 @@ export default function CardForm({ card }: Props) {
     onSubmit: handleSubmit(onSubmit),
   });
 
-  const onChangeTextB = useCallback(
-    (text: string) => {
-      setValue('sideB', text, { shouldDirty: true });
-    },
-    [setValue]
-  );
+  const { colorScheme } = useColorScheme();
+  const theme = NAV_THEME[colorScheme ?? 'light'];
 
   return (
     <View className="flex-1">
-      <View className="flex flex-col gap-6">
+      <MainScreen className="flex flex-col gap-6">
         <CardSides
           knowledgeLevel={watch('knowledgeLevel')}
           customSideA={
@@ -156,7 +152,6 @@ export default function CardForm({ card }: Props) {
               control={control}
             />
           }
-          onChangeTextB={onChangeTextB}
         />
         <Field
           isTextArea
@@ -174,25 +169,44 @@ export default function CardForm({ card }: Props) {
         />
         {currentId && (
           <>
-            <Label>Tags</Label>
-            <View className="flex flex-row gap-4">
-              {selectedTags.map((e) => (
-                <TagTile key={e.id} tag={e} />
-              ))}
+            <View className="flex flex-row justify-between">
+              <Label>Tags</Label>
+              <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
+                <Icon as={Plus} />
+              </Button>
             </View>
-
-            <Button onPress={openRemoveTags}>
-              <Typography>Remove Tags</Typography>
-            </Button>
-
-            <Button onPress={openAddTags}>
-              <Typography>Add Tags</Typography>
-            </Button>
+            <CardRoot>
+              <CardContent>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerClassName="flex flex-row gap-4">
+                  {selectedTags.map((e) => (
+                    <TagTile
+                      onPress={toggleTag}
+                      key={e.id}
+                      tag={e}
+                      icon={X}
+                      iconClassName={'text-primary-foreground'}
+                    />
+                  ))}
+                </ScrollView>
+              </CardContent>
+            </CardRoot>
           </>
         )}
-      </View>
+      </MainScreen>
 
-      <BottomSheet index={-1} snapPoints={['90%']} ref={bottomSheetRef} enablePanDownToClose={true}>
+      <BottomSheet
+        index={-1}
+        snapPoints={['90%']}
+        ref={bottomSheetRef}
+        enablePanDownToClose={true}
+        backgroundStyle={{
+          borderTopWidth: 0.5,
+          borderWidth: 0.5,
+          borderColor: 'var(--border-color)',
+        }}>
         <BottomSheetView className="flex-1">
           <View className="px-4 py-2">
             <BottomSheetTextInput
@@ -212,13 +226,16 @@ export default function CardForm({ card }: Props) {
             renderItem={({ item }) => {
               const wasAdded = selectedTagIds.includes(item.id);
               return (
-                <TagTile
-                  onPress={(tag) => {
-                    toggleTag(tag);
-                  }}
-                  className={cn('m-2', wasAdded ? 'border-red-500' : '')}
-                  tag={item}
-                />
+                <View className="flex w-fit items-center">
+                  <TagTile
+                    onPress={(tag) => {
+                      toggleTag(tag);
+                    }}
+                    variant={wasAdded ? undefined : 'outline'}
+                    className="m-2"
+                    tag={item}
+                  />
+                </View>
               );
             }}
             ListEmptyComponent={() => (
