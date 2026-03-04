@@ -2,65 +2,59 @@ import { CardRoot, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/text';
+import { Card } from '@/db/schema';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { knowledgeLevelColorEnum, KnowledgeLevelEnum } from '@/lib/enums';
 import { cn } from '@/lib/utils';
 import { View } from 'react-native';
 
 interface CardSidesProps {
-  knowledgeLevel: KnowledgeLevelEnum;
-  disabled?: boolean;
-  sideA: string;
-  sideB: string;
+  sideA?: string;
+  sideB?: string;
   hideSideA?: boolean;
   hideSideB?: boolean;
-  onChangeTextA?: (text: string) => void;
   onChangeTextB?: (text: string) => void;
-  borderSize?: number;
-  cardHeight?: number;
+  customSideA?: React.ReactNode;
+  customSideB?: React.ReactNode;
+  knowledgeLevel?: KnowledgeLevelEnum;
+}
+
+function getSide({
+  sideValue,
+  customSide,
+  hideSide,
+}: {
+  sideValue?: string;
+  hideSide?: boolean;
+  customSide?: React.ReactNode;
+}) {
+  if (hideSide) return <Typography>Hidden</Typography>;
+  if (customSide) return customSide;
+  return <Typography>{sideValue}</Typography>;
 }
 
 export default function CardSides({
-  knowledgeLevel,
-  disabled,
   sideA,
   sideB,
+  knowledgeLevel = 'Learning',
   hideSideA,
   hideSideB,
-  onChangeTextA,
-  onChangeTextB,
-  borderSize,
-  cardHeight,
+  customSideA,
+  customSideB,
 }: CardSidesProps) {
   const { data: conf } = useSuspenseConfig();
 
   return (
-    <CardRoot className={cn('border-0 border-b-4', knowledgeLevelColorEnum[knowledgeLevel])}>
-      <CardContent>
-        <View className="">
+    <CardRoot className={cn('border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].border)}>
+      <CardContent className="flex flex-col gap-6">
+        <View className="flex flex-col gap-6">
           <Typography>{conf.sideA}</Typography>
-          {!hideSideA ? (
-            <Input
-              editable={!disabled}
-              onChangeText={!disabled ? onChangeTextA : undefined}
-              value={sideA}
-            />
-          ) : (
-            <Typography>Hidden</Typography>
-          )}
+          {getSide({ sideValue: sideA, customSide: customSideA, hideSide: hideSideA })}
         </View>
-        <Separator />
-        <View>
+        <Separator className="" />
+        <View className="flex flex-col gap-6">
           <Typography>{conf.sideB}</Typography>
-          {!hideSideB ? (
-            <Input
-              editable={!disabled}
-              onChangeText={!disabled ? onChangeTextB : undefined}
-              value={sideB}
-            />
-          ) : (
-            <Typography>Hidden</Typography>
-          )}
+          {getSide({ sideValue: sideB, customSide: customSideB, hideSide: hideSideB })}
         </View>
       </CardContent>
     </CardRoot>

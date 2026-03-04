@@ -12,7 +12,7 @@ import useConfig from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
@@ -21,6 +21,7 @@ import { cn, enumToSelectOption } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import SelectField from '@/components/form/SelectField';
 import { knowledgeLevelEnum } from '@/lib/enums';
+import CardSides from '@/components/card/CardSides';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -44,7 +45,6 @@ export default function CardForm({ card }: Props) {
   const [tagFilters, setTagFilters] = useState<TagFilters>({});
   const [tagToShow, setTagToShow] = useState<BaseTag[]>([]);
 
-  const { data: conf } = useConfig();
   const { data: tagList } = useTagList(tagFilters);
   const { update, create } = useCardEdit();
   const query = useQueryClient();
@@ -130,20 +130,33 @@ export default function CardForm({ card }: Props) {
     onSubmit: handleSubmit(onSubmit),
   });
 
+  const onChangeTextB = useCallback(
+    (text: string) => {
+      setValue('sideB', text, { shouldDirty: true });
+    },
+    [setValue]
+  );
+
   return (
     <View className="flex-1">
       <View>
-        <Field
-          name="sideA"
-          control={control}
-          labelId={'card-side-a'}
-          labelText={conf?.sideA || ''}
-        />
-        <Field
-          name="sideB"
-          control={control}
-          labelId={'card-side-b'}
-          labelText={conf?.sideB || ''}
+        <CardSides
+          knowledgeLevel={watch('knowledgeLevel')}
+          customSideA={
+            <Field
+              inputClassName="text-center border-0 border-black border-b px-6"
+              name="sideA"
+              control={control}
+            />
+          }
+          customSideB={
+            <Field
+              inputClassName="text-center border-0 border-black border-b px-6"
+              name="sideB"
+              control={control}
+            />
+          }
+          onChangeTextB={onChangeTextB}
         />
         <Field
           name="comment"

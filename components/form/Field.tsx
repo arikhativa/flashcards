@@ -8,9 +8,10 @@ import { View } from 'react-native';
 interface Props<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
-  labelId: string;
-  labelText: string;
+  labelId?: string;
+  labelText?: string;
   className?: string;
+  inputClassName?: string;
   placeholder?: string;
 }
 
@@ -18,6 +19,7 @@ export default function Field<T extends FieldValues>({
   name,
   control,
   className,
+  inputClassName,
   labelId,
   labelText,
   placeholder = '...',
@@ -28,14 +30,17 @@ export default function Field<T extends FieldValues>({
       control={control}
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
         <View className={className}>
-          <Label nativeID={labelId} htmlFor={labelId}>
-            {labelText}
-          </Label>
+          {labelText && (
+            <Label nativeID={labelId} htmlFor={labelId}>
+              {labelText}
+            </Label>
+          )}
 
           {typeof value === 'number' ? (
             <NumberInput
               aria-labelledby={labelId}
               id={labelId}
+              className={inputClassName}
               onChange={onChange}
               onBlur={onBlur}
               value={value}
@@ -45,6 +50,7 @@ export default function Field<T extends FieldValues>({
             <Input
               aria-labelledby={labelId}
               id={labelId}
+              className={inputClassName}
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
