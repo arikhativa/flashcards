@@ -2,6 +2,7 @@ import { NumberInput } from '@/components/form/NumberInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
+import { Textarea } from '@/components/ui/textarea';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { View } from 'react-native';
 
@@ -12,11 +13,13 @@ interface Props<T extends FieldValues> {
   labelText?: string;
   className?: string;
   inputClassName?: string;
+  isTextArea?: boolean;
   placeholder?: string;
 }
 
 export default function Field<T extends FieldValues>({
   name,
+  isTextArea,
   control,
   className,
   inputClassName,
@@ -46,6 +49,16 @@ export default function Field<T extends FieldValues>({
               value={value}
               placeholder={placeholder}
             />
+          ) : isTextArea ? (
+            <Textarea
+              aria-labelledby={labelId}
+              id={labelId}
+              className={inputClassName}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder={placeholder}
+            />
           ) : (
             <Input
               aria-labelledby={labelId}
@@ -57,6 +70,7 @@ export default function Field<T extends FieldValues>({
               placeholder={placeholder}
             />
           )}
+
           {error && (
             <Typography className="mt-1 text-sm text-destructive">{error.message}</Typography>
           )}

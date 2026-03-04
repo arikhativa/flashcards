@@ -139,7 +139,7 @@ export default function CardForm({ card }: Props) {
 
   return (
     <View className="flex-1">
-      <View>
+      <View className="flex flex-col gap-6">
         <CardSides
           knowledgeLevel={watch('knowledgeLevel')}
           customSideA={
@@ -159,6 +159,7 @@ export default function CardForm({ card }: Props) {
           onChangeTextB={onChangeTextB}
         />
         <Field
+          isTextArea
           name="comment"
           control={control}
           labelId={'card-comment'}

@@ -14,7 +14,7 @@ export const STRINGS = {
   card: {
     form: {
       field: {
-        comment: 'comment',
+        comment: 'Comment',
         knowledgeLevel: 'Knowledge Level',
       },
     },
