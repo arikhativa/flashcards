@@ -33,6 +33,20 @@ function getWhere(filters?: CardFilters) {
 
   conditions.push(inArray(cardTable.knowledgeLevel, [...filters.kl]));
 
+  const dateFrom = filters.dateRange.dateFrom;
+  const dateTo = filters.dateRange.dateTo;
+
+  if (dateFrom) {
+    conditions.push(
+      sql`${cardTable.createdAt} >= ${Math.floor(new Date(dateFrom).getTime() / 1000)}`
+    );
+  }
+  if (dateTo) {
+    conditions.push(
+      sql`${cardTable.createdAt} <= ${Math.floor(new Date(dateTo).getTime() / 1000)}`
+    );
+  }
+
   if (conditions.length === 0) return undefined;
   if (conditions.length === 1) return conditions[0];
   return and(...conditions);

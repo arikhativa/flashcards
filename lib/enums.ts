@@ -38,3 +38,12 @@ export const directionEnum = {
 } as const;
 
 export type DirectionEnum = (typeof directionEnum)[keyof typeof directionEnum];
+
+export const fixedDateEnum = {
+  LastDay: 'LastDay',
+  LastWeek: 'LastWeek',
+  LastMonth: 'LastMonth',
+  Anytime: 'Anytime',
+} as const;
+
+export type FixedDateEnum = (typeof fixedDateEnum)[keyof typeof fixedDateEnum];

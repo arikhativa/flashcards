@@ -4,6 +4,7 @@ import {
   knowledgeLevelEnum,
   KnowledgeLevelEnum,
 } from '@/lib/enums';
+import { DateRange } from '@/lib/types';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 export interface CardFilters {
@@ -11,6 +12,7 @@ export interface CardFilters {
   orderBy: CardOrderByEnum;
   kl: KnowledgeLevelEnum[];
   direction: DirectionEnum;
+  dateRange: DateRange;
 }
 
 const QUERY_KEY = ['CardListFilters'];
@@ -19,6 +21,7 @@ const DEFAULT_FILTERS: CardFilters = {
   orderBy: 'CreationTime',
   direction: 'Asc',
   kl: Object.values(knowledgeLevelEnum),
+  dateRange: { dateFrom: null, dateTo: null },
 } as const;
 
 export default function useCardListFilters() {

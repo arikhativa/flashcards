@@ -13,14 +13,16 @@ import { Typography } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { KnolageLevelDialog } from '@/components/KnolageLevelDialog';
+import { TimeRangeDialog } from '@/components/TimeRangeDialog';
 
 interface Props {
   kl: KnowledgeLevelEnum[];
   onKLChange: (kl: KnowledgeLevelEnum[]) => void;
 }
 
-export default function CardFilterPopover({ kl, onKLChange }: Props) {
+export default function CardFilterDropdown({ kl, onKLChange }: Props) {
   const [klOpen, setKLOpen] = useState<boolean | undefined>(false);
+  const [timeOpen, setTimeOpen] = useState<boolean | undefined>(false);
   const insets = useSafeAreaInsets();
   const contentInsets = {
     top: insets.top,
@@ -38,7 +40,7 @@ export default function CardFilterPopover({ kl, onKLChange }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent insets={contentInsets} sideOffset={2} className="w-56" align="start">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onPress={() => setTimeOpen(true)}>
             <Typography>By Time Interval</Typography>
           </DropdownMenuItem>
           <DropdownMenuItem onPress={() => setKLOpen(true)}>
@@ -47,6 +49,7 @@ export default function CardFilterPopover({ kl, onKLChange }: Props) {
         </DropdownMenuGroup>
       </DropdownMenuContent>
       <KnolageLevelDialog kl={kl} onKLChange={onKLChange} open={klOpen} onOpenChange={setKLOpen} />
+      <TimeRangeDialog open={timeOpen} onOpenChange={setTimeOpen} />
     </DropdownMenu>
   );
 }

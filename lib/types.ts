@@ -42,3 +42,8 @@ export type CardMeta = {
   success?: boolean;
   answer: string;
 };
+
+export interface DateRange {
+  dateFrom: Date | null;
+  dateTo: Date | null;
+}
