@@ -27,7 +27,6 @@ const badgeVariants = cva(
           Platform.select({ web: '[a&]:hover:bg-destructive/90' })
         ),
         outline: cn(
-          'border-border border-2 bg-transparent',
           Platform.select({ web: '[a&]:hover:bg-accent [a&]:hover:text-accent-foreground' })
         ),
       },

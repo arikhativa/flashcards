@@ -1,3 +1,9 @@
 {
-  "tailwindCSS.classAttributes": ["class", "className", "inputClassName", "iconClassName"]
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "inputClassName",
+    "iconClassName",
+    "contentContainerClassName"
+  ]
 }

@@ -44,7 +44,7 @@ export default function CardSides({
   const { data: conf } = useSuspenseConfig();
 
   return (
-    <CardRoot className={cn('border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].border)}>
+    <CardRoot className={cn('border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].borderB)}>
       <CardContent className="flex flex-col gap-6">
         <View className="flex flex-col gap-6">
           <Typography>{conf.sideA}</Typography>

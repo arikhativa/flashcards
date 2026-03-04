@@ -27,6 +27,7 @@ import { CardContent, CardRoot } from '@/components/ui/card';
 import MainScreen from '@/components/MainScreen';
 import { NAV_THEME } from '@/lib/theme';
 import { useColorScheme } from 'nativewind';
+import KLInput from '@/components/form/KLInput';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -135,66 +136,69 @@ export default function CardForm({ card }: Props) {
 
   return (
     <View className="flex-1">
-      <MainScreen className="flex flex-col gap-6">
-        <CardSides
-          knowledgeLevel={watch('knowledgeLevel')}
-          customSideA={
-            <Field
-              inputClassName="text-center border-0 border-black border-b px-6"
-              name="sideA"
-              control={control}
-            />
-          }
-          customSideB={
-            <Field
-              inputClassName="text-center border-0 border-black border-b px-6"
-              name="sideB"
-              control={control}
-            />
-          }
-        />
-        <Field
-          isTextArea
-          name="comment"
-          control={control}
-          labelId={'card-comment'}
-          labelText={STRINGS.card.form.field.comment}
-        />
-        <SelectField
-          control={control}
-          options={enumToSelectOption(knowledgeLevelEnum)}
-          labelId={'card-knowledgeLevel'}
-          labelText={STRINGS.card.form.field.knowledgeLevel}
-          name="knowledgeLevel"
-        />
-        {currentId && (
-          <>
-            <View className="flex flex-row justify-between">
-              <Label>Tags</Label>
-              <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
-                <Icon as={Plus} />
-              </Button>
+      <MainScreen>
+        <ScrollView
+          contentContainerClassName="flex flex-col gap-6 pb-20"
+          showsVerticalScrollIndicator={false}>
+          <CardSides
+            knowledgeLevel={watch('knowledgeLevel')}
+            customSideA={
+              <Field
+                inputClassName="text-center border-0 border-black border-b px-6"
+                name="sideA"
+                control={control}
+              />
+            }
+            customSideB={
+              <Field
+                inputClassName="text-center border-0 border-black border-b px-6"
+                name="sideB"
+                control={control}
+              />
+            }
+          />
+          <Field
+            isTextArea
+            name="comment"
+            control={control}
+            labelId={'card-comment'}
+            labelText={STRINGS.card.form.field.comment}
+          />
+          <KLInput
+            control={control}
+            labelId={'card-knowledgeLevel'}
+            labelText={STRINGS.card.form.field.knowledgeLevel}
+            name="knowledgeLevel"
+          />
+          {currentId && (
+            <View className="flex flex-col gap-2">
+              <View className="flex flex-row justify-between">
+                <Label>Tags</Label>
+                <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
+                  <Icon as={Plus} />
+                </Button>
+              </View>
+              <CardRoot>
+                <CardContent className="px-0">
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerClassName="flex flex-row gap-4 px-2">
+                    {selectedTags.map((e) => (
+                      <TagTile
+                        onPress={toggleTag}
+                        key={e.id}
+                        tag={e}
+                        icon={X}
+                        iconClassName={'text-primary-foreground'}
+                      />
+                    ))}
+                  </ScrollView>
+                </CardContent>
+              </CardRoot>
             </View>
-            <CardRoot>
-              <CardContent>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerClassName="flex flex-row gap-4">
-                  {selectedTags.map((e) => (
-                    <TagTile
-                      onPress={toggleTag}
-                      key={e.id}
-                      tag={e}
-                      icon={X}
-                      iconClassName={'text-primary-foreground'}
-                    />
-                  ))}
-                </ScrollView>
-              </CardContent>
-            </CardRoot>
-          </>
-        )}
+          )}
+        </ScrollView>
       </MainScreen>
 
       <BottomSheet

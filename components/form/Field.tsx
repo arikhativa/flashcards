@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { View } from 'react-native';
 
@@ -32,7 +33,7 @@ export default function Field<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-        <View className={className}>
+        <View className={cn('flex flex-col gap-2', className)}>
           {labelText && (
             <Label nativeID={labelId} htmlFor={labelId}>
               {labelText}

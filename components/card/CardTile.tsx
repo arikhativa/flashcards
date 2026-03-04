@@ -16,7 +16,10 @@ export default function CardTile({ card, className, onPress }: Props) {
   return (
     <Pressable onPress={() => onPress?.(card)}>
       <CardRoot
-        className={cn('border-b-8 shadow-xl', knowledgeLevelColorEnum[card.knowledgeLevel].border)}>
+        className={cn(
+          'border-b-8 shadow-xl',
+          knowledgeLevelColorEnum[card.knowledgeLevel].borderB
+        )}>
         <CardContent className={cn('flex flex-col gap-2', className)}>
           <Typography className="text-center">{card.sideA}</Typography>
           <Separator className="bg-gray-500" orientation="horizontal" />
