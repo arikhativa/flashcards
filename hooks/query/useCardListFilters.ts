@@ -13,11 +13,12 @@ export interface CardFilters {
   kl: KnowledgeLevelEnum[];
   direction: DirectionEnum;
   dateRange: DateRange;
+  excludeTagIds?: number[];
 }
 
 const QUERY_KEY = ['CardListFilters'];
 
-const DEFAULT_FILTERS: CardFilters = {
+export const DEFAULT_CARD_FILTERS: CardFilters = {
   orderBy: 'CreationTime',
   direction: 'Asc',
   kl: Object.values(knowledgeLevelEnum),
@@ -29,9 +30,9 @@ export default function useCardListFilters() {
 
   const query = useSuspenseQuery({
     queryKey: QUERY_KEY,
-    initialData: DEFAULT_FILTERS,
+    initialData: DEFAULT_CARD_FILTERS,
     staleTime: Infinity,
-    queryFn: async (): Promise<CardFilters> => DEFAULT_FILTERS,
+    queryFn: async (): Promise<CardFilters> => DEFAULT_CARD_FILTERS,
   });
 
   const setFilters = (filters: CardFilters) => {

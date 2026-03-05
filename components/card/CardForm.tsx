@@ -1,5 +1,4 @@
 import { BaseTag, Card } from '@/db/schema';
-import { Typography } from '@/components/ui/text';
 import { ScrollView, View } from 'react-native';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import * as z from 'zod';
@@ -13,7 +12,6 @@ import Field from '@/components/form/Field';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
 import useTagList from '@/hooks/query/useTagList';
 import { Label } from '@/components/ui/label';
@@ -28,6 +26,8 @@ import { useColorScheme } from 'nativewind';
 import KLInput from '@/components/form/KLInput';
 import { TagFilters } from '@/hooks/query/useTagListFilters';
 import TagFlashList from '@/components/tag/TagFlashList';
+import { BottomSheetList } from '@/components/BottomSheetList';
+import HorizontalScrollField from '@/components/form/HorizontalScrollField';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -49,7 +49,6 @@ export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [currentId, setCurrentId] = useState<number | null>(card ? card.id : null);
   const [tagFilters, setTagFilters] = useState<TagFilters>({});
-  const [tagToShow, setTagToShow] = useState<BaseTag[]>([]);
 
   const { data: tagList } = useTagList(tagFilters);
   const { update, create } = useCardEdit();
@@ -60,26 +59,23 @@ export default function CardForm({ card }: Props) {
     resolver: zodResolver(formSchema),
   });
 
+  const selectedTagIds = watch('tagList') || [];
+
   const filteredTags = useMemo(() => {
+    const tagToShow = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
     const search = tagFilters.search?.trim() || '';
 
     if (!search) return tagToShow;
 
     return tagToShow.filter((tag) => tag.name?.toLowerCase().includes(search.toLowerCase()));
-  }, [tagFilters?.search, tagToShow]);
-
-  const selectedTagIds = watch('tagList') || [];
+  }, [tagFilters?.search]);
 
   const selectedTags = selectedTagIds
     .map((id) => tagList?.find((t) => t.id === id))
     .filter((tag) => !!tag);
 
-  const tagsToRemove = tagList?.filter((t) => selectedTagIds.includes(t.id)) || [];
-  const tagsToAdd = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
-
   const openAddTags = () => {
     bottomSheetRef.current?.expand();
-    setTagToShow(tagsToAdd);
   };
 
   const toggleTag = (tag: BaseTag) => {
@@ -171,69 +167,54 @@ export default function CardForm({ card }: Props) {
             name="knowledgeLevel"
           />
           {currentId && (
-            <View className="flex flex-col gap-2">
-              <View className="flex flex-row justify-between">
-                <Label>Tags</Label>
-                <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
-                  <Icon as={Plus} />
-                </Button>
-              </View>
-              <CardRoot>
-                <CardContent className="px-0">
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerClassName="flex flex-row gap-4 px-2">
-                    {selectedTags.map((e) => (
-                      <TagTile
-                        onPress={toggleTag}
-                        key={e.id}
-                        tag={e}
-                        icon={X}
-                        iconClassName={'text-primary-foreground'}
-                      />
-                    ))}
-                  </ScrollView>
-                </CardContent>
-              </CardRoot>
-            </View>
+            <HorizontalScrollField label="Tags" onAdd={openAddTags}>
+              {selectedTags.map((e) => (
+                <TagTile
+                  onPress={toggleTag}
+                  key={e.id}
+                  tag={e}
+                  icon={X}
+                  iconClassName={'text-primary-foreground'}
+                />
+              ))}
+            </HorizontalScrollField>
+            // <View className="flex flex-col gap-2">
+            //   <View className="flex flex-row justify-between">
+            //     <Label>Tags</Label>
+            //     <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
+            //       <Icon as={Plus} />
+            //     </Button>
+            //   </View>
+            //   <CardRoot>
+            //     <CardContent className="px-0">
+            //       <ScrollView
+            //         horizontal
+            //         showsHorizontalScrollIndicator={false}
+            //         contentContainerClassName="flex flex-row gap-4 px-2">
+
+            //       </ScrollView>
+            //     </CardContent>
+            //   </CardRoot>
+            // </View>
           )}
         </ScrollView>
       </MainScreen>
 
-      <BottomSheet
-        index={-1}
-        snapPoints={['90%']}
-        ref={bottomSheetRef}
-        enablePanDownToClose={true}
-        backgroundStyle={{
-          borderTopWidth: 0.5,
-          borderWidth: 0.5,
-          borderColor: 'var(--border-color)',
-        }}>
-        <BottomSheetView className="flex-1">
-          <View className="px-4 py-2">
-            <BottomSheetTextInput
-              placeholder="Search tags..."
-              value={tagFilters.search}
-              onChangeText={(search) => setTagFilters((prev) => ({ ...prev, search }))}
-              autoCorrect={false}
-              className="h-12 rounded-md border border-input bg-background px-3 py-2"
-            />
-          </View>
-
-          <TagFlashList
-            tags={filteredTags}
-            onPress={(tag) => {
-              toggleTag(tag);
-            }}
-            getVariant={(tag) => {
-              const wasAdded = selectedTagIds.includes(tag.id);
-              return wasAdded ? undefined : 'outline';
-            }}
-          />
-        </BottomSheetView>
-      </BottomSheet>
+      <BottomSheetList
+        search={tagFilters.search}
+        onChangeText={(search) => setTagFilters((prev) => ({ ...prev, search }))}
+        ref={bottomSheetRef}>
+        <TagFlashList
+          tags={filteredTags}
+          onPress={(tag) => {
+            toggleTag(tag);
+          }}
+          getVariant={(tag) => {
+            const wasAdded = selectedTagIds.includes(tag.id);
+            return wasAdded ? undefined : 'outline';
+          }}
+        />
+      </BottomSheetList>
     </View>
   );
 }

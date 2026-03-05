@@ -1,7 +1,7 @@
 export const STRINGS = {
   settings: {
-    sideA: 'Side A',
-    sideB: 'Side B',
+    sideA: 'Side A text',
+    sideB: 'Side B text',
   },
   test: {
     form: {

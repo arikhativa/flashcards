@@ -1,4 +1,4 @@
-import { Tag } from '@/db/schema';
+import { BaseCard, Tag } from '@/db/schema';
 import { View } from 'react-native';
 import * as z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -9,12 +9,18 @@ import { queryKeyStore } from '@/lib/queryKeyStore';
 import useConfig from '@/hooks/query/useConfig';
 import Field from '@/components/form/Field';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import useTagEdit from '@/hooks/mutation/useTagEdit';
+import { BottomSheetList } from '@/components/BottomSheetList';
+import { CardFilters, DEFAULT_CARD_FILTERS } from '@/hooks/query/useCardListFilters';
+import CardFlashList from '@/components/card/CardFlashList';
+import useCardList from '@/hooks/query/useCardList';
+import HorizontalScrollField from '@/components/form/HorizontalScrollField';
+import CardTile from '@/components/card/CardTile';
 
 const formSchema = z.object({
   name: z.string(),
-  // cardList: z.array(z.number()),
+  cardList: z.array(z.number()),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
@@ -25,11 +31,13 @@ interface Props {
 
 export default function TagForm({ current }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  // const [tagFilters, setTagFilters] = useState<TagFilters>({});
-  // const [tagToShow, setTagToShow] = useState<BaseTag[]>([]);
+  const [cardFilters, setCardFilters] = useState<CardFilters>({
+    ...DEFAULT_CARD_FILTERS,
+    excludeTagIds: current?.id ? [current.id] : undefined,
+  });
 
   const { data: conf } = useConfig();
-  // const { data: tagList } = useTagList(tagFilters);
+  const { data: cardList } = useCardList(cardFilters);
   const { update } = useTagEdit();
   const query = useQueryClient();
 
@@ -38,46 +46,29 @@ export default function TagForm({ current }: Props) {
     resolver: zodResolver(formSchema),
   });
 
-  // const filteredTags = useMemo(() => {
-  //   const search = tagFilters.search?.trim() || '';
+  const selectedCardIds = watch('cardList') || [];
 
-  //   if (!search) return tagToShow;
+  const filteredCards = useMemo(() => {
+    return cardList?.filter((t) => !selectedCardIds.includes(t.id)) || [];
+  }, []);
 
-  //   return tagToShow.filter((tag) => tag.name?.toLowerCase().includes(search.toLowerCase()));
-  // }, [tagFilters?.search, tagToShow]);
+  const selectedCards = selectedCardIds
+    .map((id) => cardList?.find((e) => e.id === id))
+    .filter((tag) => !!tag);
 
-  // const selectedTagIds = watch('tagList') || [];
+  const toggleTag = (obj: BaseCard) => {
+    const isSelected = selectedCardIds.includes(obj.id);
 
-  // const selectedTags = selectedTagIds
-  //   .map((id) => tagList?.find((t) => t.id === id))
-  //   .filter((tag) => !!tag);
-
-  // const tagsToRemove = tagList?.filter((t) => selectedTagIds.includes(t.id)) || [];
-  // const tagsToAdd = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
-
-  // const openAddTags = () => {
-  //   bottomSheetRef.current?.expand();
-  //   setTagToShow(tagsToAdd);
-  // };
-
-  // const openRemoveTags = () => {
-  //   bottomSheetRef.current?.expand();
-  //   setTagToShow(tagsToRemove);
-  // };
-
-  // const toggleTag = (tag: BaseTag) => {
-  //   const isSelected = selectedTagIds.includes(tag.id);
-
-  //   if (isSelected) {
-  //     setValue(
-  //       'tagList',
-  //       selectedTagIds.filter((id) => id !== tag.id),
-  //       { shouldDirty: true }
-  //     );
-  //   } else {
-  //     setValue('tagList', [...selectedTagIds, tag.id], { shouldDirty: true });
-  //   }
-  // };
+    if (isSelected) {
+      setValue(
+        'cardList',
+        selectedCardIds.filter((id) => id !== obj.id),
+        { shouldDirty: true }
+      );
+    } else {
+      setValue('cardList', [...selectedCardIds, obj.id], { shouldDirty: true });
+    }
+  };
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
@@ -103,63 +94,30 @@ export default function TagForm({ current }: Props) {
   });
 
   return (
-    <View className="flex-1 bg-green-300">
+    <View className="flex-1">
       <View>
         <Field name="name" control={control} labelId={'tag-name'} labelText={'Name'} />
-
-        {/* <Label>Tags</Label>
-        <View className="flex flex-row gap-4">
-          {selectedTags.map((e) => (
-            <TagTile key={e.id} tag={e} />
-          ))}
-        </View>
-
-        <Button onPress={openRemoveTags}>
-          <Text>Remove Tags</Text>
-        </Button>
-
-        <Button onPress={openAddTags}>
-          <Text>Add Tags</Text>
-        </Button> */}
       </View>
 
-      {/* <BottomSheet index={-1} snapPoints={['90%']} ref={bottomSheetRef} enablePanDownToClose={true}>
-        <BottomSheetView className="flex-1">
-          <View className="px-4 py-2">
-            <BottomSheetTextInput
-              placeholder="Search tags..."
-              value={tagFilters.search}
-              onChangeText={(search) => setTagFilters((prev) => ({ ...prev, search }))}
-              autoCorrect={false}
-              className="h-12 rounded-md border border-input bg-background px-3 py-2"
-            />
-          </View>
+      {current.id && (
+        <HorizontalScrollField label="Cards" onAdd={() => bottomSheetRef.current?.expand()}>
+          {selectedCards.map((e) => (
+            <CardTile onPress={toggleTag} key={e.id} card={e} />
+          ))}
+        </HorizontalScrollField>
+      )}
 
-          <FlashList
-            data={filteredTags}
-            horizontal={false}
-            numColumns={3}
-            className="px-4"
-            renderItem={({ item }) => {
-              const wasAdded = selectedTagIds.includes(item.id);
-              return (
-                <TagTile
-                  onPress={(tag) => {
-                    toggleTag(tag);
-                  }}
-                  className={cn('m-2', wasAdded ? 'border-red-500' : '')}
-                  tag={item}
-                />
-              );
-            }}
-            ListEmptyComponent={() => (
-              <View className="items-center p-10">
-                <Text className="text-muted-foreground">{`No tags found for "${tagFilters.search}"`}</Text>
-              </View>
-            )}
-          />
-        </BottomSheetView>
-      </BottomSheet> */}
+      <BottomSheetList
+        search={cardFilters.search}
+        onChangeText={(search) => setCardFilters((prev) => ({ ...prev, search }))}
+        ref={bottomSheetRef}>
+        <CardFlashList
+          list={filteredCards}
+          onPress={(tag) => {
+            toggleTag(tag);
+          }}
+        />
+      </BottomSheetList>
     </View>
   );
 }
@@ -167,5 +125,6 @@ export default function TagForm({ current }: Props) {
 function toSchema(obj?: Tag): FormSchema {
   return {
     name: obj?.name || '',
+    cardList: obj?.cardList?.map((t) => t.id) || [],
   };
 }

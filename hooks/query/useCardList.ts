@@ -1,4 +1,4 @@
-import { Card, cardTable } from '@/db/schema';
+import { Card, cardTable, cardTagTable } from '@/db/schema';
 import { rawCardToCard } from '@/hooks/query/useCard';
 import { CardFilters } from '@/hooks/query/useCardListFilters';
 import { db } from '@/lib/db';
@@ -44,6 +44,15 @@ function getWhere(filters?: CardFilters) {
   if (dateTo) {
     conditions.push(
       sql`${cardTable.createdAt} <= ${Math.floor(new Date(dateTo).getTime() / 1000)}`
+    );
+  }
+
+  if (filters.excludeTagIds && filters.excludeTagIds.length > 0) {
+    conditions.push(
+      sql`${cardTable.id} NOT IN (
+        SELECT ${cardTagTable.cardId} FROM ${cardTagTable}
+        WHERE ${cardTagTable.tagId} IN ${filters.excludeTagIds}
+      )`
     );
   }
 

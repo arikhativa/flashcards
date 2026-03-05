@@ -1,4 +1,4 @@
-import { Card } from '@/db/schema';
+import { BaseCard, Card } from '@/db/schema';
 import { Pressable } from 'react-native';
 import { Typography } from '@/components/ui/text';
 import { Separator } from '@/components/ui/separator';
@@ -7,8 +7,8 @@ import { CardContent, CardRoot } from '@/components/ui/card';
 import { knowledgeLevelColorEnum } from '@/lib/enums';
 
 interface Props {
-  card: Card;
-  onPress?: (c: Card) => void;
+  card: BaseCard | Card;
+  onPress?: (c: BaseCard | Card) => void;
   className?: string;
 }
 

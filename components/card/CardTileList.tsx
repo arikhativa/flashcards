@@ -7,6 +7,7 @@ import { GraduationCap, Plus } from 'lucide-react-native';
 import HoverIconButton from '@/components/HoverIconButton';
 import { Typography } from '@/components/ui/text';
 import { Spinner } from '@/components/external/Spinner';
+import CardFlashList from '@/components/card/CardFlashList';
 
 interface Props {
   cardList?: Card[];
@@ -34,27 +35,14 @@ export default function CardTileList({ cardList, isPending }: Props) {
     }
 
     return (
-      <FlashList
-        horizontal={false}
-        numColumns={3}
-        className="p-2"
-        renderItem={({ item }) => {
-          return (
-            <View className="m-0 flex w-full items-center justify-center p-2">
-              <CardTile
-                onPress={(card) =>
-                  router.navigate({
-                    pathname: '/card/[id]',
-                    params: { id: card.id },
-                  })
-                }
-                className={'w-full'}
-                card={item}
-              />
-            </View>
-          );
-        }}
-        data={cardList}
+      <CardFlashList
+        list={cardList}
+        onPress={(card) =>
+          router.navigate({
+            pathname: '/card/[id]',
+            params: { id: card.id },
+          })
+        }
       />
     );
   };
