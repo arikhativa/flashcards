@@ -5,7 +5,6 @@ import { eq } from 'drizzle-orm';
 export default function useCardEdit() {
   const create = async (card: CardInsert) => {
     const [newCard] = await db.insert(cardTable).values(card).returning({ id: cardTable.id });
-
     return newCard.id;
   };
 
@@ -19,7 +18,6 @@ export default function useCardEdit() {
 
       if (card.tagList) {
         await tx.delete(cardTagTable).where(eq(cardTagTable.cardId, id));
-
         if (card.tagList.length > 0) {
           const relations = card.tagList.map((e) => ({
             cardId: id,

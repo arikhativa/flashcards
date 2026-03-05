@@ -46,27 +46,5 @@ export default function CardTileList({ cardList, isPending }: Props) {
     );
   };
 
-  return (
-    <View className="flex-1">
-      {getScreen()}
-      <HoverIconButtonList>
-        <HoverIconButton
-          onPress={() =>
-            router.navigate({
-              pathname: '/card/new',
-            })
-          }
-          icon={Plus}
-        />
-        <HoverIconButton
-          onPress={() =>
-            router.navigate({
-              pathname: '/test/setup',
-            })
-          }
-          icon={GraduationCap}
-        />
-      </HoverIconButtonList>
-    </View>
-  );
+  return <View className="flex-1">{getScreen()}</View>;
 }

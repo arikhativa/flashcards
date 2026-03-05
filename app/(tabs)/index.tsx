@@ -1,4 +1,5 @@
 import CardFilterDropdown from '@/components/card/CardFilterDropdown';
+import CardListActionBar from '@/components/card/CardListActionBar';
 import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
 import ListFilters from '@/components/ListFilters';
@@ -32,6 +33,7 @@ export default function Tab() {
       <MainScreen>
         <CardTileList isPending={isPending} cardList={data} />
       </MainScreen>
+      <CardListActionBar />
     </SafeAreaView>
   );
 }

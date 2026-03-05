@@ -1,4 +1,4 @@
-import { BaseCard, Tag } from '@/db/schema';
+import { Tag } from '@/db/schema';
 import { View } from 'react-native';
 import * as z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -18,7 +18,7 @@ import MainScreen from '@/components/MainScreen';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { GraduationCap, Plus } from 'lucide-react-native';
+import { GraduationCap, Plus, X } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
 import HoverIconButtonList from '@/components/HoverIconButtonList';
@@ -41,12 +41,11 @@ export default function TagForm({ current }: Props) {
   const router = useRouter();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { isIdSelected, isMultiSelectOn, toggleIdSelection } = useMultiSelect();
+  const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
+    useMultiSelect();
   const [cardFilters, setCardFilters] = useState<CardFilters>({
     ...DEFAULT_CARD_FILTERS,
   });
-
-  console.log('isMultiSelectOn', isMultiSelectOn);
 
   const { data: cardList } = useCardList(cardFilters);
   const { update } = useTagEdit();
@@ -69,18 +68,19 @@ export default function TagForm({ current }: Props) {
     .map((id) => cardList?.find((e) => e.id === id))
     .filter((e) => !!e);
 
-  const toggleTag = (obj: BaseCard) => {
-    const isSelected = selectedCardIds.includes(obj.id);
+  const toggleManyTags = (ids: number[]) => {
+    const currentSet = new Set(selectedCardIds);
 
-    if (isSelected) {
-      setValue(
-        'cardList',
-        selectedCardIds.filter((id) => id !== obj.id),
-        { shouldDirty: true }
-      );
-    } else {
-      setValue('cardList', [...selectedCardIds, obj.id], { shouldDirty: true });
-    }
+    ids.forEach((id) => {
+      if (currentSet.has(id)) {
+        currentSet.delete(id);
+      } else {
+        currentSet.add(id);
+      }
+    });
+
+    setValue('cardList', [...currentSet], { shouldDirty: true });
+    manualSubmit();
   };
 
   const { mutate } = useMutation({
@@ -100,7 +100,7 @@ export default function TagForm({ current }: Props) {
     mutate(data);
   };
 
-  useAutoSubmit({
+  const { manualSubmit } = useAutoSubmit({
     trigger,
     watch,
     onSubmit: handleSubmit(onSubmit),
@@ -145,12 +145,13 @@ export default function TagForm({ current }: Props) {
 
         <HoverIconButtonList>
           <HoverIconButton
-            onPress={() =>
-              router.navigate({
-                pathname: '/tag/new',
-              })
-            }
-            icon={Plus}
+            disabled={!isMultiSelectOn}
+            isDestructive
+            onPress={() => {
+              toggleManyTags(selectedIds);
+              clearSelectedIds();
+            }}
+            icon={X}
           />
           <HoverIconButton
             disabled={!isMultiSelectOn}
@@ -170,7 +171,7 @@ export default function TagForm({ current }: Props) {
         <CardFlashList
           list={filteredCards}
           onPress={(obj) => {
-            toggleTag(obj);
+            toggleManyTags([obj.id]);
           }}
           getVariant={(obj) => {
             const wasAdded = selectedCardIds.includes(obj.id);

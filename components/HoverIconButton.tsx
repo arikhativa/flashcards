@@ -1,21 +1,23 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react-native';
 
-interface Props {
+type Props = ButtonProps & {
   icon: LucideIcon;
-  onPress: () => void;
-  disabled?: boolean | null | undefined;
-}
+  isDestructive?: boolean;
+};
 
-export default function HoverIconButton({ icon, disabled, onPress }: Props) {
+export default function HoverIconButton({ icon, isDestructive, ...props }: Props) {
   return (
     <Button
-      disabled={disabled}
-      onPress={onPress}
+      {...props}
       variant={'outline'}
-      className="aspect-square w-12 border-primary shadow-md shadow-primary">
-      <Icon as={icon} className="size-6" />
+      className={cn(
+        'aspect-square w-12 border-primary shadow-md shadow-primary',
+        isDestructive && 'border-destructive text-destructive'
+      )}>
+      <Icon as={icon} className={cn('size-6', isDestructive && 'text-destructive')} />
     </Button>
   );
 }
