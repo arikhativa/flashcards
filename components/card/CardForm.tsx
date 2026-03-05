@@ -27,6 +27,7 @@ import { NAV_THEME } from '@/lib/theme';
 import { useColorScheme } from 'nativewind';
 import KLInput from '@/components/form/KLInput';
 import { TagFilters } from '@/hooks/query/useTagListFilters';
+import TagFlashList from '@/components/tag/TagFlashList';
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -221,31 +222,15 @@ export default function CardForm({ card }: Props) {
             />
           </View>
 
-          <FlashList
-            data={filteredTags}
-            horizontal={false}
-            numColumns={3}
-            className="px-4"
-            renderItem={({ item }) => {
-              const wasAdded = selectedTagIds.includes(item.id);
-              return (
-                <View className="flex w-fit items-center">
-                  <TagTile
-                    onPress={(tag) => {
-                      toggleTag(tag);
-                    }}
-                    variant={wasAdded ? undefined : 'outline'}
-                    className="m-2"
-                    tag={item}
-                  />
-                </View>
-              );
+          <TagFlashList
+            tags={filteredTags}
+            onPress={(tag) => {
+              toggleTag(tag);
             }}
-            ListEmptyComponent={() => (
-              <View className="items-center p-10">
-                <Typography className="text-muted-foreground">{`No tags found for "${tagFilters.search}"`}</Typography>
-              </View>
-            )}
+            getVariant={(tag) => {
+              const wasAdded = selectedTagIds.includes(tag.id);
+              return wasAdded ? undefined : 'outline';
+            }}
           />
         </BottomSheetView>
       </BottomSheet>
