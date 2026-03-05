@@ -45,6 +45,8 @@ interface Props {
   card?: Card;
 }
 
+const MAX_ITEMS_IN_SHEET = 20 as const;
+
 export default function CardForm({ card }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [currentId, setCurrentId] = useState<number | null>(card ? card.id : null);
@@ -62,7 +64,8 @@ export default function CardForm({ card }: Props) {
   const selectedTagIds = watch('tagList') || [];
 
   const filteredTags = useMemo(() => {
-    const tagToShow = tagList?.filter((t) => !selectedTagIds.includes(t.id)) || [];
+    const tagToShow =
+      tagList?.filter((t) => !selectedTagIds.includes(t.id)).slice(0, MAX_ITEMS_IN_SHEET) || [];
     const search = tagFilters.search?.trim() || '';
 
     if (!search) return tagToShow;
@@ -178,24 +181,6 @@ export default function CardForm({ card }: Props) {
                 />
               ))}
             </HorizontalScrollField>
-            // <View className="flex flex-col gap-2">
-            //   <View className="flex flex-row justify-between">
-            //     <Label>Tags</Label>
-            //     <Button variant={'outline'} size={'icon'} onPress={openAddTags}>
-            //       <Icon as={Plus} />
-            //     </Button>
-            //   </View>
-            //   <CardRoot>
-            //     <CardContent className="px-0">
-            //       <ScrollView
-            //         horizontal
-            //         showsHorizontalScrollIndicator={false}
-            //         contentContainerClassName="flex flex-row gap-4 px-2">
-
-            //       </ScrollView>
-            //     </CardContent>
-            //   </CardRoot>
-            // </View>
           )}
         </ScrollView>
       </MainScreen>

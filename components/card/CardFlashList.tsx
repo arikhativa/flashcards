@@ -1,4 +1,4 @@
-import CardTile from '@/components/card/CardTile';
+import CardTile, { CardTileProps } from '@/components/card/CardTile';
 import { BadgeProps } from '@/components/ui/badge';
 import { Typography } from '@/components/ui/text';
 import { BaseCard, Card } from '@/db/schema';
@@ -7,10 +7,12 @@ import { View } from 'react-native';
 
 interface Props {
   list: (BaseCard | Card)[];
-  onPress: (t: BaseCard | Card) => void;
+  onPress: (obj: BaseCard | Card) => void;
+  onLongPress?: (obj: BaseCard | Card) => void;
+  getVariant?: (obj: BaseCard | Card) => CardTileProps['variant'];
 }
 
-export default function CardFlashList({ list, onPress }: Props) {
+export default function CardFlashList({ list, onPress, onLongPress, getVariant }: Props) {
   return (
     <FlashList
       data={list}
@@ -20,7 +22,13 @@ export default function CardFlashList({ list, onPress }: Props) {
       renderItem={({ item }) => {
         return (
           <View className="m-0 flex w-full items-center justify-center p-2">
-            <CardTile onPress={() => onPress(item)} className="w-full" card={item} />
+            <CardTile
+              variant={getVariant?.(item) || undefined}
+              onPress={() => onPress(item)}
+              onLongPress={() => onLongPress?.(item)}
+              className="w-full"
+              card={item}
+            />
           </View>
         );
       }}

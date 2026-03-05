@@ -13,7 +13,6 @@ export interface CardFilters {
   kl: KnowledgeLevelEnum[];
   direction: DirectionEnum;
   dateRange: DateRange;
-  excludeTagIds?: number[];
 }
 
 const QUERY_KEY = ['CardListFilters'];

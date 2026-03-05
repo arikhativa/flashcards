@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
-import useConfig from '@/hooks/query/useConfig';
 import Field from '@/components/form/Field';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useMemo, useRef, useState } from 'react';
@@ -15,8 +14,15 @@ import { BottomSheetList } from '@/components/BottomSheetList';
 import { CardFilters, DEFAULT_CARD_FILTERS } from '@/hooks/query/useCardListFilters';
 import CardFlashList from '@/components/card/CardFlashList';
 import useCardList from '@/hooks/query/useCardList';
-import HorizontalScrollField from '@/components/form/HorizontalScrollField';
-import CardTile from '@/components/card/CardTile';
+import MainScreen from '@/components/MainScreen';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
+import { GraduationCap, Plus } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { useMultiSelect } from '@/hooks/useMultiSelect';
+import HoverIconButtonList from '@/components/HoverIconButtonList';
+import HoverIconButton from '@/components/HoverIconButton';
 
 const formSchema = z.object({
   name: z.string(),
@@ -29,14 +35,19 @@ interface Props {
   current: Tag;
 }
 
+const MAX_ITEMS_IN_SHEET = 9 as const;
+
 export default function TagForm({ current }: Props) {
+  const router = useRouter();
+
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { isIdSelected, isMultiSelectOn, toggleIdSelection } = useMultiSelect();
   const [cardFilters, setCardFilters] = useState<CardFilters>({
     ...DEFAULT_CARD_FILTERS,
-    excludeTagIds: current?.id ? [current.id] : undefined,
   });
 
-  const { data: conf } = useConfig();
+  console.log('isMultiSelectOn', isMultiSelectOn);
+
   const { data: cardList } = useCardList(cardFilters);
   const { update } = useTagEdit();
   const query = useQueryClient();
@@ -49,12 +60,14 @@ export default function TagForm({ current }: Props) {
   const selectedCardIds = watch('cardList') || [];
 
   const filteredCards = useMemo(() => {
-    return cardList?.filter((t) => !selectedCardIds.includes(t.id)) || [];
+    return (
+      cardList?.filter((t) => !selectedCardIds.includes(t.id)).slice(0, MAX_ITEMS_IN_SHEET) || []
+    );
   }, []);
 
   const selectedCards = selectedCardIds
     .map((id) => cardList?.find((e) => e.id === id))
-    .filter((tag) => !!tag);
+    .filter((e) => !!e);
 
   const toggleTag = (obj: BaseCard) => {
     const isSelected = selectedCardIds.includes(obj.id);
@@ -95,26 +108,73 @@ export default function TagForm({ current }: Props) {
 
   return (
     <View className="flex-1">
-      <View>
-        <Field name="name" control={control} labelId={'tag-name'} labelText={'Name'} />
-      </View>
+      <MainScreen className="flex flex-col gap-6">
+        <View>
+          <Field name="name" control={control} labelId={'tag-name'} labelText={'Name'} />
+        </View>
 
-      {current.id && (
-        <HorizontalScrollField label="Cards" onAdd={() => bottomSheetRef.current?.expand()}>
-          {selectedCards.map((e) => (
-            <CardTile onPress={toggleTag} key={e.id} card={e} />
-          ))}
-        </HorizontalScrollField>
-      )}
+        {current.id && (
+          <View className="flex flex-1 flex-col gap-2">
+            <View className="flex flex-row justify-between">
+              <Label>Cards</Label>
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                onPress={() => bottomSheetRef.current?.expand()}>
+                <Icon as={Plus} />
+              </Button>
+            </View>
+            <CardFlashList
+              list={selectedCards}
+              onPress={(obj) => {
+                if (isMultiSelectOn) {
+                  toggleIdSelection(obj.id);
+                } else
+                  router.navigate({
+                    pathname: '/card/[id]',
+                    params: { id: obj.id },
+                  });
+              }}
+              onLongPress={(obj) => {
+                toggleIdSelection(obj.id);
+              }}
+              getVariant={(obj) => (isIdSelected(obj.id) ? 'selected' : undefined)}
+            />
+          </View>
+        )}
 
+        <HoverIconButtonList>
+          <HoverIconButton
+            onPress={() =>
+              router.navigate({
+                pathname: '/tag/new',
+              })
+            }
+            icon={Plus}
+          />
+          <HoverIconButton
+            disabled={!isMultiSelectOn}
+            onPress={() =>
+              router.navigate({
+                pathname: '/test/setup',
+              })
+            }
+            icon={GraduationCap}
+          />
+        </HoverIconButtonList>
+      </MainScreen>
       <BottomSheetList
         search={cardFilters.search}
         onChangeText={(search) => setCardFilters((prev) => ({ ...prev, search }))}
         ref={bottomSheetRef}>
         <CardFlashList
           list={filteredCards}
-          onPress={(tag) => {
-            toggleTag(tag);
+          onPress={(obj) => {
+            toggleTag(obj);
+          }}
+          getVariant={(obj) => {
+            const wasAdded = selectedCardIds.includes(obj.id);
+            return wasAdded ? undefined : 'muted';
           }}
         />
       </BottomSheetList>

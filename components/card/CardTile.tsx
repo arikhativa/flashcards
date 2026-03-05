@@ -1,31 +1,73 @@
 import { BaseCard, Card } from '@/db/schema';
-import { Pressable } from 'react-native';
+import { Pressable, View, ViewProps } from 'react-native';
 import { Typography } from '@/components/ui/text';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { CardContent, CardRoot } from '@/components/ui/card';
 import { knowledgeLevelColorEnum } from '@/lib/enums';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { TextClassContext } from '@/components/ui/text';
+import { GestureWrapper } from '@/components/GestureWrapper';
 
-interface Props {
-  card: BaseCard | Card;
-  onPress?: (c: BaseCard | Card) => void;
-  className?: string;
-}
+const cardTileVariants = cva('border-b-8 shadow-xl', {
+  variants: {
+    variant: {
+      default: '',
+      muted: 'opacity-60',
+      selected: 'border-primary',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
-export default function CardTile({ card, className, onPress }: Props) {
+const cardTileTextVariants = cva('text-center', {
+  variants: {
+    variant: {
+      default: 'text-foreground',
+      muted: 'text-muted-foreground',
+      selected: 'text-foreground',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export type CardTileProps = ViewProps &
+  React.RefAttributes<View> & {
+    card: BaseCard | Card;
+    onPress?: (c: BaseCard | Card) => void;
+    onLongPress?: (c: BaseCard | Card) => void;
+    className?: string;
+  } & VariantProps<typeof cardTileVariants>;
+
+export default function CardTile({
+  card,
+  className,
+  onPress,
+  onLongPress,
+  variant,
+}: CardTileProps) {
   return (
-    <Pressable onPress={() => onPress?.(card)}>
-      <CardRoot
-        className={cn(
-          'border-b-8 shadow-xl',
-          knowledgeLevelColorEnum[card.knowledgeLevel].borderB
-        )}>
-        <CardContent className={cn('flex flex-col gap-2', className)}>
-          <Typography className="text-center">{card.sideA}</Typography>
-          <Separator className="bg-gray-500" orientation="horizontal" />
-          <Typography className="text-center">{card.sideB}</Typography>
-        </CardContent>
-      </CardRoot>
-    </Pressable>
+    <GestureWrapper onPress={() => onPress?.(card)} onLongPress={() => onLongPress?.(card)}>
+      <TextClassContext.Provider value={cardTileTextVariants({ variant })}>
+        <CardRoot
+          className={cn(
+            cardTileVariants({ variant }),
+            knowledgeLevelColorEnum[card.knowledgeLevel].borderB
+          )}>
+          <CardContent className={cn('flex flex-col gap-2', className)}>
+            <Typography className="text-center">{card.sideA}</Typography>
+            <Separator
+              className={cn(variant === 'muted' ? 'bg-gray-300' : 'bg-gray-500')}
+              orientation="horizontal"
+            />
+            <Typography className="text-center">{card.sideB}</Typography>
+          </CardContent>
+        </CardRoot>
+      </TextClassContext.Provider>
+    </GestureWrapper>
   );
 }
