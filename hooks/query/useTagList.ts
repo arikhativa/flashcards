@@ -1,13 +1,10 @@
 import { Tag, tagTable } from '@/db/schema';
 import { rawTagToTag } from '@/hooks/query/useTag';
+import { TagFilters } from '@/hooks/query/useTagListFilters';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { like } from 'drizzle-orm';
-
-export interface TagFilters {
-  search?: string;
-}
 
 async function queryFn(filters?: TagFilters): Promise<Tag[]> {
   const result = await db.query.tagTable.findMany({

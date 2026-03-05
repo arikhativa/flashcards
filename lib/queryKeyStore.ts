@@ -1,5 +1,5 @@
 import { CardFilters } from '@/hooks/query/useCardListFilters';
-import { TagFilters } from '@/hooks/query/useTagList';
+import { TagFilters } from '@/hooks/query/useTagListFilters';
 import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 
 export const queryKeyStore = createQueryKeyStore({

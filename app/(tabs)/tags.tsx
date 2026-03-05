@@ -1,18 +1,30 @@
+import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
 import TagTileList from '@/components/tag/TagTileList';
 import { useSuspenseTagList } from '@/hooks/query/useTagList';
+import useTagListFilters from '@/hooks/query/useTagListFilters';
 import * as React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Tab() {
-  const { data, isError } = useSuspenseTagList();
+  const { filters, setFilters } = useTagListFilters();
+
+  const { data, isError } = useSuspenseTagList(filters);
 
   if (isError) {
     console.log('Error with tag list');
   }
 
   return (
-    <MainScreen>
-      <TagTileList list={data} />
-    </MainScreen>
+    <SafeAreaView className="flex-1">
+      <ListFilters
+        onSearch={(search) => {
+          setFilters({ ...filters, search });
+        }}
+      />
+      <MainScreen>
+        <TagTileList list={data} />
+      </MainScreen>
+    </SafeAreaView>
   );
 }

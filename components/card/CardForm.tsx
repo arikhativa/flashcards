@@ -11,14 +11,12 @@ import { queryKeyStore } from '@/lib/queryKeyStore';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FlashList } from '@shopify/flash-list';
 import TagTile from '@/components/tag/TagTile';
-import useTagList, { TagFilters } from '@/hooks/query/useTagList';
-import { enumToSelectOption } from '@/lib/utils';
+import useTagList from '@/hooks/query/useTagList';
 import { Label } from '@/components/ui/label';
-import SelectField from '@/components/form/SelectField';
 import { knowledgeLevelEnum } from '@/lib/enums';
 import CardSides from '@/components/card/CardSides';
 import { Icon } from '@/components/ui/icon';
@@ -28,6 +26,7 @@ import MainScreen from '@/components/MainScreen';
 import { NAV_THEME } from '@/lib/theme';
 import { useColorScheme } from 'nativewind';
 import KLInput from '@/components/form/KLInput';
+import { TagFilters } from '@/hooks/query/useTagListFilters';
 
 const formSchema = z.object({
   sideA: z.string(),
