@@ -8,10 +8,11 @@ import { View } from 'react-native';
 interface Props {
   tags: (BaseTag | Tag)[];
   onPress: (t: BaseTag | Tag) => void;
+  onLongPress?: (t: BaseTag | Tag) => void;
   getVariant?: (t: BaseTag | Tag) => BadgeProps['variant'];
 }
 
-export default function TagFlashList({ getVariant, tags, onPress }: Props) {
+export default function TagFlashList({ getVariant, onLongPress, tags, onPress }: Props) {
   return (
     <FlashList
       data={tags}
@@ -23,6 +24,7 @@ export default function TagFlashList({ getVariant, tags, onPress }: Props) {
           <View className="flex w-fit items-center">
             <TagTile
               onPress={() => onPress(item)}
+              onLongPress={() => onLongPress?.(item)}
               variant={getVariant?.(item)}
               className="m-2"
               tag={item}

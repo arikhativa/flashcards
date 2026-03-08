@@ -7,10 +7,12 @@ import { LucideIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { isTag } from '@/lib/typeGuards';
 import { Separator } from '@/components/ui/separator';
+import { GestureWrapper } from '@/components/GestureWrapper';
 
 type Props = {
   tag: BaseTag | Tag;
   onPress?: (t: BaseTag) => void;
+  onLongPress?: (c: BaseTag | Tag) => void;
   className?: string;
   iconClassName?: string;
   variant?: BadgeProps['variant'];
@@ -21,7 +23,7 @@ type Props = {
 export default function TagTile(props: Props) {
   const { className, onPress, variant, iconClassName, tag, icon, showCount } = props;
   return (
-    <Pressable onPress={() => onPress?.(tag)}>
+    <GestureWrapper onPress={() => onPress?.(tag)} onLongPress={() => props.onLongPress?.(tag)}>
       <Badge
         variant={variant}
         pointerEvents="none"
@@ -37,6 +39,6 @@ export default function TagTile(props: Props) {
           </>
         )}
       </Badge>
-    </Pressable>
+    </GestureWrapper>
   );
 }
