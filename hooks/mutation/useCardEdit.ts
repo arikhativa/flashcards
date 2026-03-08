@@ -1,6 +1,6 @@
 import { Card, CardInsert, cardTable, cardTagTable, CardUpdate } from '@/db/schema';
 import { db } from '@/lib/db';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export default function useCardEdit() {
   const create = async (card: CardInsert) => {
@@ -31,5 +31,9 @@ export default function useCardEdit() {
     });
   };
 
-  return { create, update };
+  const deleteMany = async (ids: Card['id'][]) => {
+    return await db.delete(cardTable).where(inArray(cardTable.id, ids));
+  };
+
+  return { deleteMany, create, update };
 }

@@ -1,17 +1,21 @@
 import { Tag, tagTable } from '@/db/schema';
+import { BAD_ID } from '@/lib/constants';
 import { db } from '@/lib/db';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { RawTag } from '@/lib/types';
 import { useQuery } from '@tanstack/react-query';
 import { eq } from 'drizzle-orm';
 
-export default function useTag(id: string) {
+export default function useTag(id: number) {
   return useQuery({
     queryKey: queryKeyStore.tag.detail(id).queryKey,
     enabled: id !== null,
     queryFn: async (): Promise<Tag> => {
+      if (id === BAD_ID) {
+        throw new Error(`useTag: BAD_ID`);
+      }
       const result = await db.query.tagTable.findFirst({
-        where: eq(tagTable.id, parseInt(id || '')),
+        where: eq(tagTable.id, id),
         with: {
           cardList: {
             with: {

@@ -5,9 +5,10 @@ import { Typography } from '@/components/ui/text';
 import { useEffect } from 'react';
 import useTag from '@/hooks/query/useTag';
 import TagForm from '@/components/tag/TagForm';
+import { BAD_ID } from '@/lib/constants';
 
 const schema = z.object({
-  id: z.string(),
+  id: z.string().transform(Number).pipe(z.number().int().positive()),
 });
 
 export default function TagDetailed() {
@@ -21,7 +22,7 @@ export default function TagDetailed() {
     }
   }, [success, navigation, id]);
 
-  const q = useTag(success ? data.id : '');
+  const q = useTag(success ? data.id : BAD_ID);
 
   if (!success) {
     console.error('TagDetailed: bad id: ', error);

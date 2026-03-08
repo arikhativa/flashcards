@@ -52,7 +52,12 @@ export default function CardTileList({ cardList, isPending }: Props) {
               });
           }}
         />
-        <CardListActionBar selectedIds={selectedIds} isMultiSelectOn={isMultiSelectOn} />
+
+        <CardListActionBar
+          clearSelectedIds={clearSelectedIds}
+          selectedIds={selectedIds}
+          isMultiSelectOn={isMultiSelectOn}
+        />
       </>
     );
   };

@@ -5,7 +5,7 @@ import { createQueryKeyStore } from '@lukemorales/query-key-factory';
 export const queryKeyStore = createQueryKeyStore({
   cards: {
     all: null,
-    detail: (id: string) => ({
+    detail: (id: number) => ({
       queryKey: [id],
     }),
     list: (filters?: CardFilters) => ({
@@ -14,7 +14,7 @@ export const queryKeyStore = createQueryKeyStore({
   },
   tag: {
     all: null,
-    detail: (id: string) => ({
+    detail: (id: number) => ({
       queryKey: [id],
     }),
     list: (filters?: TagFilters) => ({

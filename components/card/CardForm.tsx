@@ -9,17 +9,13 @@ import { useAutoSubmit } from '@/hooks/useAutoSubmit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
-import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { useMemo, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import TagTile from '@/components/tag/TagTile';
 import useTagList from '@/hooks/query/useTagList';
-import { Label } from '@/components/ui/label';
 import { knowledgeLevelEnum } from '@/lib/enums';
 import CardSides from '@/components/card/CardSides';
-import { Icon } from '@/components/ui/icon';
-import { Plus, X } from 'lucide-react-native';
-import { CardContent, CardRoot } from '@/components/ui/card';
+import { X } from 'lucide-react-native';
 import MainScreen from '@/components/MainScreen';
 import { NAV_THEME } from '@/lib/theme';
 import { useColorScheme } from 'nativewind';
@@ -110,7 +106,7 @@ export default function CardForm({ card }: Props) {
       }
       if (card) {
         query.invalidateQueries({
-          queryKey: queryKeyStore.cards.detail(String(currentId)).queryKey,
+          queryKey: queryKeyStore.cards.detail(card.id).queryKey,
         });
       }
       query.invalidateQueries({ queryKey: queryKeyStore.cards.list._def });

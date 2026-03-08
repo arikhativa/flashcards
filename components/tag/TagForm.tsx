@@ -88,7 +88,7 @@ export default function TagForm({ current }: Props) {
       return update(current.id, variables);
     },
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: queryKeyStore.tag.detail(String(current.id)).queryKey });
+      query.invalidateQueries({ queryKey: queryKeyStore.tag.detail(current.id).queryKey });
       query.invalidateQueries({ queryKey: queryKeyStore.tag.list._def });
     },
     onError: (e) => {
