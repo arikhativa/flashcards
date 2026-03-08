@@ -1,14 +1,20 @@
 import HoverIconButton from '@/components/HoverIconButton';
 import HoverIconButtonList from '@/components/HoverIconButtonList';
 import { useRouter } from 'expo-router';
-import { GraduationCap, Plus } from 'lucide-react-native';
+import { GraduationCap, Plus, X } from 'lucide-react-native';
 
-export default function CardListActionBar() {
+interface Props {
+  isMultiSelectOn: boolean;
+  selectedIds: number[];
+}
+
+export default function CardListActionBar({ isMultiSelectOn, selectedIds }: Props) {
   const router = useRouter();
 
   return (
     <HoverIconButtonList className="p-4">
       <HoverIconButton
+        disabled={isMultiSelectOn}
         onPress={() =>
           router.navigate({
             pathname: '/card/new',
@@ -19,10 +25,20 @@ export default function CardListActionBar() {
       <HoverIconButton
         onPress={() =>
           router.navigate({
-            pathname: '/test/setup',
+            pathname: isMultiSelectOn ? '/test/cards/[ids]' : '/test/setup',
+            params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
           })
         }
         icon={GraduationCap}
+      />
+      <HoverIconButton
+        disabled={!isMultiSelectOn}
+        onPress={() =>
+          router.navigate({
+            pathname: '/card/new',
+          })
+        }
+        icon={X}
       />
     </HoverIconButtonList>
   );

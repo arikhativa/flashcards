@@ -1,12 +1,11 @@
 import { Card } from '@/db/schema';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { GraduationCap, Plus } from 'lucide-react-native';
-import HoverIconButton from '@/components/HoverIconButton';
 import { Typography } from '@/components/ui/text';
 import { Spinner } from '@/components/external/Spinner';
 import CardFlashList from '@/components/card/CardFlashList';
-import HoverIconButtonList from '@/components/HoverIconButtonList';
+import { useMultiSelect } from '@/hooks/useMultiSelect';
+import CardListActionBar from '@/components/card/CardListActionBar';
 
 interface Props {
   cardList?: Card[];
@@ -15,6 +14,8 @@ interface Props {
 
 export default function CardTileList({ cardList, isPending }: Props) {
   const router = useRouter();
+  const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
+    useMultiSelect();
 
   const getScreen = () => {
     if (isPending) {
@@ -34,15 +35,25 @@ export default function CardTileList({ cardList, isPending }: Props) {
     }
 
     return (
-      <CardFlashList
-        list={cardList}
-        onPress={(card) =>
-          router.navigate({
-            pathname: '/card/[id]',
-            params: { id: card.id },
-          })
-        }
-      />
+      <>
+        <CardFlashList
+          list={cardList}
+          onLongPress={(obj) => {
+            toggleIdSelection(obj.id);
+          }}
+          getVariant={(obj) => (isIdSelected(obj.id) ? 'selected' : undefined)}
+          onPress={(obj) => {
+            if (isMultiSelectOn) {
+              toggleIdSelection(obj.id);
+            } else
+              router.navigate({
+                pathname: '/card/[id]',
+                params: { id: obj.id },
+              });
+          }}
+        />
+        <CardListActionBar selectedIds={selectedIds} isMultiSelectOn={isMultiSelectOn} />
+      </>
     );
   };
 
