@@ -52,22 +52,24 @@ export default function CardTile({
 }: CardTileProps) {
   return (
     <GestureWrapper onPress={() => onPress?.(card)} onLongPress={() => onLongPress?.(card)}>
-      <TextClassContext.Provider value={cardTileTextVariants({ variant })}>
-        <CardRoot
-          className={cn(
-            cardTileVariants({ variant }),
-            knowledgeLevelColorEnum[card.knowledgeLevel].borderB
-          )}>
-          <CardContent className={cn('flex flex-col gap-2', className)}>
-            <Typography className="text-center">{card.sideA}</Typography>
-            <Separator
-              className={cn(variant === 'muted' ? 'bg-gray-300' : 'bg-gray-500')}
-              orientation="horizontal"
-            />
-            <Typography className="text-center">{card.sideB}</Typography>
-          </CardContent>
-        </CardRoot>
-      </TextClassContext.Provider>
+      <View onStartShouldSetResponder={() => true}>
+        <TextClassContext.Provider value={cardTileTextVariants({ variant })}>
+          <CardRoot
+            className={cn(
+              cardTileVariants({ variant }),
+              knowledgeLevelColorEnum[card.knowledgeLevel].borderB
+            )}>
+            <CardContent className={cn('flex flex-col gap-2', className)}>
+              <Typography className="text-center">{card.sideA}</Typography>
+              <Separator
+                className={cn(variant === 'muted' ? 'bg-gray-300' : 'bg-gray-500')}
+                orientation="horizontal"
+              />
+              <Typography className="text-center">{card.sideB}</Typography>
+            </CardContent>
+          </CardRoot>
+        </TextClassContext.Provider>
+      </View>
     </GestureWrapper>
   );
 }

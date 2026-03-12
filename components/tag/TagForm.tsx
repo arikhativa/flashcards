@@ -32,15 +32,17 @@ const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 interface Props {
-  current: Tag;
+  tag?: Tag;
 }
 
 const MAX_ITEMS_IN_SHEET = 9 as const;
 
-export default function TagForm({ current }: Props) {
+export default function TagForm({ tag }: Props) {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [currentId, setCurrentId] = useState<number | null>(tag ? tag.id : null);
+
   const router = useRouter();
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
   const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
   const [cardFilters, setCardFilters] = useState<CardFilters>({
@@ -48,11 +50,11 @@ export default function TagForm({ current }: Props) {
   });
 
   const { data: cardList } = useCardList(cardFilters);
-  const { update } = useTagEdit();
+  const { update, create } = useTagEdit();
   const query = useQueryClient();
 
   const { setValue, trigger, control, handleSubmit, watch } = useForm<FormSchema>({
-    defaultValues: toSchema(current),
+    defaultValues: toSchema(tag),
     resolver: zodResolver(formSchema),
   });
 
@@ -85,10 +87,21 @@ export default function TagForm({ current }: Props) {
 
   const { mutate } = useMutation({
     mutationFn: async (variables: FormSchema) => {
-      return update(current.id, variables);
+      if (currentId) {
+        return update(currentId, variables);
+      } else {
+        return create(variables);
+      }
     },
-    onSuccess: () => {
-      query.invalidateQueries({ queryKey: queryKeyStore.tag.detail(current.id).queryKey });
+    onSuccess: (data) => {
+      if (currentId === null && typeof data === 'number') {
+        setCurrentId(data);
+      }
+      if (tag) {
+        query.invalidateQueries({
+          queryKey: queryKeyStore.tag.detail(tag.id).queryKey,
+        });
+      }
       query.invalidateQueries({ queryKey: queryKeyStore.tag.list._def });
     },
     onError: (e) => {
@@ -113,7 +126,7 @@ export default function TagForm({ current }: Props) {
           <Field name="name" control={control} labelId={'tag-name'} labelText={'Name'} />
         </View>
 
-        {current.id && (
+        {currentId && (
           <View className="flex flex-1 flex-col gap-2">
             <View className="flex flex-row justify-between">
               <Label>Cards</Label>

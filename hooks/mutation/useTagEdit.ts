@@ -1,6 +1,6 @@
 import { Tag, TagInsert, tagTable, TagUpdate, cardTagTable } from '@/db/schema';
 import { db } from '@/lib/db';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export default function useTagEdit() {
   const create = async (tag: TagInsert) => {
@@ -31,5 +31,9 @@ export default function useTagEdit() {
     });
   };
 
-  return { create, update };
+  const deleteMany = async (ids: Tag['id'][]) => {
+    return await db.delete(tagTable).where(inArray(tagTable.id, ids));
+  };
+
+  return { create, update, deleteMany };
 }
