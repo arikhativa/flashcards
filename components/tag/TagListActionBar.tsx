@@ -52,7 +52,7 @@ export default function TagListActionBar({
       <HoverIconButton
         onPress={() =>
           router.navigate({
-            pathname: isMultiSelectOn ? '/test/tags/[ids]' : '/test/setup',
+            pathname: isMultiSelectOn ? '/test/setup/tags/[ids]' : '/test/setup',
             params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
           })
         }

@@ -52,7 +52,7 @@ export default function CardListActionBar({
       <HoverIconButton
         onPress={() =>
           router.navigate({
-            pathname: isMultiSelectOn ? '/test/cards/[ids]' : '/test/setup',
+            pathname: isMultiSelectOn ? '/test/setup/cards/[ids]' : '/test/setup',
             params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
           })
         }

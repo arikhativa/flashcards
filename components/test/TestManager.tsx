@@ -68,7 +68,7 @@ export default function TestManager() {
         />
       );
     }
-    return <TestFinishScreen />;
+    return <TestFinishScreen cardsToTest={cardsToTest} metadataList={metadataList} />;
   };
 
   return (

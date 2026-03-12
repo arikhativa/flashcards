@@ -16,6 +16,13 @@ function getOrderBy(filters?: CardFilters) {
       return sql`LOWER(${cardTable.sideA}) ${sql.raw(dir)}`;
     case 'SideB':
       return sql`LOWER(${cardTable.sideB}) ${sql.raw(dir)}`;
+    case 'TestedTime':
+      return sql`${cardTable.testedAt} ${sql.raw(dir)}`;
+    // if (dir === 'DESC') {
+    //   return sql`${cardTable.testedAt} ASC NULLS FIRST`;
+    // } else {
+    //   return sql`${cardTable.testedAt} DESC NULLS LAST`;
+    // }
     default: // CreationTime
       return sql`${cardTable.createdAt} ${sql.raw(dir)}`;
   }

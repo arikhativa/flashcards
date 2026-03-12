@@ -32,6 +32,7 @@ export const cardOrderByEnum = {
   SideA: 'SideA',
   SideB: 'SideB',
   KnowledgeLevel: 'KnowledgeLevel',
+  TestedTime: 'TestedTime',
 } as const;
 
 export type CardOrderByEnum = (typeof cardOrderByEnum)[keyof typeof cardOrderByEnum];

@@ -1,14 +1,18 @@
 import { TestSettings } from '@/components/provider/TestProvider';
 import { Card } from '@/db/schema';
 import useCardList from '@/hooks/query/useCardList';
+import { CardFilters, DEFAULT_CARD_FILTERS } from '@/hooks/query/useCardListFilters';
 import { CardMeta } from '@/lib/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function useCreateTestMetadata(ts: TestSettings) {
   const [cardsToTest, setCardsToTest] = useState<Card[]>([]);
   const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
-
-  const { data: cards, isSuccess } = useCardList();
+  const filters = useMemo<CardFilters>(
+    () => ({ ...DEFAULT_CARD_FILTERS, orderBy: 'TestedTime', direction: 'Asc' }),
+    []
+  );
+  const { data: cards, isSuccess } = useCardList(filters);
 
   useEffect(() => {
     if (cards && isSuccess) {

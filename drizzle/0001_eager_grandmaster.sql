@@ -1,0 +1,1 @@
+ALTER TABLE `card` ADD `tested_at` integer;

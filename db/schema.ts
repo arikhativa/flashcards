@@ -12,6 +12,8 @@ export const cardTable = sqliteTable('card', {
     .notNull()
     .default('Learning'),
 
+  testedAt: integer('tested_at', { mode: 'timestamp' }),
+
   createdAt: integer('created_at', { mode: 'timestamp' })
     .$default(() => new Date())
     .notNull(),
