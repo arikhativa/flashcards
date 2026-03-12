@@ -1,14 +1,7 @@
 import TestForm from '@/components/test/TestForm';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useEffect } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function TestTagScreen() {
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.setOptions({ title: 'Test Setup' });
-  }, [navigation]);
-
   const { id } = useLocalSearchParams();
 
   return <TestForm />;

@@ -1,5 +1,4 @@
 import { Card } from '@/db/schema';
-import { View } from 'react-native';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
@@ -8,9 +7,11 @@ import Field from '@/components/form/Field';
 import { Button } from '@/components/ui/button';
 import SelectField from '@/components/form/SelectField';
 import { TestSettings, testSettingsSchema, useTest } from '@/components/provider/TestProvider';
-import { CARD_SIDE_VALUE } from '@/lib/types';
-import { Check } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import MainScreen from '@/components/MainScreen';
+import { useMemo } from 'react';
+import { testCardSideEnum } from '@/lib/enums';
+import { Typography } from '@/components/ui/text';
 
 interface Props {
   card?: Card;
@@ -22,10 +23,18 @@ export default function TestForm({ card }: Props) {
   const { testSettings, setTestSettings } = useTest();
   const { data: conf } = useSuspenseConfig();
 
+  const options = useMemo(() => {
+    return [
+      { value: testCardSideEnum.A, label: conf.sideA },
+      { value: testCardSideEnum.B, label: conf.sideB },
+      { value: testCardSideEnum.Both, label: testCardSideEnum.Both },
+    ];
+  }, [conf]);
+
   const { control, handleSubmit } = useForm<TestSettings>({
     defaultValues: {
       numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
-      testSide: testSettings?.testSide || 'A', // conf.testSide
+      testSide: testSettings?.testSide || 'A',
     },
     resolver: zodResolver(testSettingsSchema),
   });
@@ -38,10 +47,10 @@ export default function TestForm({ card }: Props) {
   };
 
   return (
-    <View>
+    <MainScreen>
       <SelectField
         name="testSide"
-        options={CARD_SIDE_VALUE.map((e) => ({ value: e, label: e }))}
+        options={options}
         labelId={'test-card-side'}
         labelText={STRINGS.test.form.field.testSide}
         control={control}
@@ -53,8 +62,8 @@ export default function TestForm({ card }: Props) {
         control={control}
       />
       <Button onPress={handleSubmit(onSubmit)}>
-        <Check />
+        <Typography>Start Test</Typography>
       </Button>
-    </View>
+    </MainScreen>
   );
 }

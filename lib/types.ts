@@ -2,6 +2,7 @@ import { BuildQueryResult, ExtractTablesWithRelations } from 'drizzle-orm';
 import * as schema from '@/db/schema';
 import * as z from 'zod';
 import { testSettingsSchema } from '@/components/provider/TestProvider';
+import { TestCardSideEnum } from '@/lib/enums';
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
@@ -33,7 +34,7 @@ export type RawTag = BuildQueryResult<
   }
 >;
 
-export const CARD_SIDE_VALUE = ['A', 'B', 'Both'] as const;
+export const CARD_SIDE_VALUE: TestCardSideEnum[] = ['A', 'B', 'Both'] as const;
 export type CardSide = z.infer<typeof testSettingsSchema>['testSide'];
 
 export type CardMeta = {

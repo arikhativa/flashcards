@@ -51,3 +51,11 @@ export const fixedDateEnum = {
 } as const;
 
 export type FixedDateEnum = (typeof fixedDateEnum)[keyof typeof fixedDateEnum];
+
+export const testCardSideEnum = {
+  A: 'A',
+  B: 'B',
+  Both: 'Both',
+} as const;
+
+export type TestCardSideEnum = (typeof testCardSideEnum)[keyof typeof testCardSideEnum];

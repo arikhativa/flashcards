@@ -37,7 +37,7 @@ export default function TagDetailed() {
   if (q.data) {
     return (
       <View className="flex-1">
-        <TagForm current={q.data} />
+        <TagForm tag={q.data} />
       </View>
     );
   }
