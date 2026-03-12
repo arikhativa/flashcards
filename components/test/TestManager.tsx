@@ -1,6 +1,7 @@
 import CarouselWrapper, { CarouselWrapperRef } from '@/components/CarouselWrapper';
 import { useTest } from '@/components/provider/TestProvider';
 import CardTest, { CardTestRef } from '@/components/test/CardTest';
+import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
 import useCreateTestMetadata from '@/hooks/useCreateTestMetadata';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
@@ -67,7 +68,7 @@ export default function TestManager() {
         />
       );
     }
-    return <Typography>test done</Typography>;
+    return <TestFinishScreen />;
   };
 
   return (

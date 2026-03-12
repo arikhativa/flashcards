@@ -29,7 +29,7 @@ function getSide({
 }) {
   if (hideSide) return <Typography>Hidden</Typography>;
   if (customSide) return customSide;
-  return <Typography>{sideValue}</Typography>;
+  return <Typography className="text-center">{sideValue}</Typography>;
 }
 
 export default function CardSides({
@@ -47,12 +47,12 @@ export default function CardSides({
     <CardRoot className={cn('border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].borderB)}>
       <CardContent className="flex flex-col gap-6">
         <View className="flex flex-col gap-6">
-          <Typography>{conf.sideA}</Typography>
+          <Typography variant={'muted'}>{conf.sideA}</Typography>
           {getSide({ sideValue: sideA, customSide: customSideA, hideSide: hideSideA })}
         </View>
         <Separator className="" />
         <View className="flex flex-col gap-6">
-          <Typography>{conf.sideB}</Typography>
+          <Typography variant={'muted'}>{conf.sideB}</Typography>
           {getSide({ sideValue: sideB, customSide: customSideB, hideSide: hideSideB })}
         </View>
       </CardContent>

@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/text';
 import { Card } from '@/db/schema';
 import { CardMeta } from '@/lib/types';
-import { cn } from '@/lib/utils';
 import { Check, Eye, EyeClosed, X } from 'lucide-react-native';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -38,62 +37,64 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
     }));
 
     return (
-      <View className="flex flex-col gap-6 px-4">
-        <Typography>
+      <View className="flex flex-col">
+        <Typography variant={'large'} className="m-0 py-2 text-center">
           {index + 1}/{length}
         </Typography>
-        <CardSides
-          knowledgeLevel={card.knowledgeLevel}
-          sideA={card.sideA}
-          sideB={card.sideB}
-          hideSideA={showAnswer ? false : hideSideA}
-          hideSideB={showAnswer ? false : !hideSideA}
-        />
-        <View className="flex flex-row gap-4">
-          <Input
-            placeholder="Answer"
-            className="flex-1"
-            // ref={inputRef}
-            value={cardMeta.answer}
-            onChangeText={(v: string) => {
-              onChangeAnswer(index, v);
-            }}
+        <View className="flex flex-col gap-6 px-4">
+          <CardSides
+            knowledgeLevel={card.knowledgeLevel}
+            sideA={card.sideA}
+            sideB={card.sideB}
+            hideSideA={showAnswer ? false : hideSideA}
+            hideSideB={showAnswer ? false : !hideSideA}
           />
-          {showAnswer ? (
-            <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(false)}>
-              <Eye />
-            </Button>
-          ) : (
-            <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(true)}>
-              <EyeClosed />
-            </Button>
-          )}
-        </View>
-        <View className="flex flex-row items-center">
-          <Typography className="flex-1">Did you get it right?</Typography>
-          <View className="flex flex-row gap-2">
-            <Button
-              variant={'outline'}
-              size={'icon'}
-              disabled={!showAnswer}
-              className={!cardMeta.success && showBtnColor ? 'bg-red-200' : ''}
-              onPress={() => {
-                onChangeSuccess(index, false);
-                setShowBtnColor(true);
-              }}>
-              <X />
-            </Button>
-            <Button
-              variant={'outline'}
-              size={'icon'}
-              className={cardMeta.success && showBtnColor ? 'bg-green-200' : ''}
-              disabled={!showAnswer}
-              onPress={() => {
-                onChangeSuccess(index, true);
-                setShowBtnColor(true);
-              }}>
-              <Check />
-            </Button>
+          <View className="flex flex-row gap-4">
+            <Input
+              placeholder="Answer"
+              className="flex-1"
+              // ref={inputRef}
+              value={cardMeta.answer}
+              onChangeText={(v: string) => {
+                onChangeAnswer(index, v);
+              }}
+            />
+            {showAnswer ? (
+              <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(false)}>
+                <Eye />
+              </Button>
+            ) : (
+              <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(true)}>
+                <EyeClosed />
+              </Button>
+            )}
+          </View>
+          <View className="flex flex-row items-center">
+            <Typography className="flex-1">Did you get it right?</Typography>
+            <View className="flex flex-row gap-2">
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                disabled={!showAnswer}
+                className={!cardMeta.success && showBtnColor ? 'bg-red-200' : ''}
+                onPress={() => {
+                  onChangeSuccess(index, false);
+                  setShowBtnColor(true);
+                }}>
+                <X />
+              </Button>
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                className={cardMeta.success && showBtnColor ? 'bg-green-200' : ''}
+                disabled={!showAnswer}
+                onPress={() => {
+                  onChangeSuccess(index, true);
+                  setShowBtnColor(true);
+                }}>
+                <Check />
+              </Button>
+            </View>
           </View>
         </View>
       </View>
