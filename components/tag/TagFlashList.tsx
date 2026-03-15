@@ -17,16 +17,15 @@ export default function TagFlashList({ getVariant, onLongPress, tags, onPress }:
     <FlashList
       data={tags}
       horizontal={false}
-      numColumns={3}
+      numColumns={1}
       className="px-4"
       renderItem={({ item }) => {
         return (
-          <View className="flex w-fit items-center">
+          <View className="flex items-start justify-center pt-4">
             <TagTile
               onPress={() => onPress(item)}
               onLongPress={() => onLongPress?.(item)}
               variant={getVariant?.(item)}
-              className="m-2"
               tag={item}
               showCount
             />
