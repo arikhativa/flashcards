@@ -40,7 +40,7 @@ export default function TestSummaryScreen() {
         </View>
       </MainScreen>
       <View className="flex items-center justify-center border-t border-border pb-4">
-        <Link asChild href={'/'}>
+        <Link asChild href={'/'} replace>
           <Button variant={'outline'} className="mt-4 w-fit">
             <Typography>Home</Typography>
           </Button>
