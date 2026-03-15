@@ -1,9 +1,10 @@
 import MainScreen from '@/components/MainScreen';
 import TestSummaryCardList from '@/components/test/TestSummaryCardList';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/text';
 import useTestSummary from '@/hooks/state/useTestSummary';
-import { useNavigation } from 'expo-router';
+import { Link, useNavigation } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,6 +39,13 @@ export default function TestSummaryScreen() {
           <TestSummaryCardList />
         </View>
       </MainScreen>
+      <View className="flex items-center justify-center border-t border-border pb-4">
+        <Link asChild href={'/'}>
+          <Button variant={'outline'} className="mt-4 w-fit">
+            <Typography>Home</Typography>
+          </Button>
+        </Link>
+      </View>
     </SafeAreaView>
   );
 }
