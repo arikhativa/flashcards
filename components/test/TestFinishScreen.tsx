@@ -6,6 +6,7 @@ import useCardEdit from '@/hooks/mutation/useCardEdit';
 import { CardMeta } from '@/lib/types';
 import { useRouter } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
+import useTestSummary from '@/hooks/state/useTestSummary';
 
 interface Props {
   cardsToTest: Card[];
@@ -14,6 +15,7 @@ interface Props {
 
 export default function TestFinishScreen({ cardsToTest, metadataList }: Props) {
   const { update } = useCardEdit();
+  const { setData } = useTestSummary();
   const router = useRouter();
 
   const { mutate, isPending } = useMutation({
@@ -22,6 +24,7 @@ export default function TestFinishScreen({ cardsToTest, metadataList }: Props) {
       return Promise.all(cardsToTest.map((e) => update(e.id, { testedAt: now })));
     },
     onSuccess: () => {
+      setData({ cardsToTest, metadataList });
       router.replace('/test/summary');
     },
   });
