@@ -8,11 +8,11 @@ import useDBMigrations from '@/hooks/useDBMigration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { expoDBFile } from '@/lib/db';
-// import useDBSeed from '@/hooks/useDBSeed';
 import { PortalHost } from '@rn-primitives/portal';
 import useSetupConfig from '@/hooks/useSetupConfig';
 import { TestProvider } from '@/components/provider/TestProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect } from 'react';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,18 +22,17 @@ export {
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
+  const { toggleColorScheme, colorScheme } = useColorScheme();
 
-  // useEffect(() => {
-  //   if (colorScheme === 'light') {
-  //     toggleColorScheme();
-  //   }
-  // }, [colorScheme, toggleColorScheme]);
+  useEffect(() => {
+    if (colorScheme === 'dark') {
+      toggleColorScheme();
+    }
+  }, [colorScheme, toggleColorScheme]);
 
   useDrizzleStudio(__DEV__ ? expoDBFile : null);
   const status = useDBMigrations();
   useSetupConfig(status);
-  // useDBSeed();
 
   return (
     <QueryClientProvider client={queryClient}>
