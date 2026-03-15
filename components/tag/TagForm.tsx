@@ -38,7 +38,6 @@ interface Props {
 const MAX_ITEMS_IN_SHEET = 9 as const;
 
 export default function TagForm({ tag }: Props) {
-  console.log('tag', tag);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [currentId, setCurrentId] = useState<number | null>(tag ? tag.id : null);
 
