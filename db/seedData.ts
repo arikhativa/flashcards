@@ -60,7 +60,12 @@ export const CARDS_TO_SEED: CardInsert[] = [
   { sideA: 'To eat', sideB: 'Manger', comment: 'Regular -er verb', knowledgeLevel: 'Learning' },
   { sideA: 'To drink', sideB: 'Boire', comment: 'Irregular verb', knowledgeLevel: 'Learning' },
   { sideA: 'To speak', sideB: 'Parler', comment: 'Regular -er verb', knowledgeLevel: 'Learning' },
-  { sideA: 'To go', sideB: 'Aller', comment: 'Highly irregular verb', knowledgeLevel: 'Learning' },
+  {
+    sideA: 'To go',
+    sideB: 'Aller',
+    comment: 'Highly irregular verb',
+    knowledgeLevel: 'GettingThere',
+  },
   {
     sideA: 'To have',
     sideB: 'Avoir',
@@ -71,72 +76,72 @@ export const CARDS_TO_SEED: CardInsert[] = [
     sideA: 'To be',
     sideB: 'Être',
     comment: 'Irregular; most important verb',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
 
   // Numbers (tag index 3)
-  { sideA: 'One', sideB: 'Un / Une', comment: 'Masculine / Feminine', knowledgeLevel: 'Learning' },
-  { sideA: 'Ten', sideB: 'Dix', comment: 'Silent x', knowledgeLevel: 'Learning' },
-  { sideA: 'One hundred', sideB: 'Cent', comment: 'Silent t', knowledgeLevel: 'Learning' },
+  { sideA: 'One', sideB: 'Un / Une', comment: 'Masculine / Feminine', knowledgeLevel: 'Confident' },
+  { sideA: 'Ten', sideB: 'Dix', comment: 'Silent x', knowledgeLevel: 'GettingThere' },
+  { sideA: 'One hundred', sideB: 'Cent', comment: 'Silent t', knowledgeLevel: 'Confident' },
 
   // Colors (tag index 4)
-  { sideA: 'Red', sideB: 'Rouge', comment: 'Same for m/f', knowledgeLevel: 'Learning' },
+  { sideA: 'Red', sideB: 'Rouge', comment: 'Same for m/f', knowledgeLevel: 'Confident' },
   {
     sideA: 'Blue',
     sideB: 'Bleu / Bleue',
     comment: 'Adds -e for feminine',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
   {
     sideA: 'Green',
     sideB: 'Vert / Verte',
     comment: 'Adds -e for feminine',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
-  { sideA: 'Yellow', sideB: 'Jaune', comment: 'Same for m/f', knowledgeLevel: 'Learning' },
+  { sideA: 'Yellow', sideB: 'Jaune', comment: 'Same for m/f', knowledgeLevel: 'Confident' },
 
   // Food & Drink (tag index 5)
   { sideA: 'Bread', sideB: 'Le pain', comment: 'A French staple', knowledgeLevel: 'Learning' },
   { sideA: 'Water', sideB: "L'eau", comment: 'Feminine noun', knowledgeLevel: 'Learning' },
-  { sideA: 'Wine', sideB: 'Le vin', comment: 'Masculine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Wine', sideB: 'Le vin', comment: 'Masculine noun', knowledgeLevel: 'Confident' },
   {
     sideA: 'Cheese',
     sideB: 'Le fromage',
     comment: 'France has 300+ varieties',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
   {
     sideA: 'Coffee',
     sideB: 'Le café',
     comment: 'Also means "café" the place',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
 
   // Family (tag index 6)
-  { sideA: 'Mother', sideB: 'La mère', comment: 'Feminine noun', knowledgeLevel: 'Learning' },
-  { sideA: 'Father', sideB: 'Le père', comment: 'Masculine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Mother', sideB: 'La mère', comment: 'Feminine noun', knowledgeLevel: 'GettingThere' },
+  { sideA: 'Father', sideB: 'Le père', comment: 'Masculine noun', knowledgeLevel: 'GettingThere' },
   { sideA: 'Brother', sideB: 'Le frère', comment: 'Masculine noun', knowledgeLevel: 'Learning' },
-  { sideA: 'Sister', sideB: 'La sœur', comment: 'Feminine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Sister', sideB: 'La sœur', comment: 'Feminine noun', knowledgeLevel: 'GettingThere' },
 
   // Body Parts (tag index 7)
-  { sideA: 'Head', sideB: 'La tête', comment: 'Feminine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Head', sideB: 'La tête', comment: 'Feminine noun', knowledgeLevel: 'GettingThere' },
   { sideA: 'Hand', sideB: 'La main', comment: 'Feminine noun', knowledgeLevel: 'Learning' },
   {
     sideA: 'Eye',
     sideB: "L'œil",
     comment: 'Plural: les yeux (irregular)',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
 
   // Travel (tag index 8)
-  { sideA: 'Airport', sideB: "L'aéroport", comment: 'Masculine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Airport', sideB: "L'aéroport", comment: 'Masculine noun', knowledgeLevel: 'Confident' },
   {
     sideA: 'Train station',
     sideB: 'La gare',
     comment: 'Feminine noun',
     knowledgeLevel: 'Learning',
   },
-  { sideA: 'Hotel', sideB: "L'hôtel", comment: 'H is silent', knowledgeLevel: 'Learning' },
+  { sideA: 'Hotel', sideB: "L'hôtel", comment: 'H is silent', knowledgeLevel: 'Confident' },
 
   // Weather (tag index 9)
   {
@@ -149,16 +154,16 @@ export const CARDS_TO_SEED: CardInsert[] = [
     sideA: 'It is sunny',
     sideB: 'Il fait soleil',
     comment: 'Literally "it makes sun"',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
-  { sideA: 'Snow', sideB: 'La neige', comment: 'Feminine noun', knowledgeLevel: 'Learning' },
+  { sideA: 'Snow', sideB: 'La neige', comment: 'Feminine noun', knowledgeLevel: 'Confident' },
 
   // Days & Months (tag index 10)
   {
     sideA: 'Monday',
     sideB: 'Lundi',
     comment: 'Not capitalised in French',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
   {
     sideA: 'Sunday',
@@ -170,7 +175,7 @@ export const CARDS_TO_SEED: CardInsert[] = [
     sideA: 'January',
     sideB: 'Janvier',
     comment: 'Not capitalised in French',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
 
   // Emotions (tag index 13)
@@ -185,16 +190,21 @@ export const CARDS_TO_SEED: CardInsert[] = [
     sideA: 'Tired',
     sideB: 'Fatigué / Fatiguée',
     comment: 'Adds -e for feminine',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
 
   // Common Phrases (tag index 19)
-  { sideA: 'Thank you', sideB: 'Merci', comment: 'Universal thanks', knowledgeLevel: 'Learning' },
+  {
+    sideA: 'Thank you',
+    sideB: 'Merci',
+    comment: 'Universal thanks',
+    knowledgeLevel: 'GettingThere',
+  },
   {
     sideA: 'Please',
     sideB: "S'il vous plaît",
     comment: 'Formal; use "s\'il te plaît" informally',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'Confident',
   },
   {
     sideA: "I don't understand",
@@ -206,7 +216,7 @@ export const CARDS_TO_SEED: CardInsert[] = [
     sideA: 'Where is the bathroom?',
     sideB: 'Où sont les toilettes ?',
     comment: 'Note the space before ? in French',
-    knowledgeLevel: 'Learning',
+    knowledgeLevel: 'GettingThere',
   },
   {
     sideA: 'How much does it cost?',
