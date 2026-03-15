@@ -1,4 +1,5 @@
 import CardSides from '@/components/card/CardSides';
+import TestStatusButton from '@/components/test/TestStatusButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/text';
@@ -72,28 +73,24 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
           <View className="flex flex-row items-center">
             <Typography className="flex-1">Did you get it right?</Typography>
             <View className="flex flex-row gap-2">
-              <Button
-                variant={'outline'}
-                size={'icon'}
+              <TestStatusButton
+                type="x"
                 disabled={!showAnswer}
-                className={!cardMeta.success && showBtnColor ? 'bg-red-200' : ''}
+                showBtnColor={cardMeta.success === false && showBtnColor}
                 onPress={() => {
                   onChangeSuccess(index, false);
                   setShowBtnColor(true);
-                }}>
-                <X />
-              </Button>
-              <Button
-                variant={'outline'}
-                size={'icon'}
-                className={cardMeta.success && showBtnColor ? 'bg-green-200' : ''}
+                }}
+              />
+              <TestStatusButton
+                type="check"
+                showBtnColor={cardMeta.success === true && showBtnColor}
                 disabled={!showAnswer}
                 onPress={() => {
                   onChangeSuccess(index, true);
                   setShowBtnColor(true);
-                }}>
-                <Check />
-              </Button>
+                }}
+              />
             </View>
           </View>
         </View>
