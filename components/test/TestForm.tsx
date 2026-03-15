@@ -1,4 +1,3 @@
-import { Card } from '@/db/schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
@@ -13,11 +12,21 @@ import { useMemo } from 'react';
 import { testCardSideEnum } from '@/lib/enums';
 import { Typography } from '@/components/ui/text';
 
-interface Props {
-  card?: Card;
-}
+type Props =
+  | {
+      cardIdsToTest?: undefined;
+      tagIdsToTest?: undefined;
+    }
+  | {
+      cardIdsToTest?: number[];
+      tagIdsToTest?: undefined;
+    }
+  | {
+      cardIdsToTest?: undefined;
+      tagIdsToTest?: number[];
+    };
 
-export default function TestForm({ card }: Props) {
+export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
   const router = useRouter();
 
   const { testSettings, setTestSettings } = useTest();
@@ -35,6 +44,8 @@ export default function TestForm({ card }: Props) {
     defaultValues: {
       numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
       testSide: testSettings?.testSide || 'A',
+      cardIdsToTest,
+      tagIdsToTest,
     },
     resolver: zodResolver(testSettingsSchema),
   });
@@ -55,12 +66,14 @@ export default function TestForm({ card }: Props) {
         labelText={STRINGS.test.form.field.testSide}
         control={control}
       />
-      <Field
-        name="numberOfCards"
-        labelText={STRINGS.test.form.field.numberOfCards}
-        labelId={'test-number-of-cards'}
-        control={control}
-      />
+      {!cardIdsToTest && !tagIdsToTest && (
+        <Field
+          name="numberOfCards"
+          labelText={STRINGS.test.form.field.numberOfCards}
+          labelId={'test-number-of-cards'}
+          control={control}
+        />
+      )}
       <Button onPress={handleSubmit(onSubmit)}>
         <Typography>Start Test</Typography>
       </Button>

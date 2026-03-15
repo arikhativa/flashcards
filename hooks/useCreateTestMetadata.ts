@@ -1,24 +1,39 @@
 import { TestSettings } from '@/components/provider/TestProvider';
-import { Card } from '@/db/schema';
+import { Card, Tag } from '@/db/schema';
 import useCardList from '@/hooks/query/useCardList';
 import { CardFilters, DEFAULT_CARD_FILTERS } from '@/hooks/query/useCardListFilters';
+import useTagList from '@/hooks/query/useTagList';
+import { TagFilters } from '@/hooks/query/useTagListFilters';
 import { CardMeta } from '@/lib/types';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function useCreateTestMetadata(ts: TestSettings) {
   const [cardsToTest, setCardsToTest] = useState<Card[]>([]);
   const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
+
   const filters = useMemo<CardFilters>(
     () => ({ ...DEFAULT_CARD_FILTERS, orderBy: 'TestedTime', direction: 'Asc' }),
     []
   );
+
+  const tagFilters = useMemo<TagFilters>(() => ({ ids: ts.tagIdsToTest }), [ts]);
+
+  const tagQuery = useTagList(tagFilters, !!ts.tagIdsToTest);
+
   const { data: cards, isSuccess } = useCardList(filters);
 
   useEffect(() => {
-    if (cards && isSuccess) {
-      setCardsToTest(pickCardsToTest({ list: cards, ts }));
+    let list = undefined;
+    if (!!ts.tagIdsToTest && tagQuery.isSuccess && cards && isSuccess) {
+      list = pickCardsToTest({ cardList: cards, ts, tagList: tagQuery.data });
+    } else if (!ts.tagIdsToTest && cards && isSuccess) {
+      list = pickCardsToTest({ cardList: cards, ts });
     }
-  }, [isSuccess, cards, ts]);
+
+    if (list) {
+      setCardsToTest(shuffleCards(list));
+    }
+  }, [isSuccess, cards, ts, tagQuery.isSuccess, tagQuery.data]);
 
   useEffect(() => {
     if (cardsToTest && cardsToTest.length) {
@@ -35,10 +50,43 @@ export default function useCreateTestMetadata(ts: TestSettings) {
   return { metadataList, cardsToTest, setMetadataList };
 }
 
-function pickCardsToTest({ list, ts }: { list: Card[]; ts: TestSettings }) {
-  const maxLimit = ts.numberOfCards;
-  const newList = list.slice(0, maxLimit);
-  return newList;
+function pickCardsToTest({
+  cardList,
+  ts,
+  tagList,
+}: {
+  cardList: Card[];
+  ts: TestSettings;
+  tagList?: Tag[];
+}) {
+  if (ts.cardIdsToTest) {
+    const ret: Card[] = [];
+    ts.cardIdsToTest.forEach((cardId) => {
+      const card = cardList.find((c) => c.id === cardId);
+      ret.push(card!);
+    });
+    return ret;
+  }
+
+  if (tagList) {
+    const ret: Card[] = [];
+    tagList.forEach((tag) => {
+      tag.cardList.forEach((baseCard) => {
+        const card = cardList.find((c) => c.id === baseCard.id);
+        ret.push(card!);
+      });
+    });
+
+    if (ret.length) {
+      return ret;
+    }
+  }
+
+  return cardList.slice(0, ts.numberOfCards);
+}
+
+function shuffleCards(cards: Card[]): Card[] {
+  return [...cards].sort(() => Math.random() - 0.5);
 }
 
 const getCardMeta = (ts: TestSettings): CardMeta => {

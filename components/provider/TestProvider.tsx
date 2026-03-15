@@ -3,17 +3,11 @@ import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import * as z from 'zod';
 
-// export interface TestSettings {
-//   numberOfCards: number;
-//   // timeRange: TimeRange;
-//   // selectedTags: Tag[];
-//   // knowledgeLevels: SelectedKL;
-//   testSide: CardSide;
-// }
-
 export const testSettingsSchema = z.object({
   numberOfCards: z.number().min(1),
   testSide: z.enum(CARD_SIDE_VALUE),
+  cardIdsToTest: z.array(z.number()).optional(),
+  tagIdsToTest: z.array(z.number()).optional(),
 });
 
 export type TestSettings = z.infer<typeof testSettingsSchema>;

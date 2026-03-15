@@ -2,6 +2,7 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 export interface TagFilters {
   search?: string;
+  ids?: number[];
 }
 
 const QUERY_KEY = ['TagListFilters'];
