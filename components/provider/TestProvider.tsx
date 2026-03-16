@@ -1,4 +1,5 @@
 import { CARD_SIDE_VALUE } from '@/lib/types';
+import { dateRangeSchema } from '@/lib/zodSchemas';
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import * as z from 'zod';
@@ -6,6 +7,7 @@ import * as z from 'zod';
 export const testSettingsSchema = z.object({
   numberOfCards: z.number().min(1),
   testSide: z.enum(CARD_SIDE_VALUE),
+  range: dateRangeSchema,
   cardIdsToTest: z.array(z.number()).optional(),
   tagIdsToTest: z.array(z.number()).optional(),
 });

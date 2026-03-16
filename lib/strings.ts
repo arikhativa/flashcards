@@ -8,6 +8,7 @@ export const STRINGS = {
       field: {
         testSide: 'Choose side to hide',
         numberOfCards: 'How many cards to test',
+        range: 'Date to pick from',
       },
     },
   },

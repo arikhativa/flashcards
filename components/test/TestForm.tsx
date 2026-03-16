@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
@@ -12,6 +12,8 @@ import { useMemo } from 'react';
 import { testCardSideEnum } from '@/lib/enums';
 import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
+import { TimeRangeSelect } from '@/components/form/TimeRangeSelect';
+import { Label } from '@/components/ui/label';
 
 type Props =
   | {
@@ -45,6 +47,7 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
     defaultValues: {
       numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
       testSide: testSettings?.testSide || 'A',
+      range: {},
       cardIdsToTest,
       tagIdsToTest,
     },
@@ -58,6 +61,8 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
     });
   };
 
+  const rangeLabel = STRINGS.test.form.field.range;
+
   return (
     <MainScreen className="gap-6">
       <SelectField
@@ -68,12 +73,29 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
         control={control}
       />
       {!cardIdsToTest && !tagIdsToTest && (
-        <Field
-          name="numberOfCards"
-          labelText={STRINGS.test.form.field.numberOfCards}
-          labelId={'test-number-of-cards'}
-          control={control}
-        />
+        <>
+          <Field
+            name="numberOfCards"
+            labelText={STRINGS.test.form.field.numberOfCards}
+            labelId={'test-number-of-cards'}
+            control={control}
+          />
+
+          <Controller
+            name={'range'}
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <View className="flex flex-col gap-2">
+                  <Label nativeID={rangeLabel} htmlFor={rangeLabel}>
+                    {rangeLabel}
+                  </Label>
+                  <TimeRangeSelect value={value} onChange={onChange} />
+                </View>
+              );
+            }}
+          />
+        </>
       )}
       <View className="flex-1"></View>
       <Button className="mb-10" onPress={handleSubmit(onSubmit)}>

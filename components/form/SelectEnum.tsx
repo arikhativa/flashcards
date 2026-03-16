@@ -1,7 +1,4 @@
-import { Label } from '@/components/ui/label';
-import { Typography } from '@/components/ui/text';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 
 import {
   Select,

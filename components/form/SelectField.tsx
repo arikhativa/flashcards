@@ -14,6 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRef } from 'react';
 import type { TriggerRef } from '@rn-primitives/select';
+import { cn } from '@/lib/utils';
 
 export type SelectOption = {
   value: string;
@@ -62,7 +63,7 @@ export default function SelectField<T extends FieldValues>({
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const selectedOption = options.find((x) => x.value === value);
         return (
-          <View className={className}>
+          <View className={cn('flex flex-col gap-2', className)}>
             <Label nativeID={labelId} htmlFor={labelId}>
               {labelText}
             </Label>

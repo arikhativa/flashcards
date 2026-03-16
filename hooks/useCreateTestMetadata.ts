@@ -12,8 +12,13 @@ export default function useCreateTestMetadata(ts: TestSettings) {
   const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
 
   const filters = useMemo<CardFilters>(
-    () => ({ ...DEFAULT_CARD_FILTERS, orderBy: 'TestedTime', direction: 'Asc' }),
-    []
+    () => ({
+      ...DEFAULT_CARD_FILTERS,
+      orderBy: 'TestedTime',
+      direction: 'Asc',
+      dateRange: ts.range,
+    }),
+    [ts.range]
   );
 
   const tagFilters = useMemo<TagFilters>(() => ({ ids: ts.tagIdsToTest }), [ts]);

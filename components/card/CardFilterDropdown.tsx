@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { KnolageLevelDialog } from '@/components/KnolageLevelDialog';
+import { KnowledgeLevelDialog } from '@/components/KnowledgeLevelDialog';
 import { TimeRangeDialog } from '@/components/TimeRangeDialog';
 import useCardListFilters from '@/hooks/query/useCardListFilters';
 
@@ -58,7 +58,7 @@ export default function CardFilterDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
-      <KnolageLevelDialog open={klOpen} onOpenChange={setKLOpen} />
+      <KnowledgeLevelDialog open={klOpen} onOpenChange={setKLOpen} />
       <TimeRangeDialog open={timeOpen} onOpenChange={setTimeOpen} />
     </DropdownMenu>
   );

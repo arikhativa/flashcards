@@ -20,7 +20,7 @@ interface Props {
   onOpenChange: (open?: boolean) => void;
 }
 
-export function KnolageLevelDialog({ open, onOpenChange }: Props) {
+export function KnowledgeLevelDialog({ open, onOpenChange }: Props) {
   const { filters, setFilters } = useCardListFilters();
   const [local, setLocal] = useState(new Set(filters.kl));
 
