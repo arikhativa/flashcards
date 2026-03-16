@@ -4,6 +4,7 @@ import TagFlashList from '@/components/tag/TagFlashList';
 import TagListActionBar from '@/components/tag/TagListActionBar';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
 import { Pressable } from 'react-native';
+import FloatBadge from '@/components/FloatBadge';
 
 interface Props {
   list: Tag[];
@@ -20,6 +21,7 @@ export default function TagTileList({ list }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
+      {list?.length && <FloatBadge value={list.length} />}
       <TagFlashList
         tags={list}
         getVariant={(obj) => (isIdSelected(obj.id) ? 'outline' : undefined)}

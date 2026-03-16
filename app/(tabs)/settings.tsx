@@ -32,9 +32,11 @@ export default function Tab() {
     <SafeAreaView className="flex-1">
       <MainScreen className="flex flex-col gap-6">
         <SettingsForm conf={data} />
-        <Button variant={'destructive'}>
-          <Typography onPress={() => mutate()}>Seed DB</Typography>
-        </Button>
+        {__DEV__ && (
+          <Button variant={'destructive'}>
+            <Typography onPress={() => mutate()}>Seed DB</Typography>
+          </Button>
+        )}
       </MainScreen>
     </SafeAreaView>
   );

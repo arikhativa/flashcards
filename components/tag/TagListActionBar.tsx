@@ -4,7 +4,7 @@ import useTagEdit from '@/hooks/mutation/useTagEdit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import { GraduationCap, Plus, X } from 'lucide-react-native';
+import { GraduationCap, Plus, Trash2, X } from 'lucide-react-native';
 
 interface Props {
   isMultiSelectOn: boolean;
@@ -50,6 +50,7 @@ export default function TagListActionBar({
         icon={Plus}
       />
       <HoverIconButton
+        badgeValue={isMultiSelectOn ? selectedIds.length : undefined}
         onPress={() =>
           router.navigate({
             pathname: isMultiSelectOn ? '/test/setup/tags/[ids]' : '/test/setup',
@@ -58,7 +59,16 @@ export default function TagListActionBar({
         }
         icon={GraduationCap}
       />
-      <HoverIconButton disabled={!isMultiSelectOn} onPress={() => mutate(selectedIds)} icon={X} />
+      {/* Note: This is a placeholder */}
+      <HoverIconButton disabled icon={X} />
+
+      <HoverIconButton disabled={!isMultiSelectOn} onPress={clearSelectedIds} icon={X} />
+      <HoverIconButton
+        disabled={!isMultiSelectOn}
+        isDestructive
+        onPress={() => mutate(selectedIds)}
+        icon={Trash2}
+      />
     </HoverIconButtonList>
   );
 }

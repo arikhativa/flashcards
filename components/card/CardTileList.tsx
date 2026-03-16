@@ -1,10 +1,11 @@
 import { Card } from '@/db/schema';
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Spinner } from '@/components/external/Spinner';
 import CardFlashList from '@/components/card/CardFlashList';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
 import CardListActionBar from '@/components/card/CardListActionBar';
+import ScreenSpinner from '@/components/ScreenSpinner';
+import FloatBadge from '@/components/FloatBadge';
 
 interface Props {
   cardList?: Card[];
@@ -17,11 +18,7 @@ export default function CardTileList({ cardList, isPending }: Props) {
     useMultiSelect();
 
   if (isPending) {
-    return (
-      <View className="flex flex-1 items-center justify-center">
-        <Spinner />
-      </View>
-    );
+    return <ScreenSpinner />;
   }
 
   return (
@@ -30,6 +27,7 @@ export default function CardTileList({ cardList, isPending }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
+      {cardList?.length && <FloatBadge value={cardList.length} />}
       <CardFlashList
         list={cardList || []}
         onLongPress={(obj) => {

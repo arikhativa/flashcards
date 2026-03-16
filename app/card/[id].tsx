@@ -6,6 +6,8 @@ import { View } from 'react-native';
 import { Typography } from '@/components/ui/text';
 import { useEffect } from 'react';
 import { BAD_ID } from '@/lib/constants';
+import ScreenSpinner from '@/components/ScreenSpinner';
+import { ShowerHead } from 'lucide-react-native';
 
 const schema = z.object({
   id: z.string().transform(Number).pipe(z.number().int().positive()),
@@ -18,7 +20,7 @@ export default function CardDetailed() {
 
   useEffect(() => {
     if (success) {
-      navigation.setOptions({ title: 'Card #' + id });
+      navigation.setOptions({ headerShown: false });
     }
   }, [success, navigation, id]);
 
@@ -42,9 +44,5 @@ export default function CardDetailed() {
     );
   }
 
-  return (
-    <View className="flex-1">
-      <Typography>Loading</Typography>
-    </View>
-  );
+  return <ScreenSpinner />;
 }

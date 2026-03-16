@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import useTag from '@/hooks/query/useTag';
 import TagForm from '@/components/tag/TagForm';
 import { BAD_ID } from '@/lib/constants';
+import ScreenSpinner from '@/components/ScreenSpinner';
 
 const schema = z.object({
   id: z.string().transform(Number).pipe(z.number().int().positive()),
@@ -42,9 +43,5 @@ export default function TagDetailed() {
     );
   }
 
-  return (
-    <View className="flex-1">
-      <Typography>Loading</Typography>
-    </View>
-  );
+  return <ScreenSpinner />;
 }
