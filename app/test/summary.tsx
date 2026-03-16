@@ -7,7 +7,6 @@ import useTestSummary from '@/hooks/state/useTestSummary';
 import { Link, useNavigation } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TestSummaryScreen() {
   const { data } = useTestSummary();
@@ -25,7 +24,7 @@ export default function TestSummaryScreen() {
   });
 
   return (
-    <SafeAreaView className="flex-1">
+    <View className="flex-1">
       <MainScreen className="flex flex-col gap-10">
         <View className="flex flex-col items-center justify-center gap-2">
           <Typography variant={'h1'}>Text is done!</Typography>
@@ -46,6 +45,6 @@ export default function TestSummaryScreen() {
           </Button>
         </Link>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -11,6 +11,7 @@ import MainScreen from '@/components/MainScreen';
 import { useMemo } from 'react';
 import { testCardSideEnum } from '@/lib/enums';
 import { Typography } from '@/components/ui/text';
+import { View } from 'react-native';
 
 type Props =
   | {
@@ -58,7 +59,7 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
   };
 
   return (
-    <MainScreen>
+    <MainScreen className="gap-6">
       <SelectField
         name="testSide"
         options={options}
@@ -74,7 +75,8 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
           control={control}
         />
       )}
-      <Button onPress={handleSubmit(onSubmit)}>
+      <View className="flex-1"></View>
+      <Button className="mb-10" onPress={handleSubmit(onSubmit)}>
         <Typography>Start Test</Typography>
       </Button>
     </MainScreen>

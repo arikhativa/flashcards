@@ -4,7 +4,7 @@ import TagTileList from '@/components/tag/TagTileList';
 import { useSuspenseTagList } from '@/hooks/query/useTagList';
 import useTagListFilters from '@/hooks/query/useTagListFilters';
 import * as React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
 export default function Tab() {
   const { filters, setFilters } = useTagListFilters();
@@ -16,7 +16,7 @@ export default function Tab() {
   }
 
   return (
-    <SafeAreaView className="flex-1">
+    <View className="flex-1">
       <ListFilters
         onSearch={(search) => {
           setFilters({ ...filters, search });
@@ -25,6 +25,6 @@ export default function Tab() {
       <MainScreen>
         <TagTileList list={data} />
       </MainScreen>
-    </SafeAreaView>
+    </View>
   );
 }
