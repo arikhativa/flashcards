@@ -32,8 +32,10 @@ export default function TestSummaryScreen() {
             You got {correctAnswers}/{data.cardsToTest?.length}
           </Typography>
         </View>
-        <View className="flex flex-1 flex-col gap-4">
-          <Typography variant={'large'}>Adjust Knowledge Level</Typography>
+        <View className="flex flex-1 flex-col">
+          <Typography variant={'large'} className="pb-6">
+            Adjust Knowledge Level
+          </Typography>
           <Separator />
           <TestSummaryCardList />
         </View>

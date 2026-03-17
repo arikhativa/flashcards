@@ -1,3 +1,4 @@
+import { THEME } from '@/lib/theme';
 import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { forwardRef } from 'react';
 import { View } from 'react-native';

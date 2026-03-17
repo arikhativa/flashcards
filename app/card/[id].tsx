@@ -22,7 +22,7 @@ export default function CardDetailed() {
     if (success) {
       navigation.setOptions({ headerShown: false });
     }
-  }, [success, navigation, id]);
+  }, []);
 
   const q = useCard(success ? data.id : BAD_ID);
 

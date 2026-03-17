@@ -27,7 +27,7 @@ function getSide({
   hideSide?: boolean;
   customSide?: React.ReactNode;
 }) {
-  if (hideSide) return <Typography>Hidden</Typography>;
+  if (hideSide) return <Typography className="text-center">...</Typography>;
   if (customSide) return customSide;
   return <Typography className="text-center">{sideValue}</Typography>;
 }
@@ -44,13 +44,17 @@ export default function CardSides({
   const { data: conf } = useSuspenseConfig();
 
   return (
-    <CardRoot className={cn('border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].borderB)}>
+    <CardRoot
+      className={cn(
+        'border border-b-[20px] bg-slate-200',
+        knowledgeLevelColorEnum[knowledgeLevel].border
+      )}>
       <CardContent className="flex flex-col gap-6">
         <View className="flex flex-col gap-6">
           <Typography variant={'muted'}>{conf.sideA}</Typography>
           {getSide({ sideValue: sideA, customSide: customSideA, hideSide: hideSideA })}
         </View>
-        <Separator className="" />
+        <Separator className="border-black bg-black" />
         <View className="flex flex-col gap-6">
           <Typography variant={'muted'}>{conf.sideB}</Typography>
           {getSide({ sideValue: sideB, customSide: customSideB, hideSide: hideSideB })}

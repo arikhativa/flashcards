@@ -1,5 +1,5 @@
 import { BaseCard, Card } from '@/db/schema';
-import { Pressable, View, ViewProps } from 'react-native';
+import { View, ViewProps } from 'react-native';
 import { Typography } from '@/components/ui/text';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -9,7 +9,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { TextClassContext } from '@/components/ui/text';
 import { GestureWrapper } from '@/components/GestureWrapper';
 
-const cardTileVariants = cva('border-b-8 shadow-xl', {
+const cardTileVariants = cva('border border-b-8 bg-slate-200 shadow-md shadow-black', {
   variants: {
     variant: {
       default: '',
@@ -56,8 +56,8 @@ export default function CardTile({
         <TextClassContext.Provider value={cardTileTextVariants({ variant })}>
           <CardRoot
             className={cn(
-              cardTileVariants({ variant }),
-              knowledgeLevelColorEnum[card.knowledgeLevel].borderB
+              knowledgeLevelColorEnum[card.knowledgeLevel].border,
+              cardTileVariants({ variant })
             )}>
             <CardContent className={cn('flex flex-col gap-2', className)}>
               <Typography className="text-center">{card.sideA}</Typography>

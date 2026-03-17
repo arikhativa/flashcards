@@ -19,9 +19,9 @@ export default function TagDetailed() {
 
   useEffect(() => {
     if (success) {
-      navigation.setOptions({ title: 'Tag #' + id });
+      navigation.setOptions({ headerShown: false });
     }
-  }, [success, navigation, id]);
+  }, []);
 
   const q = useTag(success ? data.id : BAD_ID);
 

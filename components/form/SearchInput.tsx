@@ -47,7 +47,7 @@ export default function SearchInput({
   return (
     <View
       className={cn(
-        'flex flex-row items-center gap-3 rounded-2xl border bg-card px-4 py-3',
+        'flex flex-row items-center gap-3 rounded-2xl border bg-background px-4 py-3',
         isFocused ? 'border-primary' : 'border-transparent',
         className
       )}>

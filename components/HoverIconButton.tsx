@@ -24,8 +24,8 @@ export default function HoverIconButton({
       {...props}
       variant={'outline'}
       className={cn(
-        'aspect-square w-12 border-primary opacity-100 shadow-md shadow-primary transition-opacity duration-200',
-        isDestructive && 'border-destructive text-destructive',
+        'aspect-square w-12 opacity-100 shadow-md transition-opacity duration-200',
+        isDestructive ? 'border-destructive shadow-destructive' : 'border-primary shadow-primary',
         props.disabled && 'opacity-0',
         className
       )}>
@@ -36,7 +36,7 @@ export default function HoverIconButton({
         )}>
         <Typography>{badgeValue}</Typography>
       </Badge>
-      <Icon as={icon} className={cn('size-6', isDestructive && 'text-destructive')} />
+      <Icon as={icon} className={cn('size-6', isDestructive ? 'text-destructive' : '')} />
     </Button>
   );
 }

@@ -51,7 +51,7 @@ export default function TestSummaryCardList() {
       data={data.cardsToTest}
       horizontal={false}
       numColumns={1}
-      className="px-4"
+      className="bl px-4"
       renderItem={({ item, index }) => {
         const metadata = data.metadataList![index]!;
         return (

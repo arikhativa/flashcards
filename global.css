@@ -2,25 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --text: hsl(285, 29%, 5%);
+--background: hsl(300, 33%, 99%);
+--primary: hsl(288, 100%, 31%);
+--secondary: hsl(288, 35%, 75%);
+--accent: hsl(335, 30%, 64%); */
+
+/* --primary-50: hsl(288, 100%, 95%);
+--primary-100: hsl(288, 100%, 90%);
+--primary-200: hsl(288, 100%, 80%);
+--primary-300: hsl(288, 100%, 70%);
+--primary-400: hsl(288, 100%, 60%);
+--primary-500: hsl(288, 100%, 50%); */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 246 21% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 246 21% 15%;
+    --background: 260 33% 98%;
+    --foreground: 240 17% 5%;
+    --card: 288 100% 95%;
+    --card-foreground: 240 17% 5%;
     --popover: 0 0% 100%;
-    --popover-foreground: 246 21% 15%;
-    --primary: 285 53% 51%;
-    --primary-foreground: 293 33% 96%;
-    --secondary: 286 11% 96%;
-    --secondary-foreground: 286 12% 21%;
+    --popover-foreground: 240 17% 5%;
+    --primary: 288 100% 31%;
+    --primary-foreground: 260 33% 98%;
+    --secondary: 288 35% 75%;
+    --secondary-foreground: 240 17% 5%;
     --muted: 265 8% 96%;
     --muted-foreground: 264 6% 56%;
-    --accent: 265 8% 96%;
-    --accent-foreground: 265 14% 23%;
+    --accent: 335 30% 64%;
+    --accent-foreground: 240 17% 5%;
     --destructive: 20 68% 51%;
-    --border: 265 7% 92%;
-    --input: 265 7% 92%;
+    --border: 265 7% 63.7%;
+    --input: 265 7% 63.7%;
     --ring: 261 14% 69%;
 
     --radius: 0.625rem;

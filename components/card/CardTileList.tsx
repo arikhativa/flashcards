@@ -27,7 +27,7 @@ export default function CardTileList({ cardList, isPending }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
-      {cardList?.length && <FloatBadge value={cardList.length} />}
+      {cardList?.length ? <FloatBadge value={cardList.length} /> : null}
       <CardFlashList
         list={cardList || []}
         onLongPress={(obj) => {
