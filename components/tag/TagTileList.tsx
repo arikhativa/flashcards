@@ -5,15 +5,21 @@ import TagListActionBar from '@/components/tag/TagListActionBar';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
 import { Pressable } from 'react-native';
 import FloatBadge from '@/components/FloatBadge';
+import ScreenSpinner from '@/components/ScreenSpinner';
 
 interface Props {
-  list: Tag[];
+  list?: Tag[];
+  isPending?: boolean;
 }
 
-export default function TagTileList({ list }: Props) {
+export default function TagTileList({ list, isPending }: Props) {
   const router = useRouter();
   const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
+
+  if (isPending) {
+    return <ScreenSpinner />;
+  }
 
   return (
     <Pressable
@@ -23,7 +29,7 @@ export default function TagTileList({ list }: Props) {
       }}>
       {list?.length && <FloatBadge value={list.length} />}
       <TagFlashList
-        tags={list}
+        tags={list || []}
         getVariant={(obj) => (isIdSelected(obj.id) ? 'outline' : undefined)}
         onLongPress={(item) => {
           toggleIdSelection(item.id);

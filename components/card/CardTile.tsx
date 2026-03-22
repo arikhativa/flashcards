@@ -59,7 +59,7 @@ export default function CardTile({
               knowledgeLevelColorEnum[card.knowledgeLevel].border,
               cardTileVariants({ variant })
             )}>
-            <CardContent className={cn('flex flex-col gap-2', className)}>
+            <CardContent className={cn('flex flex-col gap-2 px-3', className)}>
               <Typography className="text-center">{card.sideA}</Typography>
               <Separator
                 className={cn(variant === 'muted' ? 'bg-gray-300' : 'bg-gray-500')}

@@ -1,7 +1,7 @@
 import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
 import TagTileList from '@/components/tag/TagTileList';
-import { useSuspenseTagList } from '@/hooks/query/useTagList';
+import useTagList from '@/hooks/query/useTagList';
 import useTagListFilters from '@/hooks/query/useTagListFilters';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -9,7 +9,7 @@ import { View } from 'react-native';
 export default function Tab() {
   const { filters, setFilters } = useTagListFilters();
 
-  const { data, isError } = useSuspenseTagList(filters);
+  const { data, isError, isPending } = useTagList(filters);
 
   if (isError) {
     console.log('Error with tag list');
@@ -22,8 +22,8 @@ export default function Tab() {
           setFilters({ ...filters, search });
         }}
       />
-      <MainScreen>
-        <TagTileList list={data} />
+      <MainScreen className="p-0">
+        <TagTileList list={data} isPending={isPending} />
       </MainScreen>
     </View>
   );

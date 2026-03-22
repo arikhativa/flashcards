@@ -50,7 +50,7 @@ export default function HoverIconButton({ icon, badgeValue, variant, className, 
         <Typography className="text-[10px]">{badgeValue}</Typography>
       </Badge>
 
-      <Icon as={icon} className={cn('size-4')} />
+      <Icon as={icon} className={cn('size-5')} />
     </Button>
   );
 }

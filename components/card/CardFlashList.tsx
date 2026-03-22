@@ -1,9 +1,9 @@
 import CardTile, { CardTileProps } from '@/components/card/CardTile';
-import { BadgeProps } from '@/components/ui/badge';
 import { Typography } from '@/components/ui/text';
 import { BaseCard, Card } from '@/db/schema';
 import { FlashList } from '@shopify/flash-list';
-import { View } from 'react-native';
+import { useMemo } from 'react';
+import { useWindowDimensions, View } from 'react-native';
 
 interface Props {
   list: (BaseCard | Card)[];
@@ -13,25 +13,31 @@ interface Props {
 }
 
 export default function CardFlashList({ list, onPress, onLongPress, getVariant }: Props) {
+  const { width } = useWindowDimensions();
+
+  const rows = useMemo(() => calculateRows(list, width), [list, width]);
+
   return (
     <FlashList
-      data={list}
+      data={rows}
       horizontal={false}
-      numColumns={3}
-      className="px-2 py-0"
-      renderItem={({ item }) => {
-        return (
-          <View className="m-0 flex w-full items-center justify-center p-2">
-            <CardTile
-              variant={getVariant?.(item) || undefined}
-              onPress={() => onPress(item)}
-              onLongPress={() => onLongPress?.(item)}
-              className="w-full"
-              card={item}
-            />
-          </View>
-        );
-      }}
+      numColumns={1}
+      className=""
+      renderItem={({ item: rowCards }) => (
+        <View className="flex flex-row justify-center gap-6 py-3">
+          {rowCards.map((card) => (
+            <View key={card.id} className="">
+              <CardTile
+                variant={getVariant?.(card)}
+                onPress={() => onPress(card)}
+                onLongPress={() => onLongPress?.(card)}
+                card={card}
+              />
+            </View>
+          ))}
+        </View>
+      )}
+      ListFooterComponent={() => <View className="h-24" />}
       ListEmptyComponent={() => (
         <View className="items-center p-10">
           <Typography className="text-muted-foreground">empty</Typography>
@@ -40,3 +46,34 @@ export default function CardFlashList({ list, onPress, onLongPress, getVariant }
     />
   );
 }
+
+const calculateRows = (data: (BaseCard | Card)[], screenWidth: number) => {
+  const rows: (BaseCard | Card)[][] = [];
+  let currentRow: (BaseCard | Card)[] = [];
+  let currentRowWidth = 0;
+
+  const CHAR_WIDTH = 10;
+  const PADDING_PER_CARD = 12 * 2;
+  const GAP = 24;
+  const AVAILABLE_WIDTH = screenWidth;
+
+  data.forEach((card) => {
+    const textLen = Math.max(card.sideA.length, card.sideB.length);
+    const estimatedWidth = textLen * CHAR_WIDTH + PADDING_PER_CARD;
+
+    if (
+      currentRowWidth + estimatedWidth + currentRow.length * GAP > AVAILABLE_WIDTH &&
+      currentRow.length > 0
+    ) {
+      rows.push(currentRow);
+      currentRow = [card];
+      currentRowWidth = estimatedWidth;
+    } else {
+      currentRow.push(card);
+      currentRowWidth += estimatedWidth;
+    }
+  });
+
+  if (currentRow.length > 0) rows.push(currentRow);
+  return rows;
+};

@@ -32,6 +32,7 @@ export default function TagFlashList({ getVariant, onLongPress, tags, onPress }:
           </View>
         );
       }}
+      ListFooterComponent={() => <View className="h-24" />}
       ListEmptyComponent={() => (
         <View className="items-center p-10">
           <Typography className="text-muted-foreground">empty</Typography>
