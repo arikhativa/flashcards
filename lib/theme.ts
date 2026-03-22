@@ -49,9 +49,8 @@ export const THEME = {
     accent: 'hsl(257 11% 29%)',
     accentForeground: 'hsl(248 13% 98%)',
     destructive: 'hsl(15 54% 64%)',
-    // border: 'hsl(349.27 99% 46%)',
-    border: 'hsl(191.98 11% 90%)',
-    input: 'hsl(191.98 11% 90%)',
+    border: 'hsl(120 1% 50%)',
+    input: 'hsl(120 1% 50%)',
     ring: 'hsl(264 6% 56%)',
 
     radius: '0.625rem',

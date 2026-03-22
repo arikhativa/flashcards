@@ -38,9 +38,8 @@
     --accent: 179.98 7% 95%;
     --accent-foreground: 325 33% 7%;
     --destructive: 20 68% 51%;
-    /* --border: 349.27 99% 46%; */
-    --border: 191.98 11% 90%;
-    --input: 191.98 11% 90%;
+    --border: 120 1% 50%;
+    --input: 120 1% 50%;
     --ring: 192.01 8% 64%;
 
     --radius: 0.625rem;

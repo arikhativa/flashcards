@@ -46,7 +46,7 @@ export default function CardSides({
   return (
     <CardRoot
       className={cn(
-        'border border-b-[20px] bg-slate-200',
+        'border-2 border-b-[20px] bg-slate-200',
         knowledgeLevelColorEnum[knowledgeLevel].border
       )}>
       <CardContent className="flex flex-col gap-6">

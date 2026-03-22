@@ -6,7 +6,11 @@ import { Cog, Files, LucideIcon, Tags } from 'lucide-react-native';
 import { View } from 'react-native';
 
 function TabBarIcon({ icon, focused }: { icon: LucideIcon; focused: boolean }) {
-  return <Icon as={icon} className={cn('size-5', focused && 'text-primary')} />;
+  return (
+    <View className={cn('flex rounded-2xl px-3 py-1', focused ? 'bg-primary/10' : '')}>
+      <Icon as={icon} className={cn('size-5')} />
+    </View>
+  );
 }
 
 export default function TabLayout() {
@@ -22,7 +26,7 @@ export default function TabLayout() {
           backgroundColor: 'transparent',
         },
         tabBarBackground: () => (
-          <View className="absolute bottom-6 left-8 right-8 h-16 rounded-3xl border border-border bg-gray-50 shadow-lg" />
+          <View className="absolute bottom-6 left-8 right-8 h-16 rounded-3xl border-2 border-primary bg-gray-300/95 shadow-lg" />
         ),
       }}>
       <Tabs.Screen

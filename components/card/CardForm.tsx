@@ -139,15 +139,17 @@ export default function CardForm({ card }: Props) {
             knowledgeLevel={watch('knowledgeLevel')}
             customSideA={
               <Field
-                inputClassName="text-center bg-transparent border-0 border-black border-b px-6"
+                inputClassName="text-center bg-transparent border-0 px-6"
                 name="sideA"
+                placeholder="..."
                 control={control}
               />
             }
             customSideB={
               <Field
-                inputClassName="text-center bg-transparent border-0 border-black border-b px-6"
+                inputClassName="text-center bg-transparent border-0 px-6"
                 name="sideB"
+                placeholder="..."
                 control={control}
               />
             }

@@ -34,9 +34,9 @@ export default function KLInput<T extends FieldValues>({
         variant={'outline'}
         onPress={() => onChange(kl)}
         className={cn(
-          'rounded-none border-4 bg-transparent',
+          'rounded-none border-2 bg-transparent',
           knowledgeLevelColorEnum[kl].border,
-          current !== kl ? 'border border-dashed' : 'border'
+          current !== kl ? 'border border-dashed' : ''
         )}>
         <Typography>{knowledgeLevelText[kl]}</Typography>
       </Button>
