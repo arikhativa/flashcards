@@ -60,13 +60,20 @@ export default function CardListActionBar({
         icon={GraduationCap}
       />
 
+      <HoverIconButton
+        variant={'outline'}
+        disabled={!isMultiSelectOn}
+        onPress={clearSelectedIds}
+        icon={X}
+      />
+
       {/* Note: This is a placeholder */}
       <HoverIconButton disabled icon={X} />
+      <HoverIconButton disabled icon={X} />
 
-      <HoverIconButton disabled={!isMultiSelectOn} onPress={clearSelectedIds} icon={X} />
       <HoverIconButton
         disabled={!isMultiSelectOn}
-        isDestructive
+        variant={'destructive'}
         onPress={() => mutate(selectedIds)}
         icon={Trash2}
       />

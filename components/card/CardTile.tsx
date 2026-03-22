@@ -9,7 +9,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { TextClassContext } from '@/components/ui/text';
 import { GestureWrapper } from '@/components/GestureWrapper';
 
-const cardTileVariants = cva('border border-b-8 bg-slate-200 shadow-md shadow-black', {
+const cardTileVariants = cva('border border-b-8 bg-background shadow-md shadow-black', {
   variants: {
     variant: {
       default: '',

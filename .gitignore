@@ -3,6 +3,7 @@
 node_modules/
 
 # Expo
+*.aab
 .expo/
 dist/
 web-build/

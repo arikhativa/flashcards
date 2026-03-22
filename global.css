@@ -2,38 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --text: hsl(285, 29%, 5%);
---background: hsl(300, 33%, 99%);
---primary: hsl(288, 100%, 31%);
---secondary: hsl(288, 35%, 75%);
---accent: hsl(335, 30%, 64%); */
+/* 
+--text: hsl(325, 33%, 7%);
+--background: hsl(315, 29%, 97%);
+--primary: hsl(326, 85%, 74%);
+--secondary: hsl(240, 5%, 96%);
+--accent: hsl(326, 85%, 74%);
 
-/* --primary-50: hsl(288, 100%, 95%);
---primary-100: hsl(288, 100%, 90%);
---primary-200: hsl(288, 100%, 80%);
---primary-300: hsl(288, 100%, 70%);
---primary-400: hsl(288, 100%, 60%);
---primary-500: hsl(288, 100%, 50%); */
+
+--primary-50: hsl(325, 85%, 95%);
+--primary-100: hsl(327, 84%, 90%);
+--primary-200: hsl(326, 84%, 80%);
+--primary-300: hsl(326, 86%, 70%);
+--primary-400: hsl(326, 85%, 60%);
+--primary-500: hsl(326, 85%, 50%);
+--primary-600: hsl(326, 85%, 40%);
+--primary-700: hsl(326, 86%, 30%);
+--primary-800: hsl(326, 84%, 20%);
+--primary-900: hsl(327, 84%, 10%);
+--primary-950: hsl(327, 85%, 5%); */
 
 @layer base {
   :root {
-    --background: 260 33% 98%;
-    --foreground: 240 17% 5%;
-    --card: 288 100% 95%;
-    --card-foreground: 240 17% 5%;
+    --background: 315 29% 97%;
+    --foreground: 325 33% 7%;
+    --card: 325 85% 95%;
+    --card-foreground: 325 33% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 17% 5%;
-    --primary: 288 100% 31%;
-    --primary-foreground: 260 33% 98%;
-    --secondary: 288 35% 75%;
-    --secondary-foreground: 240 17% 5%;
+    --popover-foreground: 325 33% 7%;
+    --primary: 326 85% 74%;
+    --primary-foreground: 325 33% 7%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 325 33% 7%;
     --muted: 265 8% 96%;
-    --muted-foreground: 264 6% 56%;
-    --accent: 335 30% 64%;
-    --accent-foreground: 240 17% 5%;
+    --muted-foreground: 325 33% 7%;
+    --accent: 326 85% 74%;
+    --accent-foreground: 325 33% 7%;
     --destructive: 20 68% 51%;
-    --border: 265 7% 63.7%;
-    --input: 265 7% 63.7%;
+    --border: 192 10% 90%;
+    --input: 192 10% 90%;
     --ring: 261 14% 69%;
 
     --radius: 0.625rem;

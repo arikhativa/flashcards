@@ -11,7 +11,7 @@ export default function HoverIconButtonList({
   return (
     <View
       className={cn(
-        'absolute bottom-0 left-0 right-0 flex flex-row-reverse justify-between pb-20 pr-10',
+        'absolute bottom-24 right-0 flex flex-col-reverse justify-between gap-6',
         className
       )}>
       {children}
