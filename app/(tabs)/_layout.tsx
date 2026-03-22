@@ -22,7 +22,7 @@ export default function TabLayout() {
           backgroundColor: 'transparent',
         },
         tabBarBackground: () => (
-          <View className="absolute bottom-6 left-8 right-8 h-16 rounded-3xl border border-border bg-background shadow-lg" />
+          <View className="absolute bottom-6 left-8 right-8 h-16 rounded-3xl border border-border bg-gray-50 shadow-lg" />
         ),
       }}>
       <Tabs.Screen

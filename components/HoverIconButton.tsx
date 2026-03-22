@@ -8,18 +8,21 @@ import { Icon } from '@/components/ui/icon';
 import { Typography } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
-const hoverIconButtonVariants = cva('w-12 rounded-full shadow-md transition-opacity duration-200', {
-  variants: {
-    variant: {
-      default: '',
-      destructive: '',
-      outline: '',
+const hoverIconButtonVariants = cva(
+  'aspect-square w-12 rounded-full shadow-md transition-opacity duration-200',
+  {
+    variants: {
+      variant: {
+        default: '',
+        destructive: '',
+        outline: '',
+      },
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
 
 type Props = Omit<ButtonProps, 'variant'> &
   VariantProps<typeof hoverIconButtonVariants> & {

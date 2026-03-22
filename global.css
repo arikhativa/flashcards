@@ -6,9 +6,8 @@
 --text: hsl(325, 33%, 7%);
 --background: hsl(315, 29%, 97%);
 --primary: hsl(326, 85%, 74%);
---secondary: hsl(240, 5%, 96%);
---accent: hsl(326, 85%, 74%);
-
+--secondary: hsl(239.99 4% 96%);
+--accent: hsl(179.98 7% 95%);
 
 --primary-50: hsl(325, 85%, 95%);
 --primary-100: hsl(327, 84%, 90%);
@@ -26,22 +25,23 @@
   :root {
     --background: 315 29% 97%;
     --foreground: 325 33% 7%;
-    --card: 325 85% 95%;
+    --card: 315 29% 97%;
     --card-foreground: 325 33% 7%;
-    --popover: 0 0% 100%;
+    --popover: 315 29% 97%;
     --popover-foreground: 325 33% 7%;
     --primary: 326 85% 74%;
     --primary-foreground: 325 33% 7%;
-    --secondary: 240 5% 96%;
+    --secondary: 239.99 4% 96%;
     --secondary-foreground: 325 33% 7%;
     --muted: 265 8% 96%;
     --muted-foreground: 325 33% 7%;
-    --accent: 326 85% 74%;
+    --accent: 179.98 7% 95%;
     --accent-foreground: 325 33% 7%;
     --destructive: 20 68% 51%;
-    --border: 192 10% 90%;
-    --input: 192 10% 90%;
-    --ring: 261 14% 69%;
+    /* --border: 349.27 99% 46%; */
+    --border: 191.98 11% 90%;
+    --input: 191.98 11% 90%;
+    --ring: 192.01 8% 64%;
 
     --radius: 0.625rem;
     --chart-1: 12 76% 61%;

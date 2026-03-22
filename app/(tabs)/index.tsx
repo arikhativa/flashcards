@@ -29,7 +29,7 @@ export default function Tab() {
         />
         <CardFilterDropdown />
       </ListFilters>
-      <MainScreen>
+      <MainScreen className="p-0">
         <CardTileList isPending={isPending} cardList={data} />
       </MainScreen>
     </View>
