@@ -2,6 +2,9 @@
 # dependencies
 node_modules/
 
+.google-store-cred
+.builds
+
 # Expo
 *.aab
 .expo/
