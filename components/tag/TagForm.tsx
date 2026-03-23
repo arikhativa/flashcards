@@ -159,7 +159,7 @@ export default function TagForm({ tag }: Props) {
         <HoverIconButtonList>
           <HoverIconButton
             disabled={!isMultiSelectOn}
-            isDestructive
+            variant={'destructive'}
             onPress={() => {
               toggleManyTags(selectedIds);
               clearSelectedIds();

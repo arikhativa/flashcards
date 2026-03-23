@@ -37,10 +37,10 @@
     --muted-foreground: 325 33% 7%;
     --accent: 179.98 7% 95%;
     --accent-foreground: 325 33% 7%;
-    --destructive: 20 68% 51%;
-    --border: 120 1% 50%;
-    --input: 120 1% 50%;
-    --ring: 192.01 8% 64%;
+    --destructive: 0 84.2% 60.2%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 63%;
 
     --radius: 0.625rem;
     --chart-1: 12 76% 61%;

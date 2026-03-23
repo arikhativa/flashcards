@@ -41,31 +41,36 @@ export default function TagListActionBar({
   return (
     <HoverIconButtonList className="p-4">
       <HoverIconButton
-        disabled={isMultiSelectOn}
-        onPress={() =>
-          router.navigate({
-            pathname: '/tag/new',
-          })
-        }
-        icon={Plus}
-      />
-      <HoverIconButton
         badgeValue={isMultiSelectOn ? selectedIds.length : undefined}
-        onPress={() =>
-          router.navigate({
-            pathname: isMultiSelectOn ? '/test/setup/tags/[ids]' : '/test/setup',
-            params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
-          })
-        }
-        icon={GraduationCap}
+        onPress={() => {
+          if (isMultiSelectOn) {
+            router.navigate({
+              pathname: isMultiSelectOn ? '/test/setup/tags/[ids]' : '/test/setup',
+              params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
+            });
+          } else {
+            router.navigate({
+              pathname: '/tags/new',
+            });
+          }
+        }}
+        icon={isMultiSelectOn ? GraduationCap : Plus}
       />
+
+      <HoverIconButton
+        variant={'outline'}
+        disabled={!isMultiSelectOn}
+        onPress={clearSelectedIds}
+        icon={X}
+      />
+
       {/* Note: This is a placeholder */}
       <HoverIconButton disabled icon={X} />
+      <HoverIconButton disabled icon={X} />
 
-      <HoverIconButton disabled={!isMultiSelectOn} onPress={clearSelectedIds} icon={X} />
       <HoverIconButton
         disabled={!isMultiSelectOn}
-        isDestructive
+        variant={'destructive'}
         onPress={() => mutate(selectedIds)}
         icon={Trash2}
       />

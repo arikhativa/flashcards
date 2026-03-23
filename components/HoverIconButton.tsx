@@ -44,13 +44,13 @@ export default function HoverIconButton({ icon, badgeValue, variant, className, 
       )}>
       <Badge
         className={cn(
-          'absolute right-0 top-0 z-10 -m-3 border-2 border-border bg-background transition-opacity duration-200',
+          'absolute right-0 top-0 z-10 -m-2 border border-border bg-background p-0 transition-opacity duration-200',
           hasBadge ? 'opacity-100' : 'opacity-0'
         )}>
         <Typography className="text-[10px]">{badgeValue}</Typography>
       </Badge>
 
-      <Icon as={icon} className={cn('size-5')} />
+      <Icon as={icon} className={cn('size-4', variant === 'destructive' && 'text-background')} />
     </Button>
   );
 }
