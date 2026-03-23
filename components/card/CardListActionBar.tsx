@@ -41,20 +41,24 @@ export default function CardListActionBar({
   return (
     <HoverIconButtonList className="p-4">
       <HoverIconButton
+        disabled={isMultiSelectOn}
+        onPress={() =>
+          router.navigate({
+            pathname: '/card/new',
+          })
+        }
+        icon={Plus}
+      />
+      <HoverIconButton
+        variant={'outline'}
         badgeValue={isMultiSelectOn ? selectedIds.length : undefined}
-        onPress={() => {
-          if (isMultiSelectOn) {
-            router.navigate({
-              pathname: isMultiSelectOn ? '/test/setup/cards/[ids]' : '/test/setup',
-              params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
-            });
-          } else {
-            router.navigate({
-              pathname: '/card/new',
-            });
-          }
-        }}
-        icon={isMultiSelectOn ? GraduationCap : Plus}
+        onPress={() =>
+          router.navigate({
+            pathname: isMultiSelectOn ? '/test/setup/cards/[ids]' : '/test/setup',
+            params: isMultiSelectOn ? { ids: selectedIds.join(',') } : undefined,
+          })
+        }
+        icon={GraduationCap}
       />
 
       <HoverIconButton

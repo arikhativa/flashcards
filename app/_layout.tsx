@@ -14,6 +14,7 @@ import { TestProvider } from '@/components/provider/TestProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlobalHeaderProvider } from '@/components/provider/GlobalHeaderProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -38,17 +39,19 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <GestureHandlerRootView>
-          <TestProvider>
-            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            <SafeAreaView className="flex-1">
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
-            </SafeAreaView>
-            <PortalHost />
-          </TestProvider>
-        </GestureHandlerRootView>
+        <GlobalHeaderProvider>
+          <GestureHandlerRootView>
+            <TestProvider>
+              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              <SafeAreaView className="flex-1">
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                </Stack>
+              </SafeAreaView>
+              <PortalHost />
+            </TestProvider>
+          </GestureHandlerRootView>
+        </GlobalHeaderProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

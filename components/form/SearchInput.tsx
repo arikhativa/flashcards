@@ -46,15 +46,11 @@ export default function SearchInput({
 
   return (
     <View
-      className={cn(
-        'flex flex-row items-center gap-3 rounded-2xl border bg-background px-4 py-3',
-        isFocused ? 'border-primary' : 'border-transparent',
-        className
-      )}>
+      className={cn('flex flex-row items-center gap-3 rounded-2xl bg-input px-4 py-3', className)}>
       <Icon as={Search} />
 
       <Input
-        className="flex-1 border-0 bg-transparent"
+        className="m-0 border-0 bg-transparent p-0"
         ref={inputRef}
         value={value}
         onChangeText={handleChange}

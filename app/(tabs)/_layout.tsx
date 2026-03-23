@@ -1,55 +1,53 @@
+import { GlobalHeader } from '@/components/GlobalHeader';
 import { Icon } from '@/components/ui/icon';
 import { Typography } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { Tabs } from 'expo-router';
 import { Cog, Files, LucideIcon, Tags } from 'lucide-react-native';
+import { useColorScheme } from 'nativewind';
 import { View } from 'react-native';
 
 function TabBarIcon({ icon, focused }: { icon: LucideIcon; focused: boolean }) {
   return (
-    <View className={cn('flex rounded-2xl px-3 py-1', focused ? 'bg-primary/10' : '')}>
+    <View className={cn('mb-1 flex rounded-2xl px-4 py-1', focused ? 'bg-primary/50' : '')}>
       <Icon as={icon} className={cn('size-5')} />
     </View>
   );
 }
 
 export default function TabLayout() {
+  const { colorScheme } = useColorScheme();
+
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        header: () => <GlobalHeader />,
         tabBarStyle: {
-          position: 'absolute',
-          borderTopWidth: 0,
-          elevation: 0,
-          height: 85,
-          backgroundColor: 'transparent',
+          height: 78,
+          paddingTop: 4,
+          backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
+          borderWidth: 0,
         },
-        tabBarBackground: () => (
-          <View className="absolute bottom-6 left-8 right-8 h-16 rounded-3xl border-2 border-primary bg-gray-300/95 shadow-lg" />
-        ),
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          headerShown: false,
-          tabBarLabel: () => <Typography className="text-[10px]">Cards</Typography>,
+          tabBarLabel: () => <Typography className="text-[11px] font-bold">Cards</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Files} />,
         }}
       />
       <Tabs.Screen
         name="tags"
         options={{
-          headerShown: false,
-          tabBarLabel: () => <Typography className="text-[10px]">Tags</Typography>,
+          tabBarLabel: () => <Typography className="text-[11px] font-bold">Tags</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Tags} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          headerShown: false,
-          tabBarLabel: () => <Typography className="text-[10px]">Settings</Typography>,
+          tabBarLabel: () => <Typography className="text-[11px] font-bold">Settings</Typography>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} icon={Cog} />,
         }}
       />
