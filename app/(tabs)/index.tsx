@@ -1,6 +1,7 @@
 import CardFilterDropdown from '@/components/card/CardFilterDropdown';
 import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
+import HexagonBackground from '@/components/HexagonBackground';
 import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
 import useCardList from '@/hooks/query/useCardList';
@@ -17,6 +18,7 @@ export default function Tab() {
 
   return (
     <View className="flex-1">
+      <HexagonBackground />
       <ListFilters
         onSearch={(search) => {
           setFilters({ ...filters, search });
