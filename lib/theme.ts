@@ -4,9 +4,9 @@ export const THEME = {
   light: {
     background: 'hsl(0 0% 100%)',
     foreground: 'hsl(0 0% 3.9%)',
-    card: 'hsl(315 29% 97%)',
+    card: 'hsl(0 0% 100%)',
     cardForeground: 'hsl(0 0% 3.9%)',
-    popover: 'hsl(315 29% 97%)',
+    popover: 'hsl(0 0% 100%)',
     popoverForeground: 'hsl(0 0% 3.9%)',
     primary: 'hsl(326 85% 74%)',
     primaryForeground: 'hsl(0 0% 3.9%)',

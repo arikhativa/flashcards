@@ -45,10 +45,7 @@ export default function CardSides({
 
   return (
     <CardRoot
-      className={cn(
-        'border-2 border-b-[20px] bg-slate-200',
-        knowledgeLevelColorEnum[knowledgeLevel].border
-      )}>
+      className={cn('border-2 border-b-[20px]', knowledgeLevelColorEnum[knowledgeLevel].border)}>
       <CardContent className="flex flex-col gap-6">
         <View className="flex flex-col gap-6">
           <Typography variant={'muted'}>{conf.sideA}</Typography>
