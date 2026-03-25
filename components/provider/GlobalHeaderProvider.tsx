@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 interface GlobalHeaderState {
   title: string;
   titleType: 'text' | 'image';
+  titleClassName?: string;
   node?: ReactNode;
 }
 

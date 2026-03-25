@@ -27,7 +27,11 @@ export default function TagTileList({ list, isPending }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
-      {list?.length && <FloatBadge value={list.length} />}
+      {list?.length && (
+        <FloatBadge
+          value={isMultiSelectOn ? `${selectedIds.length}/${list.length}` : list.length}
+        />
+      )}
       <TagFlashList
         tags={list || []}
         getVariant={(obj) => (isIdSelected(obj.id) ? 'outline' : undefined)}

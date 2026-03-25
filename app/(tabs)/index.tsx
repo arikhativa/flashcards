@@ -8,7 +8,8 @@ import useCardList from '@/hooks/query/useCardList';
 import useCardListFilters from '@/hooks/query/useCardListFilters';
 import { useGlobalHeader } from '@/components/provider/GlobalHeaderProvider';
 import { View } from 'react-native';
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useFocusEffect } from 'expo-router';
 
 export default function Tab() {
   const { setState } = useGlobalHeader();
@@ -19,28 +20,34 @@ export default function Tab() {
     console.log('Error with card list');
   }
 
-  const headerComp = (
-    <ListFilters
-      onSearch={(search) => {
-        setFilters({ ...filters, search });
-      }}>
-      <CardSortPopover
-        orderBy={filters.orderBy}
-        direction={filters.direction}
-        onDirectionChange={(direction) => setFilters({ ...filters, direction })}
-        onOrderByChange={(orderBy) => setFilters({ ...filters, orderBy })}
-      />
-      <CardFilterDropdown />
-    </ListFilters>
+  const headerComp = useMemo(
+    () => (
+      <ListFilters
+        onSearch={(search) => {
+          setFilters({ ...filters, search });
+        }}>
+        <CardSortPopover
+          orderBy={filters.orderBy}
+          direction={filters.direction}
+          onDirectionChange={(direction) => setFilters({ ...filters, direction })}
+          onOrderByChange={(orderBy) => setFilters({ ...filters, orderBy })}
+        />
+        <CardFilterDropdown />
+      </ListFilters>
+    ),
+    [filters]
   );
 
-  useEffect(() => {
-    setState({
-      title: require('assets/images/ffflashcards.png'),
-      titleType: 'image',
-      node: headerComp,
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setState({
+        title: 'ffflashcards',
+        titleClassName: 'text-primary',
+        titleType: 'text',
+        node: headerComp,
+      });
+    }, [headerComp])
+  );
 
   return (
     <View className="flex-1">

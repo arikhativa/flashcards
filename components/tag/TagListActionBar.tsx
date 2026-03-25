@@ -51,7 +51,6 @@ export default function TagListActionBar({
       />
       <HoverIconButton
         variant={'outline'}
-        badgeValue={isMultiSelectOn ? selectedIds.length : undefined}
         onPress={() =>
           router.navigate({
             pathname: isMultiSelectOn ? '/test/setup/tags/[ids]' : '/test/setup',
