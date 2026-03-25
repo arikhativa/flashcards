@@ -44,7 +44,7 @@ export default function HoverIconButton({ icon, badgeValue, variant, className, 
       )}>
       <Badge
         className={cn(
-          'absolute right-0 top-0 z-10 -m-2 border border-border bg-background p-0 transition-opacity duration-200',
+          'absolute right-0 top-0 z-10 -m-2 h-6 w-6 border border-border bg-background p-1 transition-opacity duration-200',
           hasBadge ? 'opacity-100' : 'opacity-0'
         )}>
         <Typography className="text-[10px]">{badgeValue}</Typography>

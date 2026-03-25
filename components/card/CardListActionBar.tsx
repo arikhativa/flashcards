@@ -64,7 +64,6 @@ export default function CardListActionBar({
       />
       <HoverIconButton
         variant={'outline'}
-        badgeValue={isMultiSelectOn ? selectedIds.length : undefined}
         onPress={() =>
           router.navigate({
             pathname: isMultiSelectOn ? '/test/setup/cards/[ids]' : '/test/setup',

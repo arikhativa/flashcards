@@ -72,7 +72,6 @@ export default function CardTileList({ cardList, isPending }: Props) {
       return create({ name: '' });
     },
     onSuccess: (data) => {
-      console.log('data', data);
       queryClient.invalidateQueries({ queryKey: queryKeyStore.tag.list._def });
       clearSelectedIds();
       router.push({
@@ -99,7 +98,11 @@ export default function CardTileList({ cardList, isPending }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
-      {cardList?.length ? <FloatBadge value={cardList.length} /> : null}
+      {cardList?.length ? (
+        <FloatBadge
+          value={isMultiSelectOn ? `${selectedIds.length}/${cardList.length}` : cardList.length}
+        />
+      ) : null}
       <CardFlashList
         list={cardList || []}
         onLongPress={(obj) => {
