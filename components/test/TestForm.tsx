@@ -47,7 +47,10 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
     defaultValues: {
       numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
       testSide: testSettings?.testSide || 'A',
-      range: {},
+      range: {
+        dateFrom: null,
+        dateTo: null,
+      },
       cardIdsToTest,
       tagIdsToTest,
     },
@@ -98,7 +101,9 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
         </>
       )}
       <View className="flex-1"></View>
-      <Button className="mb-10" onPress={handleSubmit(onSubmit)}>
+      <Button
+        className="mb-10"
+        onPress={handleSubmit(onSubmit, (errors) => console.log('Validation errors:', errors))}>
         <Typography>Start Test</Typography>
       </Button>
     </MainScreen>

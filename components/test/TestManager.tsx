@@ -1,3 +1,4 @@
+import { Keyboard } from 'react-native';
 import CarouselWrapper, { CarouselWrapperRef } from '@/components/CarouselWrapper';
 import { useTest } from '@/components/provider/TestProvider';
 import CardTest, { CardTestRef } from '@/components/test/CardTest';
@@ -15,6 +16,12 @@ export default function TestManager() {
   const { cardsToTest, metadataList, setMetadataList } = useCreateTestMetadata(testSettings!);
 
   const cardTestRef = useRef<CardTestRef[]>([]);
+
+  const scrollToFirstPage = () => {
+    if (carouselWrapperRef.current) {
+      carouselWrapperRef.current.scrollToPage(0);
+    }
+  };
 
   const scrollToNextPage = () => {
     if (carouselWrapperRef.current) {
@@ -40,6 +47,9 @@ export default function TestManager() {
       setTimeout(() => {
         const cur = carouselWrapperRef.current?.currentIndex();
         if (cur === index) {
+          if (cur === cardsToTest.length - 1) {
+            Keyboard.dismiss();
+          }
           scrollToNextPage();
         }
       }, AUTO_SCROLL_DELAY);
@@ -68,7 +78,13 @@ export default function TestManager() {
         />
       );
     }
-    return <TestFinishScreen cardsToTest={cardsToTest} metadataList={metadataList} />;
+    return (
+      <TestFinishScreen
+        onReview={scrollToFirstPage}
+        cardsToTest={cardsToTest}
+        metadataList={metadataList}
+      />
+    );
   };
 
   return (

@@ -11,9 +11,10 @@ import useTestSummary from '@/hooks/state/useTestSummary';
 interface Props {
   cardsToTest: Card[];
   metadataList: CardMeta[];
+  onReview: () => void;
 }
 
-export default function TestFinishScreen({ cardsToTest, metadataList }: Props) {
+export default function TestFinishScreen({ cardsToTest, metadataList, onReview }: Props) {
   const { update } = useCardEdit();
   const { setData } = useTestSummary();
   const router = useRouter();
@@ -30,9 +31,12 @@ export default function TestFinishScreen({ cardsToTest, metadataList }: Props) {
   });
 
   return (
-    <MainScreen className="items-center justify-center">
-      <Button className="mb-40" onPress={() => mutate()} disabled={isPending}>
+    <MainScreen className="mb-40 items-center justify-center gap-6">
+      <Button onPress={() => mutate()} disabled={isPending}>
         <Typography variant={'large'}>{isPending ? 'Saving...' : 'Finish Test?'}</Typography>
+      </Button>
+      <Button variant={'outline'} onPress={onReview} disabled={isPending}>
+        <Typography variant={'large'}>{'Review your Answers?'}</Typography>
       </Button>
     </MainScreen>
   );
