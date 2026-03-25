@@ -16,7 +16,7 @@ export default function Tab() {
 
       return seed();
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       console.log('✅ Seed complete');
       queryClient.invalidateQueries({
         queryKey: [],
@@ -31,9 +31,20 @@ export default function Tab() {
     <MainScreen className="flex flex-col gap-6">
       <SettingsForm conf={data} />
       {__DEV__ && (
-        <Button variant={'destructive'}>
-          <Typography onPress={() => mutate()}>Seed DB</Typography>
-        </Button>
+        <>
+          <Button variant={'destructive'}>
+            <Typography onPress={() => mutate()}>Seed DB</Typography>
+          </Button>
+          <Button variant={'outline'}>
+            <Typography
+              onPress={() => {
+                queryClient.invalidateQueries({ queryKey: [] });
+                console.log('Cache is Cleared');
+              }}>
+              Clear cache
+            </Typography>
+          </Button>
+        </>
       )}
     </MainScreen>
   );

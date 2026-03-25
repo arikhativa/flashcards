@@ -1,9 +1,6 @@
+import SearchInput from '@/components/form/SearchInput';
 import { THEME } from '@/lib/theme';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetTextInput,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useColorScheme } from 'nativewind';
 import { forwardRef, useCallback } from 'react';
 import { View } from 'react-native';
@@ -28,7 +25,7 @@ export const BottomSheetList = forwardRef<BottomSheet, Props>(
     return (
       <BottomSheet
         index={-1}
-        snapPoints={['60%']}
+        snapPoints={['100%']}
         ref={ref}
         enablePanDownToClose={true}
         backgroundStyle={{
@@ -39,7 +36,7 @@ export const BottomSheetList = forwardRef<BottomSheet, Props>(
         backdropComponent={renderBackdrop}>
         <BottomSheetView className="flex-1">
           <View className="px-4 pt-4">
-            <BottomSheetTextInput
+            <SearchInput
               placeholder="Search..."
               value={search}
               onChangeText={onChangeText}

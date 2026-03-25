@@ -30,6 +30,7 @@ export default function useTagList(filters?: TagFilters, enabled: boolean = true
   return useQuery({
     queryKey: queryKeyStore.tag.list(filters).queryKey,
     enabled,
+    placeholderData: (previousData) => previousData,
     queryFn: () => queryFn(filters),
   });
 }

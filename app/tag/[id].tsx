@@ -1,8 +1,7 @@
 import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import * as z from 'zod';
 import { View } from 'react-native';
-import { Typography } from '@/components/ui/text';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useTag from '@/hooks/query/useTag';
 import TagForm from '@/components/tag/TagForm';
 import { BAD_ID } from '@/lib/constants';
@@ -16,6 +15,16 @@ export default function TagDetailed() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
   const { error, success, data } = schema.safeParse({ id });
+
+  const { ids } = useLocalSearchParams<{ ids?: string }>();
+
+  const cardIds = useMemo(() => {
+    if (!ids) return undefined;
+    return ids
+      .split(',')
+      .map(Number)
+      .filter((id) => !isNaN(id));
+  }, [id, ids]);
 
   useEffect(() => {
     if (success) {
@@ -38,7 +47,7 @@ export default function TagDetailed() {
   if (q.data) {
     return (
       <View className="flex-1">
-        <TagForm tag={q.data} />
+        <TagForm tag={q.data} initialCardIds={cardIds} />
       </View>
     );
   }

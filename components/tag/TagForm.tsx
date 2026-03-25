@@ -1,4 +1,4 @@
-import { Tag } from '@/db/schema';
+import { BaseCard, Tag } from '@/db/schema';
 import { View } from 'react-native';
 import * as z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -33,11 +33,12 @@ export type FormSchema = z.infer<typeof formSchema>;
 
 interface Props {
   tag?: Tag;
+  initialCardIds?: BaseCard['id'][];
 }
 
 const MAX_ITEMS_IN_SHEET = 9 as const;
 
-export default function TagForm({ tag }: Props) {
+export default function TagForm({ tag, initialCardIds }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [currentId, setCurrentId] = useState<number | null>(tag ? tag.id : null);
 
@@ -54,7 +55,7 @@ export default function TagForm({ tag }: Props) {
   const query = useQueryClient();
 
   const { setValue, trigger, control, handleSubmit, watch } = useForm<FormSchema>({
-    defaultValues: toSchema(tag),
+    defaultValues: initialCardIds ? { cardList: initialCardIds } : toSchema(tag),
     resolver: zodResolver(formSchema),
   });
 
