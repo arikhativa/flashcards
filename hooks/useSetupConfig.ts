@@ -19,14 +19,14 @@ export default function useSetupConfig(migrationsSuccess: boolean | null) {
       try {
         const result = await db.query.configTable.findFirst({ where: eq(configTable.id, 1) });
         if (!result) {
-          console.log('Failed to find config, creating one');
+          console.info('Failed to find config, creating one');
           await create({});
-          console.log('useSetupConfig: Created new config');
+          console.info('useSetupConfig: Created new config');
         } else {
           setColorScheme(result.theme);
         }
       } catch (e) {
-        console.log('useSetupConfig', e);
+        console.error('useSetupConfig: ', e);
       }
     };
 

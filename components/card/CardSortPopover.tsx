@@ -54,7 +54,7 @@ export default function CardSortPopover({
       </DropdownMenuTrigger>
       <DropdownMenuContent insets={contentInsets} sideOffset={2} className="w-56" align="start">
         <DropdownMenuGroup>
-          <Item value="CreationTime" label="Createion Time" />
+          <Item value="CreationTime" label="Creation Time" />
           <Item value="KnowledgeLevel" label="Knowledge Level" />
           <Item value="SideA" label={'Alphabetical ' + data?.sideA} />
           <Item value="SideB" label={'Alphabetical ' + data?.sideB} />

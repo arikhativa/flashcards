@@ -17,7 +17,7 @@ export default function Tab() {
   const { data, isError, isPending } = useCardList(filters);
 
   if (isError) {
-    console.log('Error with card list');
+    console.error('Error with card list');
   }
 
   const headerComp = useMemo(

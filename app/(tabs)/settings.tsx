@@ -27,12 +27,12 @@ export default function Tab() {
 
   const { mutate } = useMutation({
     mutationFn: async () => {
-      console.log('🌱 Seeding database...');
+      console.info('🌱 Seeding database...');
 
       return seed();
     },
     onSuccess: () => {
-      console.log('✅ Seed complete');
+      console.info('✅ Seed complete');
       queryClient.invalidateQueries({
         queryKey: [],
       });
@@ -54,7 +54,7 @@ export default function Tab() {
             <Typography
               onPress={() => {
                 queryClient.invalidateQueries({ queryKey: [] });
-                console.log('Cache is Cleared');
+                console.info('Cache is Cleared');
               }}>
               Clear cache
             </Typography>

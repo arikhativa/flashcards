@@ -10,6 +10,7 @@ export const STRINGS = {
         testSide: 'Choose side to hide',
         numberOfCards: 'How many cards to test',
         range: 'Date to pick from',
+        knowledgeLevelList: 'Select knowledge levels to test',
       },
     },
   },

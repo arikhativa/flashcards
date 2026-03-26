@@ -39,7 +39,6 @@ export default function HoverIconButton({
 }: Props) {
   const hasBadge = !!(badgeValue !== undefined && badgeValue !== null && badgeValue !== '');
 
-  console.log('variant', variant);
   return (
     <Button
       {...props}

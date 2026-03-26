@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller, FieldValues, DefaultValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
@@ -9,11 +9,12 @@ import { TestSettings, testSettingsSchema, useTest } from '@/components/provider
 import { useRouter } from 'expo-router';
 import MainScreen from '@/components/MainScreen';
 import { useMemo } from 'react';
-import { testCardSideEnum } from '@/lib/enums';
+import { knowledgeLevelEnumArray, knowledgeLevelText, testCardSideEnum } from '@/lib/enums';
 import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
 import { TimeRangeSelect } from '@/components/form/TimeRangeSelect';
 import { Label } from '@/components/ui/label';
+import SelectEnumField from '@/components/form/SelectEnumField';
 
 type Props =
   | {
@@ -43,17 +44,20 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
     ];
   }, [conf]);
 
-  const { control, handleSubmit } = useForm<TestSettings>({
-    defaultValues: {
-      numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
-      testSide: testSettings?.testSide || 'A',
-      range: {
-        dateFrom: null,
-        dateTo: null,
-      },
-      cardIdsToTest,
-      tagIdsToTest,
+  const defaultValues: TestSettings = {
+    numberOfCards: testSettings?.numberOfCards || 10, // conf.numberOfCards
+    testSide: testSettings?.testSide || 'A',
+    range: {
+      dateFrom: null,
+      dateTo: null,
     },
+    knowledgeLevelList: [...knowledgeLevelEnumArray],
+    cardIdsToTest,
+    tagIdsToTest,
+  };
+
+  const { control, handleSubmit } = useForm<TestSettings>({
+    defaultValues,
     resolver: zodResolver(testSettingsSchema),
   });
 
@@ -98,12 +102,18 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
               );
             }}
           />
+
+          <SelectEnumField
+            name="knowledgeLevelList"
+            control={control}
+            labelEnum={knowledgeLevelText}
+            labelId="test-knowledge-level-list"
+            labelText={STRINGS.test.form.field.knowledgeLevelList}
+          />
         </>
       )}
       <View className="flex-1"></View>
-      <Button
-        className="mb-10"
-        onPress={handleSubmit(onSubmit, (errors) => console.log('Validation errors:', errors))}>
+      <Button className="mb-10" onPress={handleSubmit(onSubmit)}>
         <Typography>Start Test</Typography>
       </Button>
     </MainScreen>

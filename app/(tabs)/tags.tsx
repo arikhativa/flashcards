@@ -14,7 +14,7 @@ export default function Tab() {
   const { data, isError, isPending } = useTagList(filters);
 
   if (isError) {
-    console.log('Error with tag list');
+    console.error('Error with tag list');
   }
 
   const headerComp = useMemo(

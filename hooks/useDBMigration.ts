@@ -9,7 +9,7 @@ export default function useDBMigrations(): boolean | null {
   if (!migrationPromise) {
     migrationPromise = migrate(db, migrations)
       .then(() => {
-        console.log('Migration: Done');
+        console.info('Migration: Done');
         return true;
       })
       .catch((e) => {

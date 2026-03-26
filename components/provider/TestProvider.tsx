@@ -1,3 +1,4 @@
+import { knowledgeLevelEnum, knowledgeLevelEnumArray } from '@/lib/enums';
 import { CARD_SIDE_VALUE } from '@/lib/types';
 import { dateRangeSchema } from '@/lib/zodSchemas';
 import { createContext, useContext, useState } from 'react';
@@ -8,6 +9,10 @@ export const testSettingsSchema = z.object({
   numberOfCards: z.number().min(1),
   testSide: z.enum(CARD_SIDE_VALUE),
   range: dateRangeSchema,
+  knowledgeLevelList: z
+    .array(z.enum(knowledgeLevelEnum))
+    .min(1)
+    .max(knowledgeLevelEnumArray.length),
   cardIdsToTest: z.array(z.number()).optional(),
   tagIdsToTest: z.array(z.number()).optional(),
 });
