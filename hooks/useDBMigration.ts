@@ -1,14 +1,29 @@
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from '@/drizzle/migrations';
 import { db } from '@/lib/db';
+import { useEffect, useState } from 'react';
 
-export default function useDBMigrations() {
-  const { success, error } = useMigrations(db, migrations);
+let migrationPromise: Promise<boolean> | null = null;
 
-  if (error) {
-    console.error('Migration: ', error);
-  } else if (success) {
-    console.log('Migration: Done');
+export default function useDBMigrations(): boolean | null {
+  if (!migrationPromise) {
+    migrationPromise = migrate(db, migrations)
+      .then(() => {
+        console.log('Migration: Done');
+        return true;
+      })
+      .catch((e) => {
+        console.error('Migration:', e);
+        return false;
+      });
   }
+
+  // still need a hook to track the async result reactively
+  const [success, setSuccess] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    migrationPromise!.then(setSuccess);
+  }, []);
+
   return success;
 }

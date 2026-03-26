@@ -12,25 +12,17 @@ import { PortalHost } from '@rn-primitives/portal';
 import useSetupConfig from '@/hooks/useSetupConfig';
 import { TestProvider } from '@/components/provider/TestProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlobalHeaderProvider } from '@/components/provider/GlobalHeaderProvider';
+import { View } from 'react-native';
+import { useEffect } from 'react';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const { toggleColorScheme, colorScheme } = useColorScheme();
-
-  useEffect(() => {
-    if (colorScheme === 'dark') {
-      toggleColorScheme();
-    }
-  }, [colorScheme, toggleColorScheme]);
+  const { colorScheme } = useColorScheme();
 
   useDrizzleStudio(__DEV__ ? expoDBFile : null);
   const status = useDBMigrations();
@@ -42,13 +34,15 @@ export default function RootLayout() {
         <GlobalHeaderProvider>
           <GestureHandlerRootView>
             <TestProvider>
-              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-              <SafeAreaView className="flex-1">
-                <Stack>
-                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                </Stack>
-              </SafeAreaView>
-              <PortalHost />
+              <View className="flex-1 bg-background">
+                <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+                <SafeAreaView className="flex-1">
+                  <Stack>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  </Stack>
+                </SafeAreaView>
+                <PortalHost />
+              </View>
             </TestProvider>
           </GestureHandlerRootView>
         </GlobalHeaderProvider>

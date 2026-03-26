@@ -4,10 +4,15 @@ import { db } from '@/lib/db';
 import { eq } from 'drizzle-orm';
 import { configTable } from '@/db/schema';
 
-export default function useSetupConfig(migrationsSuccess: boolean) {
+let hasRun = false;
+
+export default function useSetupConfig(migrationsSuccess: boolean | null) {
   const { create } = useConfigEdit();
 
   useEffect(() => {
+    if (!migrationsSuccess || hasRun) return;
+    hasRun = true;
+
     const setup = async () => {
       try {
         const result = await db.query.configTable.findFirst({ where: eq(configTable.id, 1) });
@@ -20,8 +25,7 @@ export default function useSetupConfig(migrationsSuccess: boolean) {
         console.log('useSetupConfig', e);
       }
     };
-    if (migrationsSuccess) {
-      setup();
-    }
-  }, [migrationsSuccess, create]);
+
+    setup();
+  }, [migrationsSuccess]);
 }

@@ -1,5 +1,4 @@
 import { Config } from '@/db/schema';
-import { View } from 'react-native';
 import * as z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,10 +8,14 @@ import useConfigEdit from '@/hooks/mutation/useConfigEdit';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
+import { themeEnum, themeEnumText } from '@/lib/enums';
+import SelectEnumField from '@/components/form/SelectEnumField';
+import { useColorScheme } from 'nativewind';
 
 const formSchema = z.object({
   sideA: z.string().min(1),
   sideB: z.string().min(1),
+  theme: z.enum(themeEnum),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
@@ -24,6 +27,7 @@ interface Props {
 export default function SettingsForm({ conf }: Props) {
   const { update } = useConfigEdit();
   const query = useQueryClient();
+  const { setColorScheme } = useColorScheme();
 
   const {
     trigger,
@@ -40,7 +44,8 @@ export default function SettingsForm({ conf }: Props) {
     mutationFn: async (variables: FormSchema) => {
       return update(variables);
     },
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
+      setColorScheme(variables.theme);
       query.invalidateQueries({ queryKey: queryKeyStore.config.one.queryKey });
     },
     onError: (e) => {
@@ -72,6 +77,13 @@ export default function SettingsForm({ conf }: Props) {
         control={control}
         labelId={'settings-side-b'}
         labelText={STRINGS.settings.sideB}
+      />
+      <SelectEnumField
+        name="theme"
+        control={control}
+        labelEnum={themeEnumText}
+        labelId={'settings-theme'}
+        labelText={STRINGS.settings.theme}
       />
     </>
   );

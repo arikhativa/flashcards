@@ -60,3 +60,19 @@ export const testCardSideEnum = {
 } as const;
 
 export type TestCardSideEnum = (typeof testCardSideEnum)[keyof typeof testCardSideEnum];
+
+export const themeEnum = {
+  system: 'system',
+  dark: 'dark',
+  light: 'light',
+} as const;
+
+export type ThemeEnum = (typeof themeEnum)[keyof typeof themeEnum];
+
+export const themeEnumText: Record<ThemeEnum, string> = {
+  system: 'System',
+  dark: 'Dark',
+  light: 'Light',
+} as const;
+
+export const themeEnumArray = ['system', 'dark', 'light'] as const;

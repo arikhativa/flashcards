@@ -2,6 +2,7 @@ export const STRINGS = {
   settings: {
     sideA: 'Side A text',
     sideB: 'Side B text',
+    theme: 'System Theme',
   },
   test: {
     form: {

@@ -1,6 +1,6 @@
 import { sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
 import { relations, sql } from 'drizzle-orm';
-import { knowledgeLevelEnumArray } from '@/lib/enums';
+import { knowledgeLevelEnumArray, themeEnumArray } from '@/lib/enums';
 
 export const cardTable = sqliteTable('card', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -56,6 +56,7 @@ export const configTable = sqliteTable(
     id: integer('id').default(1),
     sideA: text('side_a').default('A').notNull(),
     sideB: text('side_b').default('B').notNull(),
+    theme: text('theme', { enum: themeEnumArray }).notNull().default('system'),
 
     createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()
