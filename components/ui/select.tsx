@@ -9,8 +9,6 @@ import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
 
-type Option = SelectPrimitive.Option;
-
 const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
@@ -249,5 +247,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-  type Option,
 };

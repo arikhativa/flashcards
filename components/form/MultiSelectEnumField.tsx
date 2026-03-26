@@ -2,8 +2,8 @@ import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { View } from 'react-native';
-import { cn } from '@/lib/utils';
-import SelectEnum from '@/components/form/SelectEnum';
+import { cn, textEnumToSelectOption } from '@/lib/utils';
+import { MultiSelect } from '@/components/external/MultiSelect';
 
 interface Props<T extends FieldValues, TEnum extends string> {
   name: Path<T>;
@@ -15,7 +15,7 @@ interface Props<T extends FieldValues, TEnum extends string> {
   placeholder?: string;
 }
 
-export default function SelectEnumField<T extends FieldValues, TEnum extends string>({
+export default function MultiSelectEnumField<T extends FieldValues, TEnum extends string>({
   name,
   control,
   labelId,
@@ -33,13 +33,15 @@ export default function SelectEnumField<T extends FieldValues, TEnum extends str
           <Label nativeID={labelId} htmlFor={labelId}>
             {labelText}
           </Label>
-          <SelectEnum
+
+          <MultiSelect
             className={className}
-            labelEnum={labelEnum}
-            value={value as TEnum}
+            options={textEnumToSelectOption(labelEnum)}
+            value={value}
             onChange={onChange}
             placeholder={placeholder}
           />
+
           {error && (
             <Typography className="mt-1 text-sm text-destructive">{error.message}</Typography>
           )}

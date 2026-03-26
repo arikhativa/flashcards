@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, Controller, FieldValues, DefaultValues } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { STRINGS } from '@/lib/strings';
@@ -14,7 +14,7 @@ import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
 import { TimeRangeSelect } from '@/components/form/TimeRangeSelect';
 import { Label } from '@/components/ui/label';
-import SelectEnumField from '@/components/form/SelectEnumField';
+import MultiSelectEnumField from '@/components/form/MultiSelectEnumField';
 
 type Props =
   | {
@@ -32,7 +32,6 @@ type Props =
 
 export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
   const router = useRouter();
-
   const { testSettings, setTestSettings } = useTest();
   const { data: conf } = useSuspenseConfig();
 
@@ -103,7 +102,7 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
             }}
           />
 
-          <SelectEnumField
+          <MultiSelectEnumField
             name="knowledgeLevelList"
             control={control}
             labelEnum={knowledgeLevelText}

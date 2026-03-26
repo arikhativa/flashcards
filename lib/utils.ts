@@ -15,10 +15,10 @@ export function debounce<T>(func: (args: T) => void, delay: number) {
   };
 }
 
-export function enumToSelectOption(enumObj: object): SelectOption[] {
+export function textEnumToSelectOption(enumObj: object): SelectOption[] {
   return Object.entries(enumObj).map(([key, value]) => ({
-    label: key,
-    value: value,
+    label: value,
+    value: key,
   }));
 }
 
