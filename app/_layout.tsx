@@ -15,7 +15,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlobalHeaderProvider } from '@/components/provider/GlobalHeaderProvider';
 import { View } from 'react-native';
-import { useEffect } from 'react';
 
 export { ErrorBoundary } from 'expo-router';
 
