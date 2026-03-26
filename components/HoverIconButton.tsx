@@ -14,8 +14,8 @@ const hoverIconButtonVariants = cva(
     variants: {
       variant: {
         default: '',
-        destructive: '',
-        outline: '',
+        destructive: 'dark:bg-destructive',
+        outline: 'dark:bg-input dark:active:bg-input/80',
       },
     },
     defaultVariants: {
@@ -30,9 +30,16 @@ type Props = Omit<ButtonProps, 'variant'> &
     badgeValue?: string | number;
   };
 
-export default function HoverIconButton({ icon, badgeValue, variant, className, ...props }: Props) {
+export default function HoverIconButton({
+  icon,
+  badgeValue,
+  variant = 'default',
+  className,
+  ...props
+}: Props) {
   const hasBadge = !!(badgeValue !== undefined && badgeValue !== null && badgeValue !== '');
 
+  console.log('variant', variant);
   return (
     <Button
       {...props}
@@ -50,7 +57,14 @@ export default function HoverIconButton({ icon, badgeValue, variant, className, 
         <Typography className="text-[10px]">{badgeValue}</Typography>
       </Badge>
 
-      <Icon as={icon} className={cn('size-4', variant === 'destructive' && 'text-background')} />
+      <Icon
+        as={icon}
+        className={cn(
+          'size-4',
+          variant === 'destructive' && 'text-background',
+          variant === 'default' && 'text-primary-foreground'
+        )}
+      />
     </Button>
   );
 }

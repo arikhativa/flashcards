@@ -11,6 +11,8 @@ import Field from '@/components/form/Field';
 import { themeEnum, themeEnumText } from '@/lib/enums';
 import SelectEnumField from '@/components/form/SelectEnumField';
 import { useColorScheme } from 'nativewind';
+import { cn } from '@/lib/utils';
+import { View } from 'react-native';
 
 const formSchema = z.object({
   sideA: z.string().min(1),
@@ -22,9 +24,10 @@ export type FormSchema = z.infer<typeof formSchema>;
 
 interface Props {
   conf: Config;
+  className?: string;
 }
 
-export default function SettingsForm({ conf }: Props) {
+export default function SettingsForm({ className, conf }: Props) {
   const { update } = useConfigEdit();
   const query = useQueryClient();
   const { setColorScheme } = useColorScheme();
@@ -64,7 +67,7 @@ export default function SettingsForm({ conf }: Props) {
   });
 
   return (
-    <>
+    <View className={cn('flex gap-4', className)}>
       <Field
         name="sideA"
         control={control}
@@ -85,6 +88,6 @@ export default function SettingsForm({ conf }: Props) {
         labelId={'settings-theme'}
         labelText={STRINGS.settings.theme}
       />
-    </>
+    </View>
   );
 }

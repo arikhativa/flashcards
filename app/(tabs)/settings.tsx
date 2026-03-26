@@ -8,6 +8,7 @@ import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
+import { View } from 'react-native';
 
 export default function Tab() {
   const { setState } = useGlobalHeader();
@@ -42,10 +43,10 @@ export default function Tab() {
   });
 
   return (
-    <MainScreen className="flex flex-col gap-6 pt-10">
-      <SettingsForm conf={data} />
+    <MainScreen className="flex flex-col gap-6 py-10">
+      <SettingsForm className="flex-1" conf={data} />
       {__DEV__ && (
-        <>
+        <View className="flex gap-4">
           <Button variant={'destructive'}>
             <Typography onPress={() => mutate()}>Seed DB</Typography>
           </Button>
@@ -58,7 +59,7 @@ export default function Tab() {
               Clear cache
             </Typography>
           </Button>
-        </>
+        </View>
       )}
     </MainScreen>
   );
