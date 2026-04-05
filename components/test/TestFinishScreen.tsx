@@ -31,7 +31,7 @@ export default function TestFinishScreen({ cardsToTest, metadataList, onReview }
   });
 
   return (
-    <MainScreen className="mb-40 items-center justify-center gap-6">
+    <MainScreen className="items-center justify-center gap-6">
       <Button onPress={() => mutate()} disabled={isPending}>
         <Typography variant={'large'}>{isPending ? 'Saving...' : 'Finish Test?'}</Typography>
       </Button>

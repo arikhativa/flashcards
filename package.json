@@ -9,7 +9,8 @@
     "web": "expo start -c --web",
     "lint": "eslint .",
     "migration": "drizzle-kit generate",
-    "build": "eas build --platform android --profile production --local --output=build.abb",
+    "dev:build": "expo run:android",
+    "prod:build": "eas build --platform android --profile production --local --output=build.aab",
     "submit": "eas submit --platform android",
     "seed": "node ./db/seed.ts",
     "clean": "rm -rf .expo node_modules"
@@ -40,6 +41,7 @@
     "eslint-plugin-drizzle": "^0.2.3",
     "expo": "~54.0.33",
     "expo-constants": "~18.0.13",
+    "expo-dev-client": "~6.0.20",
     "expo-drizzle-studio-plugin": "^0.2.1",
     "expo-font": "~14.0.11",
     "expo-haptics": "~15.0.8",

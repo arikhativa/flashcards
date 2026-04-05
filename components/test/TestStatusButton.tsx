@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Check, X } from 'lucide-react-native';
 
 type Props =
@@ -22,9 +23,9 @@ export default function TestStatusButton({ disabled, showBtnColor, type, onPress
         variant={'outline'}
         size={'icon'}
         disabled={disabled}
-        className={showBtnColor ? 'bg-red-200' : ''}
+        className={showBtnColor ? 'bg-red-200 dark:bg-red-500' : ''}
         onPress={onPress}>
-        <X />
+        <Icon as={X} />
       </Button>
     );
   }
@@ -34,9 +35,9 @@ export default function TestStatusButton({ disabled, showBtnColor, type, onPress
       variant={'outline'}
       size={'icon'}
       disabled={disabled}
-      className={showBtnColor ? 'bg-green-200' : ''}
+      className={showBtnColor ? 'bg-green-200 dark:bg-green-500' : ''}
       onPress={onPress}>
-      <Check />
+      <Icon as={Check} />
     </Button>
   );
 }

@@ -27,12 +27,13 @@ export default function TagTileList({ list, isPending }: Props) {
       onPress={() => {
         if (isMultiSelectOn) clearSelectedIds();
       }}>
-      {list?.length && (
+      {list?.length ? (
         <FloatBadge
           value={isMultiSelectOn ? `${selectedIds.length}/${list.length}` : list.length}
         />
-      )}
+      ) : null}
       <TagFlashList
+        showEmptyState
         tags={list || []}
         getVariant={(obj) => (isIdSelected(obj.id) ? 'outline' : undefined)}
         onLongPress={(item) => {

@@ -1,6 +1,7 @@
 import CardTile from '@/components/card/CardTile';
 import TestStatusButton from '@/components/test/TestStatusButton';
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Card } from '@/db/schema';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
 import useTestSummary from '@/hooks/state/useTestSummary';
@@ -64,10 +65,10 @@ export default function TestSummaryCardList() {
 
             <View className="flex flex-col gap-4">
               <Button onPress={() => increaseKLPress(item)} variant={'outline'} size={'icon'}>
-                <Plus />
+                <Icon as={Plus} />
               </Button>
               <Button onPress={() => decreaseKLPress(item)} variant={'outline'} size={'icon'}>
-                <Minus />
+                <Icon as={Minus} />
               </Button>
             </View>
           </View>

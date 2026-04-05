@@ -1,6 +1,7 @@
 import CardSides from '@/components/card/CardSides';
 import TestStatusButton from '@/components/test/TestStatusButton';
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/text';
 import { Card } from '@/db/schema';
@@ -62,11 +63,11 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
             />
             {showAnswer ? (
               <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(false)}>
-                <Eye />
+                <Icon as={Eye} />
               </Button>
             ) : (
               <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(true)}>
-                <EyeClosed />
+                <Icon as={EyeClosed} />
               </Button>
             )}
           </View>

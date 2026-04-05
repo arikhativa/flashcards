@@ -1,5 +1,4 @@
 import { BaseTag, Card } from '@/db/schema';
-import { Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import CardFlashList from '@/components/card/CardFlashList';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
@@ -9,7 +8,7 @@ import FloatBadge from '@/components/FloatBadge';
 import { BottomSheetList } from '@/components/BottomSheetList';
 import TagFlashList from '@/components/tag/TagFlashList';
 import useTagList from '@/hooks/query/useTagList';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { TagFilters } from '@/hooks/query/useTagListFilters';
 import BottomSheet from '@gorhom/bottom-sheet';
 import useTagEdit from '@/hooks/mutation/useTagEdit';
@@ -94,12 +93,13 @@ export default function CardTileList({ cardList, isPending }: Props) {
 
   return (
     <>
-      {cardList?.length && (
+      {cardList?.length ? (
         <FloatBadge
           value={isMultiSelectOn ? `${selectedIds.length}/${cardList.length}` : cardList.length}
         />
-      )}
+      ) : null}
       <CardFlashList
+        showEmptyState
         onEmptyPress={() => {
           if (isMultiSelectOn) clearSelectedIds();
         }}

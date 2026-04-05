@@ -1,7 +1,8 @@
 import CardTile, { CardTileProps } from '@/components/card/CardTile';
-import { Typography } from '@/components/ui/text';
+import { EmptyItem } from '@/components/EmptyItem';
 import { BaseCard, Card } from '@/db/schema';
 import { FlashList } from '@shopify/flash-list';
+import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, useWindowDimensions, View } from 'react-native';
 
@@ -9,6 +10,7 @@ interface Props {
   list: (BaseCard | Card)[];
   onPress: (obj: BaseCard | Card) => void;
   onEmptyPress?: () => void;
+  showEmptyState?: boolean;
   onLongPress?: (obj: BaseCard | Card) => void;
   getVariant?: (obj: BaseCard | Card) => CardTileProps['variant'];
 }
@@ -18,8 +20,10 @@ export default function CardFlashList({
   list,
   onPress,
   onLongPress,
+  showEmptyState = false,
   getVariant,
 }: Props) {
+  const router = useRouter();
   const { width } = useWindowDimensions();
 
   const rows = useMemo(() => calculateRows(list, width), [list, width]);
@@ -31,7 +35,6 @@ export default function CardFlashList({
         data={rows}
         horizontal={false}
         numColumns={1}
-        className=""
         renderItem={({ item: rowCards }) => (
           <Pressable onPress={onEmptyPress} className="flex flex-row justify-center gap-6 py-3">
             {rowCards.map((card) => (
@@ -47,11 +50,23 @@ export default function CardFlashList({
           </Pressable>
         )}
         ListFooterComponent={() => <View className="h-24" />}
-        ListEmptyComponent={() => (
-          <View className="items-center p-10">
-            <Typography className="text-muted-foreground">empty</Typography>
-          </View>
-        )}
+        contentContainerStyle={rows.length === 0 ? { flex: 1 } : {}}
+        ListEmptyComponent={
+          showEmptyState
+            ? () => (
+                <EmptyItem
+                  title="No Cards"
+                  desc="You haven't created any cards yet."
+                  onPress={() =>
+                    router.navigate({
+                      pathname: '/card/new',
+                    })
+                  }
+                  buttonText="Create card"
+                />
+              )
+            : undefined
+        }
       />
     </View>
   );

@@ -17,8 +17,9 @@ export default function useCreateTestMetadata(ts: TestSettings) {
       orderBy: 'TestedTime',
       direction: 'Asc',
       dateRange: ts.range,
+      kl: ts.knowledgeLevelList,
     }),
-    [ts.range]
+    [ts.range, ts.knowledgeLevelList]
   );
 
   const tagFilters = useMemo<TagFilters>(() => ({ ids: ts.tagIdsToTest }), [ts]);
