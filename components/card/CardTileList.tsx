@@ -93,17 +93,16 @@ export default function CardTileList({ cardList, isPending }: Props) {
   }
 
   return (
-    <Pressable
-      className="flex-1"
-      onPress={() => {
-        if (isMultiSelectOn) clearSelectedIds();
-      }}>
+    <>
       {cardList?.length && (
         <FloatBadge
           value={isMultiSelectOn ? `${selectedIds.length}/${cardList.length}` : cardList.length}
         />
       )}
       <CardFlashList
+        onEmptyPress={() => {
+          if (isMultiSelectOn) clearSelectedIds();
+        }}
         list={cardList || []}
         onLongPress={(obj) => {
           toggleIdSelection(obj.id);
@@ -140,6 +139,6 @@ export default function CardTileList({ cardList, isPending }: Props) {
           }}
         />
       </BottomSheetList>
-    </Pressable>
+    </>
   );
 }

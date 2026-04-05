@@ -3,47 +3,57 @@ import { Typography } from '@/components/ui/text';
 import { BaseCard, Card } from '@/db/schema';
 import { FlashList } from '@shopify/flash-list';
 import { useMemo } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { Pressable, useWindowDimensions, View } from 'react-native';
 
 interface Props {
   list: (BaseCard | Card)[];
   onPress: (obj: BaseCard | Card) => void;
+  onEmptyPress?: () => void;
   onLongPress?: (obj: BaseCard | Card) => void;
   getVariant?: (obj: BaseCard | Card) => CardTileProps['variant'];
 }
 
-export default function CardFlashList({ list, onPress, onLongPress, getVariant }: Props) {
+export default function CardFlashList({
+  onEmptyPress,
+  list,
+  onPress,
+  onLongPress,
+  getVariant,
+}: Props) {
   const { width } = useWindowDimensions();
 
   const rows = useMemo(() => calculateRows(list, width), [list, width]);
 
   return (
-    <FlashList
-      data={rows}
-      horizontal={false}
-      numColumns={1}
-      className=""
-      renderItem={({ item: rowCards }) => (
-        <View className="flex flex-row justify-center gap-6 py-3">
-          {rowCards.map((card) => (
-            <View key={card.id} className="">
-              <CardTile
-                variant={getVariant?.(card)}
-                onPress={() => onPress(card)}
-                onLongPress={() => onLongPress?.(card)}
-                card={card}
-              />
-            </View>
-          ))}
-        </View>
-      )}
-      ListFooterComponent={() => <View className="h-24" />}
-      ListEmptyComponent={() => (
-        <View className="items-center p-10">
-          <Typography className="text-muted-foreground">empty</Typography>
-        </View>
-      )}
-    />
+    <View className="flex-1">
+      {onEmptyPress && <Pressable className="absolute inset-0" onPress={onEmptyPress} />}
+      <FlashList
+        data={rows}
+        horizontal={false}
+        numColumns={1}
+        className=""
+        renderItem={({ item: rowCards }) => (
+          <Pressable onPress={onEmptyPress} className="flex flex-row justify-center gap-6 py-3">
+            {rowCards.map((card) => (
+              <View key={card.id} className="">
+                <CardTile
+                  variant={getVariant?.(card)}
+                  onPress={() => onPress(card)}
+                  onLongPress={() => onLongPress?.(card)}
+                  card={card}
+                />
+              </View>
+            ))}
+          </Pressable>
+        )}
+        ListFooterComponent={() => <View className="h-24" />}
+        ListEmptyComponent={() => (
+          <View className="items-center p-10">
+            <Typography className="text-muted-foreground">empty</Typography>
+          </View>
+        )}
+      />
+    </View>
   );
 }
 
