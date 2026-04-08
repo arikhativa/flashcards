@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router';
 import TagFlashList from '@/components/tag/TagFlashList';
 import TagListActionBar from '@/components/tag/TagListActionBar';
 import { useMultiSelect } from '@/hooks/useMultiSelect';
-import { Pressable } from 'react-native';
 import FloatBadge from '@/components/FloatBadge';
 import ScreenSpinner from '@/components/ScreenSpinner';
 import useTagList from '@/hooks/query/useTagList';
@@ -24,11 +23,7 @@ export default function TagTileList({ list, isPending }: Props) {
   }
 
   return (
-    <Pressable
-      className="flex-1"
-      onPress={() => {
-        if (isMultiSelectOn) clearSelectedIds();
-      }}>
+    <>
       {list?.length ? (
         <FloatBadge
           value={isMultiSelectOn ? `${selectedIds.length}/${list.length}` : list.length}
@@ -57,6 +52,6 @@ export default function TagTileList({ list, isPending }: Props) {
         selectedIds={selectedIds}
         clearSelectedIds={clearSelectedIds}
       />
-    </Pressable>
+    </>
   );
 }
