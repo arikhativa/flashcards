@@ -1,53 +1,17 @@
-import CardFilterDropdown from '@/components/card/CardFilterDropdown';
-import CardSortPopover from '@/components/card/CardSortPopover';
 import CardTileList from '@/components/card/CardTileList';
 import HexagonBackground from '@/components/HexagonBackground';
-import ListFilters from '@/components/ListFilters';
 import MainScreen from '@/components/MainScreen';
 import useCardList from '@/hooks/query/useCardList';
 import useCardListFilters from '@/hooks/query/useCardListFilters';
-import { useGlobalHeader } from '@/components/provider/GlobalHeaderProvider';
 import { View } from 'react-native';
-import { useCallback, useMemo } from 'react';
-import { useFocusEffect } from 'expo-router';
 
 export default function Tab() {
-  const { setState } = useGlobalHeader();
-  const { filters, setFilters } = useCardListFilters();
+  const { filters } = useCardListFilters();
   const { data, isError, isPending } = useCardList(filters);
 
   if (isError) {
     console.error('Error with card list');
   }
-
-  const headerComp = useMemo(
-    () => (
-      <ListFilters
-        onSearch={(search) => {
-          setFilters({ ...filters, search });
-        }}>
-        <CardSortPopover
-          orderBy={filters.orderBy}
-          direction={filters.direction}
-          onDirectionChange={(direction) => setFilters({ ...filters, direction })}
-          onOrderByChange={(orderBy) => setFilters({ ...filters, orderBy })}
-        />
-        <CardFilterDropdown />
-      </ListFilters>
-    ),
-    [filters]
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      setState({
-        title: 'ffflashcards',
-        titleClassName: 'text-primary',
-        titleType: 'text',
-        node: headerComp,
-      });
-    }, [headerComp])
-  );
 
   return (
     <View className="flex-1">

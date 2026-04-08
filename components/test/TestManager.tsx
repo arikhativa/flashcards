@@ -17,12 +17,6 @@ export default function TestManager() {
 
   const cardTestRef = useRef<CardTestRef[]>([]);
 
-  const scrollToFirstPage = () => {
-    if (carouselWrapperRef.current) {
-      carouselWrapperRef.current.scrollToPage(0);
-    }
-  };
-
   const scrollToNextPage = () => {
     if (carouselWrapperRef.current) {
       carouselWrapperRef.current.scrollToNextPage();
@@ -78,13 +72,7 @@ export default function TestManager() {
         />
       );
     }
-    return (
-      <TestFinishScreen
-        onReview={scrollToFirstPage}
-        cardsToTest={cardsToTest}
-        metadataList={metadataList}
-      />
-    );
+    return <TestFinishScreen cardsToTest={cardsToTest} metadataList={metadataList} />;
   };
 
   return (

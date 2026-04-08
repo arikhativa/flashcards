@@ -8,7 +8,7 @@ interface Props {
 
 export default function ListFilters({ onSearch, children }: Props) {
   return (
-    <View className="flex w-full flex-row items-center justify-center gap-2">
+    <View className="flex w-full flex-row items-center justify-start gap-2">
       <SearchInput className="my-2 h-10 flex-1" onSearch={onSearch} />
       {children}
     </View>

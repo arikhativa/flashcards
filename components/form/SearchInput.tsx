@@ -24,7 +24,6 @@ export default function SearchInput({
   ...props
 }: SearchInputProps) {
   const [value, setValue] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
   const debounced = useMemo(
@@ -50,12 +49,10 @@ export default function SearchInput({
       <Icon as={Search} />
 
       <Input
-        className="m-0 border-0 bg-transparent p-0"
+        className="m-0 flex-1 border-0 bg-transparent p-0"
         ref={inputRef}
         value={value}
         onChangeText={handleChange}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         returnKeyType="search"
         clearButtonMode="never"

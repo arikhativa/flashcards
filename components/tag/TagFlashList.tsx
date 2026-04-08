@@ -1,7 +1,6 @@
 import { EmptyItem } from '@/components/EmptyItem';
 import TagTile from '@/components/tag/TagTile';
 import { BadgeProps } from '@/components/ui/badge';
-import { Typography } from '@/components/ui/text';
 import { BaseTag, Tag } from '@/db/schema';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';

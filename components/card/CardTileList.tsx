@@ -14,6 +14,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import useTagEdit from '@/hooks/mutation/useTagEdit';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeyStore } from '@/lib/queryKeyStore';
+import useCardList from '@/hooks/query/useCardList';
 
 interface Props {
   cardList?: Card[];
@@ -24,6 +25,7 @@ const MAX_ITEMS_IN_SHEET = 20 as const;
 
 export default function CardTileList({ cardList, isPending }: Props) {
   const queryClient = useQueryClient();
+  const allCardListQuery = useCardList();
 
   const { update, create } = useTagEdit();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -99,7 +101,7 @@ export default function CardTileList({ cardList, isPending }: Props) {
         />
       ) : null}
       <CardFlashList
-        showEmptyState
+        showEmptyState={!allCardListQuery.data?.length}
         onEmptyPress={() => {
           if (isMultiSelectOn) clearSelectedIds();
         }}

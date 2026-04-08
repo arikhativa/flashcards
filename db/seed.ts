@@ -2,7 +2,7 @@ import { cardTable, tagTable, cardTagTable, configTable } from '@/db/schema';
 import { CARDS_TO_SEED, TAGS_TO_SEED } from '@/db/seedData';
 import { db } from '@/lib/db';
 
-export async function seed() {
+export async function reset() {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(cardTagTable);
   // eslint-disable-next-line drizzle/enforce-delete-with-where
@@ -11,6 +11,10 @@ export async function seed() {
   await db.delete(tagTable);
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(configTable);
+}
+
+export async function seed() {
+  await reset();
 
   await db.insert(configTable).values({
     id: 1,

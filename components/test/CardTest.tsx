@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/text';
 import { Card } from '@/db/schema';
 import { CardMeta } from '@/lib/types';
-import { Check, Eye, EyeClosed, X } from 'lucide-react-native';
+import { Eye, EyeClosed } from 'lucide-react-native';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { View } from 'react-native';
 
@@ -55,7 +55,7 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
             <Input
               placeholder="Answer"
               className="flex-1"
-              // ref={inputRef}
+              ref={inputRef}
               value={cardMeta.answer}
               onChangeText={(v: string) => {
                 onChangeAnswer(index, v);

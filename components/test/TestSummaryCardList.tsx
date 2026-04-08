@@ -9,10 +9,12 @@ import { queryKeyStore } from '@/lib/queryKeyStore';
 import { decreaseKL, increaseKL } from '@/lib/utils';
 import { FlashList } from '@shopify/flash-list';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 import { Minus, Plus } from 'lucide-react-native';
 import { View } from 'react-native';
 
 export default function TestSummaryCardList() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { data, updateCard } = useTestSummary();
   const { update } = useCardEdit();
@@ -60,7 +62,16 @@ export default function TestSummaryCardList() {
             <TestStatusButton showBtnColor type={metadata.success ? 'check' : 'x'} />
 
             <View className="flex-1 px-10">
-              <CardTile className="m-2" card={item} />
+              <CardTile
+                onPress={(c) =>
+                  router.navigate({
+                    pathname: '/card/[id]',
+                    params: { id: c.id },
+                  })
+                }
+                className="m-2"
+                card={item}
+              />
             </View>
 
             <View className="flex flex-col gap-4">

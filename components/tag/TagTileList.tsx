@@ -6,6 +6,7 @@ import { useMultiSelect } from '@/hooks/useMultiSelect';
 import { Pressable } from 'react-native';
 import FloatBadge from '@/components/FloatBadge';
 import ScreenSpinner from '@/components/ScreenSpinner';
+import useTagList from '@/hooks/query/useTagList';
 
 interface Props {
   list?: Tag[];
@@ -14,6 +15,7 @@ interface Props {
 
 export default function TagTileList({ list, isPending }: Props) {
   const router = useRouter();
+  const allTagListQuery = useTagList();
   const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
 
@@ -33,7 +35,7 @@ export default function TagTileList({ list, isPending }: Props) {
         />
       ) : null}
       <TagFlashList
-        showEmptyState
+        showEmptyState={!allTagListQuery.data?.length}
         tags={list || []}
         getVariant={(obj) => (isIdSelected(obj.id) ? 'outline' : undefined)}
         onLongPress={(item) => {

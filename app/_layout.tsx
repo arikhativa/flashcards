@@ -13,7 +13,6 @@ import useSetupConfig from '@/hooks/useSetupConfig';
 import { TestProvider } from '@/components/provider/TestProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GlobalHeaderProvider } from '@/components/provider/GlobalHeaderProvider';
 import { View } from 'react-native';
 
 export { ErrorBoundary } from 'expo-router';
@@ -30,21 +29,19 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <GlobalHeaderProvider>
-          <GestureHandlerRootView>
-            <TestProvider>
-              <View className="flex-1 bg-background">
-                <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-                <SafeAreaView className="flex-1">
-                  <Stack>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                  </Stack>
-                </SafeAreaView>
-                <PortalHost />
-              </View>
-            </TestProvider>
-          </GestureHandlerRootView>
-        </GlobalHeaderProvider>
+        <GestureHandlerRootView>
+          <TestProvider>
+            <View className="flex-1 bg-background">
+              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              <SafeAreaView className="flex-1">
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                </Stack>
+              </SafeAreaView>
+              <PortalHost />
+            </View>
+          </TestProvider>
+        </GestureHandlerRootView>
       </ThemeProvider>
     </QueryClientProvider>
   );

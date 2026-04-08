@@ -1,27 +1,23 @@
-import { useGlobalHeader } from '@/components/provider/GlobalHeaderProvider';
 import { Typography } from '@/components/ui/text';
 import { View } from 'react-native';
-import { Image } from 'expo-image';
 import { cn } from '@/lib/utils';
 
-export function GlobalHeader() {
-  const { state } = useGlobalHeader();
-
-  if (!state) return null;
-
+export function GlobalHeader({
+  title,
+  titleClassName,
+  node,
+}: {
+  title?: string;
+  titleClassName?: string;
+  node?: React.ReactNode;
+}) {
   return (
     <View className="flex flex-col px-3 pt-1">
-      <View className="">
-        {state?.titleType === 'text' && (
-          <Typography className={cn('text-xl font-bold', state.titleClassName)}>
-            {state.title}
-          </Typography>
-        )}
-        {state?.titleType === 'image' && (
-          <Image style={{ width: 100, height: 45 }} source={state.title} contentFit="contain" />
-        )}
+      <View>
+        <Typography className={cn('text-xl font-bold', titleClassName)}>{title}</Typography>
       </View>
-      {state.node && <View>{state.node}</View>}
+
+      {node && <View>{node}</View>}
     </View>
   );
 }
