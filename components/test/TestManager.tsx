@@ -6,7 +6,7 @@ import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
 import useCreateTestMetadata from '@/hooks/useCreateTestMetadata';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 
 export default function TestManager() {

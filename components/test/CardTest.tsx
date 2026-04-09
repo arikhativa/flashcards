@@ -8,7 +8,7 @@ import { Card } from '@/db/schema';
 import { CardMeta } from '@/lib/types';
 import { Eye, EyeClosed } from 'lucide-react-native';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 export interface CardTestRef {
   focusOnTextInput: () => void;
@@ -28,12 +28,12 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
   ({ card, hideSideA, index, length, cardMeta, onChangeAnswer, onChangeSuccess }, ref) => {
     const [showAnswer, setShowAnswer] = useState(false);
     const [showBtnColor, setShowBtnColor] = useState<boolean | undefined>(undefined);
-    const inputRef = useRef(null);
+    const inputRef = useRef<TextInput>(null);
 
     useImperativeHandle(ref, () => ({
       focusOnTextInput: () => {
         if (inputRef.current) {
-          (inputRef.current as any).focus();
+          inputRef.current.focus();
         }
       },
     }));
@@ -43,7 +43,7 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
         <Typography variant={'large'} className="m-0 py-2 text-center">
           {index + 1}/{length}
         </Typography>
-        <View className="flex flex-col gap-6 px-4">
+        <View className="flex flex-col gap-8 px-4">
           <CardSides
             knowledgeLevel={card.knowledgeLevel}
             sideA={card.sideA}
@@ -51,47 +51,62 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
             hideSideA={showAnswer ? false : hideSideA}
             hideSideB={showAnswer ? false : !hideSideA}
           />
-          <View className="flex flex-row gap-4">
-            <Input
-              placeholder="Answer"
-              className="flex-1"
-              ref={inputRef}
-              value={cardMeta.answer}
-              onChangeText={(v: string) => {
-                onChangeAnswer(index, v);
-              }}
-            />
-            {showAnswer ? (
-              <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(false)}>
-                <Icon as={Eye} />
-              </Button>
-            ) : (
-              <Button variant={'outline'} size={'icon'} onPress={() => setShowAnswer(true)}>
-                <Icon as={EyeClosed} />
-              </Button>
-            )}
-          </View>
-          <View className="flex flex-row items-center">
-            <Typography className="flex-1">Did you get it right?</Typography>
-            <View className="flex flex-row gap-2">
-              <TestStatusButton
-                type="x"
-                disabled={!showAnswer}
-                showBtnColor={cardMeta.success === false && showBtnColor}
-                onPress={() => {
-                  onChangeSuccess(index, false);
-                  setShowBtnColor(true);
-                }}
-              />
-              <TestStatusButton
-                type="check"
-                showBtnColor={cardMeta.success === true && showBtnColor}
-                disabled={!showAnswer}
-                onPress={() => {
-                  onChangeSuccess(index, true);
-                  setShowBtnColor(true);
-                }}
-              />
+
+          <Input
+            autoFocus={index === 0}
+            placeholder="Answer"
+            className="text-center"
+            ref={inputRef}
+            value={cardMeta.answer}
+            onChangeText={(v: string) => {
+              onChangeAnswer(index, v);
+            }}
+          />
+
+          <View className="flex w-full flex-row gap-8">
+            <View className="flex flex-1 flex-col gap-2">
+              <Typography className="text-center">Did you get it right?</Typography>
+              <View className="flex flex-1 flex-row items-end gap-2">
+                <TestStatusButton
+                  type="x"
+                  disabled={!showAnswer}
+                  className="flex-1"
+                  showBtnColor={cardMeta.success === false && showBtnColor}
+                  onPress={() => {
+                    onChangeSuccess(index, false);
+                    setShowBtnColor(true);
+                  }}
+                />
+                <TestStatusButton
+                  type="check"
+                  className="flex-1"
+                  showBtnColor={cardMeta.success === true && showBtnColor}
+                  disabled={!showAnswer}
+                  onPress={() => {
+                    onChangeSuccess(index, true);
+                    setShowBtnColor(true);
+                  }}
+                />
+              </View>
+            </View>
+
+            <View>
+              {showAnswer ? (
+                <Button
+                  className="size-20"
+                  variant={'outline'}
+                  onPress={() => setShowAnswer(false)}>
+                  <Icon as={Eye} />
+                </Button>
+              ) : (
+                <Button
+                  className="size-20"
+                  variant={'outline'}
+                  size={'icon'}
+                  onPress={() => setShowAnswer(true)}>
+                  <Icon as={EyeClosed} />
+                </Button>
+              )}
             </View>
           </View>
         </View>
