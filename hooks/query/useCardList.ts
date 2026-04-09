@@ -73,8 +73,9 @@ async function queryFn(filters?: CardFilters): Promise<Card[]> {
   return result.map((e) => rawCardToCard(e));
 }
 
-export default function useCardList(filters?: CardFilters) {
+export default function useCardList(filters?: CardFilters, enabled: boolean = true) {
   return useQuery({
+    enabled,
     queryKey: queryKeyStore.cards.list(filters).queryKey,
     queryFn: () => queryFn(filters),
   });

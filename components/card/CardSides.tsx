@@ -1,8 +1,7 @@
+import { Plasters } from '@/components/test/Plasters';
 import { CardRoot, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Typography } from '@/components/ui/text';
-import { Card } from '@/db/schema';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { knowledgeLevelColorEnum, KnowledgeLevelEnum } from '@/lib/enums';
 import { cn } from '@/lib/utils';
@@ -27,7 +26,7 @@ function getSide({
   hideSide?: boolean;
   customSide?: React.ReactNode;
 }) {
-  if (hideSide) return <Typography className="text-center">...</Typography>;
+  if (hideSide) return <Plasters />;
   if (customSide) return customSide;
   return <Typography className="text-center">{sideValue}</Typography>;
 }

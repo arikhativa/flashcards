@@ -43,3 +43,7 @@ export function decreaseKL(kl: KnowledgeLevelEnum): KnowledgeLevelEnum {
       return knowledgeLevelEnum.Learning;
   }
 }
+
+export function getRandomIndex(length: number): number {
+  return Math.floor(Math.random() * length);
+}

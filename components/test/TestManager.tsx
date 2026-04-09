@@ -6,12 +6,13 @@ import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
 import useCreateTestMetadata from '@/hooks/useCreateTestMetadata';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
-import { useEffect, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { View } from 'react-native';
 
 export default function TestManager() {
   const carouselWrapperRef = useRef<CarouselWrapperRef>(null);
   const { testSettings } = useTest();
+  const [lock, setLock] = useState(false);
 
   const { cardsToTest, metadataList, setMetadataList } = useCreateTestMetadata(testSettings!);
 
@@ -72,6 +73,7 @@ export default function TestManager() {
         />
       );
     }
+
     return <TestFinishScreen cardsToTest={cardsToTest} metadataList={metadataList} />;
   };
 
@@ -80,6 +82,13 @@ export default function TestManager() {
       <CarouselWrapper
         ref={carouselWrapperRef}
         length={cardsToTest.length ? cardsToTest.length : 0}
+        enabled={!lock}
+        onProgressChange={() => {
+          const index = carouselWrapperRef.current?.currentIndex();
+          if (index === cardsToTest.length) {
+            setLock(true);
+          }
+        }}
         renderItem={renderItem}
       />
     </View>

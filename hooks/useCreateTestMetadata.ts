@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 export default function useCreateTestMetadata(ts: TestSettings) {
   const [cardsToTest, setCardsToTest] = useState<Card[]>([]);
   const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
+  const [enabled, setEnabled] = useState(true);
 
   const filters = useMemo<CardFilters>(
     () => ({
@@ -26,7 +27,7 @@ export default function useCreateTestMetadata(ts: TestSettings) {
 
   const tagQuery = useTagList(tagFilters, !!ts.tagIdsToTest);
 
-  const { data: cards, isSuccess } = useCardList(filters);
+  const { data: cards, isSuccess } = useCardList(filters, enabled);
 
   useEffect(() => {
     let list = undefined;
@@ -40,6 +41,11 @@ export default function useCreateTestMetadata(ts: TestSettings) {
       setCardsToTest(shuffleCards(list));
     }
   }, [isSuccess, cards, ts, tagQuery.isSuccess, tagQuery.data]);
+
+  // Note: once we picked the cards we don't want any new rerenders
+  useEffect(() => {
+    setEnabled(false);
+  }, [cardsToTest]);
 
   useEffect(() => {
     if (cardsToTest && cardsToTest.length) {

@@ -1,10 +1,11 @@
 import CardTile from '@/components/card/CardTile';
+import { FinishScreenProps } from '@/components/test/TestFinishScreen';
 import TestStatusButton from '@/components/test/TestStatusButton';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Card } from '@/db/schema';
 import useCardEdit from '@/hooks/mutation/useCardEdit';
-import useTestSummary from '@/hooks/state/useTestSummary';
+import { KnowledgeLevelEnum } from '@/lib/enums';
 import { queryKeyStore } from '@/lib/queryKeyStore';
 import { decreaseKL, increaseKL } from '@/lib/utils';
 import { FlashList } from '@shopify/flash-list';
@@ -13,10 +14,15 @@ import { useRouter } from 'expo-router';
 import { Minus, Plus } from 'lucide-react-native';
 import { View } from 'react-native';
 
-export default function TestSummaryCardList() {
+export default function TestSummaryCardList({
+  updateCard,
+  cardsToTest,
+  metadataList,
+}: FinishScreenProps & {
+  updateCard: (id: number, kl: KnowledgeLevelEnum) => void;
+}) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { data, updateCard } = useTestSummary();
   const { update } = useCardEdit();
 
   const { mutate } = useMutation({
@@ -24,7 +30,7 @@ export default function TestSummaryCardList() {
       return update(variables.id, { knowledgeLevel: variables.kl });
     },
     onSuccess: (newCard) => {
-      updateCard(data, newCard.id, { knowledgeLevel: newCard.knowledgeLevel });
+      updateCard(newCard.id, newCard.knowledgeLevel);
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.cards.detail(newCard.id).queryKey,
       });
@@ -51,12 +57,12 @@ export default function TestSummaryCardList() {
 
   return (
     <FlashList
-      data={data.cardsToTest}
+      data={cardsToTest}
       horizontal={false}
       numColumns={1}
-      className="bl px-4"
+      className="px-4"
       renderItem={({ item, index }) => {
-        const metadata = data.metadataList![index]!;
+        const metadata = metadataList![index]!;
         return (
           <View className="flex flex-row items-center gap-4 py-4">
             <TestStatusButton showBtnColor type={metadata.success ? 'check' : 'x'} />

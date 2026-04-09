@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Dimensions } from 'react-native';
-import Carousel, { CarouselRenderItem, ICarouselInstance } from 'react-native-reanimated-carousel';
+import Carousel, {
+  CarouselRenderItem,
+  ICarouselInstance,
+  TCarouselProps,
+} from 'react-native-reanimated-carousel';
 
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 
@@ -21,11 +25,13 @@ export interface CarouselWrapperRef {
 
 interface CarouselProps {
   length: number;
+  enabled?: boolean;
   renderItem: CarouselRenderItem<number>;
+  onProgressChange?: TCarouselProps['onProgressChange'];
 }
 
 const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
-  ({ renderItem, length }, ref) => {
+  ({ renderItem, length, enabled = true, onProgressChange }, ref) => {
     const carouselRef = React.useRef<ICarouselInstance>(null);
 
     const [data, setData] = React.useState<number[]>([...new Array(length + 1).keys()]);
@@ -66,7 +72,9 @@ const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
         width={width}
         height={height}
         data={data}
+        enabled={enabled}
         renderItem={renderItem}
+        onProgressChange={onProgressChange}
       />
     );
   }
