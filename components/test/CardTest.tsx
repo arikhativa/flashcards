@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/text';
 import { Card } from '@/db/schema';
 import { CardMeta } from '@/lib/types';
+import { cn } from '@/lib/utils';
 import { Eye, EyeClosed } from 'lucide-react-native';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
@@ -65,7 +66,9 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
 
           <View className="flex w-full flex-row gap-8">
             <View className="flex flex-1 flex-col gap-2">
-              <Typography className="text-center">Did you get it right?</Typography>
+              <Typography className={cn('text-center', !showAnswer && 'text-muted')}>
+                Did you get it right?
+              </Typography>
               <View className="flex flex-1 flex-row items-end gap-2">
                 <TestStatusButton
                   type="x"

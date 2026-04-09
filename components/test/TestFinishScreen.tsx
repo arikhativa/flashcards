@@ -11,14 +11,15 @@ import { View } from 'react-native';
 import { Separator } from '@rn-primitives/select';
 import TestSummaryCardList from '@/components/test/TestSummaryCardList';
 import { KnowledgeLevelEnum } from '@/lib/enums';
+import { useTest } from '@/components/provider/TestProvider';
 
 export interface FinishScreenProps {
   cardsToTest: Card[];
   metadataList: CardMeta[];
 }
 
-export default function TestFinishScreen({ cardsToTest, metadataList }: FinishScreenProps) {
-  const [local, setLocal] = useState<Card[]>(cardsToTest);
+export default function TestFinishScreen() {
+  const { cardsToTest, metadataList } = useTest();
 
   const { update } = useCardEdit();
 
@@ -40,23 +41,6 @@ export default function TestFinishScreen({ cardsToTest, metadataList }: FinishSc
     }
   });
 
-  // Note: this whole flow is bad - we should have one use state of the cards
-  // the location of hooks/useCreateTestMetadata.ts calls are wrong
-  const updateCard = (id: number, kl: KnowledgeLevelEnum) => {
-    setLocal((prev) => {
-      const l = prev.map((e) => {
-        if (e.id === id) {
-          return {
-            ...e,
-            knowledgeLevel: kl,
-          };
-        }
-        return e;
-      });
-      return l;
-    });
-  };
-
   return (
     <>
       <MainScreen className="flex flex-col gap-10">
@@ -71,11 +55,7 @@ export default function TestFinishScreen({ cardsToTest, metadataList }: FinishSc
             Adjust Knowledge Level
           </Typography>
           <Separator />
-          <TestSummaryCardList
-            updateCard={updateCard}
-            cardsToTest={local}
-            metadataList={metadataList}
-          />
+          <TestSummaryCardList />
         </View>
       </MainScreen>
       <View className="flex items-center justify-center border-t border-border pb-4">

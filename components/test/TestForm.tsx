@@ -15,6 +15,9 @@ import { View } from 'react-native';
 import { TimeRangeSelect } from '@/components/form/TimeRangeSelect';
 import { Label } from '@/components/ui/label';
 import MultiSelectEnumField from '@/components/form/MultiSelectEnumField';
+import useCreateTestMetadata, { getCardMeta } from '@/hooks/useCreateTestMetadata';
+import { CardMeta } from '@/lib/types';
+import FloatBadge from '@/components/FloatBadge';
 
 type Props =
   | {
@@ -32,7 +35,7 @@ type Props =
 
 export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
   const router = useRouter();
-  const { testSettings, setTestSettings } = useTest();
+  const { testSettings, setTestSettings, setCardsToTest, setMetadataList } = useTest();
   const { data: conf } = useSuspenseConfig();
 
   const options = useMemo(() => {
@@ -55,13 +58,25 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
     tagIdsToTest,
   };
 
-  const { control, handleSubmit } = useForm<TestSettings>({
+  const { watch, control, handleSubmit } = useForm<TestSettings>({
     defaultValues,
     resolver: zodResolver(testSettingsSchema),
   });
 
+  const formValues = watch();
+  const { cardsToTest } = useCreateTestMetadata(formValues);
+
   const onSubmit: SubmitHandler<TestSettings> = (data: TestSettings) => {
     setTestSettings(data);
+    setCardsToTest(cardsToTest);
+
+    const list: CardMeta[] = [];
+
+    cardsToTest.forEach(() => {
+      list.push(getCardMeta(data));
+    });
+
+    setMetadataList(list);
     router.navigate({
       pathname: '/test/active',
     });
@@ -71,6 +86,7 @@ export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
 
   return (
     <MainScreen className="gap-6">
+      <FloatBadge value={cardsToTest.length} />
       <SelectField
         name="testSide"
         options={options}

@@ -1,5 +1,5 @@
 import CardTile from '@/components/card/CardTile';
-import { FinishScreenProps } from '@/components/test/TestFinishScreen';
+import { useTest } from '@/components/provider/TestProvider';
 import TestStatusButton from '@/components/test/TestStatusButton';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -14,13 +14,24 @@ import { useRouter } from 'expo-router';
 import { Minus, Plus } from 'lucide-react-native';
 import { View } from 'react-native';
 
-export default function TestSummaryCardList({
-  updateCard,
-  cardsToTest,
-  metadataList,
-}: FinishScreenProps & {
-  updateCard: (id: number, kl: KnowledgeLevelEnum) => void;
-}) {
+export default function TestSummaryCardList() {
+  const { cardsToTest, metadataList, setCardsToTest } = useTest();
+
+  const updateCard = (id: number, kl: KnowledgeLevelEnum) => {
+    setCardsToTest((prev) => {
+      const l = prev.map((e) => {
+        if (e.id === id) {
+          return {
+            ...e,
+            knowledgeLevel: kl,
+          };
+        }
+        return e;
+      });
+      return l;
+    });
+  };
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const { update } = useCardEdit();

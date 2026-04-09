@@ -7,73 +7,75 @@ import { TagFilters } from '@/hooks/query/useTagListFilters';
 import { CardMeta } from '@/lib/types';
 import { useEffect, useMemo, useState } from 'react';
 
-export default function useCreateTestMetadata(ts: TestSettings) {
+export default function useCreateTestMetadata({
+  tagIdsToTest,
+  numberOfCards,
+  range,
+  knowledgeLevelList,
+  cardIdsToTest,
+}: TestSettings) {
   const [cardsToTest, setCardsToTest] = useState<Card[]>([]);
-  const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
-  const [enabled, setEnabled] = useState(true);
 
   const filters = useMemo<CardFilters>(
     () => ({
       ...DEFAULT_CARD_FILTERS,
       orderBy: 'TestedTime',
       direction: 'Asc',
-      dateRange: ts.range,
-      kl: ts.knowledgeLevelList,
+      dateRange: range,
+      kl: knowledgeLevelList,
     }),
-    [ts.range, ts.knowledgeLevelList]
+    [range, knowledgeLevelList]
   );
 
-  const tagFilters = useMemo<TagFilters>(() => ({ ids: ts.tagIdsToTest }), [ts]);
+  const tagFilters = useMemo<TagFilters>(() => ({ ids: tagIdsToTest }), [tagIdsToTest]);
 
-  const tagQuery = useTagList(tagFilters, !!ts.tagIdsToTest);
+  const tagQuery = useTagList(tagFilters, !!tagIdsToTest);
 
-  const { data: cards, isSuccess } = useCardList(filters, enabled);
+  const { data: cards, isSuccess } = useCardList(filters);
 
   useEffect(() => {
     let list = undefined;
-    if (!!ts.tagIdsToTest && tagQuery.isSuccess && cards && isSuccess) {
-      list = pickCardsToTest({ cardList: cards, ts, tagList: tagQuery.data });
-    } else if (!ts.tagIdsToTest && cards && isSuccess) {
-      list = pickCardsToTest({ cardList: cards, ts });
+    if (!!tagIdsToTest && tagQuery.isSuccess && cards && isSuccess) {
+      list = pickCardsToTest({
+        cardList: cards,
+        tagList: tagQuery.data,
+        cardIdsToTest,
+        numberOfCards,
+      });
+    } else if (!tagIdsToTest && cards && isSuccess) {
+      list = pickCardsToTest({ cardList: cards, numberOfCards, cardIdsToTest });
     }
 
     if (list) {
       setCardsToTest(shuffleCards(list));
     }
-  }, [isSuccess, cards, ts, tagQuery.isSuccess, tagQuery.data]);
+  }, [
+    isSuccess,
+    cards,
+    tagQuery.isSuccess,
+    tagQuery.data,
+    tagIdsToTest,
+    cardIdsToTest,
+    numberOfCards,
+  ]);
 
-  // Note: once we picked the cards we don't want any new rerenders
-  useEffect(() => {
-    setEnabled(false);
-  }, [cardsToTest]);
-
-  useEffect(() => {
-    if (cardsToTest && cardsToTest.length) {
-      const list: CardMeta[] = [];
-
-      cardsToTest.forEach(() => {
-        list.push(getCardMeta(ts));
-      });
-
-      setMetadataList(list);
-    }
-  }, [cardsToTest, ts]);
-
-  return { metadataList, cardsToTest, setMetadataList };
+  return { cardsToTest };
 }
 
 function pickCardsToTest({
   cardList,
-  ts,
+  cardIdsToTest,
+  numberOfCards,
   tagList,
 }: {
   cardList: Card[];
-  ts: TestSettings;
+  cardIdsToTest?: number[];
+  numberOfCards: number;
   tagList?: Tag[];
 }) {
-  if (ts.cardIdsToTest) {
+  if (cardIdsToTest) {
     const ret: Card[] = [];
-    ts.cardIdsToTest.forEach((cardId) => {
+    cardIdsToTest.forEach((cardId) => {
       const card = cardList.find((c) => c.id === cardId);
       ret.push(card!);
     });
@@ -94,14 +96,14 @@ function pickCardsToTest({
     }
   }
 
-  return cardList.slice(0, ts.numberOfCards);
+  return cardList.slice(0, numberOfCards);
 }
 
 function shuffleCards(cards: Card[]): Card[] {
   return [...cards].sort(() => Math.random() - 0.5);
 }
 
-const getCardMeta = (ts: TestSettings): CardMeta => {
+export const getCardMeta = (ts: TestSettings): CardMeta => {
   if (ts.testSide === 'Both') {
     const randomValue = Math.random() < 0.5 ? 0 : 1;
     return {

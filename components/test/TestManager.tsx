@@ -4,17 +4,14 @@ import { useTest } from '@/components/provider/TestProvider';
 import CardTest, { CardTestRef } from '@/components/test/CardTest';
 import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
-import useCreateTestMetadata from '@/hooks/useCreateTestMetadata';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 
 export default function TestManager() {
   const carouselWrapperRef = useRef<CarouselWrapperRef>(null);
-  const { testSettings } = useTest();
+  const { cardsToTest, metadataList, setMetadataList } = useTest();
   const [lock, setLock] = useState(false);
-
-  const { cardsToTest, metadataList, setMetadataList } = useCreateTestMetadata(testSettings!);
 
   const cardTestRef = useRef<CardTestRef[]>([]);
 
@@ -74,7 +71,7 @@ export default function TestManager() {
       );
     }
 
-    return <TestFinishScreen cardsToTest={cardsToTest} metadataList={metadataList} />;
+    return <TestFinishScreen />;
   };
 
   return (
