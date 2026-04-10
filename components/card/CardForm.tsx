@@ -25,6 +25,10 @@ import TagFlashList from '@/components/tag/TagFlashList';
 import { BottomSheetList } from '@/components/BottomSheetList';
 import HorizontalScrollField from '@/components/form/HorizontalScrollField';
 
+// TODO
+// on new card, auto focues on the input A
+// add a clear X btn
+
 const formSchema = z.object({
   sideA: z.string(),
   sideB: z.string(),

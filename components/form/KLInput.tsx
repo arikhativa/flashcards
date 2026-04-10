@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { CardContent, CardRoot } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
 import { knowledgeLevelColorEnum, KnowledgeLevelEnum, knowledgeLevelText } from '@/lib/enums';
@@ -34,7 +33,7 @@ export default function KLInput<T extends FieldValues>({
         variant={'outline'}
         onPress={() => onChange(kl)}
         className={cn(
-          'rounded-none border-2 bg-transparent',
+          'h-12 rounded-none border-2 bg-transparent',
           knowledgeLevelColorEnum[kl].border,
           current !== kl ? 'border border-dashed' : ''
         )}>

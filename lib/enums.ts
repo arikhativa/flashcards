@@ -15,13 +15,21 @@ export const knowledgeLevelText: Record<KnowledgeLevelEnum, string> = {
 export const knowledgeLevelEnumArray = ['Learning', 'GettingThere', 'Confident'] as const;
 
 export const knowledgeLevelColorEnum = {
-  Learning: { bg: 'bg-learning', border: 'border-learning', borderB: 'border-b-learning' },
-  GettingThere: {
-    bg: 'bg-getting-there',
-    border: 'border-getting-there',
-    borderB: 'border-b-getting-there',
+  Learning: {
+    bg: 'bg-learning dark:bg-learning',
+    border: 'border-learning dark:border-learning',
+    borderB: 'border-b-learning dark:border-b-learning',
   },
-  Confident: { bg: 'bg-confident', border: 'border-confident', borderB: 'border-b-confident' },
+  GettingThere: {
+    bg: 'bg-getting-there dark:bg-getting-there',
+    border: 'border-getting-there dark:border-getting-there',
+    borderB: 'border-b-getting-there dark:border-b-getting-there',
+  },
+  Confident: {
+    bg: 'bg-confident dark:bg-confident',
+    border: 'border-confident dark:border-confident',
+    borderB: 'border-b-confident dark:border-b-confident',
+  },
 } as const;
 
 export type KnowledgeLevelColorEnum =
