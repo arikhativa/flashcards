@@ -13,24 +13,24 @@ interface S {
 }
 
 const lg = {
-  m: 'h-16 w-56',
-  p: 'h-12 w-40',
-  dots: 12,
-  cnDots: 'w-10',
+  m: 'h-[3rem] w-[10rem]',
+  p: 'h-[2rem] w-[7rem]',
+  dots: 8,
+  cnDots: 'w-[2rem]',
 };
 
 const md = {
-  m: 'h-12 w-48',
-  p: 'h-8 w-32',
-  dots: 8,
-  cnDots: 'w-10',
+  m: 'h-[2.5rem]  w-[9rem]',
+  p: 'h-[1.75rem] w-[7rem]',
+  dots: 6,
+  cnDots: 'w-[1.5rem]',
 };
 
 const sm = {
-  m: 'h-10  w-40',
-  p: 'h-7 w-28',
-  dots: 6,
-  cnDots: 'w-8 ',
+  m: 'h-[2rem]  w-[8rem]',
+  p: 'h-[1.25rem] w-[6rem]',
+  dots: 3,
+  cnDots: 'w-[2rem]',
 };
 
 const className: Record<PlasterProps['size'], S> = {
@@ -59,7 +59,7 @@ export function Plaster({ size, rotation = 0 }: PlasterProps) {
           <View
             className={`flex ${className[size].cnDots} flex-row flex-wrap items-center justify-center gap-1`}>
             {Array.from({ length: className[size].dots }).map((_, i) => (
-              <View key={i} className="h-1.5 w-1.5 rounded-full bg-pink-400 opacity-60" />
+              <View key={i} className="h-1 w-1 rounded-full bg-pink-400 opacity-60" />
             ))}
           </View>
         </View>

@@ -4,8 +4,6 @@ import useConfigEdit from '@/hooks/mutation/useConfigEdit';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 
 export function useVisibleScreenHeight() {
-  console.log('R useVisibleScreenHeight');
-
   const { data } = useSuspenseConfig();
   const { update } = useConfigEdit();
 

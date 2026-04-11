@@ -14,7 +14,7 @@ const cardTileVariants = cva('border border-b-8 bg-background shadow-md shadow-b
     variant: {
       default: '',
       muted: 'opacity-60',
-      selected: 'border-primary',
+      selected: 'border-primary dark:border-primary',
     },
   },
   defaultVariants: {

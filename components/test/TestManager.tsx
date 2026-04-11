@@ -5,7 +5,7 @@ import CardTest, { CardTestRef } from '@/components/test/CardTest';
 import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useVisibleScreenHeight } from '@/hooks/useVisibleScreenHeight';
 
@@ -28,6 +28,12 @@ export default function TestManager() {
       ) {
         cardTestRef.current[carouselWrapperRef.current.currentIndex() + 1].focusOnTextInput();
       }
+    }
+  };
+
+  const scrollToLastPage = () => {
+    if (carouselWrapperRef.current) {
+      carouselWrapperRef.current.scrollToPage(cardsToTest.length);
     }
   };
 
@@ -77,6 +83,12 @@ export default function TestManager() {
 
     return <TestFinishScreen />;
   };
+
+  useEffect(() => {
+    if (lock) {
+      scrollToLastPage();
+    }
+  }, [lock]);
 
   return (
     <View className="flex-1">
