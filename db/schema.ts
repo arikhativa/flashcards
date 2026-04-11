@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, check } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, check, real } from 'drizzle-orm/sqlite-core';
 import { relations, sql } from 'drizzle-orm';
 import { knowledgeLevelEnumArray, themeEnumArray } from '@/lib/enums';
 
@@ -57,6 +57,7 @@ export const configTable = sqliteTable(
     sideA: text('side_a').default('A').notNull(),
     sideB: text('side_b').default('B').notNull(),
     theme: text('theme', { enum: themeEnumArray }).notNull().default('system'),
+    screenHeightWithoutKeyboard: real('screen_height_without_keyboard'),
 
     createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()

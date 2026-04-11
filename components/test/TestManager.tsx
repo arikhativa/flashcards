@@ -7,11 +7,14 @@ import { Typography } from '@/components/ui/text';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
+import { useVisibleScreenHeight } from '@/hooks/useVisibleScreenHeight';
 
 export default function TestManager() {
   const carouselWrapperRef = useRef<CarouselWrapperRef>(null);
   const { cardsToTest, metadataList, setMetadataList } = useTest();
   const [lock, setLock] = useState(false);
+
+  const visibleScreenHeight = useVisibleScreenHeight();
 
   const cardTestRef = useRef<CardTestRef[]>([]);
 
@@ -59,6 +62,7 @@ export default function TestManager() {
     if (index < cardsToTest.length) {
       return (
         <CardTest
+          visibleScreenHeight={visibleScreenHeight}
           ref={(ref: any) => (cardTestRef.current[index] = ref)}
           index={index}
           length={cardsToTest.length}

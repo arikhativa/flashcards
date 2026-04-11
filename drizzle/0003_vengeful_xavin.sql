@@ -1,0 +1,1 @@
+ALTER TABLE `config` ADD `screen_height_without_keyboard` real;

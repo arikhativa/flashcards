@@ -1,32 +1,41 @@
-import { useEffect, useState } from 'react';
-import { Dimensions, Keyboard, Platform } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Dimensions, Keyboard, Platform, EmitterSubscription } from 'react-native';
+import useConfigEdit from '@/hooks/mutation/useConfigEdit';
+import { useSuspenseConfig } from '@/hooks/query/useConfig';
 
 export function useVisibleScreenHeight() {
-  const [visibleHeight, setVisibleHeight] = useState(Dimensions.get('window').height);
+  console.log('R useVisibleScreenHeight');
+
+  const { data } = useSuspenseConfig();
+  const { update } = useConfigEdit();
+
+  const [visibleHeight, setVisibleHeight] = useState(
+    data.screenHeightWithoutKeyboard !== null
+      ? data.screenHeightWithoutKeyboard
+      : Dimensions.get('window').height / 2
+  );
 
   useEffect(() => {
-    const windowHeight = Dimensions.get('window').height;
-
-    const onKeyboardShow = (e: any) => {
+    const handleKeyboardChange = (e: any) => {
       const keyboardHeight = e.endCoordinates?.height ?? 0;
-      setVisibleHeight(windowHeight - keyboardHeight);
-    };
+      if (keyboardHeight === 0) return;
 
-    const onKeyboardHide = () => {
-      setVisibleHeight(windowHeight);
+      const windowHeight = Dimensions.get('window').height;
+      const currentMeasuredHeight = windowHeight - keyboardHeight;
+
+      setVisibleHeight(currentMeasuredHeight);
+
+      if (data.screenHeightWithoutKeyboard !== currentMeasuredHeight) {
+        update({ screenHeightWithoutKeyboard: currentMeasuredHeight });
+      }
     };
 
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
-    const showSub = Keyboard.addListener(showEvent, onKeyboardShow);
-    const hideSub = Keyboard.addListener(hideEvent, onKeyboardHide);
+    const subs: EmitterSubscription[] = [Keyboard.addListener(showEvent, handleKeyboardChange)];
 
-    return () => {
-      showSub.remove();
-      hideSub.remove();
-    };
-  }, []);
+    return () => subs.forEach((s) => s.remove());
+  }, [data.screenHeightWithoutKeyboard, update]);
 
   return visibleHeight;
 }
