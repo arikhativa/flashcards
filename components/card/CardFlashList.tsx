@@ -33,6 +33,7 @@ export default function CardFlashList({
       {onEmptyPress && <Pressable className="absolute inset-0" onPress={onEmptyPress} />}
       <FlashList
         data={rows}
+        keyboardShouldPersistTaps="always"
         horizontal={false}
         numColumns={1}
         renderItem={({ item: rowCards }) => (

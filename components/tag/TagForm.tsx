@@ -46,11 +46,13 @@ export default function TagForm({ tag, initialCardIds }: Props) {
 
   const { selectedIds, isIdSelected, isMultiSelectOn, toggleIdSelection, clearSelectedIds } =
     useMultiSelect();
+
   const [cardFilters, setCardFilters] = useState<CardFilters>({
     ...DEFAULT_CARD_FILTERS,
   });
 
   const { data: cardList } = useCardList(cardFilters);
+
   const { update, create } = useTagEdit();
   const query = useQueryClient();
 
@@ -65,7 +67,7 @@ export default function TagForm({ tag, initialCardIds }: Props) {
     return (
       cardList?.filter((t) => !selectedCardIds.includes(t.id)).slice(0, MAX_ITEMS_IN_SHEET) || []
     );
-  }, []);
+  }, [cardList]);
 
   const selectedCards = selectedCardIds
     .map((id) => cardList?.find((e) => e.id === id))

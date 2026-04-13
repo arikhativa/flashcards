@@ -31,6 +31,7 @@ export const BottomSheetList = forwardRef<BottomSheet, Props>(
         backgroundStyle={{
           borderTopWidth: 25,
           borderWidth: 0,
+          backgroundColor: THEME[colorScheme || 'light'].background,
           borderColor: THEME[colorScheme || 'light'].primary,
         }}
         backdropComponent={renderBackdrop}>
