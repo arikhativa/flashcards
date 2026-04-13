@@ -1,7 +1,7 @@
 import { Plaster, PlasterProps } from '@/components/test/Plaster';
 import { Typography } from '@/components/ui/text';
 import { getRandomIndex } from '@/lib/utils';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 const p0: PlasterProps[] = [

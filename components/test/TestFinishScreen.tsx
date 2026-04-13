@@ -6,11 +6,10 @@ import useCardEdit from '@/hooks/mutation/useCardEdit';
 import { CardMeta } from '@/lib/types';
 import { Link } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { Separator } from '@rn-primitives/select';
 import TestSummaryCardList from '@/components/test/TestSummaryCardList';
-import { KnowledgeLevelEnum } from '@/lib/enums';
 import { useTest } from '@/components/provider/TestProvider';
 
 export interface FinishScreenProps {

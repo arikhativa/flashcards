@@ -1,12 +1,11 @@
 import { BaseCard, Card } from '@/db/schema';
 import { View, ViewProps } from 'react-native';
-import { Typography } from '@/components/ui/text';
+import { Typography, TextClassContext } from '@/components/ui/text';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { CardContent, CardRoot } from '@/components/ui/card';
 import { knowledgeLevelColorEnum } from '@/lib/enums';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { TextClassContext } from '@/components/ui/text';
 import { GestureWrapper } from '@/components/GestureWrapper';
 
 const cardTileVariants = cva('border border-b-8 bg-background shadow-md shadow-black', {

@@ -3,11 +3,9 @@ import useCard from '@/hooks/query/useCard';
 import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import * as z from 'zod';
 import { View } from 'react-native';
-import { Typography } from '@/components/ui/text';
 import { useEffect } from 'react';
 import { BAD_ID } from '@/lib/constants';
 import ScreenSpinner from '@/components/ScreenSpinner';
-import { ShowerHead } from 'lucide-react-native';
 
 const schema = z.object({
   id: z.string().transform(Number).pipe(z.number().int().positive()),

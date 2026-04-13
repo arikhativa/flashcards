@@ -32,13 +32,7 @@ export default function SettingsForm({ className, conf }: Props) {
   const query = useQueryClient();
   const { setColorScheme } = useColorScheme();
 
-  const {
-    trigger,
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormSchema>({
+  const { trigger, control, handleSubmit, watch } = useForm<FormSchema>({
     defaultValues: conf,
     resolver: zodResolver(formSchema),
   });

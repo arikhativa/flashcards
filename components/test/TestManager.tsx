@@ -1,4 +1,4 @@
-import { Keyboard } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import CarouselWrapper, { CarouselWrapperRef } from '@/components/CarouselWrapper';
 import { useTest } from '@/components/provider/TestProvider';
 import CardTest, { CardTestRef } from '@/components/test/CardTest';
@@ -6,7 +6,6 @@ import TestFinishScreen from '@/components/test/TestFinishScreen';
 import { Typography } from '@/components/ui/text';
 import { AUTO_SCROLL_DELAY } from '@/lib/constants';
 import { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
 import { useVisibleScreenHeight } from '@/hooks/useVisibleScreenHeight';
 
 export default function TestManager() {

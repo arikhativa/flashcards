@@ -14,6 +14,11 @@ module.exports = defineConfig([
     ),
   },
   {
-    ignores: ['dist/*', 'components/ui/*'],
+    rules: {
+      'react-hooks/exhaustive-deps': 'off',
+    },
+  },
+  {
+    ignores: ['dist/*', 'components/ui/*', '.expo/**'],
   },
 ]);

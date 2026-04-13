@@ -4,8 +4,9 @@ import { Label } from '@/components/ui/label';
 import { Typography } from '@/components/ui/text';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { useEffect, useRef } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -15,6 +16,7 @@ interface Props<T extends FieldValues> {
   className?: string;
   inputClassName?: string;
   isTextArea?: boolean;
+  autoFocus?: boolean;
   placeholder?: string;
 }
 
@@ -27,7 +29,17 @@ export default function Field<T extends FieldValues>({
   labelId,
   labelText,
   placeholder = '...',
+  autoFocus = false,
 }: Props<T>) {
+  const inputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (autoFocus) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [autoFocus]);
+
   return (
     <Controller
       name={name}
@@ -62,6 +74,8 @@ export default function Field<T extends FieldValues>({
             />
           ) : (
             <Input
+              ref={inputRef}
+              autoFocus={autoFocus}
               aria-labelledby={labelId}
               id={labelId}
               className={inputClassName}

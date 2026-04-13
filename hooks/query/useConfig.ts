@@ -4,7 +4,7 @@ import { queryKeyStore } from '@/lib/queryKeyStore';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { eq } from 'drizzle-orm';
 
-export default function useConfig() {
+export function useConfig() {
   return useQuery({
     queryKey: queryKeyStore.config.one.queryKey,
     queryFn: async () => {

@@ -28,6 +28,7 @@ export function KnowledgeLevelDialog({ open, onOpenChange }: Props) {
     function toggle() {
       const next = new Set(local);
       if (next.has(value)) {
+        // eslint-disable-next-line drizzle/enforce-delete-with-where
         next.delete(value);
       } else {
         next.add(value);

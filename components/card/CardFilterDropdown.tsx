@@ -1,4 +1,4 @@
-import { knowledgeLevelEnum, KnowledgeLevelEnum } from '@/lib/enums';
+import { knowledgeLevelEnum } from '@/lib/enums';
 import {
   DropdownMenu,
   DropdownMenuContent,

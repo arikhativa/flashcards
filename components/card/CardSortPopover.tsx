@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Icon } from '@/components/ui/icon';
 import { ArrowDown, ArrowDownUp, ArrowUp } from 'lucide-react-native';
-import useSuspenseConfig from '@/hooks/query/useConfig';
+import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';

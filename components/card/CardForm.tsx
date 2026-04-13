@@ -17,17 +17,11 @@ import { knowledgeLevelEnum } from '@/lib/enums';
 import CardSides from '@/components/card/CardSides';
 import { X } from 'lucide-react-native';
 import MainScreen from '@/components/MainScreen';
-import { NAV_THEME } from '@/lib/theme';
-import { useColorScheme } from 'nativewind';
 import KLInput from '@/components/form/KLInput';
 import { TagFilters } from '@/hooks/query/useTagListFilters';
 import TagFlashList from '@/components/tag/TagFlashList';
 import { BottomSheetList } from '@/components/BottomSheetList';
 import HorizontalScrollField from '@/components/form/HorizontalScrollField';
-
-// TODO
-// on new card, auto focues on the input A
-// add a clear X btn
 
 const formSchema = z.object({
   sideA: z.string(),
@@ -35,8 +29,6 @@ const formSchema = z.object({
   comment: z.string(),
   tagList: z.array(z.number()),
   knowledgeLevel: z.enum(knowledgeLevelEnum),
-  //   createdAt: z.string(),
-  //   updatedAt: z.string(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
@@ -130,9 +122,6 @@ export default function CardForm({ card }: Props) {
     onSubmit: handleSubmit(onSubmit),
   });
 
-  const { colorScheme } = useColorScheme();
-  const theme = NAV_THEME[colorScheme ?? 'light'];
-
   return (
     <View className="flex-1">
       <MainScreen>
@@ -143,6 +132,7 @@ export default function CardForm({ card }: Props) {
             knowledgeLevel={watch('knowledgeLevel')}
             customSideA={
               <Field
+                autoFocus={currentId === null}
                 inputClassName="text-center bg-transparent border-0 px-6"
                 name="sideA"
                 placeholder="..."

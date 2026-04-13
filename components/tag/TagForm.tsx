@@ -78,6 +78,7 @@ export default function TagForm({ tag, initialCardIds }: Props) {
 
     ids.forEach((id) => {
       if (currentSet.has(id)) {
+        // eslint-disable-next-line drizzle/enforce-delete-with-where
         currentSet.delete(id);
       } else {
         currentSet.add(id);
