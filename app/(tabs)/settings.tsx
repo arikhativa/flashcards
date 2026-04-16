@@ -6,6 +6,7 @@ import { reset, seed } from '@/db/seed';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { View } from 'react-native';
+import Constants from 'expo-constants';
 
 export default function Tab() {
   const { data } = useSuspenseConfig();
@@ -67,6 +68,9 @@ export default function Tab() {
           </Button>
         </View>
       )}
+      <Typography variant={'muted'} className="text-center">
+        version: {Constants.expoConfig?.version}
+      </Typography>
     </MainScreen>
   );
 }
