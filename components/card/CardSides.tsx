@@ -15,6 +15,7 @@ interface CardSidesProps {
   customSideA?: React.ReactNode;
   customSideB?: React.ReactNode;
   className?: string;
+  minGap?: boolean;
   knowledgeLevel?: KnowledgeLevelEnum;
 }
 
@@ -36,6 +37,7 @@ export default function CardSides({
   sideA,
   sideB,
   className,
+  minGap = true,
   knowledgeLevel = 'Learning',
   hideSideA,
   hideSideB,
@@ -51,13 +53,13 @@ export default function CardSides({
         knowledgeLevelColorEnum[knowledgeLevel].border,
         className
       )}>
-      <CardContent className="flex flex-col gap-6">
-        <View className="flex flex-col gap-6">
+      <CardContent className={cn('flex flex-1 flex-col', minGap && 'gap-6')}>
+        <View className={cn('flex flex-1 flex-col justify-center', minGap && 'gap-6')}>
           <Typography variant={'muted'}>{conf.sideA}</Typography>
           {getSide({ sideValue: sideA, customSide: customSideA, hideSide: hideSideA })}
         </View>
         <Separator className="border-black bg-black" />
-        <View className="flex flex-col gap-6">
+        <View className={cn('flex flex-1 flex-col justify-center', minGap && 'gap-6')}>
           <Typography variant={'muted'}>{conf.sideB}</Typography>
           {getSide({ sideValue: sideB, customSide: customSideB, hideSide: hideSideB })}
         </View>

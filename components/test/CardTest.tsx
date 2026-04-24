@@ -58,9 +58,10 @@ const CardTest = forwardRef<CardTestRef, CardTestProps>(
         <Typography variant={'large'} className="m-0 py-2 text-center">
           {index + 1}/{length}
         </Typography>
-        <View className="flex flex-1 flex-col justify-between px-4">
+        <View className="flex flex-1 flex-col justify-between gap-4 px-4">
           <CardSides
-            className="flex-shrink"
+            className="flex-1"
+            minGap={false}
             knowledgeLevel={card.knowledgeLevel}
             sideA={card.sideA}
             sideB={card.sideB}

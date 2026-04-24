@@ -41,7 +41,7 @@ export default function TestFinishScreen() {
   });
 
   return (
-    <>
+    <View className="flex-1">
       <MainScreen className="flex flex-col gap-10">
         <View className="flex flex-col items-center justify-center gap-2">
           <Typography variant={'h1'}>Text is done!</Typography>
@@ -64,6 +64,6 @@ export default function TestFinishScreen() {
           </Button>
         </Link>
       </View>
-    </>
+    </View>
   );
 }
