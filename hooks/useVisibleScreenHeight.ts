@@ -2,29 +2,28 @@ import { useState, useEffect } from 'react';
 import { Dimensions, Keyboard, Platform, EmitterSubscription } from 'react-native';
 import useConfigEdit from '@/hooks/mutation/useConfigEdit';
 import { useSuspenseConfig } from '@/hooks/query/useConfig';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const screenHeight = Dimensions.get('window').height;
 
 export function useVisibleScreenHeight() {
   const { data } = useSuspenseConfig();
+  const insets = useSafeAreaInsets();
   const { update } = useConfigEdit();
 
   const [visibleHeight, setVisibleHeight] = useState(
-    data.screenHeightWithoutKeyboard !== null
-      ? data.screenHeightWithoutKeyboard
-      : Dimensions.get('window').height / 2
+    data.screenHeightWithoutKeyboard !== null ? data.screenHeightWithoutKeyboard : screenHeight / 2
   );
 
   useEffect(() => {
     const handleKeyboardChange = (e: any) => {
-      const keyboardHeight = e.endCoordinates?.height ?? 0;
-      if (keyboardHeight === 0) return;
+      const keyboardStartY = e.endCoordinates?.screenY ?? screenHeight;
+      const newVisibleHeight = keyboardStartY - insets.top;
 
-      const windowHeight = Dimensions.get('window').height;
-      const currentMeasuredHeight = windowHeight - keyboardHeight;
+      setVisibleHeight(newVisibleHeight);
 
-      setVisibleHeight(currentMeasuredHeight);
-
-      if (data.screenHeightWithoutKeyboard !== currentMeasuredHeight) {
-        update({ screenHeightWithoutKeyboard: currentMeasuredHeight });
+      if (data.screenHeightWithoutKeyboard !== newVisibleHeight) {
+        update({ screenHeightWithoutKeyboard: newVisibleHeight });
       }
     };
 

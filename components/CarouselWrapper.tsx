@@ -7,6 +7,7 @@ import Carousel, {
 } from 'react-native-reanimated-carousel';
 
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // This is to remove a redundant warning the the carousel does in strict mode
 configureReanimatedLogger({
@@ -15,7 +16,7 @@ configureReanimatedLogger({
 });
 
 const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('window').height;
 
 export interface CarouselWrapperRef {
   scrollToNextPage: () => void;
@@ -33,6 +34,8 @@ interface CarouselProps {
 const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
   ({ renderItem, length, enabled = true, onProgressChange }, ref) => {
     const carouselRef = React.useRef<ICarouselInstance>(null);
+    const insets = useSafeAreaInsets();
+    const carouselHeight = screenHeight - insets.top - insets.bottom;
 
     const [data, setData] = React.useState<number[]>([...new Array(length + 1).keys()]);
 
@@ -70,7 +73,7 @@ const CarouselWrapper = React.forwardRef<CarouselWrapperRef, CarouselProps>(
         loop={false}
         ref={carouselRef}
         width={width}
-        height={height}
+        height={carouselHeight}
         data={data}
         enabled={enabled}
         renderItem={renderItem}
