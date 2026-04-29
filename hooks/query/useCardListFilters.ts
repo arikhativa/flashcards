@@ -1,11 +1,16 @@
+import { Config } from '@/db/schema';
+import useConfigEdit from '@/hooks/mutation/useConfigEdit';
+import { useSuspenseConfig } from '@/hooks/query/useConfig';
 import {
   CardOrderByEnum,
   DirectionEnum,
   knowledgeLevelEnum,
   KnowledgeLevelEnum,
 } from '@/lib/enums';
+import { queryKeyStore } from '@/lib/queryKeyStore';
+import { isCardFilters } from '@/lib/typeGuards';
 import { DateRange } from '@/lib/types';
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export interface CardFilters {
   search?: string;
@@ -14,8 +19,6 @@ export interface CardFilters {
   direction: DirectionEnum;
   dateRange: DateRange;
 }
-
-const QUERY_KEY = ['CardListFilters'];
 
 export const DEFAULT_CARD_FILTERS: CardFilters = {
   orderBy: 'CreationTime',
@@ -26,19 +29,27 @@ export const DEFAULT_CARD_FILTERS: CardFilters = {
 
 export default function useCardListFilters() {
   const queryClient = useQueryClient();
+  const { data: config } = useSuspenseConfig();
+  const { update } = useConfigEdit();
 
-  const query = useSuspenseQuery({
-    queryKey: QUERY_KEY,
-    initialData: DEFAULT_CARD_FILTERS,
-    staleTime: Infinity,
-    queryFn: async (): Promise<CardFilters> => DEFAULT_CARD_FILTERS,
+  const filters: CardFilters = isCardFilters(config.cardListFilter)
+    ? config.cardListFilter
+    : DEFAULT_CARD_FILTERS;
+
+  const { mutate } = useMutation({
+    mutationFn: async (variables: CardFilters) => {
+      return update({ cardListFilter: variables });
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.setQueryData<Config>(queryKeyStore.config.one.queryKey, () => ({
+        ...config,
+        cardListFilter: variables,
+      }));
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.config.one.queryKey,
+      });
+    },
   });
 
-  const setFilters = (filters: CardFilters) => {
-    queryClient.setQueryData<CardFilters>(QUERY_KEY, (prev) => ({
-      ...prev,
-      ...filters,
-    }));
-  };
-  return { filters: query.data, setFilters };
+  return { filters: filters, setFilters: mutate };
 }

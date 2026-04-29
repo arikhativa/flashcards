@@ -1,0 +1,1 @@
+ALTER TABLE `config` ADD `card_list_filter` text DEFAULT '{}' NOT NULL;

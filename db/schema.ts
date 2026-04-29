@@ -53,9 +53,10 @@ export const cardTagTable = sqliteTable('card_tag', {
 export const configTable = sqliteTable(
   'config',
   {
-    id: integer('id').default(1),
+    id: integer('id').default(1).notNull(),
     sideA: text('side_a').default('A').notNull(),
     sideB: text('side_b').default('B').notNull(),
+    cardListFilter: text('card_list_filter', { mode: 'json' }).default({}).notNull(),
     theme: text('theme', { enum: themeEnumArray }).notNull().default('system'),
     screenHeightWithoutKeyboard: real('screen_height_without_keyboard'),
 
