@@ -1,0 +1,1 @@
+ALTER TABLE `config` ADD `test_settings` text DEFAULT '{}' NOT NULL;

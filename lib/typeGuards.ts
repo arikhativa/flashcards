@@ -1,5 +1,6 @@
 import { BaseTag, Tag } from '@/db/schema';
 import { CardFilters } from '@/hooks/query/useCardListFilters';
+import { TestSettings } from '@/hooks/query/useTestSettings';
 import {
   CardOrderByEnum,
   cardOrderByEnum,
@@ -41,6 +42,23 @@ export function isCardFilters(value: unknown): value is CardFilters {
   }
 
   if ('search' in obj && typeof obj.search !== 'string' && obj.search !== undefined) {
+    return false;
+  }
+
+  return true;
+}
+
+export function isTestSetting(value: unknown): value is TestSettings {
+  if (!value || typeof value !== 'object') return false;
+
+  const obj = value as Record<string, unknown>;
+
+  if (
+    !('numberOfCards' in obj) ||
+    !('testSide' in obj) ||
+    !('range' in obj) ||
+    !('knowledgeLevelList' in obj)
+  ) {
     return false;
   }
 

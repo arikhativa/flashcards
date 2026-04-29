@@ -45,9 +45,6 @@ export default function useCardListFilters() {
         ...config,
         cardListFilter: variables,
       }));
-      queryClient.invalidateQueries({
-        queryKey: queryKeyStore.config.one.queryKey,
-      });
     },
   });
 

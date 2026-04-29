@@ -43,6 +43,13 @@
       "when": 1777447688017,
       "tag": "0005_spooky_stellaris",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1777459034726,
+      "tag": "0006_tricky_pepper_potts",
+      "breakpoints": true
     }
   ]
 }

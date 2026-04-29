@@ -1,28 +1,9 @@
 import { Card } from '@/db/schema';
-import { knowledgeLevelEnum, knowledgeLevelEnumArray } from '@/lib/enums';
-import { CARD_SIDE_VALUE, CardMeta } from '@/lib/types';
-import { dateRangeSchema } from '@/lib/zodSchemas';
+import { CardMeta } from '@/lib/types';
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import * as z from 'zod';
-
-export const testSettingsSchema = z.object({
-  numberOfCards: z.number().min(1),
-  testSide: z.enum(CARD_SIDE_VALUE),
-  range: dateRangeSchema,
-  knowledgeLevelList: z
-    .array(z.enum(knowledgeLevelEnum))
-    .min(1)
-    .max(knowledgeLevelEnumArray.length),
-  cardIdsToTest: z.array(z.number()).optional(),
-  tagIdsToTest: z.array(z.number()).optional(),
-});
-
-export type TestSettings = z.infer<typeof testSettingsSchema>;
 
 interface TestContextType {
-  testSettings: TestSettings | null;
-  setTestSettings: React.Dispatch<React.SetStateAction<TestSettings | null>>;
   cardsToTest: Card[];
   setCardsToTest: React.Dispatch<React.SetStateAction<Card[]>>;
   metadataList: CardMeta[];
@@ -32,15 +13,12 @@ interface TestContextType {
 const TestContext = createContext<TestContextType | undefined>(undefined);
 
 export function TestProvider({ children }: { children: ReactNode }) {
-  const [testSettings, setTestSettings] = useState<TestSettings | null>(null);
   const [cardsToTest, setCardsToTest] = useState<Card[]>([]);
   const [metadataList, setMetadataList] = useState<CardMeta[]>([]);
 
   return (
     <TestContext.Provider
       value={{
-        testSettings,
-        setTestSettings,
         cardsToTest,
         setCardsToTest,
         metadataList,

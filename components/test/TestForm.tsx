@@ -5,7 +5,7 @@ import { STRINGS } from '@/lib/strings';
 import Field from '@/components/form/Field';
 import { Button } from '@/components/ui/button';
 import SelectField from '@/components/form/SelectField';
-import { TestSettings, testSettingsSchema, useTest } from '@/components/provider/TestProvider';
+import { useTest } from '@/components/provider/TestProvider';
 import { useRouter } from 'expo-router';
 import MainScreen from '@/components/MainScreen';
 import { useMemo } from 'react';
@@ -18,6 +18,7 @@ import MultiSelectEnumField from '@/components/form/MultiSelectEnumField';
 import useCreateTestMetadata, { getCardMeta } from '@/hooks/useCreateTestMetadata';
 import { CardMeta } from '@/lib/types';
 import FloatBadge from '@/components/FloatBadge';
+import useTestSettings, { TestSettings, testSettingsSchema } from '@/hooks/query/useTestSettings';
 
 type Props =
   | {
@@ -35,7 +36,9 @@ type Props =
 
 export default function TestForm({ cardIdsToTest, tagIdsToTest }: Props) {
   const router = useRouter();
-  const { testSettings, setTestSettings, setCardsToTest, setMetadataList } = useTest();
+  const { setCardsToTest, setMetadataList } = useTest();
+  const { testSettings, setTestSettings } = useTestSettings();
+
   const { data: conf } = useSuspenseConfig();
 
   const options = useMemo(() => {
